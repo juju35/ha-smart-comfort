@@ -1,8 +1,16 @@
 {
   "domain": "smart_comfort",
   "name": "Smart Comfort",
-  "after_dependencies": ["mobile_app", "notify"],
-  "codeowners": ["@juju35"],
+  "after_dependencies": [
+    "frontend",
+    "http",
+    "mobile_app",
+    "notify",
+    "websocket_api"
+  ],
+  "codeowners": [
+    "@juju35"
+  ],
   "config_flow": true,
   "documentation": "https://github.com/juju35/ha-smart-comfort",
   "integration_type": "service",
