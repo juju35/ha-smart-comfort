@@ -1,16 +1,8 @@
 {
   "domain": "smart_comfort",
   "name": "Smart Comfort",
-  "after_dependencies": [
-    "frontend",
-    "http",
-    "mobile_app",
-    "notify",
-    "websocket_api"
-  ],
-  "codeowners": [
-    "@juju35"
-  ],
+  "after_dependencies": ["frontend", "http", "mobile_app", "notify", "websocket_api"],
+  "codeowners": ["@juju35"],
   "config_flow": true,
   "documentation": "https://github.com/juju35/ha-smart-comfort",
   "integration_type": "service",
@@ -18,5 +10,5 @@
   "issue_tracker": "https://github.com/juju35/ha-smart-comfort/issues",
   "requirements": [],
   "single_config_entry": true,
-  "version": "0.1.4"
+  "version": "0.2.0"
 }
