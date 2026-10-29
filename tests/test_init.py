@@ -270,6 +270,29 @@ async def test_failed_command_is_retried(hass: HomeAssistant, notify, freezer) -
     assert len(calls) == sent + 1
 
 
+async def test_removed_outdoor_entity_ends_episodes(hass: HomeAssistant, notify, fan_calls) -> None:
+    _states(hass, window="on")
+    hass.states.async_set("sensor.out1", "5")
+    hass.states.async_set("sensor.out2", "6")
+    alerts = {**OPTIONS["alerts"], "window_open_cold": {"enabled": True, "delay": 0}}
+    entry = await _setup(hass, {**OPTIONS, "alerts": alerts})
+    await _evaluate(hass, entry)
+    episodes = entry.runtime_data.engine.episodes
+    assert "sejour|window_open_cold" in episodes
+    # One outdoor sensor deleted, the other one still there: still known.
+    hass.states.async_remove("sensor.out1")
+    await _evaluate(hass, entry)
+    assert "sejour|window_open_cold" in episodes
+    # The other one unavailable: unknown for now, the episode holds.
+    hass.states.async_set("sensor.out2", "unavailable")
+    await _evaluate(hass, entry)
+    assert "sejour|window_open_cold" in episodes
+    # Both deleted: gone for good, the episode ends.
+    hass.states.async_remove("sensor.out2")
+    await _evaluate(hass, entry)
+    assert "sejour|window_open_cold" not in episodes
+
+
 async def test_snooze_keys_survive_restart(hass: HomeAssistant, notify, fan_calls) -> None:
     _states(hass, sejour=28.0, chambre=28.0)
     entry = await _setup(hass)
