@@ -19,7 +19,7 @@ from pytest_homeassistant_custom_component.common import (
 
 from custom_components.smart_comfort import async_import_yaml, yaml_hash
 from custom_components.smart_comfort.config import build_settings
-from custom_components.smart_comfort.const import ACTION_SNOOZE, DOMAIN
+from custom_components.smart_comfort.const import ACTION_SNOOZE, COMMAND_RETRY, DOMAIN
 
 OPTIONS = {
     "notify": ["notify.phone"],
@@ -247,7 +247,7 @@ async def test_failed_notification_is_sent_again(hass: HomeAssistant, fan_calls)
     assert len(calls) == 2
 
 
-async def test_failed_command_is_retried(hass: HomeAssistant, notify) -> None:
+async def test_failed_command_is_retried(hass: HomeAssistant, notify, freezer) -> None:
     calls = []
 
     async def failing(call) -> None:
@@ -262,6 +262,10 @@ async def test_failed_command_is_retried(hass: HomeAssistant, notify) -> None:
     sent = len(calls)
     assert sent >= 1
     assert "fan.sejour" not in entry.runtime_data.controller.targets
+    # Not at every evaluation (a lasting error would flood the log), but once the retry delay is over.
+    await _evaluate(hass, entry)
+    assert len(calls) == sent
+    freezer.tick(timedelta(minutes=COMMAND_RETRY))
     await _evaluate(hass, entry)
     assert len(calls) == sent + 1
 

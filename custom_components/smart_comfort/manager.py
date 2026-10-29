@@ -352,8 +352,9 @@ class SmartComfort:
                 readings[room.id] = reading
             self.engine.evaluate(now, readings, self.outdoor())
             self.handled = handled
-            for command in commands:
-                await self._command(command, now)
+            failed = {c.device for c in commands if not await self._command(c, now)}
+            for device in {c.device for c in commands if c.device} - failed:
+                self.controller.command_succeeded(device)
             result = self.engine.step(now, self.gates(now), handled)
             if isinstance(result, Digest):
                 await self._send(result, now)
@@ -363,7 +364,7 @@ class SmartComfort:
         if not self._stopped:
             self._update_listeners()
 
-    async def _command(self, cmd: Command, now: datetime) -> None:
+    async def _command(self, cmd: Command, now: datetime) -> bool:
         context = Context()
         self._contexts.append(context.id)
         self._commanded[cmd.entity_id] = now
@@ -373,8 +374,8 @@ class SmartComfort:
                 await self.hass.services.async_call(cmd.domain, cmd.service, data, blocking=True, context=context)
         except Exception as err:  # noqa: BLE001 - one failing device doesn't stop the others
             _LOGGER.warning("%s.%s on %s failed: %s", cmd.domain, cmd.service, cmd.entity_id, err)
-            self.controller.command_failed(cmd)
-            return
+            self.controller.command_failed(cmd, now)
+            return False
         self.hass.bus.async_fire(
             EVENT_CONTROL,
             {
@@ -385,6 +386,7 @@ class SmartComfort:
             },
             context=context,
         )
+        return True
 
     # Notifications.
 
