@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.1
+
+### Fixes
+- Discover no longer adds the rooms with nothing to follow — no comfort sensor (temperature, CO₂, humidity, noise), air conditioner, fan nor purifier, such as a hallway with only its door — nor the outdoor areas without a sensor. Rooms already set up stay.
+
 ## 1.0.0
 
 ### What's new

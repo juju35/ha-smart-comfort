@@ -1,6 +1,8 @@
 """Discovery: rooms from the Home Assistant areas, with their sensors and devices.
 
-Every area that is not outdoors becomes a room, with what it has: sensors, openings, devices.
+Every area that is not outdoors and has something to follow (a comfort sensor, an air conditioner, a fan or a
+purifier) becomes a room, with what it has: sensors, openings, devices. The others (a hallway with only its door,
+a room with nothing) are left out, and so are the outdoor areas without a sensor.
 Sensors and openings that belong to an air conditioner, fan or purifier are left out (internal
 temperatures, filter states…), and so are the heating thermostats (a climate without cooling).
 The outdoor areas become outdoor places, with their temperature, air quality and noise sensors. Outdoor
@@ -70,6 +72,16 @@ MANUAL_WORDS = ("manual", "manuel", "favorite", "favori", "manuell")
 QUIET_WORDS = ("sleep", "silent", "quiet", "night", "nuit", "nacht", "noche", "schlaf", "sommeil", "leise")
 LOW_WORDS = ("low", "bas", "faible", "niedrig", "bajo", "min")
 # Domains of the devices whose own sensors are not room sensors.
+# What makes a room worth following: a comfort sensor or a device (openings alone are not enough).
+TRACKED = (
+    k.CONF_TEMPERATURE,
+    k.CONF_CO2,
+    k.CONF_HUMIDITY,
+    k.CONF_NOISE,
+    k.CONF_CLIMATE,
+    k.CONF_FANS,
+    k.CONF_PURIFIERS,
+)
 BUSY_DOMAINS = {"climate", "fan", "humidifier", "water_heater", "vacuum"}
 OPENING_CLASSES = {"window", "door", "opening"}
 
@@ -277,7 +289,8 @@ def discover_rooms(hass: HomeAssistant) -> Found:
             ):
                 if items:
                     place[key] = sorted(e.entity_id for e in items)
-            found.outdoors.append(place)
+            if len(place) > 2:  # Not without a sensor.
+                found.outdoors.append(place)
             continue
         indoor = [e for e in temps if not _has(e.name, OUTDOOR_WORDS) and not _has(e.entity_id, OUTDOOR_WORDS)]
         room: dict[str, Any] = {k.CONF_NAME: area.name, k.CONF_AREA: area.area_id}
@@ -314,7 +327,8 @@ def discover_rooms(hass: HomeAssistant) -> Found:
             room[k.CONF_FANS] = fans
         if purifiers:
             room[k.CONF_PURIFIERS] = purifiers
-        rooms.append(room)
+        if any(key in room for key in TRACKED):
+            rooms.append(room)
     if not found.outdoor and not any(p.get(k.CONF_TEMPERATURE) for p in found.outdoors):
         # No outdoor temperature sensor: the weather entity's.
         found.outdoor = sorted(s.entity_id for s in hass.states.async_all("weather"))[:1]

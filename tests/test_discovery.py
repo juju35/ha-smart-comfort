@@ -55,6 +55,9 @@ class House:
 def build(hass: HomeAssistant) -> House:
     h = House(hass)
     living, bedroom, garden, hall = h.area("Living room"), h.area("Bedroom"), h.area("Garden"), h.area("Hall")
+    # Nothing to follow: no room, no outdoor place.
+    h.area("Kitchen")
+    h.area("Balcony")
     station = h.device("Weather station", living)
     h.entity("sensor", "living_temperature", "21", station, device_class="temperature", state_class="measurement")
     h.entity("sensor", "living_humidity", "50", station, device_class="humidity")
@@ -89,7 +92,7 @@ def build(hass: HomeAssistant) -> House:
         h.device("Purificateur chambre", bedroom),
         preset_modes=["Auto", "Sleep", "Favorite"],
     )
-    # Garden: outdoor. Hall: a door, no comfort sensor.
+    # Garden: outdoor. Hall: a door only.
     h.entity("sensor", "garden_temperature", "9", area=garden, device_class="temperature")
     h.entity("sensor", "garden_noise", "50", area=garden, device_class="sound_pressure")
     h.entity("sensor", "garden_aqi", "42", area=garden, device_class="aqi")
@@ -113,9 +116,8 @@ async def test_discover_rooms(hass: HomeAssistant) -> None:
     ]
     assert found.outdoor == found.outdoor_noise == found.outdoor_air == []
     by_name = {r["name"]: r for r in rooms}
-    # Every area but the outdoor ones, even without a comfort sensor (the hall has a door only).
-    assert sorted(by_name) == ["Bedroom", "Hall", "Living room"]
-    assert by_name["Hall"] == {"name": "Hall", "area": "hall", "openings": ["binary_sensor.hall_door"]}
+    # The areas with something to follow: not the hall (a door only) nor the empty kitchen.
+    assert sorted(by_name) == ["Bedroom", "Living room"]
     living = by_name["Living room"]
     assert living["area"] == "living_room"
     assert living["temperature"] == "sensor.living_temperature"
@@ -170,7 +172,7 @@ async def test_merge_keeps_what_is_set(hass: HomeAssistant) -> None:
         ],
     }
     merged, report = merge(options, found)
-    assert report.added == ["Bedroom", "Hall"]
+    assert report.added == ["Bedroom"]
     assert report.updated == ["Living Room"]
     # The garden added as an outdoor place: its sensor leaves the top-level list, the other one stays.
     assert report.outdoors_added == ["Garden"]
@@ -212,7 +214,7 @@ async def test_discover_command(hass: HomeAssistant, hass_ws_client) -> None:
     assert msg["success"], msg
     result = msg["result"]
     assert result["report"] == {
-        "added": ["Bedroom", "Hall", "Living room"],
+        "added": ["Bedroom", "Living room"],
         "updated": [],
         "outdoors_added": ["Garden"],
         "outdoors_updated": [],
@@ -228,7 +230,7 @@ async def test_discover_command(hass: HomeAssistant, hass_ws_client) -> None:
     assert msg["success"], msg
     await hass.async_block_till_done()
     settings = entry.runtime_data.settings
-    assert [r.name for r in settings.rooms] == ["Bedroom", "Hall", "Living room"]
+    assert [r.name for r in settings.rooms] == ["Bedroom", "Living room"]
     assert settings.outdoor == ("sensor.garden_temperature",)
     assert settings.outdoor_air == ("sensor.garden_aqi",)
     assert settings.outdoor_noise == ("sensor.garden_noise",)
