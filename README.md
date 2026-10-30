@@ -77,7 +77,7 @@ Both ways can be used together:
 
 Once set up, Smart Comfort adds a **Smart Comfort** page to the sidebar, for administrators:
 
-- **Overview**: the active alerts with their state (notified, snoozed, acknowledged, handled by a running device) and **Snooze** / **Got it** buttons, the readings and devices of each room with their targets and manual overrides, the last notification, and switches for the notifications and the device control
+- **Overview**: while nothing is set up (no room nor outdoor place), a **Discover** button that runs the discovery and opens its result in the Rooms tab; the active alerts with their state (notified, snoozed, acknowledged, handled by a running device) and **Snooze** / **Got it** buttons, the readings and devices of each room with their targets and manual overrides, the last notification, and switches for the notifications and the device control
 - **Rooms**: **Discover** adds a room for every Home Assistant area and sets it up: temperature, CO₂, humidity and noise sensors (a weather station preferred over a device's own sensor), windows and doors, air conditioner (only one that can cool), fans with their natural / direct presets, purifiers with their auto / manual mode select or presets, and the night settings from their quiet presets and fan modes. The outdoor areas (garden, terrace, balcony…) go to the **Outdoors** category below the rooms, with their temperature, air quality and noise sensors (an outdoor module counts by its device's area); outdoor sensors in no area — a sensor named outdoor, a city air quality index (Atmo France, WAQI…), and the weather entity when there is no outdoor temperature sensor — go to the Notifications tab. What is already set is kept, and running it again only adds what is new. Nothing is saved until **Save**. Then add, remove and reorder rooms; their sensors and openings; their air conditioner, fans and purifiers, each with its own settings (presets offered from the device, mode select and its options); and alert overrides for the room; and add or remove outdoor places
 - **Alerts**, **Notifications**, **Device control**: the global settings, with their defaults
 
@@ -89,6 +89,8 @@ Each tab has its own address, e.g. `/smart-comfort/rooms`.
 
 <details>
 <summary>More screenshots</summary>
+
+![Discover offered in the overview while nothing is set up](screenshots/panel-start.png)
 
 ![Rooms found by Discover, before saving](screenshots/panel-discover.png)
 

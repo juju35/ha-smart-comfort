@@ -100,6 +100,8 @@ const STRINGS = {
     add_outdoor: "Add an outdoor place",
     new_outdoor: "Outdoor",
     no_outdoors: "No outdoor place yet.",
+    start: "Get started",
+    start_help: "Nothing is set up yet. Discover finds the rooms and outdoor places of your Home Assistant areas with their sensors and devices, and sets them up; you check the result in the Rooms tab before saving.",
   },
   fr: {
     outdoor_noise: "Bruit extérieur",
@@ -175,6 +177,8 @@ const STRINGS = {
     add_outdoor: "Ajouter un extérieur",
     new_outdoor: "Extérieur",
     no_outdoors: "Aucun extérieur pour l'instant.",
+    start: "Pour commencer",
+    start_help: "Rien n'est encore configuré. La découverte trouve les pièces et les extérieurs de vos zones Home Assistant avec leurs capteurs et appareils, et les règle ; vous vérifiez le résultat dans l'onglet Pièces avant d'enregistrer.",
   },
   de: {
     outdoor_noise: "Außenlärm",
@@ -250,6 +254,8 @@ const STRINGS = {
     add_outdoor: "Außenbereich hinzufügen",
     new_outdoor: "Außenbereich",
     no_outdoors: "Noch kein Außenbereich.",
+    start: "Erste Schritte",
+    start_help: "Noch ist nichts eingerichtet. Die Erkennung findet die Räume und Außenbereiche Ihrer Home-Assistant-Bereiche mit ihren Sensoren und Geräten und richtet sie ein; Sie prüfen das Ergebnis im Reiter Räume vor dem Speichern.",
   },
   es: {
     outdoor_noise: "Ruido exterior",
@@ -325,6 +331,8 @@ const STRINGS = {
     add_outdoor: "Añadir un exterior",
     new_outdoor: "Exterior",
     no_outdoors: "Aún no hay exteriores.",
+    start: "Para empezar",
+    start_help: "Aún no hay nada configurado. El descubrimiento encuentra las estancias y los exteriores de sus áreas de Home Assistant con sus sensores y dispositivos, y los configura; revise el resultado en la pestaña Estancias antes de guardar.",
   },
 };
 
@@ -607,12 +615,7 @@ class SmartComfortPanel extends HTMLElement {
       b.className = `tab${tab === this._tab ? " active" : ""}`;
       b.setAttribute("role", "tab");
       b.textContent = this._t(tab);
-      b.addEventListener("click", () => {
-        this._tab = tab;
-        const base = (this.panel?.url_path || "smart-comfort").replace(/^\//, "");
-        history.replaceState(history.state, "", `/${base}${tab === "overview" ? "" : `/${tab}`}`);
-        this._render();
-      });
+      b.addEventListener("click", () => this._goTab(tab));
       tabs.append(b);
     }
     this._renderToolbar();
@@ -739,7 +742,30 @@ class SmartComfortPanel extends HTMLElement {
     return this._hass.callService(DOMAIN, service, data);
   }
 
+  _goTab(tab) {
+    this._tab = tab;
+    const base = (this.panel?.url_path || "smart-comfort").replace(/^\//, "");
+    history.replaceState(history.state, "", `/${base}${tab === "overview" ? "" : `/${tab}`}`);
+    this._render();
+  }
+
+  /** Nothing set up yet: the discovery offered right away, its result opened in the Rooms tab. */
+  _renderStart(content) {
+    const options = this._config.options;
+    if (options.rooms?.length || options.outdoors?.length) return;
+    const card = this._card(this._t("start"), "mdi:home-search-outline");
+    const body = this._el("div", "discover");
+    const button = this._button(this._t("discover"), () => {
+      this._goTab("rooms");
+      this._discover();
+    });
+    body.append(this._el("div", "discover-text", this._t("start_help")), button);
+    card.append(body);
+    content.append(card);
+  }
+
   _renderOverview(content) {
+    this._renderStart(content);
     const s = this._status;
     if (s === undefined) {
       content.append(this._el("div", "banner", "…"));
