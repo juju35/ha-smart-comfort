@@ -82,8 +82,101 @@ TRACKED = (
     k.CONF_FANS,
     k.CONF_PURIFIERS,
 )
+# Integrations of machines whose temperatures are not the room's (NAS, boxes, servers, UPS, printers…).
+EQUIPMENT_PLATFORMS = frozenset(
+    {
+        "ugreen",
+        "synology_dsm",
+        "qnap",
+        "qnap_qsw",
+        "truenas",
+        "unraid",
+        "freebox",
+        "livebox",
+        "bbox",
+        "sfr_box",
+        "fritz",
+        "fritzbox_callmonitor",
+        "netgear",
+        "unifi",
+        "tplink_omada",
+        "systemmonitor",
+        "glances",
+        "proxmoxve",
+        "hddtemp",
+        "nut",
+        "apcupsd",
+        "octoprint",
+        "ipp",
+        "hpprinter",
+        "brother",
+        "snmp",
+        "esxi_stats",
+    }
+)
+# Words (whole words of the entity id or name) of machine and appliance temperatures.
+EQUIPMENT_WORDS = frozenset(
+    {
+        "cpu",
+        "gpu",
+        "soc",
+        "chipset",
+        "motherboard",
+        "processor",
+        "processeur",
+        "disk",
+        "disque",
+        "hdd",
+        "ssd",
+        "nvme",
+        "nas",
+        "server",
+        "serveur",
+        "router",
+        "routeur",
+        "freebox",
+        "livebox",
+        "bbox",
+        "modem",
+        "switch",
+        "printer",
+        "imprimante",
+        "ups",
+        "onduleur",
+        "inverter",
+        "battery",
+        "batterie",
+        "coil",
+        "pipe",
+        "discharge",
+        "compressor",
+        "compresseur",
+        "boiler",
+        "chaudiere",
+        "fridge",
+        "refrigerator",
+        "refrigerateur",
+        "frigo",
+        "freezer",
+        "congelateur",
+        "oven",
+        "four",
+        "aquarium",
+        "probe",
+        "nvr",
+        "camera",
+    }
+)
 BUSY_DOMAINS = {"climate", "fan", "humidifier", "water_heater", "vacuum"}
 OPENING_CLASSES = {"window", "door", "opening"}
+
+
+def _equipment(e: _Entity) -> bool:
+    """A sensor of a machine (NAS, box, server, printer, fridge…), not of the air around it."""
+    if e.platform in EQUIPMENT_PLATFORMS:
+        return True
+    tokens = set(slugify(f"{e.entity_id} {e.name}").split("_"))
+    return bool(tokens & EQUIPMENT_WORDS)
 
 
 def _has(text: str, words: tuple[str, ...]) -> bool:
@@ -268,7 +361,7 @@ def discover_rooms(hass: HomeAssistant) -> Found:
     rooms = found.rooms
     # Sensors in no area: an outdoor module named so, a city air quality index.
     for e in sorted(unassigned, key=lambda e: e.entity_id):
-        if e.domain != "sensor" or busy(e):
+        if e.domain != "sensor" or busy(e) or _equipment(e):
             continue
         if _is_air(e, outdoor=True):
             found.outdoor_air.append(e.entity_id)
@@ -278,7 +371,7 @@ def discover_rooms(hass: HomeAssistant) -> Found:
             elif e.device_class == "sound_pressure":
                 found.outdoor_noise.append(e.entity_id)
     for area in sorted(areas, key=lambda a: a.name.casefold()):
-        sensors = [e for e in area.entities if e.domain == "sensor" and not busy(e)]
+        sensors = [e for e in area.entities if e.domain == "sensor" and not busy(e) and not _equipment(e)]
         temps = [e for e in sensors if e.device_class == "temperature"]
         if _has(area.name, OUTDOOR_WORDS) or _has(area.area_id, OUTDOOR_WORDS):
             place: dict[str, Any] = {k.CONF_NAME: area.name, k.CONF_AREA: area.area_id}

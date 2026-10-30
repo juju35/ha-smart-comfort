@@ -253,6 +253,12 @@ async def test_outdoor_places(hass: HomeAssistant) -> None:
     h.entity("sensor", "atmo_qualite_globale_pollen_rennes", "1", atmo, platform="atmofrance")
     h.entity("sensor", "air_quality", "0", platform="spook")
     h.entity("sensor", "nas_temperature", "50", device_class="temperature")
+    # Machines in the living room: a NAS (its integration), a box (its name), a fridge.
+    nas = h.device("UGREEN NAS", living, model="DXP480T Plus")
+    h.entity("sensor", "ugreen_nas_cpu_temperature", "52", nas, platform="ugreen", device_class="temperature")
+    h.entity("sensor", "freebox_temperature_1", "55", h.device("Freebox v9", living), device_class="temperature")
+    h.entity("sensor", "frigo_temperature", "4", h.device("Frigo", living), device_class="temperature")
+    h.entity("sensor", "station_humidity", "50", h.device("Station", living), device_class="humidity")
     # The outdoor unit of an air conditioner: inside the house, not the outdoor temperature.
     ac = h.device("Climatiseur", living)
     h.entity("climate", "climatiseur", "off", ac, hvac_modes=["off", "cool"])
@@ -260,6 +266,8 @@ async def test_outdoor_places(hass: HomeAssistant) -> None:
     hass.states.async_set("weather.home", "sunny", {"temperature": 8})
     found = discover_rooms(hass)
     assert [r["name"] for r in found.rooms] == ["Séjour"]
+    # The room's own sensor, never a machine's (NAS, box, fridge), even with nothing else around.
+    assert found.rooms[0]["temperature"] == "sensor.station_temperature"
     assert found.outdoors == [
         {
             "name": "Terrasse",
@@ -306,3 +314,13 @@ async def test_outdoor_weather(hass: HomeAssistant) -> None:
         merged, report = merge(options, found)
         assert "weather.home" not in merged.get("outdoor_temperature", [])
         assert report.outdoor == []
+
+
+async def test_machines_only(hass: HomeAssistant) -> None:
+    """An area with only machine temperatures (NAS, box) is not a room."""
+    h = House(hass)
+    office = h.area("Bureau")
+    nas = h.device("UGREEN NAS", office)
+    h.entity("sensor", "ugreen_nas_pool_1_disk_1_temperature", "51", nas, platform="ugreen", device_class="temperature")
+    h.entity("sensor", "freebox_temperature_cpu_0", "58", h.device("Freebox", office), device_class="temperature")
+    assert discover_rooms(hass).rooms == []
