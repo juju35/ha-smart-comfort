@@ -117,6 +117,10 @@ Each tab has its own address, e.g. `/smart-comfort/rooms`.
 |---|---|
 | ![Adaptive lighting settings in the Device control tab](screenshots/panel-lighting.png) | ![Adaptive lighting settings in the Device control tab, dark mode](screenshots/panel-lighting-dark.png) |
 
+| Quiet morning and naps of a bedroom | Dark mode |
+|---|---|
+| ![Quiet morning and nap slots of a bedroom](screenshots/panel-naps.png) | ![Quiet morning and nap slots of a bedroom, dark mode](screenshots/panel-naps-dark.png) |
+
 </details>
 
 ### Example
@@ -284,7 +288,14 @@ Set under `lighting:` for every light, under `rooms[].lighting:` for the lights 
 | `warmth` | `true` | Also set the color temperature, for the lights that support it. `false`: brightness only |
 | `day_kelvin` / `evening_kelvin` / `night_kelvin` | 4000 / 2700 / 2200 K | Color temperature by time of day (within what each light can do) |
 | `transition` | 120 s | Duration of the gradual changes; a light just turned on gets its brightness at once |
-| `night_only` | `false` | On a light item: a night light, set only in the night hours and left alone by day |
+| `morning` | 40 % | Brightness of the quiet morning (rooms with `quiet_morning`), from the end of the night until `morning_end` |
+| `morning_end` | 09:30 | End of the quiet morning (global) |
+| `quiet_morning` | `false` | Dimmer lights in the morning for this room or light (Discover sets it on bedrooms) |
+| `nap` | 15 % | Brightness during the nap slots of the room (`rooms[].naps`) |
+| `morning_kelvin` / `nap_kelvin` | 3000 / 2200 K | Color temperature of the quiet morning and of the naps |
+| `night_only` | `false` | On a light item: a night light, set only in the night hours and the naps, left alone by day |
+
+Naps are set per room under `rooms[].naps:` — `start`, `end` and optionally `days` (`mon` … `sun`, every day when none). Discover never adds any. Order of precedence: night, nap, quiet morning, then day / evening.
 
 Only the lights that are on are set: Smart Comfort never turns a light on or off. A brightness or warmth changed by hand pauses the light until it is turned off, or for `control.manual_override` minutes. On/off-only lights are left alone.
 
@@ -298,6 +309,11 @@ smart_comfort:
     - name: Living room
       lights: [light.living_room, light.sofa]
       lighting: { evening: 70 }  # this room only
+    - name: Kids' bedroom
+      lights: [light.kids, { entity_id: light.kids_night_light, night_only: true }]
+      lighting: { quiet_morning: true }   # dimmer until morning_end (09:30)
+      naps:
+        - { start: "13:30", end: "15:30", days: [sat, sun] }
 ```
 
 ### Entities

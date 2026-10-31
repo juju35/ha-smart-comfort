@@ -84,6 +84,8 @@ TRACKED = (
     k.CONF_PURIFIERS,
     k.CONF_LIGHTS,
 )
+# Bedrooms: a quiet morning for their lights.
+BEDROOM_WORDS = ("chambre", "bedroom", "schlafzimmer", "kinderzimmer", "dormitorio", "habitacion", "nursery")
 # Night lights: only set in the night hours.
 NIGHT_LIGHT_WORDS = ("veilleuse", "night_light", "nightlight", "nachtlicht", "luz_nocturna", "luz_de_noche")
 # Lights that are not lamps: the indicator of a device, the floodlight of a camera.
@@ -447,6 +449,9 @@ def discover_rooms(hass: HomeAssistant) -> Found:
         members = {m for e in lights for m in (e.attributes.get("entity_id") or [])}
         if found_lights := [_light(e) for e in sorted(lights, key=lambda e: e.entity_id) if e.entity_id not in members]:
             room[k.CONF_LIGHTS] = found_lights
+            if _has(area.name, BEDROOM_WORDS) or _has(area.area_id, BEDROOM_WORDS):
+                # Bedrooms: dimmer lights in the morning (their naps are set by hand).
+                room[k.CONF_LIGHTING] = {k.CONF_QUIET_MORNING: True}
         if any(key in room for key in TRACKED):
             rooms.append(room)
     if not found.outdoor and not any(p.get(k.CONF_TEMPERATURE) for p in found.outdoors):
@@ -488,6 +493,12 @@ def merge(options: dict[str, Any], found: Found) -> tuple[dict[str, Any], Report
             if key in new and not match.get(key):
                 match[key] = new[key]
                 changed = True
+        if lighting := new.get(k.CONF_LIGHTING):
+            own = match.setdefault(k.CONF_LIGHTING, {})
+            for key, value in lighting.items():
+                if key not in own:
+                    own[key] = value
+                    changed = True
         if match.get(k.CONF_CLIMATE) and _item_id(match[k.CONF_CLIMATE]) == _item_id(new.get(k.CONF_CLIMATE, "")):
             match[k.CONF_CLIMATE], completed = _complete(match[k.CONF_CLIMATE], new[k.CONF_CLIMATE])
             changed = changed or completed

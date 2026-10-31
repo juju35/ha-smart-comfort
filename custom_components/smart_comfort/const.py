@@ -57,6 +57,16 @@ CONF_EVENING_KELVIN: Final = "evening_kelvin"
 CONF_NIGHT_KELVIN: Final = "night_kelvin"
 CONF_TRANSITION: Final = "transition"
 CONF_NIGHT_ONLY: Final = "night_only"
+CONF_MORNING: Final = "morning"
+CONF_MORNING_KELVIN: Final = "morning_kelvin"
+CONF_MORNING_END: Final = "morning_end"
+CONF_QUIET_MORNING: Final = "quiet_morning"
+CONF_NAP: Final = "nap"
+CONF_NAP_KELVIN: Final = "nap_kelvin"
+# Nap slots of a room: start, end and optionally the days (mon … sun).
+CONF_NAPS: Final = "naps"
+CONF_DAYS: Final = "days"
+WEEKDAYS: Final = ("mon", "tue", "wed", "thu", "fri", "sat", "sun")
 
 # Alert settings.
 CONF_ENABLED: Final = "enabled"
@@ -294,6 +304,14 @@ DEFAULT_LIGHTING: Final[dict] = {
     CONF_DAY_KELVIN: 4000,
     CONF_EVENING_KELVIN: 2700,
     CONF_NIGHT_KELVIN: 2200,
+    # Quiet morning of the rooms that have it (bedrooms): from the end of the night until morning_end.
+    CONF_MORNING: 40,
+    CONF_MORNING_KELVIN: 3000,
+    CONF_MORNING_END: "09:30",
+    CONF_QUIET_MORNING: False,
+    # During the nap slots of a room.
+    CONF_NAP: 15,
+    CONF_NAP_KELVIN: 2200,
     # Seconds of the gradual changes (a light just turned on gets its brightness at once).
     CONF_TRANSITION: 120,
 }

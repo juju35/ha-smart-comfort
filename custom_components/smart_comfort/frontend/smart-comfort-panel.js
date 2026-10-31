@@ -111,6 +111,20 @@ const STRINGS = {
     add_light: "Add a light",
     lighting_on: "Adaptive lighting on",
     lighting_off: "Adaptive lighting off",
+    room_lighting: "Lighting of this room",
+    room_lighting_help: "Quiet morning: dimmer lights from the end of the night until the end of the morning (Device control tab, Adaptive lighting). Naps: the lights are dimmed in these slots, and the night lights are set too.",
+    add_nap: "Add a nap",
+    nap_start: "Nap from",
+    nap_end: "Until",
+    nap_days: "Days",
+    nap_days_help: "None: every day.",
+    day_mon: "Mon",
+    day_tue: "Tue",
+    day_wed: "Wed",
+    day_thu: "Thu",
+    day_fri: "Fri",
+    day_sat: "Sat",
+    day_sun: "Sun",
   },
   fr: {
     outdoor_noise: "Bruit extérieur",
@@ -197,6 +211,20 @@ const STRINGS = {
     add_light: "Ajouter une lumière",
     lighting_on: "Éclairage adaptatif activé",
     lighting_off: "Éclairage adaptatif désactivé",
+    room_lighting: "Éclairage de cette pièce",
+    room_lighting_help: "Matin doux : lumières moins fortes de la fin de la nuit jusqu'à la fin de la matinée (onglet Pilotage des appareils, Éclairage adaptatif). Siestes : les lumières baissent sur ces créneaux, veilleuses comprises.",
+    add_nap: "Ajouter une sieste",
+    nap_start: "Sieste de",
+    nap_end: "Jusqu'à",
+    nap_days: "Jours",
+    nap_days_help: "Aucun : tous les jours.",
+    day_mon: "Lun",
+    day_tue: "Mar",
+    day_wed: "Mer",
+    day_thu: "Jeu",
+    day_fri: "Ven",
+    day_sat: "Sam",
+    day_sun: "Dim",
   },
   de: {
     outdoor_noise: "Außenlärm",
@@ -283,6 +311,20 @@ const STRINGS = {
     add_light: "Licht hinzufügen",
     lighting_on: "Adaptive Beleuchtung an",
     lighting_off: "Adaptive Beleuchtung aus",
+    room_lighting: "Beleuchtung dieses Raums",
+    room_lighting_help: "Sanfter Morgen: gedämpftes Licht vom Ende der Nacht bis zum Ende des Vormittags (Reiter Gerätesteuerung, Adaptive Beleuchtung). Mittagsschlaf: in diesen Zeiten wird das Licht gedämpft, Nachtlichter eingeschlossen.",
+    add_nap: "Mittagsschlaf hinzufügen",
+    nap_start: "Mittagsschlaf von",
+    nap_end: "Bis",
+    nap_days: "Tage",
+    nap_days_help: "Keine: jeden Tag.",
+    day_mon: "Mo",
+    day_tue: "Di",
+    day_wed: "Mi",
+    day_thu: "Do",
+    day_fri: "Fr",
+    day_sat: "Sa",
+    day_sun: "So",
   },
   es: {
     outdoor_noise: "Ruido exterior",
@@ -369,6 +411,20 @@ const STRINGS = {
     add_light: "Añadir una luz",
     lighting_on: "Iluminación adaptativa activada",
     lighting_off: "Iluminación adaptativa desactivada",
+    room_lighting: "Iluminación de esta estancia",
+    room_lighting_help: "Mañana suave: luces más tenues desde el final de la noche hasta el final de la mañana (pestaña Control de dispositivos, Iluminación adaptativa). Siestas: las luces bajan en estas franjas, luces nocturnas incluidas.",
+    add_nap: "Añadir una siesta",
+    nap_start: "Siesta de",
+    nap_end: "Hasta",
+    nap_days: "Días",
+    nap_days_help: "Ninguno: todos los días.",
+    day_mon: "Lun",
+    day_tue: "Mar",
+    day_wed: "Mié",
+    day_thu: "Jue",
+    day_fri: "Vie",
+    day_sat: "Sáb",
+    day_sun: "Dom",
   },
 };
 
@@ -444,6 +500,7 @@ const text = { text: {} };
 const bool = { boolean: {} };
 const time = { time: {} };
 const entity = (domain, extra = {}) => ({ entity: { domain, ...extra } });
+const WEEKDAYS = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
 const kelvin = { number: { mode: "box", step: 100, min: 1500, max: 10000, unit_of_measurement: "K" } };
 /** Brightness and warmth by time of day: global, and per light. */
 const LIGHTING_LEVELS = [
@@ -454,6 +511,10 @@ const LIGHTING_LEVELS = [
   { name: "day_kelvin", selector: kelvin },
   { name: "evening_kelvin", selector: kelvin },
   { name: "night_kelvin", selector: kelvin },
+  { name: "morning", selector: percent },
+  { name: "morning_kelvin", selector: kelvin },
+  { name: "nap", selector: percent },
+  { name: "nap_kelvin", selector: kelvin },
 ];
 
 let haFormLoading;
@@ -1243,6 +1304,7 @@ class SmartComfortPanel extends HTMLElement {
         [
           { name: "enabled", selector: bool },
           ...LIGHTING_LEVELS,
+          { name: "morning_end", selector: time },
           { name: "transition", selector: { number: { mode: "box", step: 10, min: 0, max: 3600, unit_of_measurement: "s" } } },
         ],
         merged(defaults, this._draft.lighting || {}),
@@ -1567,6 +1629,8 @@ class SmartComfortPanel extends HTMLElement {
       card.append(addButton);
     }
 
+    this._roomLighting(card, room);
+
     // Alerts of the room.
     card.append(this._el("div", "subheader", this._t("room_alerts")));
     card.append(this._el("div", "help", this._t("room_alerts_help")));
@@ -1690,6 +1754,66 @@ class SmartComfortPanel extends HTMLElement {
           ]
         : []),
     ];
+  }
+
+  /** Lighting of a room: its quiet morning (bedrooms) and its nap slots. */
+  _roomLighting(card, room) {
+    card.append(this._el("div", "subheader", this._t("room_lighting")));
+    card.append(this._el("div", "help", this._t("room_lighting_help")));
+    const lighting = room.lighting || {};
+    card.append(
+      this._form(
+        [{ name: "quiet_morning", selector: bool }],
+        { quiet_morning: Boolean(lighting.quiet_morning) },
+        (value) => {
+          const next = { ...(room.lighting || {}) };
+          if (value.quiet_morning) next.quiet_morning = true;
+          else delete next.quiet_morning;
+          if (Object.keys(next).length) room.lighting = next;
+          else delete room.lighting;
+        },
+        (s) => this._label("lighting", s.name),
+        (s) => this._helper("lighting", s.name)
+      )
+    );
+    const naps = Array.isArray(room.naps) ? room.naps : [];
+    const days = { select: { multiple: true, mode: "list", options: WEEKDAYS.map((d) => ({ value: d, label: this._t(`day_${d}`) })) } };
+    naps.forEach((nap, i) => {
+      const line = this._el("div", "device-item");
+      line.append(
+        this._form(
+          [
+            { name: "start", required: true, selector: time },
+            { name: "end", required: true, selector: time },
+            { name: "days", selector: days },
+          ],
+          nap,
+          (value) => {
+            naps[i] = prune(value);
+            room.naps = naps;
+          },
+          (s) => this._t(`nap_${s.name}`),
+          (s) => (s.name === "days" ? this._t("nap_days_help") : undefined)
+        )
+      );
+      line.append(
+        this._iconButton("mdi:delete-outline", this._t("remove"), () => {
+          naps.splice(i, 1);
+          if (naps.length) room.naps = naps;
+          else delete room.naps;
+          this._changed();
+          this._renderTab();
+        })
+      );
+      card.append(line);
+    });
+    const add = this._button(this._t("add_nap"), () => {
+      room.naps = [...naps, { start: "13:30:00", end: "15:30:00" }];
+      this._changed();
+      this._renderTab();
+    });
+    add.classList.add("small");
+    card.append(add);
   }
 
   _lightSchema(entityId) {

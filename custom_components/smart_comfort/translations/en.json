@@ -281,7 +281,13 @@
           "evening_kelvin": "Evening warmth",
           "night_kelvin": "Night warmth",
           "transition": "Transition",
-          "night_only": "Night light"
+          "night_only": "Night light",
+          "morning": "Morning brightness",
+          "morning_kelvin": "Morning warmth",
+          "morning_end": "End of the morning",
+          "quiet_morning": "Quiet morning",
+          "nap": "Nap brightness",
+          "nap_kelvin": "Nap warmth"
         },
         "data_description": {
           "day": "With the sun up (elevation above 6°).",
@@ -289,7 +295,11 @@
           "night": "In the quiet night hours of the Device control tab.",
           "warmth": "Also the color temperature, for the lights that support it. Off: brightness only.",
           "transition": "Seconds of the gradual changes; a light just turned on gets its brightness at once.",
-          "night_only": "Set only in the night hours (left alone by day)."
+          "night_only": "Set only in the night hours (left alone by day).",
+          "morning": "In the rooms with a quiet morning (bedrooms), from the end of the night until the end of the morning.",
+          "morning_end": "Until when the bedrooms keep their morning brightness.",
+          "quiet_morning": "Dimmer lights in the morning, until the end of the morning (Device control tab).",
+          "nap": "During the nap slots of a room."
         }
       }
     },

@@ -281,7 +281,13 @@
           "evening_kelvin": "Chaleur le soir",
           "night_kelvin": "Chaleur la nuit",
           "transition": "Transition",
-          "night_only": "Veilleuse"
+          "night_only": "Veilleuse",
+          "morning": "Intensité le matin",
+          "morning_kelvin": "Chaleur le matin",
+          "morning_end": "Fin de la matinée",
+          "quiet_morning": "Matin doux",
+          "nap": "Intensité pendant la sieste",
+          "nap_kelvin": "Chaleur pendant la sieste"
         },
         "data_description": {
           "day": "Avec le soleil levé (au-dessus de 6°).",
@@ -289,7 +295,11 @@
           "night": "Aux heures de nuit calme de l'onglet Pilotage des appareils.",
           "warmth": "Aussi la température de couleur, pour les lumières qui la gèrent. Désactivé : l'intensité seule.",
           "transition": "Secondes des changements progressifs ; une lumière qu'on vient d'allumer prend son intensité tout de suite.",
-          "night_only": "Réglée seulement aux heures de nuit (laissée tranquille le jour)."
+          "night_only": "Réglée seulement aux heures de nuit (laissée tranquille le jour).",
+          "morning": "Dans les pièces avec un matin doux (chambres), de la fin de la nuit jusqu'à la fin de la matinée.",
+          "morning_end": "Jusqu'à quand les chambres gardent leur intensité du matin.",
+          "quiet_morning": "Lumières moins fortes le matin, jusqu'à la fin de la matinée (onglet Pilotage des appareils).",
+          "nap": "Pendant les créneaux de sieste d'une pièce."
         }
       }
     },

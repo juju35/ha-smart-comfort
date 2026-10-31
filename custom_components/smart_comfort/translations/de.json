@@ -281,7 +281,13 @@
           "evening_kelvin": "Lichtfarbe am Abend",
           "night_kelvin": "Lichtfarbe in der Nacht",
           "transition": "Übergang",
-          "night_only": "Nachtlicht"
+          "night_only": "Nachtlicht",
+          "morning": "Helligkeit am Morgen",
+          "morning_kelvin": "Lichtfarbe am Morgen",
+          "morning_end": "Ende des Vormittags",
+          "quiet_morning": "Sanfter Morgen",
+          "nap": "Helligkeit beim Mittagsschlaf",
+          "nap_kelvin": "Lichtfarbe beim Mittagsschlaf"
         },
         "data_description": {
           "day": "Bei Sonne über 6°.",
@@ -289,7 +295,11 @@
           "night": "In den Nachtruhestunden des Reiters Gerätesteuerung.",
           "warmth": "Auch die Farbtemperatur, für Lichter, die sie unterstützen. Aus: nur Helligkeit.",
           "transition": "Sekunden der schrittweisen Änderungen; ein gerade eingeschaltetes Licht erhält seine Helligkeit sofort.",
-          "night_only": "Nur in den Nachtstunden eingestellt (tagsüber unberührt)."
+          "night_only": "Nur in den Nachtstunden eingestellt (tagsüber unberührt).",
+          "morning": "In Räumen mit sanftem Morgen (Schlafzimmer), vom Ende der Nacht bis zum Ende des Vormittags.",
+          "morning_end": "Bis wann die Schlafzimmer ihre Morgenhelligkeit behalten.",
+          "quiet_morning": "Gedämpftes Licht am Morgen, bis zum Ende des Vormittags (Reiter Gerätesteuerung).",
+          "nap": "In den Mittagsschlafzeiten eines Raums."
         }
       }
     },

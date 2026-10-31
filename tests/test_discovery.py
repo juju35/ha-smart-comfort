@@ -354,3 +354,16 @@ async def test_discover_lights(hass: HomeAssistant) -> None:
     )
     assert merged["rooms"][0]["lights"] == ["light.salon", {"entity_id": "light.aqara_night_light", "night_only": True}]
     assert report.updated == ["Séjour"]
+
+
+async def test_discover_bedroom_lights(hass: HomeAssistant) -> None:
+    """A bedroom gets a quiet morning for its lights, and no nap (set by hand)."""
+    h = House(hass)
+    h.entity("light", "chambre_lea", "off", area=h.area("Chambre Léa"), supported_color_modes=["brightness"])
+    room = discover_rooms(hass).rooms[0]
+    assert room["lighting"] == {"quiet_morning": True}
+    assert "naps" not in room
+    # Already set to no quiet morning: kept.
+    options = {"rooms": [{"name": "Chambre Léa", "area": "chambre_lea", "lighting": {"quiet_morning": False}}]}
+    merged, _ = merge(options, discover_rooms(hass))
+    assert merged["rooms"][0]["lighting"] == {"quiet_morning": False}

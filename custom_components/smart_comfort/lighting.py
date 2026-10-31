@@ -2,14 +2,15 @@
 
 Pure Python. Smart Comfort never turns a light on or off: a light just turned on gets the brightness
 of the moment at once, then follows the day gradually (day with the sun up, evening once it is down,
-night in the quiet night hours). A brightness or warmth changed by hand pauses the light until it is
-turned off, or for `manual_override` minutes.
+night in the quiet night hours, the nap slots of its room, the quiet morning of the rooms that have it).
+A brightness or warmth changed by hand pauses the light until it is turned off, or for `manual_override`
+minutes.
 """
 
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import datetime, time, timedelta
+from datetime import datetime, timedelta
 from typing import Any
 
 from .config import LightDevice, Room, Settings
@@ -19,6 +20,8 @@ from .control import Command
 PHASE_DAY = "day"
 PHASE_EVENING = "evening"
 PHASE_NIGHT = "night"
+PHASE_NAP = "nap"
+PHASE_MORNING = "morning"
 
 
 @dataclass
@@ -51,18 +54,30 @@ def day_share(elevation: float | None) -> float:
     return min(1.0, max(0.0, share))
 
 
-def phase(settings: Settings, local: time, elevation: float | None) -> str:
-    if settings.night(local):
+def phase(settings: Settings, local: datetime, elevation: float | None, room: Room | None = None) -> str:
+    """Time of day for the lights of a room: night, nap, quiet morning (rooms that have it), day or evening."""
+    if settings.night(local.time()):
         return PHASE_NIGHT
+    if room is not None and room.napping(local):
+        return PHASE_NAP
+    if room is not None and any(light.quiet_morning for light in room.lights) and settings.morning(local.time()):
+        return PHASE_MORNING
     return PHASE_DAY if day_share(elevation) >= 0.5 else PHASE_EVENING
 
 
-def target(light: LightDevice, night: bool, share: float, state: LightState) -> LightTarget | None:
+def target(light: LightDevice, moment: str, share: float, state: LightState) -> LightTarget | None:
     """Brightness and warmth for the light now; None when it is left alone (a night light by day)."""
-    if not state.dimmable or (light.night_only and not night):
+    if moment == PHASE_MORNING and not light.quiet_morning:
+        moment = PHASE_DAY
+    dark = moment in (PHASE_NIGHT, PHASE_NAP)
+    if not state.dimmable or (light.night_only and not dark):
         return None
-    if night:
+    if moment == PHASE_NIGHT:
         brightness, kelvin = light.night, light.night_kelvin
+    elif moment == PHASE_NAP:
+        brightness, kelvin = light.nap, light.nap_kelvin
+    elif moment == PHASE_MORNING:
+        brightness, kelvin = light.morning, light.morning_kelvin
     else:
         brightness = round(light.evening + share * (light.day - light.evening))
         kelvin = round(light.evening_kelvin + share * (light.day_kelvin - light.evening_kelvin))
@@ -107,9 +122,10 @@ class LightController:
         self.overrides.pop(entity_id, None)
 
     def evaluate(
-        self, now: datetime, local: time, elevation: float | None, room: Room, states: dict[str, LightState]
+        self, now: datetime, local: datetime, elevation: float | None, room: Room, states: dict[str, LightState]
     ) -> list[Command]:
-        night = self.settings.night(local)
+        """Commands for the lights of a room; `local`: the local date and time (naps have days)."""
+        moment = phase(self.settings, local, elevation, room)
         share = day_share(elevation)
         commands = []
         for light in room.lights:
@@ -123,7 +139,7 @@ class LightController:
                 if until > now:
                     continue
                 del self.overrides[entity_id]
-            wanted = target(light, night, share, state)
+            wanted = target(light, moment, share, state)
             if wanted is None:
                 continue
             # Compared with what was sent, not with the state: a light in its transition is not sent again.

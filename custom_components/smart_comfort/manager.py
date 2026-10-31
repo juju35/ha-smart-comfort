@@ -494,7 +494,9 @@ class SmartComfort:
             elevation = self.sun_elevation()
             for room in self.settings.rooms:
                 if lighting and room.lights:
-                    commands += self.lights.evaluate(now, local, elevation, room, self.light_states(room))
+                    commands += self.lights.evaluate(
+                        now, dt_util.as_local(now), elevation, room, self.light_states(room)
+                    )
                 reading, ctx = self.reading(room, now)
                 states = self.device_states(room)
                 if self.control_enabled:
