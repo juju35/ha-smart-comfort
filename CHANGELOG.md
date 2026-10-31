@@ -6,6 +6,11 @@
 - **Activity** tab in the panel: what Smart Comfort did and why, live and by day — devices to their target (cooling, window boost, night mode, back to normal, turned back on…), lights (brightness of the moment, on with presence, off with nobody), indicator lights off and on, notifications sent and cleared, changes by hand that pause a device or a light, reset times, failed commands — with filters; a line opens its entity. The last 300 entries are kept across restarts.
 - **Activity card** (`custom:smart-comfort-activity-card`), added to the dashboards by the integration: the latest entries, live, for any user, optionally for some kinds or one room.
 
+## 1.5.2
+
+### Fixes
+- YAML: an unquoted `off: true` in a presence slot (read as a `false` key by YAML 1.1) no longer makes the configuration invalid.
+
 ## 1.5.1
 
 ### What's new
