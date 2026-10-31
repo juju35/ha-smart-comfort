@@ -417,6 +417,7 @@ A slot color, like a slot brightness, is kept until the light is turned off (the
 | `smart_comfort.unsnooze` | `rooms` | Cancel the snoozes |
 | `smart_comfort.acknowledge` | `rooms`, `kinds` | No reminder nor escalation for the current problems until they end |
 | `smart_comfort.notify_now` | | Send a summary now; returns `sent` |
+| `smart_comfort.get_config` | | Returns the options in use (response only), to copy into the YAML or check what is set |
 
 Rooms are given by name or id (`Living room` or `living_room`).
 
