@@ -25,17 +25,23 @@ from .const import (
     CONF_CONTROL,
     CONF_COOL_ABOVE,
     CONF_CRITICAL_VOLUME,
+    CONF_DAY,
+    CONF_DAY_KELVIN,
     CONF_DELAY,
     CONF_DIGEST_WINDOW,
     CONF_ENABLED,
     CONF_END,
     CONF_ENTITY_ID,
     CONF_ESCALATION,
+    CONF_EVENING,
+    CONF_EVENING_KELVIN,
     CONF_FAN_MODE,
     CONF_FANS,
     CONF_HUMIDITY,
     CONF_HYSTERESIS,
     CONF_KEEP_ON,
+    CONF_LIGHTING,
+    CONF_LIGHTS,
     CONF_MANUAL_OVERRIDE,
     CONF_MAX_AIR,
     CONF_MAX_NOISE,
@@ -44,9 +50,12 @@ from .const import (
     CONF_MIN_OUTDOOR,
     CONF_MODE_SELECT,
     CONF_NAME,
+    CONF_NIGHT,
     CONF_NIGHT_END,
     CONF_NIGHT_FAN_MODE,
+    CONF_NIGHT_KELVIN,
     CONF_NIGHT_MODE,
+    CONF_NIGHT_ONLY,
     CONF_NIGHT_PERCENTAGE,
     CONF_NIGHT_PRESET,
     CONF_NIGHT_START,
@@ -82,11 +91,14 @@ from .const import (
     CONF_TAG,
     CONF_TEMPERATURE,
     CONF_THRESHOLD,
+    CONF_TRANSITION,
     CONF_URL,
+    CONF_WARMTH,
     DEFAULT_ALERTS,
     DEFAULT_CONTROL,
     DEFAULT_CRITICAL_VOLUME,
     DEFAULT_DIGEST_WINDOW,
+    DEFAULT_LIGHTING,
     DEFAULT_REMINDER,
     DEFAULT_SNOOZE,
     DEFAULT_STARTUP_GRACE,
@@ -221,6 +233,22 @@ class PurifierDevice:
         )
 
 
+@dataclass(frozen=True)
+class LightDevice:
+    """A dimmable light: its brightness (%) and warmth (K) by time of day."""
+
+    entity_id: str
+    day: int = 100
+    evening: int = 60
+    night: int = 15
+    warmth: bool = True
+    day_kelvin: int = 4000
+    evening_kelvin: int = 2700
+    night_kelvin: int = 2200
+    # A night light: set only in the night hours.
+    night_only: bool = False
+
+
 def _device_items(raw: Any) -> list[tuple[str, dict[str, Any]]]:
     """A device list item is an entity id or a dict with entity_id and per-device overrides."""
     if raw is None:
@@ -253,6 +281,7 @@ class Room:
     fans: tuple[FanDevice, ...] = ()
     purifiers: tuple[PurifierDevice, ...] = ()
     alerts: dict[str, AlertSettings] = field(default_factory=dict)
+    lights: tuple[LightDevice, ...] = ()
 
     @property
     def devices(self) -> list[str]:
@@ -303,6 +332,9 @@ class Settings:
     night_start: time | None = None
     night_end: time | None = None
     rooms: tuple[Room, ...] = ()
+    lighting_enabled: bool = True
+    # Seconds of the gradual brightness changes.
+    transition: int = 120
 
     def night(self, local: time) -> bool:
         """Quiet night hours (none when either bound is unset)."""
@@ -314,7 +346,30 @@ class Settings:
         return next((r for r in self.rooms if r.id == room_id), None)
 
 
-def _room(raw: dict[str, Any], alerts: dict[str, dict], control: dict[str, Any], used: set[str]) -> Room:
+def _lights(raw: dict[str, Any], lighting: dict[str, Any]) -> tuple[LightDevice, ...]:
+    """The lights of a room, each with the lighting settings merged (global < room < light)."""
+    lights = []
+    for entity_id, own in _device_items(raw.get(CONF_LIGHTS)):
+        merged = _merge(lighting, raw.get(CONF_LIGHTING), own)
+        lights.append(
+            LightDevice(
+                entity_id=entity_id,
+                day=int(merged[CONF_DAY]),
+                evening=int(merged[CONF_EVENING]),
+                night=int(merged[CONF_NIGHT]),
+                warmth=bool(merged[CONF_WARMTH]),
+                day_kelvin=int(merged[CONF_DAY_KELVIN]),
+                evening_kelvin=int(merged[CONF_EVENING_KELVIN]),
+                night_kelvin=int(merged[CONF_NIGHT_KELVIN]),
+                night_only=bool(own.get(CONF_NIGHT_ONLY, False)),
+            )
+        )
+    return tuple(lights)
+
+
+def _room(
+    raw: dict[str, Any], alerts: dict[str, dict], control: dict[str, Any], used: set[str], lighting: dict[str, Any]
+) -> Room:
     name = str(raw[CONF_NAME])
     room_id = base = str(raw.get("id") or slugify(name))
     n = 2
@@ -385,6 +440,7 @@ def _room(raw: dict[str, Any], alerts: dict[str, dict], control: dict[str, Any],
         climate=climate,
         fans=tuple(fans),
         purifiers=tuple(purifiers),
+        lights=_lights(raw, lighting),
         alerts={kind: AlertSettings.from_dict(_merge(alerts[kind], room_alerts.get(kind))) for kind in KINDS},
     )
 
@@ -404,7 +460,8 @@ def build_settings(options: dict[str, Any]) -> Settings:
     for section in (CONF_CLIMATE, CONF_FANS, CONF_PURIFIERS):
         control[section] = _merge(DEFAULT_CONTROL[section], raw_control.get(section))
     used: set[str] = set()
-    rooms = tuple(_room(r, alerts, control, used) for r in options.get(CONF_ROOMS) or [])
+    lighting = _merge(DEFAULT_LIGHTING, options.get(CONF_LIGHTING))
+    rooms = tuple(_room(r, alerts, control, used, lighting) for r in options.get(CONF_ROOMS) or [])
     notify = options.get(CONF_NOTIFY) or []
     outdoors = tuple(
         Outdoor(
@@ -447,4 +504,6 @@ def build_settings(options: dict[str, Any]) -> Settings:
         night_start=parse_time(control[CONF_NIGHT_START]),
         night_end=parse_time(control[CONF_NIGHT_END]),
         rooms=rooms,
+        lighting_enabled=bool(lighting[CONF_ENABLED]),
+        transition=int(lighting[CONF_TRANSITION]),
     )

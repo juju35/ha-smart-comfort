@@ -111,6 +111,24 @@ def _devices(domain: str, extra: dict) -> vol.All:
     return vol.All(cv.ensure_list, [item])
 
 
+LIGHTING_LEVELS = {
+    vol.Optional(k.CONF_DAY): vol.All(vol.Coerce(int), vol.Range(min=1, max=100)),
+    vol.Optional(k.CONF_EVENING): vol.All(vol.Coerce(int), vol.Range(min=1, max=100)),
+    vol.Optional(k.CONF_NIGHT): vol.All(vol.Coerce(int), vol.Range(min=1, max=100)),
+    vol.Optional(k.CONF_WARMTH): cv.boolean,
+    vol.Optional(k.CONF_DAY_KELVIN): vol.All(vol.Coerce(int), vol.Range(min=1500, max=10000)),
+    vol.Optional(k.CONF_EVENING_KELVIN): vol.All(vol.Coerce(int), vol.Range(min=1500, max=10000)),
+    vol.Optional(k.CONF_NIGHT_KELVIN): vol.All(vol.Coerce(int), vol.Range(min=1500, max=10000)),
+}
+LIGHTING = vol.Schema(
+    {
+        vol.Optional(k.CONF_ENABLED): cv.boolean,
+        vol.Optional(k.CONF_TRANSITION): vol.All(vol.Coerce(int), vol.Range(min=0, max=3600)),
+        **LIGHTING_LEVELS,
+    }
+)
+LIGHT = {vol.Optional(k.CONF_NIGHT_ONLY): cv.boolean, **LIGHTING_LEVELS}
+
 ROOM = vol.Schema(
     {
         vol.Required(k.CONF_NAME): cv.string,
@@ -129,6 +147,8 @@ ROOM = vol.Schema(
         ),
         vol.Optional(k.CONF_FANS): _devices("fan", FAN),
         vol.Optional(k.CONF_PURIFIERS): _devices("fan", PURIFIER),
+        vol.Optional(k.CONF_LIGHTS): _devices("light", LIGHT),
+        vol.Optional(k.CONF_LIGHTING): vol.Schema(LIGHTING_LEVELS),
         vol.Optional(k.CONF_ALERTS): ALERTS,
         vol.Optional(k.CONF_CONTROL): DEVICE_SECTIONS,
     }
@@ -167,6 +187,7 @@ OPTIONS = vol.Schema(
         vol.Optional(k.CONF_CONTROL): CONTROL,
         vol.Optional(k.CONF_ROOMS): vol.All(cv.ensure_list, [ROOM]),
         vol.Optional(k.CONF_OUTDOORS): vol.All(cv.ensure_list, [OUTDOOR]),
+        vol.Optional(k.CONF_LIGHTING): LIGHTING,
     }
 )
 

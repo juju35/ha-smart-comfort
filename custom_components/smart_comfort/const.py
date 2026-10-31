@@ -29,6 +29,8 @@ CONF_CONTROL: Final = "control"
 CONF_ROOMS: Final = "rooms"
 # Outdoor places (garden, terrace…): their sensors give the outdoor temperature, air quality and noise.
 CONF_OUTDOORS: Final = "outdoors"
+# Adaptive lighting: brightness (and warmth) of the lights that are on, by time of day.
+CONF_LIGHTING: Final = "lighting"
 
 # Rooms.
 CONF_NAME: Final = "name"
@@ -43,6 +45,18 @@ CONF_FANS: Final = "fans"
 CONF_PURIFIERS: Final = "purifiers"
 CONF_ENTITY_ID: Final = "entity_id"
 CONF_AIR_QUALITY: Final = "air_quality"
+CONF_LIGHTS: Final = "lights"
+
+# Lighting settings.
+CONF_DAY: Final = "day"
+CONF_EVENING: Final = "evening"
+CONF_NIGHT: Final = "night"
+CONF_WARMTH: Final = "warmth"
+CONF_DAY_KELVIN: Final = "day_kelvin"
+CONF_EVENING_KELVIN: Final = "evening_kelvin"
+CONF_NIGHT_KELVIN: Final = "night_kelvin"
+CONF_TRANSITION: Final = "transition"
+CONF_NIGHT_ONLY: Final = "night_only"
 
 # Alert settings.
 CONF_ENABLED: Final = "enabled"
@@ -268,6 +282,27 @@ DEFAULT_CONTROL: Final[dict] = {
         CONF_NIGHT_MODE: None,
     },
 }
+
+# Brightness (%) by time of day: day (sun up), evening (sun down), night (quiet night hours, control
+# night_start/night_end); warmth in kelvin with the same steps, for the lights that support it.
+DEFAULT_LIGHTING: Final[dict] = {
+    CONF_ENABLED: True,
+    CONF_DAY: 100,
+    CONF_EVENING: 60,
+    CONF_NIGHT: 15,
+    CONF_WARMTH: True,
+    CONF_DAY_KELVIN: 4000,
+    CONF_EVENING_KELVIN: 2700,
+    CONF_NIGHT_KELVIN: 2200,
+    # Seconds of the gradual changes (a light just turned on gets its brightness at once).
+    CONF_TRANSITION: 120,
+}
+# Sun elevation (degrees) from which it is day, and under which it is evening; in between, a blend.
+SUN_DAY: Final = 6.0
+SUN_EVENING: Final = -6.0
+# Smallest gap worth a command: brightness points, kelvin.
+LIGHT_STEP: Final = 3
+KELVIN_STEP: Final = 100
 
 # Seconds.
 EVALUATE_INTERVAL: Final = 30
