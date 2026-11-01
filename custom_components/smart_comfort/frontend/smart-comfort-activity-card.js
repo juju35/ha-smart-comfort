@@ -158,7 +158,84 @@ const STRINGS = {
     f_kinds: "Solo",
     f_room: "Habitación",
   },
+  sr: {
+    title: "Smart Comfort активност",
+    empty: "Још ништа.",
+    not_loaded: "Smart Comfort није учитан.",
+    all: "Све",
+    group_devices: "Уређаји",
+    group_lights: "Светла",
+    group_notifications: "Обавештења",
+    group_manual: "Ручно",
+    today: "Данас",
+    yesterday: "Јуче",
+    t_cool: "Хлађење",
+    t_cool_night: "Хлађење, мирна ноћ",
+    t_off: "Искључено",
+    t_off_open: "Искључено: прозор остаје отворен",
+    t_on: "Укључено: топло је",
+    t_on_night: "Укључено, мирна ноћ",
+    t_boost: "Појачање због прозора",
+    t_normal: "Повратак на нормално",
+    t_night: "Ноћни режим",
+    t_keep_on: "Поново укључено",
+    lighting: "Јачина светла за ово доба дана",
+    presence_on: "Укључено: неко је ушао",
+    presence_off: "Искључено: нема никога",
+    display_off: "Индикатор искључен",
+    display_on: "Индикатор поново укључен",
+    notified: "Обавештење",
+    cleared: "Обавештење уклоњено: све је поново у реду",
+    manual: "Ручно промењено: не дира се",
+    manual_until: "Ручно промењено: не дира се до {time}",
+    reset: "Повратак на нормално (задато време)",
+    failed: "Није могло да се пошаље",
+    f_title: "Наслов",
+    f_limit: "Ставке",
+    f_kinds: "Само",
+    f_room: "Соба",
+  },
+  "sr-Latn": {
+    title: "Smart Comfort aktivnost",
+    empty: "Još ništa.",
+    not_loaded: "Smart Comfort nije učitan.",
+    all: "Sve",
+    group_devices: "Uređaji",
+    group_lights: "Svetla",
+    group_notifications: "Obaveštenja",
+    group_manual: "Ručno",
+    today: "Danas",
+    yesterday: "Juče",
+    t_cool: "Hlađenje",
+    t_cool_night: "Hlađenje, mirna noć",
+    t_off: "Isključeno",
+    t_off_open: "Isključeno: prozor ostaje otvoren",
+    t_on: "Uključeno: toplo je",
+    t_on_night: "Uključeno, mirna noć",
+    t_boost: "Pojačanje zbog prozora",
+    t_normal: "Povratak na normalno",
+    t_night: "Noćni režim",
+    t_keep_on: "Ponovo uključeno",
+    lighting: "Jačina svetla za ovo doba dana",
+    presence_on: "Uključeno: neko je ušao",
+    presence_off: "Isključeno: nema nikoga",
+    display_off: "Indikator isključen",
+    display_on: "Indikator ponovo uključen",
+    notified: "Obaveštenje",
+    cleared: "Obaveštenje uklonjeno: sve je ponovo u redu",
+    manual: "Ručno promenjeno: ne dira se",
+    manual_until: "Ručno promenjeno: ne dira se do {time}",
+    reset: "Povratak na normalno (zadato vreme)",
+    failed: "Nije moglo da se pošalje",
+    f_title: "Naslov",
+    f_limit: "Stavke",
+    f_kinds: "Samo",
+    f_room: "Soba",
+  },
 };
+
+// Strings of a Home Assistant language: the full tag when translated (sr-Latn), else its base (fr-FR: fr), else English.
+const stringsFor = (language) => STRINGS[language] || STRINGS[String(language || "").split("-")[0]] || STRINGS.en;
 
 const ICONS = {
   device: "mdi:fan",
@@ -219,8 +296,8 @@ class SmartComfortActivityCard extends HTMLElement {
         { name: "room", selector: { text: {} } },
       ],
       computeLabel: (schema) => {
-        const lang = (document.querySelector("home-assistant")?.hass?.language || "en").split("-")[0];
-        return (STRINGS[lang] || STRINGS.en)[`f_${schema.name}`] || schema.name;
+        const language = document.querySelector("home-assistant")?.hass?.language;
+        return stringsFor(language)[`f_${schema.name}`] || schema.name;
       },
     };
   }
@@ -259,8 +336,7 @@ class SmartComfortActivityCard extends HTMLElement {
   }
 
   _t(key, values = {}) {
-    const lang = (this._hass?.language || "en").split("-")[0];
-    const text = (STRINGS[lang] || STRINGS.en)[key] ?? STRINGS.en[key] ?? key;
+    const text = stringsFor(this._hass?.language)[key] ?? STRINGS.en[key] ?? key;
     return text.replace(/\{(\w+)\}/g, (_, k) => values[k] ?? "");
   }
 

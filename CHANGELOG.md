@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.7.3 - 2026-11-01
+
+### What's new
+- **Serbian** translations, in Cyrillic (`sr`) and Latin (`sr-Latn`) script: integration, notifications, panel and activity card. Serbian translations by @cpmarexel2f (#12).
+
+### Fixes
+- Panel and activity card (and its editor): the language is matched on the full Home Assistant tag first (`sr-Latn`), then on its base (`fr-FR` → `fr`), then English.
+
 ## 1.7.2
 
 ### Fixes

@@ -25,7 +25,7 @@ custom_components/smart_comfort/
 ├── discovery.py     # discover_rooms -> Found (areas -> rooms, outdoor areas -> outdoor places, outdoor sensors in no area), merge (keeps what is set, matches on area then name; place sensors leave the top-level lists)
 ├── panel.py         # Static path /smart_comfort_static (once per run) + custom panel "smart-comfort" (admin), removed with the entry
 ├── frontend/smart-comfort-panel.js  # Plain web component (no build): tabs overview/rooms/alerts/notifications/control, ha-form
-├── entity.py / icons.json / services.yaml / translations/{en,fr,de,es}.json / brand/
+├── entity.py / icons.json / services.yaml / translations/{en,fr,de,es,sr,sr-Latn}.json / brand/
 ```
 
 ## Rules
@@ -46,7 +46,7 @@ custom_components/smart_comfort/
 
 ## Panel
 - Registered at entry setup when `frontend` is loaded, kept across entry reloads (saving reloads the entry; an open panel must not vanish), removed in `async_remove_entry`.
-- Labels come from the translations through `frontend/get_translations` (category `options`: the options flow steps general / alert / control (+ sections) / room (+ section overrides); category `selector`: kinds, severities, aggregates). Panel-only strings are in `STRINGS` of the JS (en/fr/de/es).
+- Labels come from the translations through `frontend/get_translations` (category `options`: the options flow steps general / alert / control (+ sections) / room (+ section overrides); category `selector`: kinds, severities, aggregates). Panel-only strings are in `STRINGS` of the JS, panel and activity card (en/fr/de/es/sr/sr-Latn; full language tag first, then its base, then en).
 - ha-form is lazy-loaded by Home Assistant: `loadHaForm()` loads it through the entities card editor.
 - The draft stores only what differs from the defaults (`diff`, `prune`); times "HH:MM" and "HH:MM:SS" compare equal. Device items with no own setting are stored as a bare entity id. Unknown keys of a room (room-level `control`, `id`) are kept.
 - Discover: `smart_comfort/discover` returns the draft options with the discovered rooms merged (not saved); the panel marks them new/completed until Save or Discard.
