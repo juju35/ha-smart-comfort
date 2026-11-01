@@ -504,8 +504,6 @@ The integration and its notifications follow the language of Home Assistant. Cur
 | Српски | `sr` |
 | Srpski (latinica) | `sr-Latn` |
 
-Serbian covers the integration, its notifications and the panel; the activity card is not translated into Serbian yet.
-
 Contributions for additional languages are welcome!
 
 ## License
