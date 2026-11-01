@@ -764,7 +764,7 @@ class SmartComfortActivityCard extends HTMLElement {
   _restoreFocus(body, key) {
     if (!key) return;
     const find = (node) => (node.dataset?.key === key ? node : [...(node.children || [])].map(find).find(Boolean));
-    find(body)?.focus();
+    find(body)?.focus({ preventScroll: true });
   }
 
   _chips() {
@@ -829,7 +829,7 @@ const STYLE = `
   .header { display: flex; align-items: center; gap: 10px; padding: 12px 16px 4px; }
   .hbadge { --c: var(--primary-color, #03a9f4); width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; flex: none;
     background: color-mix(in srgb, var(--c) 16%, transparent); color: var(--c); --mdc-icon-size: 24px; }
-  .titles { flex: 1 1 auto; min-width: 0; }
+  .titles { flex: 1 1 0; min-width: 4ch; }
   .hname { min-width: 4ch; font-size: 16px; font-weight: 500; line-height: 1.25; color: var(--primary-text-color);
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .body { padding: 0 16px 12px; }

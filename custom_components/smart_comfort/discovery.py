@@ -61,6 +61,10 @@ OUTDOOR_WORDS = (
     "terrazz",
     "_estern",
     "_tuin",
+    "achtertuin",
+    "voortuin",
+    "zijtuin",
+    "daktuin",
     "terras",
     "buiten",
     "jardim",
@@ -154,6 +158,13 @@ BEDROOM_WORDS = (
     "camera_ospiti",
     "camera_degli_ospiti",
     "cameretta",
+    "_camera_di_",
+    "_camera_dei_",
+    "_camera_del_",
+    "_camera_della_",
+    "_camera_degli_",
+    "_camera_bambin",
+    "_camera_figli",
     "slaapkamer",
     "kinderkamer",
     "_quarto",
@@ -315,7 +326,7 @@ BUSY_DOMAINS = {"climate", "fan", "humidifier", "water_heater", "vacuum", "camer
 OPENING_CLASSES = {"window", "door", "opening"}
 
 
-# Serbian Cyrillic in Latin (đ has no ASCII decomposition: written dj).
+# Serbian Cyrillic in Latin (đ has no ASCII decomposition: written dj), and the German ß written ss.
 CYRILLIC = str.maketrans(
     {
         **dict(zip("абвгдежзијклмнопрстћуфхцчш", "abvgdežzijklmnoprstćufhcčš", strict=True)),
@@ -324,6 +335,7 @@ CYRILLIC = str.maketrans(
         "њ": "nj",
         "џ": "dž",
         "đ": "dj",
+        "ß": "ss",
     }
 )
 
@@ -349,6 +361,9 @@ def _has(text: str, words: tuple[str, ...]) -> bool:
 
 def _bedroom(area: _Area) -> bool:
     text = f"{area.name} {area.area_id}"
+    # An area named just "Camera" is an Italian bedroom (a camera is told by its device, never by an area).
+    if _slug(area.name) == "camera":
+        return True
     return _has(text, BEDROOM_WORDS) and not _has(text, NOT_BEDROOM_WORDS)
 
 
