@@ -382,22 +382,17 @@ const STRINGS = {
   },
 };
 
-// Strings of a Home Assistant language: the full tag when translated (sr-Latn), else its base (fr-FR: fr), else English.
-const stringsFor = (language) => STRINGS[language] || STRINGS[String(language || "").split("-")[0]] || STRINGS.en;
+// Language of the texts: the full tag when translated (sr-Latn), else its base (fr-FR: fr), else English.
+const resolvedLanguage = (language) => [language, String(language || "").split("-")[0]].find((l) => STRINGS[l]) || "en";
+const stringsFor = (language) => STRINGS[resolvedLanguage(language)];
 
-// Language whose STRINGS are shown: the full tag when translated (sr-Latn), else its base, else English.
-const resolvedLanguage = (language) => {
-  const base = String(language || "").split("-")[0];
-  return STRINGS[language] ? language : STRINGS[base] ? base : "en";
-};
-
-// Locale of numbers and dates: Home Assistant's full one when it is the language of the texts (pt-BR keeps its
-// formats), else the language of the texts; pt alone is European Portuguese for Home Assistant, pt-PT for Intl.
+// Locale of numbers and dates: Home Assistant's own (pt-BR keeps its formats) when it speaks the language of the
+// texts, else that language; pt alone is European Portuguese for Home Assistant, pt-PT for Intl.
 const intlLocale = (hass) => {
-  const full = hass?.locale?.language || hass?.language || "";
   const resolved = resolvedLanguage(hass?.language);
-  const locale = full.split("-")[0] === resolved.split("-")[0] ? full : resolved;
-  return locale === "pt" ? "pt-PT" : locale;
+  const full = hass?.locale?.language || hass?.language || "";
+  if (full.split("-")[0] !== resolved.split("-")[0]) return resolved === "pt" ? "pt-PT" : resolved;
+  return full === "pt" ? "pt-PT" : full;
 };
 
 const ICONS = {
