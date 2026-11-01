@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.7.5 - 2026-11-01
+
+### Fixes
+- Discover: outdoor areas, bedrooms, air quality sensors, night lights, indicators and machines are now recognised by their names in Italian, Dutch, Portuguese, Polish and Serbian (Cyrillic and Latin), e.g. Giardino, Tuin, Jardim, Ogród, Bašta / Башта, Slaapkamer, Sypialnia, Spavaća soba. A garden was taken for an indoor room (with too hot / too cold alerts), and bedrooms didn't get their quiet morning.
+- Discover: in Italian, the sensor of a bedroom ("camera") is no longer taken for a machine's and left out (the whole room was left out when it was its only sensor). A camera's own sensors are still left out, now by its device.
+- Activity card: no longer runs out of the card in narrow columns or on a long entity id; in a Sections view it is at least 6 columns wide.
+- Activity card: its header now looks like the other cards' (a round tinted icon and the title), and its row icons are the same size.
+- Activity card: follows a change of language, a renamed entity and the change of day without waiting for the next entry.
+- Activity card editor: the kinds are listed by their translated names, and the room field explains what it expects.
+- Panel on a phone: the header of a room or outdoor place no longer breaks over three lines; what it holds goes on its own line under its name.
+
 ## 1.7.4 - 2026-11-01
 
 ### What's new
