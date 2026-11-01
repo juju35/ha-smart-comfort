@@ -50,7 +50,21 @@ function textIn(file, language, key) {
   return element._t(key);
 }
 
-const CASES = { "fr-FR": "fr", "de-CH": "de", "sr-Latn": "sr-Latn", sr: "sr", "pt-BR": "en", fr: "fr" };
+const LANGUAGES = ["en", "fr", "de", "es", "sr", "sr-Latn", "it", "nl", "pt", "pl"];
+// pt-BR falls back to European Portuguese, on purpose; an untranslated language to English.
+const CASES = {
+  "fr-FR": "fr",
+  "de-CH": "de",
+  "sr-Latn": "sr-Latn",
+  sr: "sr",
+  fr: "fr",
+  "it-IT": "it",
+  "nl-BE": "nl",
+  pt: "pt",
+  "pt-BR": "pt",
+  "pl-PL": "pl",
+  ja: "en",
+};
 const SAMPLE = { panel: "rooms", card: "today" };
 
 /** Key paths of a value; an array counts as its length and its items. */
@@ -80,7 +94,17 @@ for (const file of Object.keys(FILES)) {
         if (typeof text === "string") assert.ok(text.trim(), `${language}.${key}`);
       }
     }
-    assert.ok("sr" in all && "sr-Latn" in all);
+    assert.deepEqual(Object.keys(all).sort(), [...LANGUAGES].sort());
+  });
+
+  test(`${file}: every language has the placeholders of English`, () => {
+    const all = strings(file);
+    const placeholders = (text) => [...String(text).matchAll(/\{(\w+)\}/g)].map((m) => m[1]).sort();
+    for (const [language, table] of Object.entries(all)) {
+      for (const [key, text] of Object.entries(all.en)) {
+        assert.deepEqual(placeholders(table[key]), placeholders(text), `${language}.${key}`);
+      }
+    }
   });
 
   test(`${file}: each Serbian script stays in its alphabet (apart from names, code and units)`, () => {

@@ -1,0 +1,493 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Smart Comfort",
+        "data": {
+          "notify": "Akcje powiadomień",
+          "outdoor_temperature": "Temperatura zewnętrzna",
+          "outdoor_aggregate": "Łączenie czujników zewnętrznych"
+        },
+        "description": "Mniej i mądrzejsze alerty komfortu oraz sterowanie klimatyzatorami, wentylatorami i oczyszczaczami. Dodaj pomieszczenia później w opcjach albo skonfiguruj wszystko w YAML.",
+        "data_description": {
+          "notify": "Dokąd trafiają alerty (notify.mobile_app_…, grupa powiadomień…).",
+          "outdoor_temperature": "Jeden lub więcej czujników zewnętrznych; niedostępne są pomijane.",
+          "outdoor_aggregate": "Minimum pomija czujnik w słońcu."
+        }
+      }
+    },
+    "error": {
+      "invalid_options": "Niektóre wartości są nieprawidłowe, sprawdź je."
+    },
+    "abort": {
+      "already_configured": "Smart Comfort jest już skonfigurowany.",
+      "single_instance_allowed": "Smart Comfort jest już skonfigurowany."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Opcje Smart Comfort",
+        "description": "Skonfigurowane pomieszczenia: {rooms}. Jeśli używasz YAML, jego zmiana zastąpi te opcje przy następnym ponownym uruchomieniu.",
+        "menu_options": {
+          "general": "Powiadomienia",
+          "alerts": "Alerty",
+          "control": "Sterowanie urządzeniami",
+          "add_room": "Dodaj pomieszczenie",
+          "edit_room": "Edytuj pomieszczenie",
+          "remove_room": "Usuń pomieszczenia"
+        }
+      },
+      "general": {
+        "title": "Powiadomienia",
+        "data": {
+          "notify": "Akcje powiadomień",
+          "outdoor_temperature": "Temperatura zewnętrzna",
+          "outdoor_aggregate": "Łączenie czujników zewnętrznych",
+          "outdoor_noise": "Hałas na zewnątrz",
+          "outdoor_air_quality": "Jakość powietrza na zewnątrz",
+          "digest_window": "Okno grupowania",
+          "reminder": "Przypomnienie",
+          "snooze_duration": "Czas wyciszenia",
+          "startup_grace": "Okres karencji po uruchomieniu",
+          "quiet_start": "Początek godzin ciszy",
+          "quiet_end": "Koniec godzin ciszy",
+          "presence": "Obecność",
+          "clear_when_resolved": "Usuń po rozwiązaniu",
+          "critical_volume": "Głośność alertów krytycznych",
+          "url": "Akcja po dotknięciu",
+          "tag": "Tag powiadomienia"
+        },
+        "data_description": {
+          "notify": "Dokąd trafiają alerty (notify.mobile_app_…, grupa powiadomień…).",
+          "outdoor_temperature": "Czujniki zewnętrzne poza miejscami na zewnątrz (encja pogody, czujnik bez obszaru); niedostępne są pomijane.",
+          "outdoor_aggregate": "Minimum pomija czujnik w słońcu.",
+          "outdoor_noise": "Czujniki poziomu dźwięku na zewnątrz (dB), dodawane do czujników miejsc na zewnątrz: brak propozycji otwarcia okien, gdy jest głośno, oraz alert, gdy okna są otwarte w hałasie.",
+          "outdoor_air_quality": "Czujniki indeksu jakości powietrza na zewnątrz lub w mieście (Atmo France, AQI…), dodawane do czujników miejsc na zewnątrz: brak propozycji otwarcia okien, gdy powietrze jest złe, oraz alert, gdy okna są wtedy otwarte. Liczy się najgorszy.",
+          "digest_window": "Minuty oczekiwania na inne alerty przed wysłaniem jednego zbiorczego powiadomienia. Alerty krytyczne nie czekają.",
+          "reminder": "Minuty, po których trwający nadal problem jest zgłaszany ponownie. 0: nigdy (tylko gdy się pogarsza).",
+          "snooze_duration": "Minuty przycisku Wycisz w powiadomieniu i domyślnie akcji wyciszenia.",
+          "startup_grace": "Minuty po uruchomieniu Home Assistant, w których nic nie jest wysyłane.",
+          "quiet_start": "Od tej godziny do końca wysyłane są tylko alerty krytyczne; pozostałe wychodzą na końcu, jeśli są nadal aktualne.",
+          "presence": "Strefa, osoba, grupa lub wartość logiczna: gdy nikogo nie ma w domu, wysyłane są tylko alerty krytyczne.",
+          "clear_when_resolved": "Usuń powiadomienie z telefonów, gdy każdy zgłoszony problem się zakończy.",
+          "critical_volume": "Głośność dźwięku krytycznego iOS, od 0 do 1.",
+          "url": "Otwierane po dotknięciu powiadomienia, np. homeassistant://navigate/lovelace/comfort",
+          "tag": "Każde powiadomienie zastępuje poprzednie z tym tagiem zamiast się gromadzić."
+        }
+      },
+      "alerts": {
+        "title": "Alerty",
+        "data": {
+          "kind": "Alert"
+        },
+        "description": "Ustawienia alertu dla każdego pomieszczenia. Pomieszczenie może nadpisać progi za gorąco / za zimno w swoim formularzu, a wszystko w YAML."
+      },
+      "alert": {
+        "title": "Ustawienia alertu",
+        "data": {
+          "enabled": "Włączony",
+          "threshold": "Próg",
+          "min_indoor": "Minimalna temperatura wewnętrzna",
+          "min_outdoor": "Minimalna temperatura zewnętrzna",
+          "max_outdoor": "Maksymalna temperatura zewnętrzna",
+          "max_outdoor_noise": "Maksymalny hałas na zewnątrz",
+          "max_outdoor_air": "Maksymalny poziom jakości powietrza na zewnątrz",
+          "hysteresis": "Histereza",
+          "delay": "Opóźnienie",
+          "severity": "Waga",
+          "escalation": "Krok eskalacji"
+        },
+        "data_description": {
+          "threshold": "Za gorąco/zimno, CO₂, wilgotność: wartość. Otwórz/zamknij okna: różnica wewnątrz/na zewnątrz.",
+          "min_indoor": "Proponuj otwarcie tylko, gdy w pomieszczeniu jest co najmniej tak ciepło.",
+          "min_outdoor": "Tylko gdy na zewnątrz jest co najmniej tak gorąco.",
+          "max_outdoor": "Tylko gdy na zewnątrz jest tak zimno lub zimniej.",
+          "max_outdoor_noise": "Nie proponowane, gdy hałas na zewnątrz przekracza tę wartość (wymaga czujnika hałasu na zewnątrz).",
+          "max_outdoor_air": "Nie proponowane, gdy jakość powietrza na zewnątrz jest gorsza niż ten poziom, od 1 (dobra) do 6 (skrajnie zła).",
+          "hysteresis": "Problem kończy się dopiero, gdy wartość wróci za próg o tyle: bez migotania.",
+          "delay": "Minuty, przez które warunek musi trwać, zanim stanie się problemem.",
+          "escalation": "Powiadom ponownie, gdy wartość pogorszy się o tyle względem ostatniego powiadomienia. 0: nigdy."
+        }
+      },
+      "control": {
+        "title": "Sterowanie urządzeniami",
+        "data": {
+          "enabled": "Steruj urządzeniami",
+          "start": "Wzmocnienie przy oknie od",
+          "end": "Wzmocnienie przy oknie do",
+          "manual_override": "Ręczne przejęcie",
+          "suppress_when_handled": "Brak alertu, gdy obsłużone",
+          "night_start": "Cicha noc od",
+          "night_end": "Cicha noc do",
+          "display": "Lampka kontrolna lub wyświetlacz",
+          "reset_at": "Powrót do normy o",
+          "display_off": "Wyświetlacze wyłączone od",
+          "display_on": "Wyświetlacze włączone od"
+        },
+        "data_description": {
+          "start": "Wentylatory i oczyszczacze przechodzą na pełną prędkość po otwarciu otworu tylko między tymi godzinami. Oba puste: cały dzień.",
+          "manual_override": "Minuty, przez które urządzenie zmienione ręcznie jest pozostawione w spokoju. 0: nigdy nie wstrzymywane.",
+          "suppress_when_handled": "Brak alertu „za gorąco” dla pomieszczenia, w którym Smart Comfort włączył klimatyzator lub wentylator.",
+          "night_start": "Między tymi godzinami urządzenia używają ustawień nocnych (cichsza prędkość, preset lub tryb wentylatora) i nie ma dla nich wzmocnienia przy oknie.",
+          "display": "Wyłączane w godzinach \"Wyświetlacze wyłączone\" z karty Harmonogram i podczas drzemek w pomieszczeniu, potem włączane ponownie.",
+          "reset_at": "O tej godzinie urządzenie wraca do normalnego stanu, nawet po ręcznej zmianie (oczyszczacz z powrotem w trybie auto…)."
+        },
+        "sections": {
+          "climate": {
+            "name": "Klimatyzatory",
+            "data": {
+              "cool_above": "Chłodzenie od",
+              "off_below": "Wyłączony poniżej",
+              "setpoint": "Temperatura zadana",
+              "fan_mode": "Tryb wentylatora",
+              "closed_for": "Otwory zamknięte od (min)",
+              "off_on_open": "Wyłączony, gdy otwarte od (min)",
+              "night_fan_mode": "Tryb wentylatora w nocy"
+            }
+          },
+          "fans": {
+            "name": "Wentylatory",
+            "data": {
+              "on_above": "Włączony od",
+              "off_below": "Wyłączony poniżej",
+              "percentage": "Prędkość",
+              "preset": "Preset",
+              "open_percentage": "Prędkość, okno otwarte",
+              "open_preset": "Preset, okno otwarte",
+              "off_preset": "Preset przed wyłączeniem",
+              "night_percentage": "Prędkość w nocy",
+              "night_preset": "Preset w nocy"
+            },
+            "description": "Pozostaw „Włączony od” i „Wyłączony poniżej” puste dla wentylatorów sterowanych tylko przez okna."
+          },
+          "purifiers": {
+            "name": "Oczyszczacze powietrza",
+            "data": {
+              "open_percentage": "Prędkość, okno otwarte",
+              "open_preset": "Preset, okno otwarte",
+              "closed_preset": "Preset, okna zamknięte",
+              "keep_on": "Utrzymuj włączony",
+              "night_percentage": "Prędkość w nocy",
+              "night_preset": "Preset w nocy",
+              "night_mode": "Opcja trybu w nocy"
+            },
+            "data_description": {
+              "keep_on": "Włącz ponownie oczyszczacz, gdy był wyłączony przez 10 s (przerwa w zasilaniu, usterka)."
+            }
+          }
+        }
+      },
+      "add_room": {
+        "title": "Dodaj pomieszczenie",
+        "data": {
+          "name": "Nazwa",
+          "temperature": "Temperatura",
+          "co2": "CO₂",
+          "humidity": "Wilgotność",
+          "noise": "Hałas",
+          "openings": "Okna i drzwi",
+          "climate": "Klimatyzator",
+          "fans": "Wentylatory",
+          "purifiers": "Oczyszczacze powietrza",
+          "lights": "Światła"
+        },
+        "description": "Czujniki i urządzenia pomieszczenia. Pozostaw puste to, czego nie ma.",
+        "sections": {
+          "overrides": {
+            "name": "Ustawienia pomieszczenia",
+            "description": "Nadpisz ustawienia globalne dla tego pomieszczenia. Ustawienia poszczególnych urządzeń tylko w YAML.",
+            "data": {
+              "too_hot_threshold": "Za gorąco od",
+              "too_cold_threshold": "Za zimno poniżej",
+              "fan_preset": "Preset wentylatora",
+              "fan_open_preset": "Preset wentylatora, okno otwarte",
+              "fan_off_preset": "Preset wentylatora przed wyłączeniem",
+              "purifier_open_preset": "Preset oczyszczacza, okno otwarte",
+              "purifier_closed_preset": "Preset oczyszczacza, okna zamknięte",
+              "purifier_mode_select": "Wybór trybu oczyszczacza",
+              "purifier_open_mode": "Opcja trybu, okno otwarte",
+              "purifier_closed_mode": "Opcja trybu, okna zamknięte",
+              "purifier_keep_on": "Utrzymuj oczyszczacze włączone"
+            }
+          }
+        },
+        "data_description": {
+          "lights": "Światła ściemniane: ich jasność podąża za porą dnia, gdy są włączone (oświetlenie adaptacyjne)."
+        }
+      },
+      "room": {
+        "title": "Edytuj pomieszczenie",
+        "data": {
+          "name": "Nazwa",
+          "temperature": "Temperatura",
+          "co2": "CO₂",
+          "humidity": "Wilgotność",
+          "noise": "Hałas",
+          "openings": "Okna i drzwi",
+          "climate": "Klimatyzator",
+          "fans": "Wentylatory",
+          "purifiers": "Oczyszczacze powietrza",
+          "lights": "Światła"
+        },
+        "description": "Czujniki i urządzenia pomieszczenia. Pozostaw puste to, czego nie ma.",
+        "sections": {
+          "overrides": {
+            "name": "Ustawienia pomieszczenia",
+            "description": "Nadpisz ustawienia globalne dla tego pomieszczenia. Ustawienia poszczególnych urządzeń tylko w YAML.",
+            "data": {
+              "too_hot_threshold": "Za gorąco od",
+              "too_cold_threshold": "Za zimno poniżej",
+              "fan_preset": "Preset wentylatora",
+              "fan_open_preset": "Preset wentylatora, okno otwarte",
+              "fan_off_preset": "Preset wentylatora przed wyłączeniem",
+              "purifier_open_preset": "Preset oczyszczacza, okno otwarte",
+              "purifier_closed_preset": "Preset oczyszczacza, okna zamknięte",
+              "purifier_mode_select": "Wybór trybu oczyszczacza",
+              "purifier_open_mode": "Opcja trybu, okno otwarte",
+              "purifier_closed_mode": "Opcja trybu, okna zamknięte",
+              "purifier_keep_on": "Utrzymuj oczyszczacze włączone"
+            }
+          }
+        },
+        "data_description": {
+          "lights": "Światła ściemniane: ich jasność podąża za porą dnia, gdy są włączone (oświetlenie adaptacyjne)."
+        }
+      },
+      "outdoor": {
+        "title": "Miejsce na zewnątrz",
+        "data": {
+          "name": "Nazwa",
+          "temperature": "Temperatura",
+          "air_quality": "Jakość powietrza",
+          "noise": "Hałas"
+        }
+      },
+      "edit_room": {
+        "title": "Edytuj pomieszczenie",
+        "data": {
+          "room": "Pomieszczenie"
+        }
+      },
+      "remove_room": {
+        "title": "Usuń pomieszczenia",
+        "data": {
+          "rooms": "Pomieszczenia"
+        }
+      },
+      "lighting": {
+        "title": "Oświetlenie adaptacyjne",
+        "data": {
+          "enabled": "Oświetlenie adaptacyjne",
+          "day": "Jasność w dzień",
+          "evening": "Jasność wieczorem",
+          "night": "Jasność w nocy",
+          "warmth": "Dostosuj barwę",
+          "day_kelvin": "Barwa w dzień",
+          "evening_kelvin": "Barwa wieczorem",
+          "night_kelvin": "Barwa w nocy",
+          "transition": "Przejście",
+          "night_only": "Światło nocne",
+          "morning": "Jasność rano",
+          "morning_kelvin": "Barwa rano",
+          "morning_end": "Koniec poranka",
+          "quiet_morning": "Spokojny poranek",
+          "nap": "Jasność podczas drzemki",
+          "nap_kelvin": "Barwa podczas drzemki"
+        },
+        "data_description": {
+          "day": "Gdy słońce jest wysoko (wysokość powyżej 6°).",
+          "evening": "Po zachodzie słońca (poniżej −6°); pomiędzy – mieszanka.",
+          "night": "W godzinach cichej nocy (karta Harmonogram).",
+          "warmth": "Także temperatura barwowa, dla świateł, które ją obsługują. Wyłączone: tylko jasność.",
+          "transition": "Sekundy stopniowych zmian; właśnie włączone światło od razu dostaje swoją jasność.",
+          "night_only": "Ustawiane tylko w godzinach nocnych (w dzień pozostawione w spokoju).",
+          "morning": "W pomieszczeniach ze spokojnym porankiem (sypialnie), do końca poranka (karta Harmonogram).",
+          "morning_end": "Do kiedy sypialnie zachowują poranną jasność.",
+          "quiet_morning": "Przyciemnione światła rano, do końca poranka (karta Harmonogram).",
+          "nap": "W przedziałach drzemki w pomieszczeniu."
+        }
+      }
+    },
+    "error": {
+      "name_required": "Nadaj pomieszczeniu nazwę.",
+      "name_exists": "Pomieszczenie o tej nazwie już istnieje.",
+      "invalid_options": "Niektóre wartości są nieprawidłowe, sprawdź je."
+    }
+  },
+  "selector": {
+    "kind": {
+      "options": {
+        "too_hot": "Za gorąco",
+        "close_windows": "Zamknij okna (na zewnątrz cieplej)",
+        "ventilate": "Otwórz okna (na zewnątrz chłodniej)",
+        "too_cold": "Za zimno",
+        "window_open_cold": "Okno otwarte w zimnie",
+        "co2_high": "Wysokie CO₂",
+        "humidity_high": "Wysoka wilgotność",
+        "noise_high": "Głośne pomieszczenie",
+        "noisy_outside": "Zamknij okna (hałas na zewnątrz)",
+        "bad_air_outside": "Zamknij okna (złe powietrze na zewnątrz)"
+      }
+    },
+    "severity": {
+      "options": {
+        "info": "Informacja (cicha)",
+        "warning": "Ostrzeżenie (pilne, z dźwiękiem)",
+        "critical": "Krytyczny (pomija godziny ciszy i tryb cichy)"
+      }
+    },
+    "outdoor_aggregate": {
+      "options": {
+        "min": "Minimum",
+        "max": "Maksimum",
+        "mean": "Średnia"
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "alerts": {
+        "name": "Aktywne alerty",
+        "state_attributes": {
+          "alerts": {
+            "name": "Alerty"
+          },
+          "snoozes": {
+            "name": "Wyciszenia"
+          },
+          "outdoor_temperature": {
+            "name": "Temperatura zewnętrzna"
+          },
+          "outdoor_noise": {
+            "name": "Hałas na zewnątrz"
+          },
+          "outdoor_air_quality": {
+            "name": "Jakość powietrza na zewnątrz"
+          }
+        }
+      },
+      "room": {
+        "name": "Komfort {room}",
+        "state": {
+          "ok": "OK",
+          "too_hot": "Za gorąco",
+          "close_windows": "Zamknij okna (na zewnątrz cieplej)",
+          "ventilate": "Otwórz okna (na zewnątrz chłodniej)",
+          "too_cold": "Za zimno",
+          "window_open_cold": "Okno otwarte w zimnie",
+          "co2_high": "Wysokie CO₂",
+          "humidity_high": "Wysoka wilgotność",
+          "noise_high": "Głośne pomieszczenie",
+          "noisy_outside": "Zamknij okna (hałas na zewnątrz)",
+          "bad_air_outside": "Zamknij okna (złe powietrze na zewnątrz)"
+        }
+      },
+      "last_notification": {
+        "name": "Ostatnie powiadomienie"
+      }
+    },
+    "switch": {
+      "notifications": {
+        "name": "Powiadomienia"
+      },
+      "control": {
+        "name": "Sterowanie urządzeniami"
+      },
+      "lighting": {
+        "name": "Oświetlenie adaptacyjne"
+      }
+    },
+    "button": {
+      "notify_now": {
+        "name": "Powiadom teraz"
+      },
+      "unsnooze": {
+        "name": "Anuluj wyciszenia"
+      }
+    }
+  },
+  "services": {
+    "snooze": {
+      "name": "Wycisz",
+      "description": "Przestaje na jakiś czas powiadamiać o alertach podanych pomieszczeń i rodzajów (domyślnie wszystkich).",
+      "fields": {
+        "duration": {
+          "name": "Czas trwania",
+          "description": "Minuty; domyślnie czas wyciszenia z opcji."
+        },
+        "rooms": {
+          "name": "Pomieszczenia",
+          "description": "Nazwy lub identyfikatory pomieszczeń; domyślnie wszystkie."
+        },
+        "kinds": {
+          "name": "Alerty",
+          "description": "Jeśli podano, wyciszane są tylko bieżące alerty tych rodzajów."
+        }
+      }
+    },
+    "unsnooze": {
+      "name": "Anuluj wyciszenia",
+      "description": "Ponownie powiadamia o wyciszonych alertach podanych pomieszczeń (domyślnie wszystkich).",
+      "fields": {
+        "rooms": {
+          "name": "Pomieszczenia",
+          "description": "Nazwy lub identyfikatory pomieszczeń; domyślnie wszystkie."
+        }
+      }
+    },
+    "acknowledge": {
+      "name": "Potwierdź",
+      "description": "Brak przypomnień i eskalacji dla bieżących alertów, dopóki się nie zakończą.",
+      "fields": {
+        "rooms": {
+          "name": "Pomieszczenia",
+          "description": "Nazwy lub identyfikatory pomieszczeń; domyślnie wszystkie."
+        },
+        "kinds": {
+          "name": "Alerty",
+          "description": "Rodzaje alertów; domyślnie wszystkie."
+        }
+      }
+    },
+    "notify_now": {
+      "name": "Powiadom teraz",
+      "description": "Wysyła wszystkie bieżące problemy w jednym powiadomieniu, z pominięciem godzin ciszy i okna grupowania."
+    },
+    "get_config": {
+      "name": "Pobierz konfigurację",
+      "description": "Zwraca używane opcje (pomieszczenia, alerty, sterowanie, oświetlenie), do skopiowania do YAML lub sprawdzenia, co jest ustawione."
+    }
+  },
+  "common": {
+    "title_one": "{room}",
+    "title_many": "Alerty komfortu: {count}",
+    "room_line": "{room}: {problem}",
+    "decimal": ",",
+    "duration_minutes": "{minutes} min",
+    "duration_hours": "{hours} h {minutes:02d} min",
+    "since": "od {duration}",
+    "worse": "pogarsza się",
+    "line_too_hot": "{value} °C, powyżej {threshold} °C",
+    "line_too_cold": "{value} °C, poniżej {threshold} °C",
+    "line_ventilate": "{temperature} °C wewnątrz, {outdoor} °C na zewnątrz — otwórz okna",
+    "line_close_windows": "{outdoor} °C na zewnątrz, {temperature} °C wewnątrz — zamknij: {openings}",
+    "line_window_open_cold": "otwarte: {openings}, {outdoor} °C na zewnątrz",
+    "line_co2_high": "CO₂ {value} ppm — przewietrz pomieszczenie",
+    "line_humidity_high": "wilgotność {value} % — przewietrz pomieszczenie",
+    "line_noise_high": "hałas {value} dB, powyżej {threshold} dB",
+    "line_noisy_outside": "{value} dB na zewnątrz — zamknij: {openings}",
+    "line_bad_air_outside": "jakość powietrza na zewnątrz {value}/6 — zamknij: {openings}",
+    "action_snooze": "Wycisz na {hours} h",
+    "action_snooze_minutes": "Wycisz na {minutes} min",
+    "action_ack": "Rozumiem"
+  },
+  "exceptions": {
+    "not_loaded": {
+      "message": "Smart Comfort nie jest załadowany."
+    },
+    "unknown_room": {
+      "message": "Nieznane pomieszczenie: {room}."
+    }
+  }
+}

@@ -1,0 +1,493 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Smart Comfort",
+        "data": {
+          "notify": "Meldingsacties",
+          "outdoor_temperature": "Buitentemperatuur",
+          "outdoor_aggregate": "Buitensensoren combineren"
+        },
+        "description": "Minder en slimmere comfortwaarschuwingen, en bediening van je airco's, ventilatoren en luchtreinigers. Voeg de ruimtes daarna toe in de opties, of configureer alles in YAML.",
+        "data_description": {
+          "notify": "Waar de waarschuwingen naartoe gaan (notify.mobile_app_…, een meldingsgroep…).",
+          "outdoor_temperature": "Een of meer buitensensoren; niet-beschikbare worden genegeerd.",
+          "outdoor_aggregate": "Minimum vermijdt een sensor in de zon."
+        }
+      }
+    },
+    "error": {
+      "invalid_options": "Sommige waarden zijn ongeldig, controleer ze."
+    },
+    "abort": {
+      "already_configured": "Smart Comfort is al geconfigureerd.",
+      "single_instance_allowed": "Smart Comfort is al geconfigureerd."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Opties van Smart Comfort",
+        "description": "Geconfigureerde ruimtes: {rooms}. Als je YAML gebruikt, vervangt een wijziging daarvan deze opties bij de volgende herstart.",
+        "menu_options": {
+          "general": "Meldingen",
+          "alerts": "Waarschuwingen",
+          "control": "Apparaatbediening",
+          "add_room": "Ruimte toevoegen",
+          "edit_room": "Ruimte bewerken",
+          "remove_room": "Ruimtes verwijderen"
+        }
+      },
+      "general": {
+        "title": "Meldingen",
+        "data": {
+          "notify": "Meldingsacties",
+          "outdoor_temperature": "Buitentemperatuur",
+          "outdoor_aggregate": "Buitensensoren combineren",
+          "outdoor_noise": "Buitengeluid",
+          "outdoor_air_quality": "Buitenluchtkwaliteit",
+          "digest_window": "Bundelvenster",
+          "reminder": "Herinnering",
+          "snooze_duration": "Sluimerduur",
+          "startup_grace": "Wachttijd na opstarten",
+          "quiet_start": "Begin van de stille uren",
+          "quiet_end": "Einde van de stille uren",
+          "presence": "Aanwezigheid",
+          "clear_when_resolved": "Wissen wanneer opgelost",
+          "critical_volume": "Volume van kritieke waarschuwingen",
+          "url": "Actie bij tikken",
+          "tag": "Meldingstag"
+        },
+        "data_description": {
+          "notify": "Waar de waarschuwingen naartoe gaan (notify.mobile_app_…, een meldingsgroep…).",
+          "outdoor_temperature": "Buitensensoren buiten de buitenplekken (weerentiteit, sensor zonder ruimte); niet-beschikbare worden genegeerd.",
+          "outdoor_aggregate": "Minimum vermijdt een sensor in de zon.",
+          "outdoor_noise": "Geluidsniveausensoren buiten (dB), naast die van de buitenplekken: geen voorstel om de ramen te openen als het lawaaiig is, en een waarschuwing als de ramen openstaan in het lawaai.",
+          "outdoor_air_quality": "Luchtkwaliteitsindexsensoren buiten of van de stad (Atmo France, AQI…), naast die van de buitenplekken: geen voorstel om de ramen te openen als de lucht slecht is, en een waarschuwing als de ramen dan openstaan. De slechtste telt.",
+          "digest_window": "Minuten wachten op andere waarschuwingen voordat één gebundelde melding wordt verstuurd. Kritieke waarschuwingen wachten niet.",
+          "reminder": "Minuten waarna een probleem dat nog aanhoudt opnieuw wordt gemeld. 0: nooit (alleen als het erger wordt).",
+          "snooze_duration": "Minuten van de knop Sluimeren van de melding en standaard van de sluimeractie.",
+          "startup_grace": "Minuten na het starten van Home Assistant waarin niets wordt verstuurd.",
+          "quiet_start": "Vanaf dan tot het einde worden alleen kritieke waarschuwingen verstuurd; de andere gaan aan het einde uit als ze nog relevant zijn.",
+          "presence": "Zone, persoon, groep of boolean: als er niemand thuis is, worden alleen kritieke waarschuwingen verstuurd.",
+          "clear_when_resolved": "Verwijder de melding van de telefoons zodra elk gemeld probleem voorbij is.",
+          "critical_volume": "Volume van het kritieke geluid op iOS, 0 tot 1.",
+          "url": "Geopend bij tikken op de melding, bijv. homeassistant://navigate/lovelace/comfort",
+          "tag": "Elke melding vervangt de vorige met deze tag in plaats van zich op te stapelen."
+        }
+      },
+      "alerts": {
+        "title": "Waarschuwingen",
+        "data": {
+          "kind": "Waarschuwing"
+        },
+        "description": "Instellingen van een waarschuwing voor elke ruimte. Een ruimte kan de drempels te warm / te koud in haar formulier overschrijven, en alles in YAML."
+      },
+      "alert": {
+        "title": "Instellingen van de waarschuwing",
+        "data": {
+          "enabled": "Ingeschakeld",
+          "threshold": "Drempel",
+          "min_indoor": "Minimale binnentemperatuur",
+          "min_outdoor": "Minimale buitentemperatuur",
+          "max_outdoor": "Maximale buitentemperatuur",
+          "max_outdoor_noise": "Maximaal buitengeluid",
+          "max_outdoor_air": "Maximaal niveau van buitenluchtkwaliteit",
+          "hysteresis": "Hysterese",
+          "delay": "Vertraging",
+          "severity": "Ernst",
+          "escalation": "Escalatiestap"
+        },
+        "data_description": {
+          "threshold": "Te warm/koud, CO₂, vochtigheid: de waarde. Ramen openen/sluiten: het verschil binnen/buiten.",
+          "min_indoor": "Stel alleen openen voor als de ruimte minstens zo warm is.",
+          "min_outdoor": "Alleen als het buiten minstens zo warm is.",
+          "max_outdoor": "Alleen als het buiten zo koud of kouder is.",
+          "max_outdoor_noise": "Niet voorgesteld als het buitengeluid hoger is dan dit (vereist een buitengeluidssensor).",
+          "max_outdoor_air": "Niet voorgesteld als de buitenluchtkwaliteit slechter is dan dit niveau, van 1 (goed) tot 6 (extreem slecht).",
+          "hysteresis": "Het probleem eindigt pas als de waarde zoveel voorbij de drempel terug is: geen heen-en-weer schakelen.",
+          "delay": "Minuten dat de voorwaarde moet aanhouden voordat het een probleem is.",
+          "escalation": "Opnieuw melden als de waarde zoveel slechter wordt dan bij de laatste melding. 0: nooit."
+        }
+      },
+      "control": {
+        "title": "Apparaatbediening",
+        "data": {
+          "enabled": "Apparaten bedienen",
+          "start": "Raamboost vanaf",
+          "end": "Raamboost tot",
+          "manual_override": "Handmatige overname",
+          "suppress_when_handled": "Geen waarschuwing indien afgehandeld",
+          "night_start": "Stille nacht vanaf",
+          "night_end": "Stille nacht tot",
+          "display": "Indicatielampje of display",
+          "reset_at": "Terug naar normaal om",
+          "display_off": "Displays uit vanaf",
+          "display_on": "Displays aan vanaf"
+        },
+        "data_description": {
+          "start": "Ventilatoren en luchtreinigers gaan alleen tussen deze tijden op volle snelheid als een opening opengaat. Beide leeg: de hele dag.",
+          "manual_override": "Minuten dat een met de hand gewijzigd apparaat met rust wordt gelaten. 0: nooit gepauzeerd.",
+          "suppress_when_handled": "Geen waarschuwing “te warm” voor een ruimte waarvan Smart Comfort de airco of ventilator heeft ingeschakeld.",
+          "night_start": "Tussen deze tijden gebruiken de apparaten hun nachtinstellingen (stillere snelheid, preset of ventilatormodus) en is er voor hen geen raamboost.",
+          "display": "Uitgeschakeld in de uren \"Displays uit\" van het tabblad Planning en tijdens de dutjes van de ruimte, daarna weer aan.",
+          "reset_at": "Op dit tijdstip gaat het apparaat terug naar zijn normale toestand, ook na een handmatige wijziging (een luchtreiniger terug op auto…)."
+        },
+        "sections": {
+          "climate": {
+            "name": "Airco's",
+            "data": {
+              "cool_above": "Koelen vanaf",
+              "off_below": "Uit onder",
+              "setpoint": "Doeltemperatuur",
+              "fan_mode": "Ventilatormodus",
+              "closed_for": "Openingen dicht sinds (min)",
+              "off_on_open": "Uit als open sinds (min)",
+              "night_fan_mode": "Ventilatormodus 's nachts"
+            }
+          },
+          "fans": {
+            "name": "Ventilatoren",
+            "data": {
+              "on_above": "Aan vanaf",
+              "off_below": "Uit onder",
+              "percentage": "Snelheid",
+              "preset": "Preset",
+              "open_percentage": "Snelheid, raam open",
+              "open_preset": "Preset, raam open",
+              "off_preset": "Preset voor het uitschakelen",
+              "night_percentage": "Snelheid 's nachts",
+              "night_preset": "Preset 's nachts"
+            },
+            "description": "Laat “Aan vanaf” en “Uit onder” leeg voor ventilatoren die alleen door de ramen worden aangestuurd."
+          },
+          "purifiers": {
+            "name": "Luchtreinigers",
+            "data": {
+              "open_percentage": "Snelheid, raam open",
+              "open_preset": "Preset, raam open",
+              "closed_preset": "Preset, ramen dicht",
+              "keep_on": "Aan houden",
+              "night_percentage": "Snelheid 's nachts",
+              "night_preset": "Preset 's nachts",
+              "night_mode": "Modusoptie 's nachts"
+            },
+            "data_description": {
+              "keep_on": "Zet een luchtreiniger weer aan als hij 10 s uit is geweest (stroomstoring, storing)."
+            }
+          }
+        }
+      },
+      "add_room": {
+        "title": "Ruimte toevoegen",
+        "data": {
+          "name": "Naam",
+          "temperature": "Temperatuur",
+          "co2": "CO₂",
+          "humidity": "Vochtigheid",
+          "noise": "Geluid",
+          "openings": "Ramen en deuren",
+          "climate": "Airco",
+          "fans": "Ventilatoren",
+          "purifiers": "Luchtreinigers",
+          "lights": "Lampen"
+        },
+        "description": "Sensoren en apparaten van de ruimte. Laat leeg wat er niet is.",
+        "sections": {
+          "overrides": {
+            "name": "Instellingen van de ruimte",
+            "description": "Overschrijf de algemene instellingen voor deze ruimte. Instellingen per apparaat alleen in YAML.",
+            "data": {
+              "too_hot_threshold": "Te warm vanaf",
+              "too_cold_threshold": "Te koud onder",
+              "fan_preset": "Preset van de ventilator",
+              "fan_open_preset": "Preset van de ventilator, raam open",
+              "fan_off_preset": "Preset van de ventilator voor het uitschakelen",
+              "purifier_open_preset": "Preset van de luchtreiniger, raam open",
+              "purifier_closed_preset": "Preset van de luchtreiniger, ramen dicht",
+              "purifier_mode_select": "Moduskeuze van de luchtreiniger",
+              "purifier_open_mode": "Modusoptie, raam open",
+              "purifier_closed_mode": "Modusoptie, ramen dicht",
+              "purifier_keep_on": "Luchtreinigers aan houden"
+            }
+          }
+        },
+        "data_description": {
+          "lights": "Dimbare lampen: hun helderheid volgt het moment van de dag zolang ze aan zijn (adaptieve verlichting)."
+        }
+      },
+      "room": {
+        "title": "Ruimte bewerken",
+        "data": {
+          "name": "Naam",
+          "temperature": "Temperatuur",
+          "co2": "CO₂",
+          "humidity": "Vochtigheid",
+          "noise": "Geluid",
+          "openings": "Ramen en deuren",
+          "climate": "Airco",
+          "fans": "Ventilatoren",
+          "purifiers": "Luchtreinigers",
+          "lights": "Lampen"
+        },
+        "description": "Sensoren en apparaten van de ruimte. Laat leeg wat er niet is.",
+        "sections": {
+          "overrides": {
+            "name": "Instellingen van de ruimte",
+            "description": "Overschrijf de algemene instellingen voor deze ruimte. Instellingen per apparaat alleen in YAML.",
+            "data": {
+              "too_hot_threshold": "Te warm vanaf",
+              "too_cold_threshold": "Te koud onder",
+              "fan_preset": "Preset van de ventilator",
+              "fan_open_preset": "Preset van de ventilator, raam open",
+              "fan_off_preset": "Preset van de ventilator voor het uitschakelen",
+              "purifier_open_preset": "Preset van de luchtreiniger, raam open",
+              "purifier_closed_preset": "Preset van de luchtreiniger, ramen dicht",
+              "purifier_mode_select": "Moduskeuze van de luchtreiniger",
+              "purifier_open_mode": "Modusoptie, raam open",
+              "purifier_closed_mode": "Modusoptie, ramen dicht",
+              "purifier_keep_on": "Luchtreinigers aan houden"
+            }
+          }
+        },
+        "data_description": {
+          "lights": "Dimbare lampen: hun helderheid volgt het moment van de dag zolang ze aan zijn (adaptieve verlichting)."
+        }
+      },
+      "outdoor": {
+        "title": "Buitenplek",
+        "data": {
+          "name": "Naam",
+          "temperature": "Temperatuur",
+          "air_quality": "Luchtkwaliteit",
+          "noise": "Geluid"
+        }
+      },
+      "edit_room": {
+        "title": "Ruimte bewerken",
+        "data": {
+          "room": "Ruimte"
+        }
+      },
+      "remove_room": {
+        "title": "Ruimtes verwijderen",
+        "data": {
+          "rooms": "Ruimtes"
+        }
+      },
+      "lighting": {
+        "title": "Adaptieve verlichting",
+        "data": {
+          "enabled": "Adaptieve verlichting",
+          "day": "Helderheid overdag",
+          "evening": "Helderheid 's avonds",
+          "night": "Helderheid 's nachts",
+          "warmth": "Warmte aanpassen",
+          "day_kelvin": "Warmte overdag",
+          "evening_kelvin": "Warmte 's avonds",
+          "night_kelvin": "Warmte 's nachts",
+          "transition": "Overgang",
+          "night_only": "Nachtlicht",
+          "morning": "Helderheid 's ochtends",
+          "morning_kelvin": "Warmte 's ochtends",
+          "morning_end": "Einde van de ochtend",
+          "quiet_morning": "Rustige ochtend",
+          "nap": "Helderheid tijdens dutje",
+          "nap_kelvin": "Warmte tijdens dutje"
+        },
+        "data_description": {
+          "day": "Met de zon op (hoogte boven 6°).",
+          "evening": "Zodra de zon onder is (onder −6°); daartussen een mengeling.",
+          "night": "In de uren van de stille nacht (tabblad Planning).",
+          "warmth": "Ook de kleurtemperatuur, voor de lampen die dat ondersteunen. Uit: alleen helderheid.",
+          "transition": "Seconden van de geleidelijke veranderingen; een net ingeschakelde lamp krijgt meteen haar helderheid.",
+          "night_only": "Alleen ingesteld in de nachturen (overdag met rust gelaten).",
+          "morning": "In de ruimtes met een rustige ochtend (slaapkamers), tot het einde van de ochtend (tabblad Planning).",
+          "morning_end": "Tot wanneer de slaapkamers hun ochtendhelderheid houden.",
+          "quiet_morning": "Gedimde lampen 's ochtends, tot het einde van de ochtend (tabblad Planning).",
+          "nap": "Tijdens de dutjesperiodes van een ruimte."
+        }
+      }
+    },
+    "error": {
+      "name_required": "Geef de ruimte een naam.",
+      "name_exists": "Een ruimte heeft deze naam al.",
+      "invalid_options": "Sommige waarden zijn ongeldig, controleer ze."
+    }
+  },
+  "selector": {
+    "kind": {
+      "options": {
+        "too_hot": "Te warm",
+        "close_windows": "Ramen sluiten (buiten warmer)",
+        "ventilate": "Ramen openen (buiten koeler)",
+        "too_cold": "Te koud",
+        "window_open_cold": "Raam open in de kou",
+        "co2_high": "Hoge CO₂",
+        "humidity_high": "Hoge vochtigheid",
+        "noise_high": "Lawaaiige ruimte",
+        "noisy_outside": "Ramen sluiten (lawaai buiten)",
+        "bad_air_outside": "Ramen sluiten (slechte lucht buiten)"
+      }
+    },
+    "severity": {
+      "options": {
+        "info": "Info (stil)",
+        "warning": "Waarschuwing (tijdgevoelig, geluid)",
+        "critical": "Kritiek (negeert stille uren en stille modus)"
+      }
+    },
+    "outdoor_aggregate": {
+      "options": {
+        "min": "Minimum",
+        "max": "Maximum",
+        "mean": "Gemiddelde"
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "alerts": {
+        "name": "Actieve waarschuwingen",
+        "state_attributes": {
+          "alerts": {
+            "name": "Waarschuwingen"
+          },
+          "snoozes": {
+            "name": "Gesluimerd"
+          },
+          "outdoor_temperature": {
+            "name": "Buitentemperatuur"
+          },
+          "outdoor_noise": {
+            "name": "Buitengeluid"
+          },
+          "outdoor_air_quality": {
+            "name": "Buitenluchtkwaliteit"
+          }
+        }
+      },
+      "room": {
+        "name": "Comfort {room}",
+        "state": {
+          "ok": "OK",
+          "too_hot": "Te warm",
+          "close_windows": "Ramen sluiten (buiten warmer)",
+          "ventilate": "Ramen openen (buiten koeler)",
+          "too_cold": "Te koud",
+          "window_open_cold": "Raam open in de kou",
+          "co2_high": "Hoge CO₂",
+          "humidity_high": "Hoge vochtigheid",
+          "noise_high": "Lawaaiige ruimte",
+          "noisy_outside": "Ramen sluiten (lawaai buiten)",
+          "bad_air_outside": "Ramen sluiten (slechte lucht buiten)"
+        }
+      },
+      "last_notification": {
+        "name": "Laatste melding"
+      }
+    },
+    "switch": {
+      "notifications": {
+        "name": "Meldingen"
+      },
+      "control": {
+        "name": "Apparaatbediening"
+      },
+      "lighting": {
+        "name": "Adaptieve verlichting"
+      }
+    },
+    "button": {
+      "notify_now": {
+        "name": "Nu melden"
+      },
+      "unsnooze": {
+        "name": "Sluimeren annuleren"
+      }
+    }
+  },
+  "services": {
+    "snooze": {
+      "name": "Sluimeren",
+      "description": "Stopt een tijdje met het melden van de waarschuwingen van de opgegeven ruimtes en soorten (standaard alle).",
+      "fields": {
+        "duration": {
+          "name": "Duur",
+          "description": "Minuten; standaard de sluimerduur uit de opties."
+        },
+        "rooms": {
+          "name": "Ruimtes",
+          "description": "Namen of id's van de ruimtes; standaard alle."
+        },
+        "kinds": {
+          "name": "Waarschuwingen",
+          "description": "Indien opgegeven, worden alleen de huidige waarschuwingen van deze soorten gesluimerd."
+        }
+      }
+    },
+    "unsnooze": {
+      "name": "Sluimeren annuleren",
+      "description": "Meldt de gesluimerde waarschuwingen van de opgegeven ruimtes (standaard alle) weer.",
+      "fields": {
+        "rooms": {
+          "name": "Ruimtes",
+          "description": "Namen of id's van de ruimtes; standaard alle."
+        }
+      }
+    },
+    "acknowledge": {
+      "name": "Bevestigen",
+      "description": "Geen herinnering of escalatie voor de huidige waarschuwingen tot ze eindigen.",
+      "fields": {
+        "rooms": {
+          "name": "Ruimtes",
+          "description": "Namen of id's van de ruimtes; standaard alle."
+        },
+        "kinds": {
+          "name": "Waarschuwingen",
+          "description": "Soorten waarschuwingen; standaard alle."
+        }
+      }
+    },
+    "notify_now": {
+      "name": "Nu melden",
+      "description": "Verstuurt alle huidige problemen in één melding, zonder rekening te houden met de stille uren en het bundelvenster."
+    },
+    "get_config": {
+      "name": "Configuratie ophalen",
+      "description": "Geeft de gebruikte opties terug (ruimtes, waarschuwingen, bediening, verlichting), om in de YAML te kopiëren of te controleren wat er is ingesteld."
+    }
+  },
+  "common": {
+    "title_one": "{room}",
+    "title_many": "Comfortwaarschuwingen: {count}",
+    "room_line": "{room}: {problem}",
+    "decimal": ",",
+    "duration_minutes": "{minutes} min",
+    "duration_hours": "{hours} h {minutes:02d}",
+    "since": "sinds {duration}",
+    "worse": "wordt erger",
+    "line_too_hot": "{value} °C, boven {threshold} °C",
+    "line_too_cold": "{value} °C, onder {threshold} °C",
+    "line_ventilate": "{temperature} °C binnen, {outdoor} °C buiten — open de ramen",
+    "line_close_windows": "{outdoor} °C buiten, {temperature} °C binnen — sluit {openings}",
+    "line_window_open_cold": "open: {openings}, {outdoor} °C buiten",
+    "line_co2_high": "CO₂ {value} ppm — lucht de ruimte",
+    "line_humidity_high": "vochtigheid {value} % — lucht de ruimte",
+    "line_noise_high": "geluid {value} dB, boven {threshold} dB",
+    "line_noisy_outside": "{value} dB buiten — sluit {openings}",
+    "line_bad_air_outside": "buitenluchtkwaliteit {value}/6 — sluit {openings}",
+    "action_snooze": "Sluimer {hours} h",
+    "action_snooze_minutes": "Sluimer {minutes} min",
+    "action_ack": "Begrepen"
+  },
+  "exceptions": {
+    "not_loaded": {
+      "message": "Smart Comfort is niet geladen."
+    },
+    "unknown_room": {
+      "message": "Onbekende ruimte: {room}."
+    }
+  }
+}
