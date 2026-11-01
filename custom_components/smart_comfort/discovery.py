@@ -19,6 +19,8 @@ of new areas appended. Nothing is saved here.
 from __future__ import annotations
 
 import copy
+import re
+import unicodedata
 from dataclasses import dataclass, field
 from typing import Any
 
@@ -31,7 +33,10 @@ from . import const as k
 from .config import slugify
 from .displays import off_option
 
-# Words of outdoor areas and sensors, in slug form (several languages).
+# Detection words are in slug form (ASCII, Serbian Cyrillic written in Latin) and found anywhere in the
+# slug of a name, except the ones starting with "_": at the start of a word only ("_basta" is not in
+# "sebastian"). en, fr, de, es, it, nl, pt, pl, sr.
+# Words of outdoor areas and sensors.
 OUTDOOR_WORDS = (
     "exterieur",
     "exterior",
@@ -52,6 +57,25 @@ OUTDOOR_WORDS = (
     "piscine",
     "pool",
     "aussen",
+    "giardin",
+    "terrazz",
+    "_estern",
+    "_tuin",
+    "terras",
+    "buiten",
+    "jardim",
+    "terraco",
+    "varanda",
+    "quintal",
+    "ogrod",
+    "_taras",
+    "zewnatrz",
+    "zewnetrz",
+    "_basta",
+    "terasa",
+    "dvorist",
+    "napolj",
+    "spolj",
 )
 # Air quality index sensors (an index, not a pollutant), and what is not the current outdoor air.
 AIR_WORDS = (
@@ -61,6 +85,13 @@ AIR_WORDS = (
     "qualite_globale",
     "luftqualitat",
     "calidad_del_aire",
+    "qualita_dell_aria",
+    "qualita_aria",
+    "luchtkwaliteit",
+    "qualidade_do_ar",
+    "qualidade_ar",
+    "jakosc_powietrza",
+    "kvalitet_vazduha",
     "aqi",
 )
 NOT_AIR_WORDS = ("pollen", "j_1", "tomorrow", "demain", "forecast")
@@ -98,13 +129,70 @@ DISPLAY_WORDS = (
     "anzeige",
     "pantalla",
     "brillo",
+    "scherm",
+    "luminosita",
+    "helderheid",
+    "_ecra",
+    "brilho",
+    "wyswietlacz",
+    "jasnosc",
+    "ekran",
+    "indikator",
+    "wskaznik",
 )
 # Bedrooms: a quiet morning for their lights.
-BEDROOM_WORDS = ("chambre", "bedroom", "schlafzimmer", "kinderzimmer", "dormitorio", "habitacion", "nursery")
+BEDROOM_WORDS = (
+    "chambre",
+    "bedroom",
+    "schlafzimmer",
+    "kinderzimmer",
+    "dormitorio",
+    "habitacion",
+    "nursery",
+    "camera_da_letto",
+    "camera_matrimoniale",
+    "camera_ospiti",
+    "camera_degli_ospiti",
+    "cameretta",
+    "slaapkamer",
+    "kinderkamer",
+    "_quarto",
+    "sypialni",
+    "pokoj_dzieci",
+    "spavac",
+    "spavaonic",
+    "decja_soba",
+)
+# Not a bedroom: a "quarto de banho" is a bathroom.
+NOT_BEDROOM_WORDS = ("banho",)
 # Night lights: only set in the night hours.
-NIGHT_LIGHT_WORDS = ("veilleuse", "night_light", "nightlight", "nachtlicht", "luz_nocturna", "luz_de_noche")
+NIGHT_LIGHT_WORDS = (
+    "veilleuse",
+    "night_light",
+    "nightlight",
+    "nachtlicht",
+    "luz_nocturna",
+    "luz_de_noche",
+    "luce_notturna",
+    "nachtlamp",
+    "luz_de_presenca",
+    "luz_noturna",
+    "lampka_nocna",
+    "nocna_lampka",
+    "nocno_svetlo",
+    "nocna_lampa",
+)
 # Lights that are not lamps: the indicator of a device, the floodlight of a camera.
-NOT_LAMP_WORDS = ("indicator", "voyant", "floodlight", "projecteur", "status_light", "led_indicator")
+NOT_LAMP_WORDS = (
+    "indicator",
+    "voyant",
+    "floodlight",
+    "projecteur",
+    "status_light",
+    "led_indicator",
+    "indikator",
+    "wskaznik",
+)
 # Integrations of machines whose temperatures are not the room's (NAS, boxes, servers, UPS, printers…).
 EQUIPMENT_PLATFORMS = frozenset(
     {
@@ -135,6 +223,7 @@ EQUIPMENT_PLATFORMS = frozenset(
         "brother",
         "snmp",
         "esxi_stats",
+        "frigate",
     }
 )
 # Words (whole words of the entity id or name) of machine and appliance temperatures.
@@ -187,24 +276,80 @@ EQUIPMENT_WORDS = frozenset(
         "aquarium",
         "probe",
         "nvr",
-        "camera",
+        # it, nl, pt, pl, sr. Not "camera" (an Italian bedroom): a camera is told by its device.
+        "stampante",
+        "frigorifero",
+        "congelatore",
+        "forno",
+        "caldaia",
+        "batteria",
+        "compressore",
+        "koelkast",
+        "vriezer",
+        "diepvries",
+        "omvormer",
+        "accu",
+        "impressora",
+        "frigorifico",
+        "congelador",
+        "caldeira",
+        "bateria",
+        "drukarka",
+        "lodowka",
+        "zamrazarka",
+        "piekarnik",
+        "kociol",
+        "falownik",
+        "akumulator",
+        "stampac",
+        "frizider",
+        "zamrzivac",
+        "rerna",
+        "bojler",
+        "kotao",
+        "baterija",
     }
 )
-BUSY_DOMAINS = {"climate", "fan", "humidifier", "water_heater", "vacuum"}
+# Domains of the devices whose own sensors are not the room's (a camera's temperature is the camera's).
+BUSY_DOMAINS = {"climate", "fan", "humidifier", "water_heater", "vacuum", "camera"}
 OPENING_CLASSES = {"window", "door", "opening"}
+
+
+# Serbian Cyrillic in Latin (đ has no ASCII decomposition: written dj).
+CYRILLIC = str.maketrans(
+    {
+        **dict(zip("абвгдежзијклмнопрстћуфхцчш", "abvgdežzijklmnoprstćufhcčš", strict=True)),
+        "ђ": "dj",
+        "љ": "lj",
+        "њ": "nj",
+        "џ": "dž",
+        "đ": "dj",
+    }
+)
+
+
+def _slug(text: str) -> str:
+    """The slug of a name, Serbian Cyrillic included ("Спаваћа соба" -> "spavaca_soba")."""
+    ascii_text = unicodedata.normalize("NFKD", text.lower().translate(CYRILLIC)).encode("ascii", "ignore").decode()
+    return re.sub(r"[^a-z0-9]+", "_", ascii_text).strip("_")
 
 
 def _equipment(e: _Entity) -> bool:
     """A sensor of a machine (NAS, box, server, printer, fridge…), not of the air around it."""
     if e.platform in EQUIPMENT_PLATFORMS:
         return True
-    tokens = set(slugify(f"{e.entity_id} {e.name}").split("_"))
+    tokens = set(_slug(f"{e.entity_id} {e.name}").split("_"))
     return bool(tokens & EQUIPMENT_WORDS)
 
 
 def _has(text: str, words: tuple[str, ...]) -> bool:
-    slug = slugify(text)
+    slug = "_" + _slug(text)
     return any(w in slug for w in words)
+
+
+def _bedroom(area: _Area) -> bool:
+    text = f"{area.name} {area.area_id}"
+    return _has(text, BEDROOM_WORDS) and not _has(text, NOT_BEDROOM_WORDS)
 
 
 def _pick(values: list[str], words: tuple[str, ...]) -> str | None:
@@ -497,7 +642,7 @@ def discover_rooms(hass: HomeAssistant) -> Found:
         members = {m for e in lights for m in (e.attributes.get("entity_id") or [])}
         if found_lights := [_light(e) for e in sorted(lights, key=lambda e: e.entity_id) if e.entity_id not in members]:
             room[k.CONF_LIGHTS] = found_lights
-            if _has(area.name, BEDROOM_WORDS) or _has(area.area_id, BEDROOM_WORDS):
+            if _bedroom(area):
                 # Bedrooms: dimmer lights in the morning (their naps are set by hand).
                 room[k.CONF_LIGHTING] = {k.CONF_QUIET_MORNING: True}
         if any(key in room for key in TRACKED):
