@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import pytest
 from homeassistant.const import EntityCategory
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers import area_registry as ar
@@ -384,3 +385,123 @@ async def test_discover_bedroom_lights(hass: HomeAssistant) -> None:
     options = {"rooms": [{"name": "Chambre Léa", "area": "chambre_lea", "lighting": {"quiet_morning": False}}]}
     merged, _ = merge(options, discover_rooms(hass))
     assert merged["rooms"][0]["lighting"] == {"quiet_morning": False}
+
+
+# Detection words of the other languages: (outdoor, bedroom, air quality, night light, display, machine).
+LANGUAGE_WORDS = {
+    "it": ("Giardino", "Camera da letto", "Qualità dell'aria", "Luce notturna", "Schermo", "Frigorifero"),
+    "nl": ("Tuin", "Slaapkamer", "Luchtkwaliteit", "Nachtlampje", "Scherm", "Koelkast"),
+    "pt": ("Jardim", "Quarto", "Qualidade do ar", "Luz de presença", "Ecrã", "Frigorífico"),
+    "pl": ("Ogród", "Sypialnia", "Jakość powietrza", "Lampka nocna", "Wyświetlacz", "Lodówka"),
+    "sr-Latn": ("Bašta", "Spavaća soba", "Kvalitet vazduha", "Noćno svetlo", "Ekran", "Frižider"),
+    "sr": ("Башта", "Спаваћа соба", "Квалитет ваздуха", "Ноћно светло", "Екран", "Фрижидер"),
+}
+
+
+@pytest.mark.parametrize("language", list(LANGUAGE_WORDS))
+async def test_discover_words_by_language(hass: HomeAssistant, language: str) -> None:
+    """Outdoor areas, bedrooms, air quality, night lights, displays and machines named in each language."""
+    outdoor, bedroom, air, night, display, machine = LANGUAGE_WORDS[language]
+    h = House(hass)
+    garden, room, kitchen = h.area(outdoor), h.area(bedroom), h.area("K")
+    h.entity("sensor", "t_out", "9", area=garden, device_class="temperature")
+    h.entity("sensor", "aq_out", "2", area=garden, friendly_name=air)
+    h.entity("sensor", "t_room", "20", area=room, device_class="temperature")
+    dim = {"supported_color_modes": ["brightness"]}
+    h.entity("light", "lamp", "off", area=room, **dim)
+    h.entity("light", "small_lamp", "off", area=room, friendly_name=night, **dim)
+    purifier = h.device("P", room)
+    h.entity("fan", "p", "on", purifier)
+    h.entity("light", "p_led", "on", purifier, friendly_name=display, supported_color_modes=["onoff"])
+    # A machine's temperature only: not a room.
+    h.entity("sensor", "m_t", "4", h.device(machine, kitchen), device_class="temperature")
+    found = discover_rooms(hass)
+    assert [p["name"] for p in found.outdoors] == [outdoor]
+    assert found.outdoors[0]["air_quality"] == ["sensor.aq_out"]
+    assert [r["name"] for r in found.rooms] == [bedroom]
+    found_room = found.rooms[0]
+    assert found_room["temperature"] == "sensor.t_room"
+    assert found_room["lighting"] == {"quiet_morning": True}
+    assert found_room["lights"] == ["light.lamp", {"entity_id": "light.small_lamp", "night_only": True}]
+    assert found_room["fans"] == [{"entity_id": "fan.p", "display": "light.p_led"}]
+
+
+@pytest.mark.parametrize(
+    "name",
+    [
+        "Terrazza",
+        "Esterno",
+        "Terras",
+        "Buiten",
+        "Terraço",
+        "Varanda",
+        "Quintal",
+        "Taras",
+        "Na zewnątrz",
+        "Terasa",
+        "Dvorište",
+        "Napolju",
+        "Двориште",
+        "Тераса",
+    ],
+)
+async def test_outdoor_area_names(hass: HomeAssistant, name: str) -> None:
+    h = House(hass)
+    h.entity("sensor", "t", "9", area=h.area(name), device_class="temperature")
+    found = discover_rooms(hass)
+    assert [p["name"] for p in found.outdoors] == [name]
+    assert found.rooms == []
+
+
+@pytest.mark.parametrize(
+    "name", ["Temperatura esterna", "Buitentemperatuur", "Temperatura zewnętrzna", "Spoljna temperatura"]
+)
+async def test_outdoor_sensor_names(hass: HomeAssistant, name: str) -> None:
+    """An outdoor module in no area, named in another language."""
+    h = House(hass)
+    h.entity("sensor", "module_t", "9", device_class="temperature", friendly_name=name)
+    assert discover_rooms(hass).outdoor == ["sensor.module_t"]
+
+
+async def test_italian_camera_is_a_bedroom(hass: HomeAssistant) -> None:
+    """In Italian a "camera" is a bedroom: its thermometer is the room's, not a machine's."""
+    h = House(hass)
+    room = h.area("Camera da letto")
+    h.entity(
+        "sensor", "termometro_camera_temperatura", "19", h.device("Termometro Camera", room), device_class="temperature"
+    )
+    found = discover_rooms(hass)
+    assert [r["name"] for r in found.rooms] == ["Camera da letto"]
+    assert found.rooms[0]["temperature"] == "sensor.termometro_camera_temperatura"
+    h2 = House(hass)
+    other = h2.area("Camera")
+    h2.entity("sensor", "camera_temperatura", "19", area=other, device_class="temperature")
+    assert "sensor.camera_temperatura" in [r.get("temperature") for r in discover_rooms(hass).rooms]
+
+
+async def test_camera_device_sensors_are_not_the_room(hass: HomeAssistant) -> None:
+    """A camera's own temperature (its device has a camera entity) or a Frigate one is still not a room sensor."""
+    h = House(hass)
+    living = h.area("Living room")
+    cam = h.device("Front door camera", living)
+    h.entity("camera", "front", "idle", cam)
+    h.entity("sensor", "front_temperature", "45", cam, device_class="temperature")
+    h.entity(
+        "sensor", "coral_temperature", "50", h.device("Coral", living), platform="frigate", device_class="temperature"
+    )
+    assert discover_rooms(hass).rooms == []
+
+
+@pytest.mark.parametrize(
+    ("name", "outdoor", "bedroom"), [("Sebastian", False, False), ("Quarto de banho", False, False)]
+)
+async def test_word_collisions(hass: HomeAssistant, name: str, outdoor: bool, bedroom: bool) -> None:
+    """Short words match at the start of a word only ("Sebastian" is not a "bašta"); a bathroom is not a bedroom."""
+    h = House(hass)
+    area = h.area(name)
+    h.entity("sensor", "t", "20", area=area, device_class="temperature")
+    h.entity("light", "l", "off", area=area, supported_color_modes=["brightness"])
+    found = discover_rooms(hass)
+    assert bool(found.outdoors) is outdoor
+    assert [r["name"] for r in found.rooms] == [name]
+    assert ("lighting" in found.rooms[0]) is bedroom
