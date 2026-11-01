@@ -1678,6 +1678,21 @@ const STRINGS = {
 // Strings of a Home Assistant language: the full tag when translated (sr-Latn), else its base (fr-FR: fr), else English.
 const stringsFor = (language) => STRINGS[language] || STRINGS[String(language || "").split("-")[0]] || STRINGS.en;
 
+// Language whose STRINGS are shown: the full tag when translated (sr-Latn), else its base, else English.
+const resolvedLanguage = (language) => {
+  const base = String(language || "").split("-")[0];
+  return STRINGS[language] ? language : STRINGS[base] ? base : "en";
+};
+
+// Locale of numbers and dates: Home Assistant's full one when it is the language of the texts (pt-BR keeps its
+// formats), else the language of the texts; pt alone is European Portuguese for Home Assistant, pt-PT for Intl.
+const intlLocale = (hass) => {
+  const full = hass?.locale?.language || hass?.language || "";
+  const resolved = resolvedLanguage(hass?.language);
+  const locale = full.split("-")[0] === resolved.split("-")[0] ? full : resolved;
+  return locale === "pt" ? "pt-PT" : locale;
+};
+
 const TABS = ["overview", "activity", "rooms", "outdoors", "alerts", "schedule", "settings", "yaml_tab"];
 // Addresses of the tabs of earlier versions.
 const OLD_TABS = { notifications: "settings", control: "settings" };
@@ -2171,7 +2186,7 @@ class SmartComfortPanel extends HTMLElement {
 
   _format(value, digits = 1) {
     if (typeof value !== "number") return "–";
-    return value.toLocaleString(this._hass.language, { maximumFractionDigits: digits, minimumFractionDigits: 0 });
+    return value.toLocaleString(intlLocale(this._hass), { maximumFractionDigits: digits, minimumFractionDigits: 0 });
   }
 
   _time(iso) {
@@ -2179,8 +2194,8 @@ class SmartComfortPanel extends HTMLElement {
     const d = new Date(iso);
     const today = new Date().toDateString() === d.toDateString();
     return today
-      ? d.toLocaleTimeString(this._hass.language, { hour: "2-digit", minute: "2-digit" })
-      : d.toLocaleString(this._hass.language, { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
+      ? d.toLocaleTimeString(intlLocale(this._hass), { hour: "2-digit", minute: "2-digit" })
+      : d.toLocaleString(intlLocale(this._hass), { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
   }
 
   _service(service, data = {}) {

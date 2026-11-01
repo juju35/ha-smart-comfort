@@ -129,3 +129,28 @@ test("card editor labels: same language resolution", () => {
   haLanguage = undefined;
   assert.equal(label({ name: "room" }), all.en.f_room);
 });
+
+test("number and date formats: pt is European Portuguese (pt-PT), pt-BR stays Brazilian", () => {
+  const format = (hass) => {
+    const panel = new ELEMENTS.panel();
+    panel._hass = hass;
+    return panel._format(12345.5);
+  };
+  const ptPT = (12345.5).toLocaleString("pt-PT", { maximumFractionDigits: 1, minimumFractionDigits: 0 });
+  const ptBR = (12345.5).toLocaleString("pt-BR", { maximumFractionDigits: 1, minimumFractionDigits: 0 });
+  assert.notEqual(ptPT, ptBR);
+  assert.equal(format({ language: "pt" }), ptPT);
+  assert.equal(format({ language: "pt", locale: { language: "pt" } }), ptPT);
+  assert.equal(format({ language: "pt-BR" }), ptBR);
+  assert.equal(format({ language: "pt", locale: { language: "pt-BR" } }), ptBR);
+  // A locale of another language than the texts' is not used: the texts' language is.
+  assert.equal(format({ language: "fr", locale: { language: "de" } }), (12345.5).toLocaleString("fr"));
+  assert.equal(format({ language: "sr-Latn" }), (12345.5).toLocaleString("sr-Latn"));
+  const card = new ELEMENTS.card();
+  card._hass = { language: "pt" };
+  const day = "2026-01-15T10:00:00";
+  const options = { weekday: "long", day: "numeric", month: "long" };
+  assert.equal(card._day(day), new Date(day).toLocaleDateString("pt-PT", options));
+  card._hass = { language: "pt-BR" };
+  assert.equal(card._day(day), new Date(day).toLocaleDateString("pt-BR", options));
+});

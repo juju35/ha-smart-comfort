@@ -505,7 +505,7 @@ The integration and its notifications follow the language of Home Assistant. Cur
 | Srpski (latinica) | `sr-Latn` |
 | Italiano | `it` |
 | Nederlands | `nl` |
-| Português | `pt` |
+| Português (Portugal) | `pt` |
 | Polski | `pl` |
 
 Contributions for additional languages are welcome!

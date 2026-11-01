@@ -385,6 +385,21 @@ const STRINGS = {
 // Strings of a Home Assistant language: the full tag when translated (sr-Latn), else its base (fr-FR: fr), else English.
 const stringsFor = (language) => STRINGS[language] || STRINGS[String(language || "").split("-")[0]] || STRINGS.en;
 
+// Language whose STRINGS are shown: the full tag when translated (sr-Latn), else its base, else English.
+const resolvedLanguage = (language) => {
+  const base = String(language || "").split("-")[0];
+  return STRINGS[language] ? language : STRINGS[base] ? base : "en";
+};
+
+// Locale of numbers and dates: Home Assistant's full one when it is the language of the texts (pt-BR keeps its
+// formats), else the language of the texts; pt alone is European Portuguese for Home Assistant, pt-PT for Intl.
+const intlLocale = (hass) => {
+  const full = hass?.locale?.language || hass?.language || "";
+  const resolved = resolvedLanguage(hass?.language);
+  const locale = full.split("-")[0] === resolved.split("-")[0] ? full : resolved;
+  return locale === "pt" ? "pt-PT" : locale;
+};
+
 const ICONS = {
   device: "mdi:fan",
   lighting: "mdi:lightbulb-auto-outline",
@@ -533,7 +548,7 @@ class SmartComfortActivityCard extends HTMLElement {
     const date = new Date(iso);
     const options = { hour: "2-digit", minute: "2-digit" };
     if (withDay) Object.assign(options, { day: "numeric", month: "short" });
-    return date.toLocaleString(this._hass?.language, options);
+    return date.toLocaleString(intlLocale(this._hass), options);
   }
 
   _day(iso) {
@@ -543,7 +558,7 @@ class SmartComfortActivityCard extends HTMLElement {
     yesterday.setDate(today.getDate() - 1);
     if (date.toDateString() === today.toDateString()) return this._t("today");
     if (date.toDateString() === yesterday.toDateString()) return this._t("yesterday");
-    return date.toLocaleDateString(this._hass?.language, { weekday: "long", day: "numeric", month: "long" });
+    return date.toLocaleDateString(intlLocale(this._hass), { weekday: "long", day: "numeric", month: "long" });
   }
 
   /** What happened, in a few words, and the icon. */
