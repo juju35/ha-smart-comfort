@@ -41,7 +41,7 @@ Comfort automations built with a cooldown keep notifying every couple of hours a
 - **No re-notification after a restart**: episodes, snoozes and device targets are stored; nothing is sent during the startup grace period
 - **YAML or UI**: configure everything in YAML (imported at startup), in the **Smart Comfort panel** of the sidebar, or in the integration options — rooms, alerts, control
 - Sensors for the active alerts and the comfort of each room, switches to pause the notifications or the device control, buttons, actions and events
-- English, French, German and Spanish
+- English, French, German, Spanish and Serbian (Cyrillic and Latin)
 
 ## Prerequisites
 
@@ -501,6 +501,10 @@ The integration and its notifications follow the language of Home Assistant. Cur
 | Français | `fr` |
 | Deutsch | `de` |
 | Español | `es` |
+| Српски | `sr` |
+| Srpski (latinica) | `sr-Latn` |
+
+Serbian covers the integration, its notifications and the panel; the activity card is not translated into Serbian yet.
 
 Contributions for additional languages are welcome!
 
