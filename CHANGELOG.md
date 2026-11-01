@@ -1,5 +1,25 @@
 # Changelog
 
+## 1.7.4 - 2026-11-01
+
+### What's new
+- Added Italian, Dutch, European Portuguese and Polish translations (`it`, `nl`, `pt`, `pl`): integration, notifications, panel and activity card. Brazilian Portuguese: pt-BR uses the European Portuguese texts (integration, notifications, panel and activity card).
+
+## 1.7.3 - 2026-11-01
+
+### What's new
+- **Serbian** translations, in Cyrillic (`sr`) and Latin (`sr-Latn`) script: integration, notifications, panel and activity card. Serbian translations by @cpmarexel2f (#12).
+
+### Fixes
+- Panel and activity card (and its editor): the language is matched on the full Home Assistant tag first (`sr-Latn`), then on its base (`fr-FR` → `fr`), then English.
+
+## 1.7.2
+
+### Fixes
+- Activity tab: a light command that could not be sent is now under the **Lights** filter, not under Devices (an indicator light stays with the devices).
+- Activity card and tab: a line that opens its entity can now be reached with Tab and opened with Enter or Space, and keeps the focus when a new entry comes in; the filters keep it too when one is chosen.
+- Activity tab: the active filter is tinted like the other active states of the panel instead of a filled button, with text readable in light and dark themes.
+
 ## 1.7.1
 
 ### Fixes

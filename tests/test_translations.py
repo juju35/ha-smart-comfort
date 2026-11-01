@@ -3,13 +3,14 @@
 from __future__ import annotations
 
 import json
+import re
 import string
 from pathlib import Path
 
 import pytest
 
 TRANSLATIONS = Path(__file__).parent.parent / "custom_components" / "smart_comfort" / "translations"
-LANGUAGES = ["de", "es", "fr"]
+LANGUAGES = ["de", "es", "fr", "it", "nl", "pl", "pt", "pt-BR", "sr", "sr-Latn"]
 
 
 def _flatten(data: dict, prefix: str = "") -> dict[str, str]:
@@ -44,6 +45,21 @@ def test_translation_parity(language: str):
     for key, text in english.items():
         assert other[key].strip(), key
         assert _placeholders(other[key]) == _placeholders(text), key
+
+
+# Kept as is in the Cyrillic text: names, code, units and placeholders.
+LATIN_ALLOWED = re.compile(
+    r"Home Assistant|Smart Comfort|Atmo France|YAML|AQI|iOS|CO₂|dB|ppm|°C|\b(?:min|h)\b|boolean|flapping"
+    r"|notify\.mobile_app_|homeassistant://\S+|\{[^}]*\}"
+)
+
+
+def test_serbian_scripts():
+    """sr is written in Cyrillic and sr-Latn in Latin (apart from names, code and units)."""
+    for key, text in _load("sr").items():
+        assert not re.search(r"[A-Za-z]", LATIN_ALLOWED.sub("", text)), key
+    for key, text in _load("sr-Latn").items():
+        assert not re.search(r"[\u0400-\u04FF]", text), key
 
 
 @pytest.mark.parametrize("service", ["snooze", "acknowledge"])
