@@ -1,0 +1,493 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Smart Comfort",
+        "data": {
+          "notify": "Ações de notificação",
+          "outdoor_temperature": "Temperatura exterior",
+          "outdoor_aggregate": "Combinar os sensores exteriores"
+        },
+        "description": "Menos alertas de conforto, mais inteligentes, e controlo dos seus ares condicionados, ventoinhas e purificadores. Adicione as divisões depois nas opções, ou configure tudo em YAML.",
+        "data_description": {
+          "notify": "Para onde vão os alertas (notify.mobile_app_…, um grupo de notificação…).",
+          "outdoor_temperature": "Um ou mais sensores exteriores; os indisponíveis são ignorados.",
+          "outdoor_aggregate": "O mínimo evita um sensor ao sol."
+        }
+      }
+    },
+    "error": {
+      "invalid_options": "Alguns valores são inválidos, verifique-os."
+    },
+    "abort": {
+      "already_configured": "O Smart Comfort já está configurado.",
+      "single_instance_allowed": "O Smart Comfort já está configurado."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Opções do Smart Comfort",
+        "description": "Divisões configuradas: {rooms}. Se usar YAML, alterá-lo substitui estas opções no próximo reinício.",
+        "menu_options": {
+          "general": "Notificações",
+          "alerts": "Alertas",
+          "control": "Controlo dos dispositivos",
+          "add_room": "Adicionar uma divisão",
+          "edit_room": "Editar uma divisão",
+          "remove_room": "Remover divisões"
+        }
+      },
+      "general": {
+        "title": "Notificações",
+        "data": {
+          "notify": "Ações de notificação",
+          "outdoor_temperature": "Temperatura exterior",
+          "outdoor_aggregate": "Combinar os sensores exteriores",
+          "outdoor_noise": "Ruído exterior",
+          "outdoor_air_quality": "Qualidade do ar exterior",
+          "digest_window": "Janela de agrupamento",
+          "reminder": "Lembrete",
+          "snooze_duration": "Duração do adiamento",
+          "startup_grace": "Período de tolerância no arranque",
+          "quiet_start": "Início das horas de silêncio",
+          "quiet_end": "Fim das horas de silêncio",
+          "presence": "Presença",
+          "clear_when_resolved": "Limpar quando resolvido",
+          "critical_volume": "Volume dos alertas críticos",
+          "url": "Ação ao tocar",
+          "tag": "Etiqueta da notificação"
+        },
+        "data_description": {
+          "notify": "Para onde vão os alertas (notify.mobile_app_…, um grupo de notificação…).",
+          "outdoor_temperature": "Sensores exteriores fora dos espaços exteriores (entidade meteorológica, sensor sem área); os indisponíveis são ignorados.",
+          "outdoor_aggregate": "O mínimo evita um sensor ao sol.",
+          "outdoor_noise": "Sensores de nível sonoro no exterior (dB), somados aos dos espaços exteriores: nenhuma sugestão para abrir as janelas quando há ruído, e um alerta quando as janelas estão abertas com ruído.",
+          "outdoor_air_quality": "Sensores de índice de qualidade do ar no exterior ou da cidade (Atmo France, AQI…), somados aos dos espaços exteriores: nenhuma sugestão para abrir as janelas quando o ar é mau, e um alerta quando as janelas estão abertas nessa altura. Conta o pior.",
+          "digest_window": "Minutos de espera por outros alertas antes de enviar uma única notificação agrupada. Os alertas críticos não esperam.",
+          "reminder": "Minutos após os quais um problema ainda em curso é notificado de novo. 0: nunca (só quando piora).",
+          "snooze_duration": "Minutos do botão Adiar da notificação e da ação de adiamento por predefinição.",
+          "startup_grace": "Minutos após o arranque do Home Assistant durante os quais nada é enviado.",
+          "quiet_start": "A partir daí até ao fim, só os alertas críticos são enviados; os outros saem no fim se ainda forem relevantes.",
+          "presence": "Zona, pessoa, grupo ou booleano: enquanto não está ninguém em casa, só os alertas críticos são enviados.",
+          "clear_when_resolved": "Remover a notificação dos telemóveis assim que todos os problemas notificados terminarem.",
+          "critical_volume": "Volume do som crítico do iOS, de 0 a 1.",
+          "url": "Aberto ao tocar na notificação, p. ex. homeassistant://navigate/lovelace/comfort",
+          "tag": "Cada notificação substitui a anterior com esta etiqueta em vez de se acumular."
+        }
+      },
+      "alerts": {
+        "title": "Alertas",
+        "data": {
+          "kind": "Alerta"
+        },
+        "description": "Definições de um alerta para todas as divisões. Uma divisão pode substituir os limiares demasiado quente / demasiado frio no seu formulário, e tudo em YAML."
+      },
+      "alert": {
+        "title": "Definições do alerta",
+        "data": {
+          "enabled": "Ativado",
+          "threshold": "Limiar",
+          "min_indoor": "Temperatura interior mínima",
+          "min_outdoor": "Temperatura exterior mínima",
+          "max_outdoor": "Temperatura exterior máxima",
+          "max_outdoor_noise": "Ruído exterior máximo",
+          "max_outdoor_air": "Nível máximo de qualidade do ar exterior",
+          "hysteresis": "Histerese",
+          "delay": "Atraso",
+          "severity": "Gravidade",
+          "escalation": "Passo de escalonamento"
+        },
+        "data_description": {
+          "threshold": "Demasiado quente/frio, CO₂, humidade: o valor. Abrir/fechar as janelas: a diferença interior/exterior.",
+          "min_indoor": "Sugerir abrir só quando a divisão está pelo menos a esta temperatura.",
+          "min_outdoor": "Só quando está pelo menos este calor lá fora.",
+          "max_outdoor": "Só quando está este frio ou mais lá fora.",
+          "max_outdoor_noise": "Não sugerido enquanto o ruído exterior estiver acima disto (requer um sensor de ruído exterior).",
+          "max_outdoor_air": "Não sugerido enquanto a qualidade do ar exterior for pior do que este nível, de 1 (boa) a 6 (extremamente má).",
+          "hysteresis": "O problema só termina quando o valor voltar a passar o limiar desta quantidade: sem oscilações.",
+          "delay": "Minutos durante os quais a condição tem de se manter antes de ser um problema.",
+          "escalation": "Notificar de novo quando o valor piorar esta quantidade em relação à última notificação. 0: nunca."
+        }
+      },
+      "control": {
+        "title": "Controlo dos dispositivos",
+        "data": {
+          "enabled": "Controlar os dispositivos",
+          "start": "Reforço de janela a partir das",
+          "end": "Reforço de janela até às",
+          "manual_override": "Intervenção manual",
+          "suppress_when_handled": "Sem alerta quando tratado",
+          "night_start": "Noite silenciosa a partir das",
+          "night_end": "Noite silenciosa até às",
+          "display": "Luz indicadora ou ecrã",
+          "reset_at": "Regresso ao normal às",
+          "display_off": "Ecrãs desligados a partir das",
+          "display_on": "Ecrãs ligados a partir das"
+        },
+        "data_description": {
+          "start": "As ventoinhas e os purificadores passam para a velocidade máxima quando uma abertura se abre só entre estas horas. Ambos vazios: todo o dia.",
+          "manual_override": "Minutos durante os quais um dispositivo alterado à mão é deixado em paz. 0: nunca em pausa.",
+          "suppress_when_handled": "Sem alerta “demasiado quente” para uma divisão cujo ar condicionado ou ventoinha o Smart Comfort ligou.",
+          "night_start": "Entre estas horas os dispositivos usam as suas definições noturnas (velocidade mais silenciosa, predefinição ou modo de ventilação) e não há reforço de janela para eles.",
+          "display": "Desligado nas horas \"Ecrãs desligados\" do separador Horário e durante as sestas da divisão, ligado de novo depois.",
+          "reset_at": "A esta hora o dispositivo volta ao seu estado normal, mesmo após uma alteração à mão (um purificador de volta ao automático…)."
+        },
+        "sections": {
+          "climate": {
+            "name": "Ares condicionados",
+            "data": {
+              "cool_above": "Arrefecer a partir de",
+              "off_below": "Desligado abaixo de",
+              "setpoint": "Temperatura definida",
+              "fan_mode": "Modo de ventilação",
+              "closed_for": "Aberturas fechadas há (min)",
+              "off_on_open": "Desligado se aberto há (min)",
+              "night_fan_mode": "Modo de ventilação à noite"
+            }
+          },
+          "fans": {
+            "name": "Ventoinhas",
+            "data": {
+              "on_above": "Ligada a partir de",
+              "off_below": "Desligada abaixo de",
+              "percentage": "Velocidade",
+              "preset": "Predefinição",
+              "open_percentage": "Velocidade, janela aberta",
+              "open_preset": "Predefinição, janela aberta",
+              "off_preset": "Predefinição antes de desligar",
+              "night_percentage": "Velocidade à noite",
+              "night_preset": "Predefinição à noite"
+            },
+            "description": "Deixe “Ligada a partir de” e “Desligada abaixo de” vazios para as ventoinhas comandadas apenas pelas janelas."
+          },
+          "purifiers": {
+            "name": "Purificadores de ar",
+            "data": {
+              "open_percentage": "Velocidade, janela aberta",
+              "open_preset": "Predefinição, janela aberta",
+              "closed_preset": "Predefinição, janelas fechadas",
+              "keep_on": "Manter ligado",
+              "night_percentage": "Velocidade à noite",
+              "night_preset": "Predefinição à noite",
+              "night_mode": "Opção de modo à noite"
+            },
+            "data_description": {
+              "keep_on": "Voltar a ligar um purificador quando está desligado há 10 s (corte de energia, falha)."
+            }
+          }
+        }
+      },
+      "add_room": {
+        "title": "Adicionar uma divisão",
+        "data": {
+          "name": "Nome",
+          "temperature": "Temperatura",
+          "co2": "CO₂",
+          "humidity": "Humidade",
+          "noise": "Ruído",
+          "openings": "Janelas e portas",
+          "climate": "Ar condicionado",
+          "fans": "Ventoinhas",
+          "purifiers": "Purificadores de ar",
+          "lights": "Luzes"
+        },
+        "description": "Sensores e dispositivos da divisão. Deixe vazio o que ela não tem.",
+        "sections": {
+          "overrides": {
+            "name": "Definições da divisão",
+            "description": "Substituir as definições globais para esta divisão. As definições por dispositivo são só em YAML.",
+            "data": {
+              "too_hot_threshold": "Demasiado quente a partir de",
+              "too_cold_threshold": "Demasiado frio abaixo de",
+              "fan_preset": "Predefinição da ventoinha",
+              "fan_open_preset": "Predefinição da ventoinha, janela aberta",
+              "fan_off_preset": "Predefinição da ventoinha antes de desligar",
+              "purifier_open_preset": "Predefinição do purificador, janela aberta",
+              "purifier_closed_preset": "Predefinição do purificador, janelas fechadas",
+              "purifier_mode_select": "Seletor de modo do purificador",
+              "purifier_open_mode": "Opção de modo, janela aberta",
+              "purifier_closed_mode": "Opção de modo, janelas fechadas",
+              "purifier_keep_on": "Manter os purificadores ligados"
+            }
+          }
+        },
+        "data_description": {
+          "lights": "Luzes reguláveis: o seu brilho segue o momento do dia enquanto estão ligadas (iluminação adaptativa)."
+        }
+      },
+      "room": {
+        "title": "Editar a divisão",
+        "data": {
+          "name": "Nome",
+          "temperature": "Temperatura",
+          "co2": "CO₂",
+          "humidity": "Humidade",
+          "noise": "Ruído",
+          "openings": "Janelas e portas",
+          "climate": "Ar condicionado",
+          "fans": "Ventoinhas",
+          "purifiers": "Purificadores de ar",
+          "lights": "Luzes"
+        },
+        "description": "Sensores e dispositivos da divisão. Deixe vazio o que ela não tem.",
+        "sections": {
+          "overrides": {
+            "name": "Definições da divisão",
+            "description": "Substituir as definições globais para esta divisão. As definições por dispositivo são só em YAML.",
+            "data": {
+              "too_hot_threshold": "Demasiado quente a partir de",
+              "too_cold_threshold": "Demasiado frio abaixo de",
+              "fan_preset": "Predefinição da ventoinha",
+              "fan_open_preset": "Predefinição da ventoinha, janela aberta",
+              "fan_off_preset": "Predefinição da ventoinha antes de desligar",
+              "purifier_open_preset": "Predefinição do purificador, janela aberta",
+              "purifier_closed_preset": "Predefinição do purificador, janelas fechadas",
+              "purifier_mode_select": "Seletor de modo do purificador",
+              "purifier_open_mode": "Opção de modo, janela aberta",
+              "purifier_closed_mode": "Opção de modo, janelas fechadas",
+              "purifier_keep_on": "Manter os purificadores ligados"
+            }
+          }
+        },
+        "data_description": {
+          "lights": "Luzes reguláveis: o seu brilho segue o momento do dia enquanto estão ligadas (iluminação adaptativa)."
+        }
+      },
+      "outdoor": {
+        "title": "Espaço exterior",
+        "data": {
+          "name": "Nome",
+          "temperature": "Temperatura",
+          "air_quality": "Qualidade do ar",
+          "noise": "Ruído"
+        }
+      },
+      "edit_room": {
+        "title": "Editar uma divisão",
+        "data": {
+          "room": "Divisão"
+        }
+      },
+      "remove_room": {
+        "title": "Remover divisões",
+        "data": {
+          "rooms": "Divisões"
+        }
+      },
+      "lighting": {
+        "title": "Iluminação adaptativa",
+        "data": {
+          "enabled": "Iluminação adaptativa",
+          "day": "Brilho de dia",
+          "evening": "Brilho ao fim do dia",
+          "night": "Brilho à noite",
+          "warmth": "Adaptar a tonalidade",
+          "day_kelvin": "Tonalidade de dia",
+          "evening_kelvin": "Tonalidade ao fim do dia",
+          "night_kelvin": "Tonalidade à noite",
+          "transition": "Transição",
+          "night_only": "Luz noturna",
+          "morning": "Brilho de manhã",
+          "morning_kelvin": "Tonalidade de manhã",
+          "morning_end": "Fim da manhã",
+          "quiet_morning": "Manhã tranquila",
+          "nap": "Brilho da sesta",
+          "nap_kelvin": "Tonalidade da sesta"
+        },
+        "data_description": {
+          "day": "Com o sol alto (elevação acima de 6°).",
+          "evening": "Assim que o sol se põe (abaixo de −6°); entre os dois, uma mistura.",
+          "night": "Nas horas da noite silenciosa (separador Horário).",
+          "warmth": "Também a temperatura de cor, para as luzes que a suportam. Desligado: só o brilho.",
+          "transition": "Segundos das mudanças graduais; uma luz acabada de ligar recebe logo o seu brilho.",
+          "night_only": "Definido só nas horas noturnas (deixado em paz de dia).",
+          "morning": "Nas divisões com manhã tranquila (quartos), até ao fim da manhã (separador Horário).",
+          "morning_end": "Até quando os quartos mantêm o brilho da manhã.",
+          "quiet_morning": "Luzes mais fracas de manhã, até ao fim da manhã (separador Horário).",
+          "nap": "Durante os períodos de sesta de uma divisão."
+        }
+      }
+    },
+    "error": {
+      "name_required": "Dê um nome à divisão.",
+      "name_exists": "Uma divisão já tem este nome.",
+      "invalid_options": "Alguns valores são inválidos, verifique-os."
+    }
+  },
+  "selector": {
+    "kind": {
+      "options": {
+        "too_hot": "Demasiado quente",
+        "close_windows": "Fechar as janelas (mais quente lá fora)",
+        "ventilate": "Abrir as janelas (mais fresco lá fora)",
+        "too_cold": "Demasiado frio",
+        "window_open_cold": "Janela aberta com frio",
+        "co2_high": "CO₂ elevado",
+        "humidity_high": "Humidade elevada",
+        "noise_high": "Divisão ruidosa",
+        "noisy_outside": "Fechar as janelas (ruído lá fora)",
+        "bad_air_outside": "Fechar as janelas (ar poluído lá fora)"
+      }
+    },
+    "severity": {
+      "options": {
+        "info": "Informação (silenciosa)",
+        "warning": "Aviso (urgente, com som)",
+        "critical": "Crítico (ignora as horas de silêncio e o modo silencioso)"
+      }
+    },
+    "outdoor_aggregate": {
+      "options": {
+        "min": "Mínimo",
+        "max": "Máximo",
+        "mean": "Média"
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "alerts": {
+        "name": "Alertas ativos",
+        "state_attributes": {
+          "alerts": {
+            "name": "Alertas"
+          },
+          "snoozes": {
+            "name": "Adiamentos"
+          },
+          "outdoor_temperature": {
+            "name": "Temperatura exterior"
+          },
+          "outdoor_noise": {
+            "name": "Ruído exterior"
+          },
+          "outdoor_air_quality": {
+            "name": "Qualidade do ar exterior"
+          }
+        }
+      },
+      "room": {
+        "name": "Conforto {room}",
+        "state": {
+          "ok": "OK",
+          "too_hot": "Demasiado quente",
+          "close_windows": "Fechar as janelas (mais quente lá fora)",
+          "ventilate": "Abrir as janelas (mais fresco lá fora)",
+          "too_cold": "Demasiado frio",
+          "window_open_cold": "Janela aberta com frio",
+          "co2_high": "CO₂ elevado",
+          "humidity_high": "Humidade elevada",
+          "noise_high": "Divisão ruidosa",
+          "noisy_outside": "Fechar as janelas (ruído lá fora)",
+          "bad_air_outside": "Fechar as janelas (ar poluído lá fora)"
+        }
+      },
+      "last_notification": {
+        "name": "Última notificação"
+      }
+    },
+    "switch": {
+      "notifications": {
+        "name": "Notificações"
+      },
+      "control": {
+        "name": "Controlo dos dispositivos"
+      },
+      "lighting": {
+        "name": "Iluminação adaptativa"
+      }
+    },
+    "button": {
+      "notify_now": {
+        "name": "Notificar agora"
+      },
+      "unsnooze": {
+        "name": "Cancelar os adiamentos"
+      }
+    }
+  },
+  "services": {
+    "snooze": {
+      "name": "Adiar",
+      "description": "Deixa de notificar durante algum tempo os alertas das divisões e tipos indicados (todos por predefinição).",
+      "fields": {
+        "duration": {
+          "name": "Duração",
+          "description": "Minutos; por predefinição a duração do adiamento das opções."
+        },
+        "rooms": {
+          "name": "Divisões",
+          "description": "Nomes ou ids das divisões; todas por predefinição."
+        },
+        "kinds": {
+          "name": "Alertas",
+          "description": "Se indicados, só os alertas em curso destes tipos são adiados."
+        }
+      }
+    },
+    "unsnooze": {
+      "name": "Cancelar os adiamentos",
+      "description": "Volta a notificar os alertas adiados das divisões indicadas (todas por predefinição).",
+      "fields": {
+        "rooms": {
+          "name": "Divisões",
+          "description": "Nomes ou ids das divisões; todas por predefinição."
+        }
+      }
+    },
+    "acknowledge": {
+      "name": "Confirmar",
+      "description": "Nenhum lembrete nem escalonamento para os alertas em curso até terminarem.",
+      "fields": {
+        "rooms": {
+          "name": "Divisões",
+          "description": "Nomes ou ids das divisões; todas por predefinição."
+        },
+        "kinds": {
+          "name": "Alertas",
+          "description": "Tipos de alertas; todos por predefinição."
+        }
+      }
+    },
+    "notify_now": {
+      "name": "Notificar agora",
+      "description": "Envia todos os problemas em curso numa única notificação, ignorando as horas de silêncio e a janela de agrupamento."
+    },
+    "get_config": {
+      "name": "Obter a configuração",
+      "description": "Devolve as opções em uso (divisões, alertas, controlo, iluminação), para copiar para o YAML ou verificar o que está definido."
+    }
+  },
+  "common": {
+    "title_one": "{room}",
+    "title_many": "Alertas de conforto: {count}",
+    "room_line": "{room}: {problem}",
+    "decimal": ",",
+    "duration_minutes": "{minutes} min",
+    "duration_hours": "{hours} h {minutes:02d}",
+    "since": "há {duration}",
+    "worse": "a piorar",
+    "line_too_hot": "{value} °C, acima de {threshold} °C",
+    "line_too_cold": "{value} °C, abaixo de {threshold} °C",
+    "line_ventilate": "{temperature} °C dentro, {outdoor} °C fora — abra as janelas",
+    "line_close_windows": "{outdoor} °C fora, {temperature} °C dentro — feche {openings}",
+    "line_window_open_cold": "aberto: {openings}, {outdoor} °C fora",
+    "line_co2_high": "CO₂ {value} ppm — areje a divisão",
+    "line_humidity_high": "humidade {value} % — areje a divisão",
+    "line_noise_high": "ruído {value} dB, acima de {threshold} dB",
+    "line_noisy_outside": "{value} dB fora — feche {openings}",
+    "line_bad_air_outside": "qualidade do ar exterior {value}/6 — feche {openings}",
+    "action_snooze": "Adiar {hours} h",
+    "action_snooze_minutes": "Adiar {minutes} min",
+    "action_ack": "Entendido"
+  },
+  "exceptions": {
+    "not_loaded": {
+      "message": "O Smart Comfort não está carregado."
+    },
+    "unknown_room": {
+      "message": "Divisão desconhecida: {room}."
+    }
+  }
+}

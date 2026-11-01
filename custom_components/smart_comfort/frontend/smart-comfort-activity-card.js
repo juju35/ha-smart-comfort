@@ -232,10 +232,173 @@ const STRINGS = {
     f_kinds: "Samo",
     f_room: "Soba",
   },
+  it: {
+    title: "Attività Smart Comfort",
+    empty: "Ancora niente.",
+    not_loaded: "Smart Comfort non è caricato.",
+    all: "Tutto",
+    group_devices: "Dispositivi",
+    group_lights: "Luci",
+    group_notifications: "Notifiche",
+    group_manual: "A mano",
+    today: "Oggi",
+    yesterday: "Ieri",
+    t_cool: "Raffreddamento",
+    t_cool_night: "Raffreddamento, notte silenziosa",
+    t_off: "Spento",
+    t_off_open: "Spento: una finestra resta aperta",
+    t_on: "Acceso: fa caldo",
+    t_on_night: "Acceso, notte silenziosa",
+    t_boost: "Boost finestra",
+    t_normal: "Ritorno alla normalità",
+    t_night: "Modalità notte",
+    t_keep_on: "Riacceso",
+    lighting: "Luminosità del momento",
+    presence_on: "Accesa: è entrato qualcuno",
+    presence_off: "Spenta: non c'è più nessuno",
+    display_off: "Spia spenta",
+    display_on: "Spia riaccesa",
+    notified: "Notifica",
+    cleared: "Notifica cancellata: è tutto tornato alla normalità",
+    manual: "Cambiato a mano: lasciato così",
+    manual_until: "Cambiato a mano: lasciato così fino alle {time}",
+    reset: "Ritorno alla normalità (orario fisso)",
+    failed: "Impossibile inviare",
+    f_title: "Titolo",
+    f_limit: "Voci",
+    f_kinds: "Solo",
+    f_room: "Stanza",
+  },
+  nl: {
+    title: "Smart Comfort-activiteit",
+    empty: "Nog niets.",
+    not_loaded: "Smart Comfort is niet geladen.",
+    all: "Alles",
+    group_devices: "Apparaten",
+    group_lights: "Lampen",
+    group_notifications: "Meldingen",
+    group_manual: "Handmatig",
+    today: "Vandaag",
+    yesterday: "Gisteren",
+    t_cool: "Koelen",
+    t_cool_night: "Koelen, stille nacht",
+    t_off: "Uit",
+    t_off_open: "Uit: een raam blijft open",
+    t_on: "Aan: het is warm",
+    t_on_night: "Aan, stille nacht",
+    t_boost: "Raamboost",
+    t_normal: "Terug naar normaal",
+    t_night: "Nachtmodus",
+    t_keep_on: "Weer aangezet",
+    lighting: "Helderheid van het moment",
+    presence_on: "Aan: er kwam iemand binnen",
+    presence_off: "Uit: niemand meer",
+    display_off: "Indicatielampje uit",
+    display_on: "Indicatielampje weer aan",
+    notified: "Melding",
+    cleared: "Melding gewist: alles is weer normaal",
+    manual: "Handmatig gewijzigd: met rust gelaten",
+    manual_until: "Handmatig gewijzigd: met rust gelaten tot {time}",
+    reset: "Terug naar normaal (vaste tijd)",
+    failed: "Kon niet worden verzonden",
+    f_title: "Titel",
+    f_limit: "Items",
+    f_kinds: "Alleen",
+    f_room: "Kamer",
+  },
+  pt: {
+    title: "Atividade do Smart Comfort",
+    empty: "Ainda nada.",
+    not_loaded: "O Smart Comfort não está carregado.",
+    all: "Tudo",
+    group_devices: "Dispositivos",
+    group_lights: "Luzes",
+    group_notifications: "Notificações",
+    group_manual: "À mão",
+    today: "Hoje",
+    yesterday: "Ontem",
+    t_cool: "A arrefecer",
+    t_cool_night: "A arrefecer, noite silenciosa",
+    t_off: "Desligado",
+    t_off_open: "Desligado: uma janela continua aberta",
+    t_on: "Ligado: está calor",
+    t_on_night: "Ligado, noite silenciosa",
+    t_boost: "Reforço de janela",
+    t_normal: "De volta ao normal",
+    t_night: "Modo noturno",
+    t_keep_on: "Ligado de novo",
+    lighting: "Brilho do momento",
+    presence_on: "Ligada: alguém entrou",
+    presence_off: "Desligada: já não está ninguém",
+    display_off: "Indicador desligado",
+    display_on: "Indicador ligado de novo",
+    notified: "Notificação",
+    cleared: "Notificação apagada: tudo voltou ao normal",
+    manual: "Alterado à mão: deixado como está",
+    manual_until: "Alterado à mão: deixado como está até às {time}",
+    reset: "De volta ao normal (hora fixa)",
+    failed: "Não foi possível enviar",
+    f_title: "Título",
+    f_limit: "Entradas",
+    f_kinds: "Apenas",
+    f_room: "Divisão",
+  },
+  pl: {
+    title: "Aktywność Smart Comfort",
+    empty: "Jeszcze nic.",
+    not_loaded: "Smart Comfort nie jest załadowany.",
+    all: "Wszystko",
+    group_devices: "Urządzenia",
+    group_lights: "Światła",
+    group_notifications: "Powiadomienia",
+    group_manual: "Ręcznie",
+    today: "Dzisiaj",
+    yesterday: "Wczoraj",
+    t_cool: "Chłodzenie",
+    t_cool_night: "Chłodzenie, cicha noc",
+    t_off: "Wyłączone",
+    t_off_open: "Wyłączone: okno pozostaje otwarte",
+    t_on: "Włączone: jest ciepło",
+    t_on_night: "Włączone, cicha noc",
+    t_boost: "Wzmocnienie przy oknie",
+    t_normal: "Powrót do normy",
+    t_night: "Tryb nocny",
+    t_keep_on: "Ponownie włączone",
+    lighting: "Jasność dla pory dnia",
+    presence_on: "Włączone: ktoś wszedł",
+    presence_off: "Wyłączone: nikogo nie ma",
+    display_off: "Kontrolka wyłączona",
+    display_on: "Kontrolka ponownie włączona",
+    notified: "Powiadomienie",
+    cleared: "Powiadomienie usunięte: wszystko wróciło do normy",
+    manual: "Zmienione ręcznie: pozostawione bez zmian",
+    manual_until: "Zmienione ręcznie: pozostawione bez zmian do {time}",
+    reset: "Powrót do normy (stała godzina)",
+    failed: "Nie udało się wysłać",
+    f_title: "Tytuł",
+    f_limit: "Wpisy",
+    f_kinds: "Tylko",
+    f_room: "Pomieszczenie",
+  },
 };
 
 // Strings of a Home Assistant language: the full tag when translated (sr-Latn), else its base (fr-FR: fr), else English.
 const stringsFor = (language) => STRINGS[language] || STRINGS[String(language || "").split("-")[0]] || STRINGS.en;
+
+// Language whose STRINGS are shown: the full tag when translated (sr-Latn), else its base, else English.
+const resolvedLanguage = (language) => {
+  const base = String(language || "").split("-")[0];
+  return STRINGS[language] ? language : STRINGS[base] ? base : "en";
+};
+
+// Locale of numbers and dates: Home Assistant's full one when it is the language of the texts (pt-BR keeps its
+// formats), else the language of the texts; pt alone is European Portuguese for Home Assistant, pt-PT for Intl.
+const intlLocale = (hass) => {
+  const full = hass?.locale?.language || hass?.language || "";
+  const resolved = resolvedLanguage(hass?.language);
+  const locale = full.split("-")[0] === resolved.split("-")[0] ? full : resolved;
+  return locale === "pt" ? "pt-PT" : locale;
+};
 
 const ICONS = {
   device: "mdi:fan",
@@ -385,7 +548,7 @@ class SmartComfortActivityCard extends HTMLElement {
     const date = new Date(iso);
     const options = { hour: "2-digit", minute: "2-digit" };
     if (withDay) Object.assign(options, { day: "numeric", month: "short" });
-    return date.toLocaleString(this._hass?.language, options);
+    return date.toLocaleString(intlLocale(this._hass), options);
   }
 
   _day(iso) {
@@ -395,7 +558,7 @@ class SmartComfortActivityCard extends HTMLElement {
     yesterday.setDate(today.getDate() - 1);
     if (date.toDateString() === today.toDateString()) return this._t("today");
     if (date.toDateString() === yesterday.toDateString()) return this._t("yesterday");
-    return date.toLocaleDateString(this._hass?.language, { weekday: "long", day: "numeric", month: "long" });
+    return date.toLocaleDateString(intlLocale(this._hass), { weekday: "long", day: "numeric", month: "long" });
   }
 
   /** What happened, in a few words, and the icon. */
@@ -554,7 +717,8 @@ const STYLE = `
   .body { padding: 0 16px 12px; }
   .body.flat { padding: 0; }
   .empty { color: var(--secondary-text-color); padding: 12px 0; }
-  .day { margin: 14px 0 4px; font-size: 13px; font-weight: 500; text-transform: capitalize; color: var(--secondary-text-color); }
+  .day { margin: 14px 0 4px; font-size: 13px; font-weight: 500; color: var(--secondary-text-color); }
+  .day::first-letter { text-transform: uppercase; }
   .row { display: flex; gap: 12px; align-items: flex-start; padding: 8px 0; border-bottom: 1px solid var(--divider-color); }
   .row:last-child { border-bottom: none; }
   .row.clickable { cursor: pointer; border-radius: 4px; }

@@ -50,7 +50,21 @@ function textIn(file, language, key) {
   return element._t(key);
 }
 
-const CASES = { "fr-FR": "fr", "de-CH": "de", "sr-Latn": "sr-Latn", sr: "sr", "pt-BR": "en", fr: "fr" };
+const LANGUAGES = ["en", "fr", "de", "es", "sr", "sr-Latn", "it", "nl", "pt", "pl"];
+// pt-BR falls back to European Portuguese, on purpose; an untranslated language to English.
+const CASES = {
+  "fr-FR": "fr",
+  "de-CH": "de",
+  "sr-Latn": "sr-Latn",
+  sr: "sr",
+  fr: "fr",
+  "it-IT": "it",
+  "nl-BE": "nl",
+  pt: "pt",
+  "pt-BR": "pt",
+  "pl-PL": "pl",
+  ja: "en",
+};
 const SAMPLE = { panel: "rooms", card: "today" };
 
 /** Key paths of a value; an array counts as its length and its items. */
@@ -80,7 +94,17 @@ for (const file of Object.keys(FILES)) {
         if (typeof text === "string") assert.ok(text.trim(), `${language}.${key}`);
       }
     }
-    assert.ok("sr" in all && "sr-Latn" in all);
+    assert.deepEqual(Object.keys(all).sort(), [...LANGUAGES].sort());
+  });
+
+  test(`${file}: every language has the placeholders of English`, () => {
+    const all = strings(file);
+    const placeholders = (text) => [...String(text).matchAll(/\{(\w+)\}/g)].map((m) => m[1]).sort();
+    for (const [language, table] of Object.entries(all)) {
+      for (const [key, text] of Object.entries(all.en)) {
+        assert.deepEqual(placeholders(table[key]), placeholders(text), `${language}.${key}`);
+      }
+    }
   });
 
   test(`${file}: each Serbian script stays in its alphabet (apart from names, code and units)`, () => {
@@ -104,4 +128,29 @@ test("card editor labels: same language resolution", () => {
   }
   haLanguage = undefined;
   assert.equal(label({ name: "room" }), all.en.f_room);
+});
+
+test("number and date formats: pt is European Portuguese (pt-PT), pt-BR stays Brazilian", () => {
+  const format = (hass) => {
+    const panel = new ELEMENTS.panel();
+    panel._hass = hass;
+    return panel._format(12345.5);
+  };
+  const ptPT = (12345.5).toLocaleString("pt-PT", { maximumFractionDigits: 1, minimumFractionDigits: 0 });
+  const ptBR = (12345.5).toLocaleString("pt-BR", { maximumFractionDigits: 1, minimumFractionDigits: 0 });
+  assert.notEqual(ptPT, ptBR);
+  assert.equal(format({ language: "pt" }), ptPT);
+  assert.equal(format({ language: "pt", locale: { language: "pt" } }), ptPT);
+  assert.equal(format({ language: "pt-BR" }), ptBR);
+  assert.equal(format({ language: "pt", locale: { language: "pt-BR" } }), ptBR);
+  // A locale of another language than the texts' is not used: the texts' language is.
+  assert.equal(format({ language: "fr", locale: { language: "de" } }), (12345.5).toLocaleString("fr"));
+  assert.equal(format({ language: "sr-Latn" }), (12345.5).toLocaleString("sr-Latn"));
+  const card = new ELEMENTS.card();
+  card._hass = { language: "pt" };
+  const day = "2026-01-15T10:00:00";
+  const options = { weekday: "long", day: "numeric", month: "long" };
+  assert.equal(card._day(day), new Date(day).toLocaleDateString("pt-PT", options));
+  card._hass = { language: "pt-BR" };
+  assert.equal(card._day(day), new Date(day).toLocaleDateString("pt-BR", options));
 });
