@@ -280,11 +280,11 @@
         "data": {
           "enabled": "Iluminação adaptativa",
           "day": "Brilho de dia",
-          "evening": "Brilho à noitinha",
+          "evening": "Brilho ao fim do dia",
           "night": "Brilho à noite",
           "warmth": "Adaptar a tonalidade",
           "day_kelvin": "Tonalidade de dia",
-          "evening_kelvin": "Tonalidade à noitinha",
+          "evening_kelvin": "Tonalidade ao fim do dia",
           "night_kelvin": "Tonalidade à noite",
           "transition": "Transição",
           "night_only": "Luz noturna",
@@ -327,7 +327,7 @@
         "humidity_high": "Humidade elevada",
         "noise_high": "Divisão ruidosa",
         "noisy_outside": "Fechar as janelas (ruído lá fora)",
-        "bad_air_outside": "Fechar as janelas (ar mau lá fora)"
+        "bad_air_outside": "Fechar as janelas (ar poluído lá fora)"
       }
     },
     "severity": {
@@ -380,7 +380,7 @@
           "humidity_high": "Humidade elevada",
           "noise_high": "Divisão ruidosa",
           "noisy_outside": "Fechar as janelas (ruído lá fora)",
-          "bad_air_outside": "Fechar as janelas (ar mau lá fora)"
+          "bad_air_outside": "Fechar as janelas (ar poluído lá fora)"
         }
       },
       "last_notification": {

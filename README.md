@@ -493,7 +493,7 @@ The screenshots are rendered by `python scripts/screenshots.py` (Playwright and 
 
 ## Translations
 
-The integration and its notifications follow the language of Home Assistant. Currently supported (Brazilian Portuguese, `pt-BR`, gets the European Portuguese texts in the panel and the activity card):
+The integration and its notifications follow the language of Home Assistant. Currently supported (Brazilian Portuguese: pt-BR uses the European Portuguese texts, in the integration, the notifications, the panel and the activity card):
 
 | Language | Code |
 |---|---|

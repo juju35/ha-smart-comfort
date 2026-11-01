@@ -304,7 +304,7 @@ const STRINGS = {
     f_title: "Titel",
     f_limit: "Items",
     f_kinds: "Alleen",
-    f_room: "Ruimte",
+    f_room: "Kamer",
   },
   pt: {
     title: "Atividade do Smart Comfort",
@@ -702,7 +702,8 @@ const STYLE = `
   .body { padding: 0 16px 12px; }
   .body.flat { padding: 0; }
   .empty { color: var(--secondary-text-color); padding: 12px 0; }
-  .day { margin: 14px 0 4px; font-size: 13px; font-weight: 500; text-transform: capitalize; color: var(--secondary-text-color); }
+  .day { margin: 14px 0 4px; font-size: 13px; font-weight: 500; color: var(--secondary-text-color); }
+  .day::first-letter { text-transform: uppercase; }
   .row { display: flex; gap: 12px; align-items: flex-start; padding: 8px 0; border-bottom: 1px solid var(--divider-color); }
   .row:last-child { border-bottom: none; }
   .row.clickable { cursor: pointer; border-radius: 4px; }

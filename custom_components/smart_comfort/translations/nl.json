@@ -8,7 +8,7 @@
           "outdoor_temperature": "Buitentemperatuur",
           "outdoor_aggregate": "Buitensensoren combineren"
         },
-        "description": "Minder en slimmere comfortwaarschuwingen, en bediening van je airco's, ventilatoren en luchtreinigers. Voeg de ruimtes daarna toe in de opties, of configureer alles in YAML.",
+        "description": "Minder en slimmere comfortwaarschuwingen, en bediening van je airco's, ventilatoren en luchtreinigers. Voeg de kamers daarna toe in de opties, of configureer alles in YAML.",
         "data_description": {
           "notify": "Waar de waarschuwingen naartoe gaan (notify.mobile_app_…, een meldingsgroep…).",
           "outdoor_temperature": "Een of meer buitensensoren; niet-beschikbare worden genegeerd.",
@@ -28,14 +28,14 @@
     "step": {
       "init": {
         "title": "Opties van Smart Comfort",
-        "description": "Geconfigureerde ruimtes: {rooms}. Als je YAML gebruikt, vervangt een wijziging daarvan deze opties bij de volgende herstart.",
+        "description": "Geconfigureerde kamers: {rooms}. Als je YAML gebruikt, vervangt een wijziging daarvan deze opties bij de volgende herstart.",
         "menu_options": {
           "general": "Meldingen",
           "alerts": "Waarschuwingen",
           "control": "Apparaatbediening",
-          "add_room": "Ruimte toevoegen",
-          "edit_room": "Ruimte bewerken",
-          "remove_room": "Ruimtes verwijderen"
+          "add_room": "Kamer toevoegen",
+          "edit_room": "Kamer bewerken",
+          "remove_room": "Kamers verwijderen"
         }
       },
       "general": {
@@ -81,7 +81,7 @@
         "data": {
           "kind": "Waarschuwing"
         },
-        "description": "Instellingen van een waarschuwing voor elke ruimte. Een ruimte kan de drempels te warm / te koud in haar formulier overschrijven, en alles in YAML."
+        "description": "Instellingen van een waarschuwing voor elke kamer. Een kamer kan de drempels te warm / te koud in zijn formulier overschrijven, en alles in YAML."
       },
       "alert": {
         "title": "Instellingen van de waarschuwing",
@@ -100,7 +100,7 @@
         },
         "data_description": {
           "threshold": "Te warm/koud, CO₂, vochtigheid: de waarde. Ramen openen/sluiten: het verschil binnen/buiten.",
-          "min_indoor": "Stel alleen openen voor als de ruimte minstens zo warm is.",
+          "min_indoor": "Stel alleen openen voor als de kamer minstens zo warm is.",
           "min_outdoor": "Alleen als het buiten minstens zo warm is.",
           "max_outdoor": "Alleen als het buiten zo koud of kouder is.",
           "max_outdoor_noise": "Niet voorgesteld als het buitengeluid hoger is dan dit (vereist een buitengeluidssensor).",
@@ -128,9 +128,9 @@
         "data_description": {
           "start": "Ventilatoren en luchtreinigers gaan alleen tussen deze tijden op volle snelheid als een opening opengaat. Beide leeg: de hele dag.",
           "manual_override": "Minuten dat een met de hand gewijzigd apparaat met rust wordt gelaten. 0: nooit gepauzeerd.",
-          "suppress_when_handled": "Geen waarschuwing “te warm” voor een ruimte waarvan Smart Comfort de airco of ventilator heeft ingeschakeld.",
-          "night_start": "Tussen deze tijden gebruiken de apparaten hun nachtinstellingen (stillere snelheid, preset of ventilatormodus) en is er voor hen geen raamboost.",
-          "display": "Uitgeschakeld in de uren \"Displays uit\" van het tabblad Planning en tijdens de dutjes van de ruimte, daarna weer aan.",
+          "suppress_when_handled": "Geen waarschuwing “te warm” voor een kamer waarvan Smart Comfort de airco of ventilator heeft ingeschakeld.",
+          "night_start": "Tussen deze tijden gebruiken de apparaten hun nachtinstellingen (stillere snelheid, voorinstelling of ventilatormodus) en is er voor hen geen raamboost.",
+          "display": "Uitgeschakeld in de uren \"Displays uit\" van het tabblad Planning en tijdens de dutjes van de kamer, daarna weer aan.",
           "reset_at": "Op dit tijdstip gaat het apparaat terug naar zijn normale toestand, ook na een handmatige wijziging (een luchtreiniger terug op auto…)."
         },
         "sections": {
@@ -152,12 +152,12 @@
               "on_above": "Aan vanaf",
               "off_below": "Uit onder",
               "percentage": "Snelheid",
-              "preset": "Preset",
+              "preset": "Voorinstelling",
               "open_percentage": "Snelheid, raam open",
-              "open_preset": "Preset, raam open",
-              "off_preset": "Preset voor het uitschakelen",
+              "open_preset": "Voorinstelling, raam open",
+              "off_preset": "Voorinstelling voor het uitschakelen",
               "night_percentage": "Snelheid 's nachts",
-              "night_preset": "Preset 's nachts"
+              "night_preset": "Voorinstelling 's nachts"
             },
             "description": "Laat “Aan vanaf” en “Uit onder” leeg voor ventilatoren die alleen door de ramen worden aangestuurd."
           },
@@ -165,11 +165,11 @@
             "name": "Luchtreinigers",
             "data": {
               "open_percentage": "Snelheid, raam open",
-              "open_preset": "Preset, raam open",
-              "closed_preset": "Preset, ramen dicht",
+              "open_preset": "Voorinstelling, raam open",
+              "closed_preset": "Voorinstelling, ramen dicht",
               "keep_on": "Aan houden",
               "night_percentage": "Snelheid 's nachts",
-              "night_preset": "Preset 's nachts",
+              "night_preset": "Voorinstelling 's nachts",
               "night_mode": "Modusoptie 's nachts"
             },
             "data_description": {
@@ -179,7 +179,7 @@
         }
       },
       "add_room": {
-        "title": "Ruimte toevoegen",
+        "title": "Kamer toevoegen",
         "data": {
           "name": "Naam",
           "temperature": "Temperatuur",
@@ -192,19 +192,19 @@
           "purifiers": "Luchtreinigers",
           "lights": "Lampen"
         },
-        "description": "Sensoren en apparaten van de ruimte. Laat leeg wat er niet is.",
+        "description": "Sensoren en apparaten van de kamer. Laat leeg wat er niet is.",
         "sections": {
           "overrides": {
-            "name": "Instellingen van de ruimte",
-            "description": "Overschrijf de algemene instellingen voor deze ruimte. Instellingen per apparaat alleen in YAML.",
+            "name": "Instellingen van de kamer",
+            "description": "Overschrijf de algemene instellingen voor deze kamer. Instellingen per apparaat alleen in YAML.",
             "data": {
               "too_hot_threshold": "Te warm vanaf",
               "too_cold_threshold": "Te koud onder",
-              "fan_preset": "Preset van de ventilator",
-              "fan_open_preset": "Preset van de ventilator, raam open",
-              "fan_off_preset": "Preset van de ventilator voor het uitschakelen",
-              "purifier_open_preset": "Preset van de luchtreiniger, raam open",
-              "purifier_closed_preset": "Preset van de luchtreiniger, ramen dicht",
+              "fan_preset": "Voorinstelling van de ventilator",
+              "fan_open_preset": "Voorinstelling van de ventilator, raam open",
+              "fan_off_preset": "Voorinstelling van de ventilator voor het uitschakelen",
+              "purifier_open_preset": "Voorinstelling van de luchtreiniger, raam open",
+              "purifier_closed_preset": "Voorinstelling van de luchtreiniger, ramen dicht",
               "purifier_mode_select": "Moduskeuze van de luchtreiniger",
               "purifier_open_mode": "Modusoptie, raam open",
               "purifier_closed_mode": "Modusoptie, ramen dicht",
@@ -217,7 +217,7 @@
         }
       },
       "room": {
-        "title": "Ruimte bewerken",
+        "title": "Kamer bewerken",
         "data": {
           "name": "Naam",
           "temperature": "Temperatuur",
@@ -230,19 +230,19 @@
           "purifiers": "Luchtreinigers",
           "lights": "Lampen"
         },
-        "description": "Sensoren en apparaten van de ruimte. Laat leeg wat er niet is.",
+        "description": "Sensoren en apparaten van de kamer. Laat leeg wat er niet is.",
         "sections": {
           "overrides": {
-            "name": "Instellingen van de ruimte",
-            "description": "Overschrijf de algemene instellingen voor deze ruimte. Instellingen per apparaat alleen in YAML.",
+            "name": "Instellingen van de kamer",
+            "description": "Overschrijf de algemene instellingen voor deze kamer. Instellingen per apparaat alleen in YAML.",
             "data": {
               "too_hot_threshold": "Te warm vanaf",
               "too_cold_threshold": "Te koud onder",
-              "fan_preset": "Preset van de ventilator",
-              "fan_open_preset": "Preset van de ventilator, raam open",
-              "fan_off_preset": "Preset van de ventilator voor het uitschakelen",
-              "purifier_open_preset": "Preset van de luchtreiniger, raam open",
-              "purifier_closed_preset": "Preset van de luchtreiniger, ramen dicht",
+              "fan_preset": "Voorinstelling van de ventilator",
+              "fan_open_preset": "Voorinstelling van de ventilator, raam open",
+              "fan_off_preset": "Voorinstelling van de ventilator voor het uitschakelen",
+              "purifier_open_preset": "Voorinstelling van de luchtreiniger, raam open",
+              "purifier_closed_preset": "Voorinstelling van de luchtreiniger, ramen dicht",
               "purifier_mode_select": "Moduskeuze van de luchtreiniger",
               "purifier_open_mode": "Modusoptie, raam open",
               "purifier_closed_mode": "Modusoptie, ramen dicht",
@@ -264,15 +264,15 @@
         }
       },
       "edit_room": {
-        "title": "Ruimte bewerken",
+        "title": "Kamer bewerken",
         "data": {
-          "room": "Ruimte"
+          "room": "Kamer"
         }
       },
       "remove_room": {
-        "title": "Ruimtes verwijderen",
+        "title": "Kamers verwijderen",
         "data": {
-          "rooms": "Ruimtes"
+          "rooms": "Kamers"
         }
       },
       "lighting": {
@@ -302,16 +302,16 @@
           "warmth": "Ook de kleurtemperatuur, voor de lampen die dat ondersteunen. Uit: alleen helderheid.",
           "transition": "Seconden van de geleidelijke veranderingen; een net ingeschakelde lamp krijgt meteen haar helderheid.",
           "night_only": "Alleen ingesteld in de nachturen (overdag met rust gelaten).",
-          "morning": "In de ruimtes met een rustige ochtend (slaapkamers), tot het einde van de ochtend (tabblad Planning).",
+          "morning": "In de kamers met een rustige ochtend (slaapkamers), tot het einde van de ochtend (tabblad Planning).",
           "morning_end": "Tot wanneer de slaapkamers hun ochtendhelderheid houden.",
           "quiet_morning": "Gedimde lampen 's ochtends, tot het einde van de ochtend (tabblad Planning).",
-          "nap": "Tijdens de dutjesperiodes van een ruimte."
+          "nap": "Tijdens de dutjesperiodes van een kamer."
         }
       }
     },
     "error": {
-      "name_required": "Geef de ruimte een naam.",
-      "name_exists": "Een ruimte heeft deze naam al.",
+      "name_required": "Geef de kamer een naam.",
+      "name_exists": "Een kamer heeft deze naam al.",
       "invalid_options": "Sommige waarden zijn ongeldig, controleer ze."
     }
   },
@@ -325,7 +325,7 @@
         "window_open_cold": "Raam open in de kou",
         "co2_high": "Hoge CO₂",
         "humidity_high": "Hoge vochtigheid",
-        "noise_high": "Lawaaiige ruimte",
+        "noise_high": "Lawaaiige kamer",
         "noisy_outside": "Ramen sluiten (lawaai buiten)",
         "bad_air_outside": "Ramen sluiten (slechte lucht buiten)"
       }
@@ -378,7 +378,7 @@
           "window_open_cold": "Raam open in de kou",
           "co2_high": "Hoge CO₂",
           "humidity_high": "Hoge vochtigheid",
-          "noise_high": "Lawaaiige ruimte",
+          "noise_high": "Lawaaiige kamer",
           "noisy_outside": "Ramen sluiten (lawaai buiten)",
           "bad_air_outside": "Ramen sluiten (slechte lucht buiten)"
         }
@@ -410,15 +410,15 @@
   "services": {
     "snooze": {
       "name": "Sluimeren",
-      "description": "Stopt een tijdje met het melden van de waarschuwingen van de opgegeven ruimtes en soorten (standaard alle).",
+      "description": "Stopt een tijdje met het melden van de waarschuwingen van de opgegeven kamers en soorten (standaard alle).",
       "fields": {
         "duration": {
           "name": "Duur",
           "description": "Minuten; standaard de sluimerduur uit de opties."
         },
         "rooms": {
-          "name": "Ruimtes",
-          "description": "Namen of id's van de ruimtes; standaard alle."
+          "name": "Kamers",
+          "description": "Namen of id's van de kamers; standaard alle."
         },
         "kinds": {
           "name": "Waarschuwingen",
@@ -428,11 +428,11 @@
     },
     "unsnooze": {
       "name": "Sluimeren annuleren",
-      "description": "Meldt de gesluimerde waarschuwingen van de opgegeven ruimtes (standaard alle) weer.",
+      "description": "Meldt de gesluimerde waarschuwingen van de opgegeven kamers (standaard alle) weer.",
       "fields": {
         "rooms": {
-          "name": "Ruimtes",
-          "description": "Namen of id's van de ruimtes; standaard alle."
+          "name": "Kamers",
+          "description": "Namen of id's van de kamers; standaard alle."
         }
       }
     },
@@ -441,8 +441,8 @@
       "description": "Geen herinnering of escalatie voor de huidige waarschuwingen tot ze eindigen.",
       "fields": {
         "rooms": {
-          "name": "Ruimtes",
-          "description": "Namen of id's van de ruimtes; standaard alle."
+          "name": "Kamers",
+          "description": "Namen of id's van de kamers; standaard alle."
         },
         "kinds": {
           "name": "Waarschuwingen",
@@ -456,7 +456,7 @@
     },
     "get_config": {
       "name": "Configuratie ophalen",
-      "description": "Geeft de gebruikte opties terug (ruimtes, waarschuwingen, bediening, verlichting), om in de YAML te kopiëren of te controleren wat er is ingesteld."
+      "description": "Geeft de gebruikte opties terug (kamers, waarschuwingen, bediening, verlichting), om in de YAML te kopiëren of te controleren wat er is ingesteld."
     }
   },
   "common": {
@@ -473,8 +473,8 @@
     "line_ventilate": "{temperature} °C binnen, {outdoor} °C buiten — open de ramen",
     "line_close_windows": "{outdoor} °C buiten, {temperature} °C binnen — sluit {openings}",
     "line_window_open_cold": "open: {openings}, {outdoor} °C buiten",
-    "line_co2_high": "CO₂ {value} ppm — lucht de ruimte",
-    "line_humidity_high": "vochtigheid {value} % — lucht de ruimte",
+    "line_co2_high": "CO₂ {value} ppm — lucht de kamer",
+    "line_humidity_high": "vochtigheid {value} % — lucht de kamer",
     "line_noise_high": "geluid {value} dB, boven {threshold} dB",
     "line_noisy_outside": "{value} dB buiten — sluit {openings}",
     "line_bad_air_outside": "buitenluchtkwaliteit {value}/6 — sluit {openings}",
@@ -487,7 +487,7 @@
       "message": "Smart Comfort is niet geladen."
     },
     "unknown_room": {
-      "message": "Onbekende ruimte: {room}."
+      "message": "Onbekende kamer: {room}."
     }
   }
 }

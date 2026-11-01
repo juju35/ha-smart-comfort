@@ -49,7 +49,7 @@
           "digest_window": "Okno grupowania",
           "reminder": "Przypomnienie",
           "snooze_duration": "Czas wyciszenia",
-          "startup_grace": "Okres karencji po uruchomieniu",
+          "startup_grace": "Okres wstrzymania po uruchomieniu",
           "quiet_start": "Początek godzin ciszy",
           "quiet_end": "Koniec godzin ciszy",
           "presence": "Obecność",
@@ -95,7 +95,7 @@
           "max_outdoor_air": "Maksymalny poziom jakości powietrza na zewnątrz",
           "hysteresis": "Histereza",
           "delay": "Opóźnienie",
-          "severity": "Waga",
+          "severity": "Ważność",
           "escalation": "Krok eskalacji"
         },
         "data_description": {
@@ -126,10 +126,10 @@
           "display_on": "Wyświetlacze włączone od"
         },
         "data_description": {
-          "start": "Wentylatory i oczyszczacze przechodzą na pełną prędkość po otwarciu otworu tylko między tymi godzinami. Oba puste: cały dzień.",
+          "start": "Wentylatory i oczyszczacze przechodzą na pełną prędkość po otwarciu okna lub drzwi tylko między tymi godzinami. Oba puste: cały dzień.",
           "manual_override": "Minuty, przez które urządzenie zmienione ręcznie jest pozostawione w spokoju. 0: nigdy nie wstrzymywane.",
           "suppress_when_handled": "Brak alertu „za gorąco” dla pomieszczenia, w którym Smart Comfort włączył klimatyzator lub wentylator.",
-          "night_start": "Między tymi godzinami urządzenia używają ustawień nocnych (cichsza prędkość, preset lub tryb wentylatora) i nie ma dla nich wzmocnienia przy oknie.",
+          "night_start": "Między tymi godzinami urządzenia używają ustawień nocnych (cichsza prędkość, ustawienie wstępne lub tryb wentylatora) i nie ma dla nich wzmocnienia przy oknie.",
           "display": "Wyłączane w godzinach \"Wyświetlacze wyłączone\" z karty Harmonogram i podczas drzemek w pomieszczeniu, potem włączane ponownie.",
           "reset_at": "O tej godzinie urządzenie wraca do normalnego stanu, nawet po ręcznej zmianie (oczyszczacz z powrotem w trybie auto…)."
         },
@@ -141,7 +141,7 @@
               "off_below": "Wyłączony poniżej",
               "setpoint": "Temperatura zadana",
               "fan_mode": "Tryb wentylatora",
-              "closed_for": "Otwory zamknięte od (min)",
+              "closed_for": "Okna i drzwi zamknięte od (min)",
               "off_on_open": "Wyłączony, gdy otwarte od (min)",
               "night_fan_mode": "Tryb wentylatora w nocy"
             }
@@ -152,12 +152,12 @@
               "on_above": "Włączony od",
               "off_below": "Wyłączony poniżej",
               "percentage": "Prędkość",
-              "preset": "Preset",
+              "preset": "Ustawienie wstępne",
               "open_percentage": "Prędkość, okno otwarte",
-              "open_preset": "Preset, okno otwarte",
-              "off_preset": "Preset przed wyłączeniem",
+              "open_preset": "Ustawienie wstępne, okno otwarte",
+              "off_preset": "Ustawienie wstępne przed wyłączeniem",
               "night_percentage": "Prędkość w nocy",
-              "night_preset": "Preset w nocy"
+              "night_preset": "Ustawienie wstępne w nocy"
             },
             "description": "Pozostaw „Włączony od” i „Wyłączony poniżej” puste dla wentylatorów sterowanych tylko przez okna."
           },
@@ -165,11 +165,11 @@
             "name": "Oczyszczacze powietrza",
             "data": {
               "open_percentage": "Prędkość, okno otwarte",
-              "open_preset": "Preset, okno otwarte",
-              "closed_preset": "Preset, okna zamknięte",
+              "open_preset": "Ustawienie wstępne, okno otwarte",
+              "closed_preset": "Ustawienie wstępne, okna zamknięte",
               "keep_on": "Utrzymuj włączony",
               "night_percentage": "Prędkość w nocy",
-              "night_preset": "Preset w nocy",
+              "night_preset": "Ustawienie wstępne w nocy",
               "night_mode": "Opcja trybu w nocy"
             },
             "data_description": {
@@ -200,11 +200,11 @@
             "data": {
               "too_hot_threshold": "Za gorąco od",
               "too_cold_threshold": "Za zimno poniżej",
-              "fan_preset": "Preset wentylatora",
-              "fan_open_preset": "Preset wentylatora, okno otwarte",
-              "fan_off_preset": "Preset wentylatora przed wyłączeniem",
-              "purifier_open_preset": "Preset oczyszczacza, okno otwarte",
-              "purifier_closed_preset": "Preset oczyszczacza, okna zamknięte",
+              "fan_preset": "Ustawienie wstępne wentylatora",
+              "fan_open_preset": "Ustawienie wstępne wentylatora, okno otwarte",
+              "fan_off_preset": "Ustawienie wstępne wentylatora przed wyłączeniem",
+              "purifier_open_preset": "Ustawienie wstępne oczyszczacza, okno otwarte",
+              "purifier_closed_preset": "Ustawienie wstępne oczyszczacza, okna zamknięte",
               "purifier_mode_select": "Wybór trybu oczyszczacza",
               "purifier_open_mode": "Opcja trybu, okno otwarte",
               "purifier_closed_mode": "Opcja trybu, okna zamknięte",
@@ -238,11 +238,11 @@
             "data": {
               "too_hot_threshold": "Za gorąco od",
               "too_cold_threshold": "Za zimno poniżej",
-              "fan_preset": "Preset wentylatora",
-              "fan_open_preset": "Preset wentylatora, okno otwarte",
-              "fan_off_preset": "Preset wentylatora przed wyłączeniem",
-              "purifier_open_preset": "Preset oczyszczacza, okno otwarte",
-              "purifier_closed_preset": "Preset oczyszczacza, okna zamknięte",
+              "fan_preset": "Ustawienie wstępne wentylatora",
+              "fan_open_preset": "Ustawienie wstępne wentylatora, okno otwarte",
+              "fan_off_preset": "Ustawienie wstępne wentylatora przed wyłączeniem",
+              "purifier_open_preset": "Ustawienie wstępne oczyszczacza, okno otwarte",
+              "purifier_closed_preset": "Ustawienie wstępne oczyszczacza, okna zamknięte",
               "purifier_mode_select": "Wybór trybu oczyszczacza",
               "purifier_open_mode": "Opcja trybu, okno otwarte",
               "purifier_closed_mode": "Opcja trybu, okna zamknięte",
@@ -322,7 +322,7 @@
         "close_windows": "Zamknij okna (na zewnątrz cieplej)",
         "ventilate": "Otwórz okna (na zewnątrz chłodniej)",
         "too_cold": "Za zimno",
-        "window_open_cold": "Okno otwarte w zimnie",
+        "window_open_cold": "Okno otwarte przy chłodzie",
         "co2_high": "Wysokie CO₂",
         "humidity_high": "Wysoka wilgotność",
         "noise_high": "Głośne pomieszczenie",
@@ -375,7 +375,7 @@
           "close_windows": "Zamknij okna (na zewnątrz cieplej)",
           "ventilate": "Otwórz okna (na zewnątrz chłodniej)",
           "too_cold": "Za zimno",
-          "window_open_cold": "Okno otwarte w zimnie",
+          "window_open_cold": "Okno otwarte przy chłodzie",
           "co2_high": "Wysokie CO₂",
           "humidity_high": "Wysoka wilgotność",
           "noise_high": "Głośne pomieszczenie",

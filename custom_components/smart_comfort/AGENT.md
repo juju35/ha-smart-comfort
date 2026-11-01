@@ -25,7 +25,7 @@ custom_components/smart_comfort/
 ├── discovery.py     # discover_rooms -> Found (areas -> rooms, outdoor areas -> outdoor places, outdoor sensors in no area), merge (keeps what is set, matches on area then name; place sensors leave the top-level lists)
 ├── panel.py         # Static path /smart_comfort_static (once per run) + custom panel "smart-comfort" (admin), removed with the entry
 ├── frontend/smart-comfort-panel.js  # Plain web component (no build): tabs overview/rooms/alerts/notifications/control, ha-form
-├── entity.py / icons.json / services.yaml / translations/{en,fr,de,es,sr,sr-Latn}.json / brand/
+├── entity.py / icons.json / services.yaml / translations/{en,fr,de,es,sr,sr-Latn,it,nl,pt,pt-BR,pl}.json (pt-BR: copy of pt) / brand/
 ```
 
 ## Rules

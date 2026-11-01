@@ -3,7 +3,7 @@
 ## 1.7.4 - 2026-11-01
 
 ### What's new
-- Added Italian, Dutch, European Portuguese and Polish translations (`it`, `nl`, `pt`, `pl`): integration, notifications, panel and activity card. Brazilian Portuguese (`pt-BR`) gets the European Portuguese texts in the panel and the activity card.
+- Added Italian, Dutch, European Portuguese and Polish translations (`it`, `nl`, `pt`, `pl`): integration, notifications, panel and activity card. Brazilian Portuguese: pt-BR uses the European Portuguese texts (integration, notifications, panel and activity card).
 
 ## 1.7.3 - 2026-11-01
 
