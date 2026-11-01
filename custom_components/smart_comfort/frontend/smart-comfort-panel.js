@@ -3921,6 +3921,9 @@ const STYLE = `
   .sched-row .help { margin: 0 0 8px; }
   @media (max-width: 600px) {
     .content { padding: 12px; }
+    /* A room's or outdoor place's name and its actions on the first line, what it holds on the next one. */
+    .room-header { flex-wrap: wrap; row-gap: 6px; }
+    .room-summary { order: 3; flex-basis: 100%; }
     .dirty { display: none; }
     .section-body { padding-left: 4px; }
     .section-summary { display: none; }
