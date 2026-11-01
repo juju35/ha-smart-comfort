@@ -4,6 +4,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 
 let focused = null;
+let focusOptions = null;
 
 class FakeNode {
   constructor(tag) {
@@ -35,8 +36,9 @@ class FakeNode {
     for (const listener of this.listeners[type] || []) listener(event);
     return event;
   }
-  focus() {
+  focus(options) {
     focused = this;
+    focusOptions = options ?? null;
   }
 }
 
@@ -303,6 +305,8 @@ test("a new entry does not take the keyboard focus away from the line that has i
   const focusedRow = card.shadowRoot.activeElement;
   assert.ok(focusedRow, "the focus is lost");
   assert.equal(focusedRow, rows(card)[1]);
+  // Given back without scrolling the page (the card may be off screen while the list grows).
+  assert.deepEqual(focusOptions, { preventScroll: true });
   // A line that is gone (filtered out, or past the limit): nothing to focus, no error.
   card.setConfig({ limit: 1 });
   assert.equal(card.shadowRoot.activeElement, null);
@@ -314,6 +318,7 @@ test("a filter chosen with the keyboard keeps the focus", async () => {
   lights.focus();
   lights.fire("click");
   assert.equal(card.shadowRoot.activeElement, chip(card, "Lights"));
+  assert.deepEqual(focusOptions, { preventScroll: true });
   assert.equal(chip(card, "Lights").getAttribute("aria-pressed"), "true");
   assert.equal(chip(card, "All").getAttribute("aria-pressed"), "false");
 });

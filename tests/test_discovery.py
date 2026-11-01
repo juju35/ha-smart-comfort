@@ -11,7 +11,7 @@ from homeassistant.helpers import entity_registry as er
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from custom_components.smart_comfort.const import DOMAIN
-from custom_components.smart_comfort.discovery import discover_rooms, merge
+from custom_components.smart_comfort.discovery import _slug, discover_rooms, merge
 
 
 class House:
@@ -443,6 +443,10 @@ async def test_discover_words_by_language(hass: HomeAssistant, language: str) ->
         "Napolju",
         "Двориште",
         "Тераса",
+        "Achtertuin",
+        "Voortuin",
+        "Außen",
+        "Außenbereich",
     ],
 )
 async def test_outdoor_area_names(hass: HomeAssistant, name: str) -> None:
@@ -454,7 +458,8 @@ async def test_outdoor_area_names(hass: HomeAssistant, name: str) -> None:
 
 
 @pytest.mark.parametrize(
-    "name", ["Temperatura esterna", "Buitentemperatuur", "Temperatura zewnętrzna", "Spoljna temperatura"]
+    "name",
+    ["Temperatura esterna", "Buitentemperatuur", "Temperatura zewnętrzna", "Spoljna temperatura", "Außentemperatur"],
 )
 async def test_outdoor_sensor_names(hass: HomeAssistant, name: str) -> None:
     """An outdoor module in no area, named in another language."""
@@ -493,7 +498,15 @@ async def test_camera_device_sensors_are_not_the_room(hass: HomeAssistant) -> No
 
 
 @pytest.mark.parametrize(
-    ("name", "outdoor", "bedroom"), [("Sebastian", False, False), ("Quarto de banho", False, False)]
+    ("name", "outdoor", "bedroom"),
+    [
+        ("Sebastian", False, False),
+        ("Quarto de banho", False, False),
+        ("Camera", False, True),
+        ("Camera di Marco", False, True),
+        ("Camera dei bambini", False, True),
+        ("Telecamera", False, False),
+    ],
 )
 async def test_word_collisions(hass: HomeAssistant, name: str, outdoor: bool, bedroom: bool) -> None:
     """Short words match at the start of a word only ("Sebastian" is not a "bašta"); a bathroom is not a bedroom."""
@@ -505,3 +518,11 @@ async def test_word_collisions(hass: HomeAssistant, name: str, outdoor: bool, be
     assert bool(found.outdoors) is outdoor
     assert [r["name"] for r in found.rooms] == [name]
     assert ("lighting" in found.rooms[0]) is bedroom
+
+
+@pytest.mark.parametrize(
+    ("text", "slug"), [("Außen", "aussen"), ("Außentemperatur", "aussentemperatur"), ("Спаваћа соба", "spavaca_soba")]
+)
+def test_slug_transliterates(text: str, slug: str) -> None:
+    """A German ß is "ss" (not dropped: "Außen" is not "auen"), Serbian Cyrillic is written in Latin."""
+    assert _slug(text) == slug

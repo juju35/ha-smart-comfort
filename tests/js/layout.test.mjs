@@ -43,8 +43,8 @@ test("activity card: long texts and entity ids wrap inside the card", async () =
 test("activity card header: the title block shrinks and truncates, the badge never shrinks", async () => {
   const css = await source("smart-comfort-activity-card.js");
   const titles = rule(css, ".titles") || "";
-  assert.match(titles, /min-width:\s*0/);
-  assert.match(titles, /flex:\s*1 1 auto/);
+  assert.match(titles, /min-width:\s*4ch/);
+  assert.match(titles, /flex:\s*1 1 0(;|\s|$)/);
   const name = rule(css, ".hname") || "";
   assert.match(name, /text-overflow:\s*ellipsis/);
   assert.match(name, /min-width:\s*4ch/);
