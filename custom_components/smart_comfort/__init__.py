@@ -33,7 +33,7 @@ from .const import (
     STORAGE_VERSION,
 )
 from .manager import SmartComfort
-from .panel import async_register_panel, async_remove_panel
+from .panel import async_register_panel, async_remove_card, async_remove_panel
 from .schema import CONFIG_SCHEMA as _CONFIG_SCHEMA
 
 PLATFORMS = [Platform.BUTTON, Platform.SENSOR, Platform.SWITCH]
@@ -179,6 +179,7 @@ async def async_unload_entry(hass: HomeAssistant, entry: SmartComfortConfigEntry
 async def async_remove_entry(hass: HomeAssistant, entry: SmartComfortConfigEntry) -> None:
     """Forget the episodes, snoozes and targets: a new entry starts afresh. The panel goes too."""
     async_remove_panel(hass)
+    await async_remove_card(hass)
     hass.data.get(DOMAIN, {}).pop("state", None)
     await Store(hass, STORAGE_VERSION, STORAGE_KEY).async_remove()
 
