@@ -141,6 +141,51 @@ async def test_panel_registered(hass: HomeAssistant) -> None:
     assert PANEL_URL not in hass.data["frontend_panels"]
 
 
+class _Resources:
+    """The dashboard resources collection, as far as the card uses it."""
+
+    def __init__(self, items: list[dict] | None = None) -> None:
+        self.items = list(items or [])
+
+    async def async_get_info(self) -> dict:
+        return {}
+
+    def async_items(self) -> list[dict]:
+        return self.items
+
+    async def async_create_item(self, data: dict) -> None:
+        self.items.append({"id": str(len(self.items) + 1), **data})
+
+    async def async_update_item(self, item_id: str, data: dict) -> None:
+        next(i for i in self.items if i["id"] == item_id).update(data)
+
+    async def async_delete_item(self, item_id: str) -> None:
+        self.items = [i for i in self.items if i["id"] != item_id]
+
+
+async def test_card_dashboard_resource(hass: HomeAssistant) -> None:
+    """Resources in the UI: the card is a dashboard resource (one, current version), not an extra module."""
+    from types import SimpleNamespace
+
+    hass.config.components.add("frontend")
+    hass.http = Mock(async_register_static_paths=AsyncMock())
+    hass.data["frontend_extra_module_url"] = extra = Mock()
+    card = "/smart_comfort_static/smart-comfort-activity-card.js"
+    resources = _Resources(
+        [{"id": "a", "url": f"{card}?v=0", "res_type": "module"}, {"id": "b", "url": card, "res_type": "module"}]
+    )
+    hass.data["lovelace"] = SimpleNamespace(resource_mode="storage", resources=resources)
+    entry = await _setup(hass)
+    urls = [i["url"] for i in resources.items]
+    assert len(urls) == 1
+    assert urls[0].startswith(f"{card}?v=") and urls[0] != f"{card}?v=0"
+    extra.add.assert_not_called()
+    # Removing the integration drops the resource.
+    assert await hass.config_entries.async_remove(entry.entry_id)
+    await hass.async_block_till_done()
+    assert resources.items == []
+
+
 async def test_status_outdoors(hass: HomeAssistant) -> None:
     """Each outdoor place in the status: its values and its sensors."""
     from homeassistant.util import dt as dt_util

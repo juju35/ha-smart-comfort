@@ -1,7 +1,7 @@
 {
   "domain": "smart_comfort",
   "name": "Smart Comfort",
-  "after_dependencies": ["frontend", "http", "mobile_app", "notify", "websocket_api"],
+  "after_dependencies": ["frontend", "http", "lovelace", "mobile_app", "notify", "websocket_api"],
   "codeowners": ["@juju35"],
   "config_flow": true,
   "documentation": "https://github.com/juju35/ha-smart-comfort",
@@ -10,5 +10,5 @@
   "issue_tracker": "https://github.com/juju35/ha-smart-comfort/issues",
   "requirements": [],
   "single_config_entry": true,
-  "version": "1.7.5"
+  "version": "1.7.6"
 }

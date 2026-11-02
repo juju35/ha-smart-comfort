@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.7.6 - 2026-11-02
+
+### Fixes
+- Activity card: on a dashboard it could stay "Custom element not found: smart-comfort-activity-card". It is now added to the dashboard resources (Settings → Dashboards → Resources), which a dashboard loads before building its cards; with resources in YAML it is still loaded on every page. Removing the integration removes the resource.
+
 ## 1.7.5 - 2026-11-01
 
 ### Fixes
