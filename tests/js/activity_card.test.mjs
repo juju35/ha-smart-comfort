@@ -4,6 +4,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 
 let focused = null;
+let focusOptions = null;
 
 class FakeNode {
   constructor(tag) {
@@ -35,8 +36,9 @@ class FakeNode {
     for (const listener of this.listeners[type] || []) listener(event);
     return event;
   }
-  focus() {
+  focus(options) {
     focused = this;
+    focusOptions = options ?? null;
   }
 }
 
@@ -303,6 +305,8 @@ test("a new entry does not take the keyboard focus away from the line that has i
   const focusedRow = card.shadowRoot.activeElement;
   assert.ok(focusedRow, "the focus is lost");
   assert.equal(focusedRow, rows(card)[1]);
+  // Given back without scrolling the page (the card may be off screen while the list grows).
+  assert.deepEqual(focusOptions, { preventScroll: true });
   // A line that is gone (filtered out, or past the limit): nothing to focus, no error.
   card.setConfig({ limit: 1 });
   assert.equal(card.shadowRoot.activeElement, null);
@@ -314,6 +318,7 @@ test("a filter chosen with the keyboard keeps the focus", async () => {
   lights.focus();
   lights.fire("click");
   assert.equal(card.shadowRoot.activeElement, chip(card, "Lights"));
+  assert.deepEqual(focusOptions, { preventScroll: true });
   assert.equal(chip(card, "Lights").getAttribute("aria-pressed"), "true");
   assert.equal(chip(card, "All").getAttribute("aria-pressed"), "false");
 });
@@ -326,4 +331,91 @@ test("the active filter is tinted, not a filled button", async () => {
   assert.doesNotMatch(rule, /background:\s*var\(--primary-color\)/);
   assert.match(rule, /background:\s*rgba\(var\(--rgb-primary-color/);
   assert.doesNotMatch(rule, /--text-primary-color/);
+});
+
+test("the card is at least 6 columns wide in a Sections view", () => {
+  const options = new Card().getGridOptions();
+  assert.ok(options.min_columns >= 6, JSON.stringify(options));
+});
+
+const find = (card, cls) => walk(card.shadowRoot).find((n) => (n.className || "").split(" ").includes(cls));
+
+test("header: a tinted round badge with the history icon and the title, like the other cards", async () => {
+  const fake = fakeHass();
+  const card = new Card();
+  card.setConfig({});
+  card.hass = fake.hass;
+  attach(card);
+  await fake.settle();
+  const card0 = card.shadowRoot.children.find((n) => n.tagName === "ha-card");
+  assert.equal(card0.header, undefined, "no native header");
+  assert.equal(find(card, "hbadge").children[0].icon, "mdi:history");
+  assert.equal(find(card, "hname").textContent, "Smart Comfort activity");
+  card.setConfig({ title: "Activité" });
+  assert.equal(find(card, "hname").textContent, "Activité");
+  // An empty title: no header at all.
+  card.setConfig({ title: "" });
+  assert.equal(find(card, "header"), undefined);
+  // The panel's Activity tab has its own title.
+  const { card: panel } = await panelCard([]);
+  assert.equal(find(panel, "header"), undefined);
+});
+
+/** The visual editor's schema, with Home Assistant in `language`. */
+function editorIn(language) {
+  const previous = document.querySelector;
+  document.querySelector = (selector) => (selector === "home-assistant" ? { hass: { language } } : null);
+  try {
+    const form = Card.getConfigForm();
+    const field = (name) => form.schema.find((f) => f.name === name);
+    return { form, field, helper: (name) => form.computeHelper?.({ name }) };
+  } finally {
+    document.querySelector = previous;
+  }
+}
+
+test("visual editor: translated kinds, and a hint for the room", () => {
+  for (const language of ["en", "fr", "de", "es", "it", "nl", "pt", "pl", "sr", "sr-Latn"]) {
+    const { field, helper } = editorIn(language);
+    const options = field("kinds").selector.select.options;
+    assert.deepEqual(
+      options.map((o) => o.value),
+      ["device", "lighting", "presence", "display", "notified", "manual", "reset", "failed"],
+      language
+    );
+    for (const option of options) {
+      assert.ok(option.label && option.label !== option.value, `${language}: ${option.value} has no label`);
+    }
+    assert.ok(helper("room"), `${language}: no hint for the room`);
+  }
+  const { field } = editorIn("fr");
+  assert.equal(field("kinds").selector.select.options.find((o) => o.value === "failed").label, "Échecs d'envoi");
+});
+
+test("rendered again when the language or a shown name changes, not on every other state change", async () => {
+  const fake = fakeHass();
+  const card = new Card();
+  card.setConfig({});
+  card.hass = { ...fake.hass, states: { "fan.bedroom": { attributes: { friendly_name: "Fan" } } } };
+  attach(card);
+  await fake.settle();
+  fake.push({ entries: [entry({ entity_id: "fan.bedroom", target: "cool" })] });
+  assert.deepEqual(texts(card), ["Fan — Cooling"]);
+  const before = rows(card)[0];
+  // Another entity changes: nothing to show differently, the lines stay as they are.
+  card.hass = {
+    ...fake.hass,
+    states: { "fan.bedroom": { attributes: { friendly_name: "Fan" } }, "sensor.other": { attributes: {} } },
+  };
+  assert.equal(rows(card)[0], before);
+  card.hass = { ...fake.hass, states: { "fan.bedroom": { attributes: { friendly_name: "Bedroom fan" } } } };
+  assert.deepEqual(texts(card), ["Bedroom fan — Cooling"]);
+  card.hass = { ...fake.hass, language: "fr", states: { "fan.bedroom": { attributes: { friendly_name: "Ventilateur" } } } };
+  assert.deepEqual(texts(card), ["Ventilateur — Refroidit"]);
+  assert.equal(find(card, "hname").textContent, "Activité Smart Comfort");
+  // The entity is removed: its id is shown.
+  card.hass = { ...fake.hass, language: "fr", states: {} };
+  assert.deepEqual(texts(card), ["fan.bedroom — Refroidit"]);
+  // Still one subscription.
+  assert.equal(fake.subs.length, 1);
 });

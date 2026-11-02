@@ -50,6 +50,7 @@ custom_components/smart_comfort/
 - ha-form is lazy-loaded by Home Assistant: `loadHaForm()` loads it through the entities card editor.
 - The draft stores only what differs from the defaults (`diff`, `prune`); times "HH:MM" and "HH:MM:SS" compare equal. Device items with no own setting are stored as a bare entity id. Unknown keys of a room (room-level `control`, `id`) are kept.
 - Discover: `smart_comfort/discover` returns the draft options with the discovered rooms merged (not saved); the panel marks them new/completed until Save or Discard.
+- Discovery words (discovery.py) are in slug form for en/fr/de/es/it/nl/pt/pl/sr; `_slug` writes Serbian Cyrillic in Latin first. A word found anywhere in the slug, or at the start of a word when it begins with `_` ("_basta" is not in "sebastian"). Machine words (`EQUIPMENT_WORDS`) are whole words; not "camera" (an Italian bedroom): a camera's own sensors are left out by its device's `camera` domain (`BUSY_DOMAINS`).
 - The status subscription listens to `SIGNAL_UPDATE`, sent by `_update_listeners` and by setup/unload, so it survives reloads.
 
 ## Release

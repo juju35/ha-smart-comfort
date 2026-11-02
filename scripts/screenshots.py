@@ -1,19 +1,20 @@
 """Render the Smart Comfort panel with mock data and save the README screenshots, in the light and the dark theme.
 
-Usage: python scripts/screenshots.py  (needs `pip install playwright` and `playwright install chromium`)
+Usage: python scripts/screenshots.py  (needs `pip install playwright pillow` and `playwright install chromium`)
 CHROMIUM_PATH=/path/to/chrome to use another browser. The clock is frozen and the time zone is UTC, so the times stay
 the same. The panel runs in a page that mimics Home Assistant: a static sidebar, the theme variables, and stand-ins for
 <ha-icon>, <ha-menu-button> and <ha-form> (its text, number, select, boolean, entity and expandable fields). The
 WebSocket commands of the panel (config, subscribe, discover, translations) answer with the mock data below; the
 alert and control defaults and the field labels come from the integration itself (const.py, translations/en.json).
+A screenshot is only written when its pixels changed (not its bytes: PNG encoding may differ), so a render that looks
+the same leaves the file, and the pull request, untouched.
 """
 
 import importlib.util
+import io
 import json
 import os
 from pathlib import Path
-
-from playwright.sync_api import sync_playwright
 
 ROOT = Path(__file__).resolve().parent.parent
 COMPONENT = ROOT / "custom_components/smart_comfort"
@@ -870,12 +871,30 @@ def render(browser, shot, theme):
         page.evaluate(SCROLL, list(shot["scroll"]))
     page.wait_for_timeout(200)
     path = ROOT / "screenshots" / f"{name}.png"
-    page.screenshot(path=str(path), animations="disabled")
-    print(path.relative_to(ROOT))
+    written = save_if_changed(path, page.screenshot(animations="disabled"))
+    print(path.relative_to(ROOT), "" if written else "(unchanged)")
     context.close()
 
 
+def save_if_changed(path: Path, png: bytes) -> bool:
+    """Write `png` to `path` unless the file there already has the same pixels. True when written."""
+    from PIL import Image, UnidentifiedImageError
+
+    if path.exists():
+        try:
+            with Image.open(path) as old_image, Image.open(io.BytesIO(png)) as new_image:
+                old, new = old_image.convert("RGBA"), new_image.convert("RGBA")
+                if old.size == new.size and old.tobytes() == new.tobytes():
+                    return False
+        except (OSError, UnidentifiedImageError):
+            pass
+    path.write_bytes(png)
+    return True
+
+
 def main():
+    from playwright.sync_api import sync_playwright
+
     with sync_playwright() as p:
         browser = p.chromium.launch(executable_path=os.environ.get("CHROMIUM_PATH") or None)
         for shot in SHOTS:
