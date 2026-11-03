@@ -1,4 +1,4 @@
-"""Render the Smart Comfort panel with mock data and save the README screenshots, in the light and the dark theme.
+"""Render the Smart Comfort panel and mini card with mock data and save the README screenshots, light and dark.
 
 Usage: python scripts/screenshots.py  (needs `pip install playwright pillow` and `playwright install chromium`)
 CHROMIUM_PATH=/path/to/chrome to use another browser. The clock is frozen and the time zone is UTC, so the times stay
@@ -20,6 +20,7 @@ ROOT = Path(__file__).resolve().parent.parent
 COMPONENT = ROOT / "custom_components/smart_comfort"
 PANEL_JS = (COMPONENT / "frontend/smart-comfort-panel.js").read_text()
 CARD_JS = (COMPONENT / "frontend/smart-comfort-activity-card.js").read_text()
+MINI_JS = (COMPONENT / "frontend/smart-comfort-mini-card.js").read_text()
 TRANSLATIONS = json.loads((COMPONENT / "translations/en.json").read_text())
 DOMAIN = "smart_comfort"
 NOW = "2026-10-24T11:45:00Z"
@@ -172,6 +173,12 @@ ICONS = {
     "window-closed": "M6,11H10V9H14V11H18V4H6V11M18,13H6V20H18V13M6,2H18A2,2 0 0,1 20,4V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V4A2,2 0 0,1 6,2Z",
     "air-filter": "M19,18.31V20A2,2 0 0,1 17,22H7A2,2 0 0,1 5,20V16.3C4.54,16.12 3.95,16 3,16A1,1 0 0,1 2,15A1,1 0 0,1 3,14C3.82,14 4.47,14.08 5,14.21V12.3C4.54,12.12 3.95,12 3,12A1,1 0 0,1 2,11A1,1 0 0,1 3,10C3.82,10 4.47,10.08 5,10.21V8.3C4.54,8.12 3.95,8 3,8A1,1 0 0,1 2,7A1,1 0 0,1 3,6C3.82,6 4.47,6.08 5,6.21V4A2,2 0 0,1 7,2H17A2,2 0 0,1 19,4V6.16C20.78,6.47 21.54,7.13 21.71,7.29C22.1,7.68 22.1,8.32 21.71,8.71C21.32,9.1 20.8,9.09 20.29,8.71V8.71C20.29,8.71 19.25,8 17,8C15.74,8 14.91,8.41 13.95,8.9C12.91,9.41 11.74,10 10,10C9.64,10 9.31,10 9,9.96V7.95C9.3,8 9.63,8 10,8C11.26,8 12.09,7.59 13.05,7.11C14.09,6.59 15.27,6 17,6V4H7V20H17V18C18.5,18 18.97,18.29 19,18.31M17,10C15.27,10 14.09,10.59 13.05,11.11C12.09,11.59 11.26,12 10,12C9.63,12 9.3,12 9,11.95V13.96C9.31,14 9.64,14 10,14C11.74,14 12.91,13.41 13.95,12.9C14.91,12.42 15.74,12 17,12C19.25,12 20.29,12.71 20.29,12.71V12.71C20.8,13.1 21.32,13.1 21.71,12.71C22.1,12.32 22.1,11.69 21.71,11.29C21.5,11.08 20.25,10 17,10M17,14C15.27,14 14.09,14.59 13.05,15.11C12.09,15.59 11.26,16 10,16C9.63,16 9.3,16 9,15.95V17.96C9.31,18 9.64,18 10,18C11.74,18 12.91,17.41 13.95,16.9C14.91,16.42 15.74,16 17,16C19.25,16 20.29,16.71 20.29,16.71V16.71C20.8,17.1 21.32,17.1 21.71,16.71C22.1,16.32 22.1,15.69 21.71,15.29C21.5,15.08 20.25,14 17,14Z",
     "ear-hearing": "M17,20C16.71,20 16.44,19.94 16.24,19.85C15.53,19.5 15.03,18.97 14.53,17.47C14,15.91 13.06,15.18 12.14,14.47C11.35,13.86 10.53,13.23 9.82,11.94C9.29,11 9,9.93 9,9C9,6.2 11.2,4 14,4C16.8,4 19,6.2 19,9H21C21,5.07 17.93,2 14,2C10.07,2 7,5.07 7,9C7,10.26 7.38,11.65 8.07,12.9C9,14.55 10.05,15.38 10.92,16.05C11.73,16.67 12.31,17.12 12.63,18.1C13.23,19.92 14,20.94 15.36,21.65C15.87,21.88 16.43,22 17,22A4,4 0 0,0 21,18H19A2,2 0 0,1 17,20M7.64,2.64L6.22,1.22C4.23,3.21 3,5.96 3,9C3,12.04 4.23,14.79 6.22,16.78L7.63,15.37C6,13.74 5,11.5 5,9C5,6.5 6,4.26 7.64,2.64M11.5,9A2.5,2.5 0 0,0 14,11.5A2.5,2.5 0 0,0 16.5,9A2.5,2.5 0 0,0 14,6.5A2.5,2.5 0 0,0 11.5,9Z",
+    "arrow-expand": "M10,21V19H6.41L10.91,14.5L9.5,13.09L5,17.59V14H3V21H10M14.5,10.91L19,6.41V10H21V3H14V5H17.59L13.09,9.5L14.5,10.91Z",
+    "arrow-collapse": "M19.5,3.09L15,7.59V4H13V11H20V9H16.41L20.91,4.5L19.5,3.09M4,13V15H7.59L3.09,19.5L4.5,20.91L9,16.41V20H11V13H4Z",
+    "bell-off-outline": "M22.11,21.46L2.39,1.73L1.11,3L5.83,7.72C5.29,8.73 5,9.86 5,11V17L3,19V20H18.11L20.84,22.73L22.11,21.46M7,18V11C7,10.39 7.11,9.79 7.34,9.23L16.11,18H7M10,21H14A2,2 0 0,1 12,23A2,2 0 0,1 10,21M8.29,5.09C8.82,4.75 9.4,4.5 10,4.29C10,4.19 10,4.1 10,4A2,2 0 0,1 12,2A2,2 0 0,1 14,4C14,4.1 14,4.19 14,4.29C16.97,5.17 19,7.9 19,11V15.8L17,13.8V11A5,5 0 0,0 12,6C11.22,6 10.45,6.2 9.76,6.56L8.29,5.09Z",
+    "snowflake": "M20.79,13.95L18.46,14.57L16.46,13.44V10.56L18.46,9.43L20.79,10.05L21.31,8.12L19.54,7.65L20,5.88L18.07,5.36L17.45,7.69L15.45,8.82L13,7.38V5.12L14.71,3.41L13.29,2L12,3.29L10.71,2L9.29,3.41L11,5.12V7.38L8.5,8.82L6.5,7.69L5.92,5.36L4,5.88L4.47,7.65L2.7,8.12L3.22,10.05L5.55,9.43L7.55,10.56V13.45L5.55,14.58L3.22,13.96L2.7,15.89L4.47,16.36L4,18.12L5.93,18.64L6.55,16.31L8.55,15.18L11,16.62V18.88L9.29,20.59L10.71,22L12,20.71L13.29,22L14.7,20.59L13,18.88V16.62L15.5,15.17L17.5,16.3L18.12,18.63L20,18.12L19.53,16.35L21.3,15.88L20.79,13.95M9.5,10.56L12,9.11L14.5,10.56V13.44L12,14.89L9.5,13.44V10.56Z",
+    "check-circle-outline": "M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M12 20C7.59 20 4 16.41 4 12S7.59 4 12 4 20 7.59 20 12 16.41 20 12 20M16.59 7.58L10 14.17L7.41 11.59L6 13L10 17L18 9L16.59 7.58Z",
+    "information-outline": "M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,17H13V11H11V17Z",
 }
 
 # Minimal stand-ins for Home Assistant's <ha-icon>, <ha-menu-button> and <ha-form>. ha-form renders each field the
@@ -844,6 +851,128 @@ SHOTS = [
 ]
 
 
+# The mini card on a dashboard: a stand-in for <ha-card>, the entities of Smart Comfort built from the status above.
+CARD_PAGE_STYLE = """
+body { padding: 16px; }
+#root { margin: 0; }
+"""
+HA_CARD = """customElements.define("ha-card", class extends HTMLElement {
+  connectedCallback() {
+    Object.assign(this.style, {
+      display: "block", borderRadius: "12px", boxSizing: "border-box", color: "var(--primary-text-color)",
+      background: "var(--ha-card-background, var(--card-background-color))",
+      border: "var(--ha-card-border-width, 1px) solid var(--divider-color)",
+      boxShadow: "var(--ha-card-box-shadow, none)",
+    });
+  }
+});"""
+
+
+def card_mock(status):
+    """The entities the mini card reads: the alerts sensor, a sensor per room, the switches."""
+    # The devices and lights of the activity, by their names.
+    states = {
+        entity_id: {"entity_id": entity_id, "state": state, "attributes": {"friendly_name": name}}
+        for entity_id, (name, _, _, state) in ENTITIES.items()
+    }
+    entities = {}
+
+    def add(entity_id, key, state, attributes):
+        states[entity_id] = {"entity_id": entity_id, "state": state, "attributes": attributes, "last_updated": NOW}
+        entities[entity_id] = {"entity_id": entity_id, "platform": DOMAIN, "translation_key": key}
+
+    add(
+        "sensor.smart_comfort_active_alerts",
+        "alerts",
+        str(len(status["alerts"])),
+        {"alerts": status["alerts"], "snoozes": {}, "outdoor_temperature": status["outdoor_temperature"]},
+    )
+    for room in status["rooms"]:
+        slug = room["name"].lower().replace(" ", "_")
+        attributes = {"room_name": room["name"], **{k: v for k, v in room.items() if k != "name"}}
+        add(f"sensor.smart_comfort_{slug}", "room", (room["alerts"] or ["ok"])[0], attributes)
+    for key, on in (("notifications", True), ("control", True), ("lighting", False)):
+        add(f"switch.smart_comfort_{key}", key, "on" if on else "off", {})
+    room_states = TRANSLATIONS["entity"]["sensor"]["room"]["state"]
+    return {
+        "states": states,
+        "entities": entities,
+        "language": "en",
+        "activity": ACTIVITY,
+        "localize": {f"component.{DOMAIN}.entity.sensor.room.state.{k}": v for k, v in room_states.items()},
+    }
+
+
+CARD_MOUNT = """async ([data, config, zoom]) => {
+    await customElements.whenDefined("smart-comfort-mini-card");
+    const card = document.createElement("smart-comfort-mini-card");
+    card.setConfig(config);
+    card.hass = {
+        states: data.states, entities: data.entities, language: data.language, locale: { language: data.language },
+        localize: (key) => data.localize[key] || "",
+        callService: async () => {},
+        connection: {
+            subscribeMessage: (callback) => {
+                setTimeout(() => callback({ entries: data.activity }), 0);
+                return Promise.resolve(() => {});
+            },
+        },
+    };
+    document.getElementById("root").appendChild(card);
+    await new Promise((r) => setTimeout(r, 50));
+    if (zoom) card.shadowRoot.querySelector(".zoom").click();
+    await new Promise((r) => setTimeout(r, 200));
+}"""
+
+# The mini card, compact (half a section) and switched to the full card (a whole section).
+CARD_SHOTS = [
+    {"file": "card-mini", "width": 400, "config": {}, "zoom": False},
+    {"file": "card-mini-full", "width": 640, "config": {"activity": 4}, "zoom": True},
+]
+
+
+def render_card(browser, shot, theme):
+    name = shot["file"] + ("-dark" if theme == "dark" else "")
+    context = browser.new_context(
+        viewport={"width": shot["width"], "height": 400},
+        device_scale_factor=1,
+        timezone_id="UTC",
+        locale="en-US",
+        color_scheme=theme,
+    )
+    page = context.new_page()
+    page.on("pageerror", lambda err: print(f"{name}: page error: {err}"))
+    page.clock.set_fixed_time(NOW)
+    variables = "".join(f"{k}:{v};" for k, v in {**THEMES[theme], **COMMON}.items())
+    html = f"""<!doctype html><html><head><meta charset="utf-8"><style>
+:root {{ {variables} color-scheme: {theme}; }}
+html, body {{ margin: 0; background: var(--primary-background-color); color: var(--primary-text-color);
+             font-family: Roboto, "Segoe UI", Helvetica, Arial, sans-serif; }}
+{CARD_PAGE_STYLE}</style></head><body><div id="root"></div></body></html>"""
+    # The cards are served as files: the mini card imports the activity card's module next to it.
+    files = {"smart-comfort-activity-card.js": CARD_JS, "smart-comfort-mini-card.js": MINI_JS}
+
+    def serve(route):
+        name = route.request.url.split("?")[0].rsplit("/", 1)[-1]
+        if name in files:
+            route.fulfill(content_type="text/javascript", body=files[name])
+        else:
+            route.fulfill(content_type="text/html", body=html)
+
+    page.route("http://homeassistant.local/**", serve)
+    page.goto(URL)
+    page.add_script_tag(content=HA_ELEMENTS)
+    page.add_script_tag(content=HA_CARD)
+    page.add_script_tag(url="http://homeassistant.local/smart_comfort_static/smart-comfort-mini-card.js?v=1", type="module")
+    page.evaluate(CARD_MOUNT, [card_mock(STATUS), shot["config"], shot["zoom"]])
+    page.wait_for_timeout(200)
+    path = ROOT / "screenshots" / f"{name}.png"
+    png = page.locator("#root").screenshot(animations="disabled")
+    written = save_if_changed(path, png)
+    print(path.relative_to(ROOT), "" if written else "(unchanged)")
+    context.close()
+
+
 def render(browser, shot, theme):
     name = shot["file"] + ("-dark" if theme == "dark" else "")
     context = browser.new_context(
@@ -900,6 +1029,9 @@ def main():
         for shot in SHOTS:
             for theme in THEMES:
                 render(browser, shot, theme)
+        for shot in CARD_SHOTS:
+            for theme in THEMES:
+                render_card(browser, shot, theme)
         browser.close()
 
 

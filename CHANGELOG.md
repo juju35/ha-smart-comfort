@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.8.0 - 2026-11-04
+
+### What's new
+- Mini card (`custom:smart-comfort-mini-card`), added to the dashboards like the activity card: the alerts of the moment, the outdoor temperature and the notifications / device control / adaptive lighting switches (a tap turns them on or off). Its button at the top right switches it to the full card — every alert with since when and its state, a tile per room, the latest activity — and back, as does a click outside the card. Options: `title`, `rooms`, `alerts`, `activity`, `zoom`; visual editor in every language of the integration.
+- Room comfort sensors: new `room_name` attribute (the room's name as set in Smart Comfort).
+
 ## 1.7.6 - 2026-11-02
 
 ### Fixes

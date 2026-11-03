@@ -90,7 +90,8 @@ class RoomSensor(SmartComfortEntity, SensorEntity):
 
     @property
     def extra_state_attributes(self) -> dict[str, Any]:
-        return room_info(self.manager, self.room, dt_util.utcnow())
+        # The room's name as set in Smart Comfort, for the mini card (the entity name is translated around it).
+        return {"room_name": self.room.name, **room_info(self.manager, self.room, dt_util.utcnow())}
 
 
 class LastNotificationSensor(SmartComfortEntity, SensorEntity):

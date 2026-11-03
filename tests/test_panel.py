@@ -119,8 +119,13 @@ async def test_panel_registered(hass: HomeAssistant) -> None:
     hass.http = Mock(async_register_static_paths=AsyncMock())
     hass.data["frontend_extra_module_url"] = extra = Mock()
     await _setup(hass)
-    # The activity card, on every dashboard.
-    assert extra.add.call_args.args[0].startswith("/smart_comfort_static/smart-comfort-activity-card.js?v=")
+    # The activity card and the mini card, on every dashboard (once each, across reloads).
+    added = [c.args[0].split("?")[0] for c in extra.add.call_args_list]
+    assert added == [
+        "/smart_comfort_static/smart-comfort-activity-card.js",
+        "/smart_comfort_static/smart-comfort-mini-card.js",
+    ]
+    assert all("?v=" in c.args[0] for c in extra.add.call_args_list)
     paths = hass.http.async_register_static_paths.call_args.args[0]
     assert paths[0].url_path == "/smart_comfort_static"
     panels = hass.data["frontend_panels"]
@@ -135,6 +140,7 @@ async def test_panel_registered(hass: HomeAssistant) -> None:
     await hass.async_block_till_done()
     assert PANEL_URL in hass.data["frontend_panels"]
     assert hass.http.async_register_static_paths.call_count == 1
+    assert extra.add.call_count == 2
     # Removing the integration removes the panel.
     assert await hass.config_entries.async_remove(entry.entry_id)
     await hass.async_block_till_done()
@@ -171,19 +177,23 @@ async def test_card_dashboard_resource(hass: HomeAssistant) -> None:
     hass.http = Mock(async_register_static_paths=AsyncMock())
     hass.data["frontend_extra_module_url"] = extra = Mock()
     card = "/smart_comfort_static/smart-comfort-activity-card.js"
+    mini = "/smart_comfort_static/smart-comfort-mini-card.js"
+    other = {"id": "x", "url": "/local/other-card.js", "res_type": "module"}
     resources = _Resources(
-        [{"id": "a", "url": f"{card}?v=0", "res_type": "module"}, {"id": "b", "url": card, "res_type": "module"}]
+        [{"id": "a", "url": f"{card}?v=0", "res_type": "module"}, {"id": "b", "url": card, "res_type": "module"}, other]
     )
     hass.data["lovelace"] = SimpleNamespace(resource_mode="storage", resources=resources)
     entry = await _setup(hass)
     urls = [i["url"] for i in resources.items]
-    assert len(urls) == 1
+    assert len(urls) == 3
     assert urls[0].startswith(f"{card}?v=") and urls[0] != f"{card}?v=0"
+    assert urls[1] == other["url"]
+    assert urls[2].startswith(f"{mini}?v=")
     extra.add.assert_not_called()
-    # Removing the integration drops the resource.
+    # Removing the integration drops its resources, not the others.
     assert await hass.config_entries.async_remove(entry.entry_id)
     await hass.async_block_till_done()
-    assert resources.items == []
+    assert resources.items == [other]
 
 
 async def test_status_outdoors(hass: HomeAssistant) -> None:
