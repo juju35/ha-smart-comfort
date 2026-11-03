@@ -963,7 +963,9 @@ html, body {{ margin: 0; background: var(--primary-background-color); color: var
     page.goto(URL)
     page.add_script_tag(content=HA_ELEMENTS)
     page.add_script_tag(content=HA_CARD)
-    page.add_script_tag(url="http://homeassistant.local/smart_comfort_static/smart-comfort-mini-card.js?v=1", type="module")
+    page.add_script_tag(
+        url="http://homeassistant.local/smart_comfort_static/smart-comfort-mini-card.js?v=1", type="module"
+    )
     page.evaluate(CARD_MOUNT, [card_mock(STATUS), shot["config"], shot["zoom"]])
     page.wait_for_timeout(200)
     path = ROOT / "screenshots" / f"{name}.png"
