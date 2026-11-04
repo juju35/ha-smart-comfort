@@ -1,0 +1,493 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Smart Comfort",
+        "data": {
+          "notify": "Azzjonijiet ta' notifika",
+          "outdoor_temperature": "Temperatura ta' barra",
+          "outdoor_aggregate": "Għaqqad is-sensuri ta' barra"
+        },
+        "description": "Inqas twissijiet ta' kumdità, u aktar intelliġenti, u kontroll tal-arja kundizzjonata, il-fannijiet u l-purifikaturi tal-arja tiegħek. Żid il-kmamar wara fl-għażliet, jew ikkonfigura kollox f'YAML.",
+        "data_description": {
+          "notify": "Fejn imorru t-twissijiet (notify.mobile_app_…, grupp notify…).",
+          "outdoor_temperature": "Sensur wieħed jew aktar ta' barra; dawk mhux disponibbli jiġu injorati.",
+          "outdoor_aggregate": "Il-minimu jevita sensur fix-xemx."
+        }
+      }
+    },
+    "error": {
+      "invalid_options": "Xi valuri mhumiex validi, iċċekkjahom."
+    },
+    "abort": {
+      "already_configured": "Smart Comfort diġà kkonfigurat.",
+      "single_instance_allowed": "Smart Comfort diġà kkonfigurat."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Għażliet ta' Smart Comfort",
+        "description": "Kmamar ikkonfigurati: {rooms}. Jekk tuża YAML, bidla fih tissostitwixxi dawn l-għażliet fir-restart li jmiss.",
+        "menu_options": {
+          "general": "Notifiki",
+          "alerts": "Twissijiet",
+          "control": "Kontroll tal-apparati",
+          "add_room": "Żid kamra",
+          "edit_room": "Editja kamra",
+          "remove_room": "Neħħi kmamar"
+        }
+      },
+      "general": {
+        "title": "Notifiki",
+        "data": {
+          "notify": "Azzjonijiet ta' notifika",
+          "outdoor_temperature": "Temperatura ta' barra",
+          "outdoor_aggregate": "Għaqqad is-sensuri ta' barra",
+          "outdoor_noise": "Storbju ta' barra",
+          "outdoor_air_quality": "Kwalità tal-arja ta' barra",
+          "digest_window": "Tieqa tal-ġabra",
+          "reminder": "Tfakkira",
+          "snooze_duration": "Tul tal-posponiment",
+          "startup_grace": "Perjodu ta' grazzja fil-bidu",
+          "quiet_start": "Bidu tas-sigħat kwieti",
+          "quiet_end": "Tmiem is-sigħat kwieti",
+          "presence": "Preżenza",
+          "clear_when_resolved": "Neħħi meta jissolva",
+          "critical_volume": "Volum tat-twissijiet kritiċi",
+          "url": "Azzjoni meta tolqot",
+          "tag": "Tikketta tan-notifika"
+        },
+        "data_description": {
+          "notify": "Fejn imorru t-twissijiet (notify.mobile_app_…, grupp notify…).",
+          "outdoor_temperature": "Sensuri ta' barra barra mill-postijiet ta' barra (entità tat-temp, sensur mingħajr żona); dawk mhux disponibbli jiġu injorati.",
+          "outdoor_aggregate": "Il-minimu jevita sensur fix-xemx.",
+          "outdoor_noise": "Sensuri tal-livell tal-ħoss barra (dB), miżjuda ma' dawk tal-postijiet ta' barra: l-ebda suġġeriment biex tiftaħ it-twieqi waqt li hemm storbju, u twissija meta t-twieqi jkunu miftuħa fl-istorbju.",
+          "outdoor_air_quality": "Sensuri tal-indiċi tal-kwalità tal-arja barra jew fil-belt (Atmo France, AQI…), miżjuda ma' dawk tal-postijiet ta' barra: l-ebda suġġeriment biex tiftaħ it-twieqi waqt li l-arja hija ħażina, u twissija meta t-twieqi jkunu miftuħa dak il-ħin. Jgħodd l-agħar wieħed.",
+          "digest_window": "Minuti biex tistenna twissijiet oħra qabel tibgħat notifika waħda miġbura. It-twissijiet kritiċi ma jistennewx.",
+          "reminder": "Minuti li warajhom problema li għadha għaddejja terġa' tiġi nnotifikata. 0: qatt (biss meta tmur għall-agħar).",
+          "snooze_duration": "Minuti tal-buttuna Ipposponi tan-notifika u tal-azzjoni ta' posponiment b'mod awtomatiku.",
+          "startup_grace": "Minuti wara li jibda Home Assistant li matulhom ma jintbagħat xejn.",
+          "quiet_start": "Minn dak il-ħin sat-tmiem jintbagħtu biss twissijiet kritiċi; l-oħrajn joħorġu fit-tmiem jekk għadhom rilevanti.",
+          "presence": "Żona, persuna, grupp jew boolean: waqt li ma hemm ħadd id-dar, jintbagħtu biss twissijiet kritiċi.",
+          "clear_when_resolved": "Neħħi n-notifika mit-telefowns ladarba kull problema nnotifikata tkun spiċċat.",
+          "critical_volume": "Volum tal-ħoss kritiku fuq iOS, minn 0 sa 1.",
+          "url": "Jinfetaħ meta tolqot in-notifika, eż. homeassistant://navigate/lovelace/comfort",
+          "tag": "Kull notifika tissostitwixxi dik ta' qabilha b'din it-tikketta minflok ma jakkumulaw."
+        }
+      },
+      "alerts": {
+        "title": "Twissijiet",
+        "data": {
+          "kind": "Twissija"
+        },
+        "description": "Is-settings ta' twissija għal kull kamra. Kamra tista' tissostitwixxi l-limiti sħun wisq / kiesaħ wisq fil-formola tagħha, u kollox f'YAML."
+      },
+      "alert": {
+        "title": "Settings tat-twissija",
+        "data": {
+          "enabled": "Attivata",
+          "threshold": "Limitu",
+          "min_indoor": "Temperatura minima ġewwa",
+          "min_outdoor": "Temperatura minima barra",
+          "max_outdoor": "Temperatura massima barra",
+          "max_outdoor_noise": "Storbju massimu barra",
+          "max_outdoor_air": "Livell massimu tal-kwalità tal-arja barra",
+          "hysteresis": "Isteresi",
+          "delay": "Dewmien",
+          "severity": "Severità",
+          "escalation": "Pass ta' eskalazzjoni"
+        },
+        "data_description": {
+          "threshold": "Sħun/kiesaħ wisq, CO₂, umdità: il-valur. Iftaħ/agħlaq it-twieqi: id-differenza bejn ġewwa u barra.",
+          "min_indoor": "Issuġġerixxi li tiftaħ biss meta l-kamra tkun mill-inqas sħuna daqshekk.",
+          "min_outdoor": "Biss meta jkun mill-inqas sħun daqshekk barra.",
+          "max_outdoor": "Biss meta jkun kiesaħ daqshekk jew aktar barra.",
+          "max_outdoor_noise": "Mhux issuġġerit waqt li l-istorbju ta' barra jkun ogħla minn dan (jeħtieġ sensur tal-istorbju ta' barra).",
+          "max_outdoor_air": "Mhux issuġġerit waqt li l-kwalità tal-arja ta' barra tkun agħar minn dan il-livell, minn 1 (tajba) sa 6 (estremament ħażina).",
+          "hysteresis": "Il-problema tintemm biss ladarba l-valur jerġa' lura lil hinn mil-limitu b'daqshekk: l-ebda tbandil.",
+          "delay": "Minuti li l-kundizzjoni trid iddum qabel issir problema.",
+          "escalation": "Erġa' nnotifika meta l-valur imur għall-agħar b'daqshekk minn meta ġie nnotifikat l-aħħar. 0: qatt."
+        }
+      },
+      "control": {
+        "title": "Kontroll tal-apparati",
+        "data": {
+          "enabled": "Ikkontrolla l-apparati",
+          "start": "Spinta tat-tieqa minn",
+          "end": "Spinta tat-tieqa sa",
+          "manual_override": "Intervent manwali",
+          "suppress_when_handled": "L-ebda twissija meta jkun indirizzat",
+          "night_start": "Lejl kwiet minn",
+          "night_end": "Lejl kwiet sa",
+          "display": "Dawl indikatur jew skrin",
+          "reset_at": "Lura għan-normal fil-",
+          "display_off": "Skrins mitfija minn",
+          "display_on": "Skrins mixgħula minn"
+        },
+        "data_description": {
+          "start": "Il-fannijiet u l-purifikaturi jmorru b'veloċità sħiħa meta tinfetaħ tieqa jew bieb biss bejn dawn il-ħinijiet. It-tnejn vojta: il-jum kollu.",
+          "manual_override": "Minuti li fihom apparat mibdul bl-idejn jitħalla waħdu. 0: qatt ma jieqaf.",
+          "suppress_when_handled": "L-ebda twissija „sħun wisq“ għal kamra li l-arja kundizzjonata jew il-fann tagħha xegħelhom Smart Comfort.",
+          "night_start": "Bejn dawn il-ħinijiet l-apparati jużaw is-settings tal-lejl tagħhom (veloċità aktar kwieta, preset jew modalità tal-fann) u ma jkollhomx spinta tat-tieqa.",
+          "display": "Jintefa fis-sigħat „Skrins mitfija“ tat-tab Skeda u waqt l-irqadiet tal-kamra, u jerġa' jinxtegħel wara.",
+          "reset_at": "F'dan il-ħin l-apparat jerġa' lura għall-istat normali tiegħu, anke wara bidla bl-idejn (purifikatur lura fuq awto…)."
+        },
+        "sections": {
+          "climate": {
+            "name": "Arja kundizzjonata",
+            "data": {
+              "cool_above": "Kessaħ minn",
+              "off_below": "Itfi taħt",
+              "setpoint": "Temperatura mixtieqa",
+              "fan_mode": "Modalità tal-fann",
+              "closed_for": "Fetħiet magħluqa għal (min)",
+              "off_on_open": "Itfi meta miftuħ għal (min)",
+              "night_fan_mode": "Modalità tal-fann bil-lejl"
+            }
+          },
+          "fans": {
+            "name": "Fannijiet",
+            "data": {
+              "on_above": "Ixgħel minn",
+              "off_below": "Itfi taħt",
+              "percentage": "Veloċità",
+              "preset": "Preset",
+              "open_percentage": "Veloċità, tieqa miftuħa",
+              "open_preset": "Preset, tieqa miftuħa",
+              "off_preset": "Preset qabel jintefa",
+              "night_percentage": "Veloċità bil-lejl",
+              "night_preset": "Preset bil-lejl"
+            },
+            "description": "Ħalli „Ixgħel minn“ u „Itfi taħt“ vojta għall-fannijiet immexxija mit-twieqi biss."
+          },
+          "purifiers": {
+            "name": "Purifikaturi tal-arja",
+            "data": {
+              "open_percentage": "Veloċità, tieqa miftuħa",
+              "open_preset": "Preset, tieqa miftuħa",
+              "closed_preset": "Preset, twieqi magħluqa",
+              "keep_on": "Żomm mixgħul",
+              "night_percentage": "Veloċità bil-lejl",
+              "night_preset": "Preset bil-lejl",
+              "night_mode": "Għażla tal-modalità bil-lejl"
+            },
+            "data_description": {
+              "keep_on": "Erġa' ixgħel purifikatur meta jkun ilu mitfi 10 s (qtugħ tad-dawl, ħsara)."
+            }
+          }
+        }
+      },
+      "add_room": {
+        "title": "Żid kamra",
+        "data": {
+          "name": "Isem",
+          "temperature": "Temperatura",
+          "co2": "CO₂",
+          "humidity": "Umdità",
+          "noise": "Storbju",
+          "openings": "Twieqi u bibien",
+          "climate": "Arja kundizzjonata",
+          "fans": "Fannijiet",
+          "purifiers": "Purifikaturi tal-arja",
+          "lights": "Dwal"
+        },
+        "description": "Is-sensuri u l-apparati tal-kamra. Ħalli vojt dak li m'għandhiex.",
+        "sections": {
+          "overrides": {
+            "name": "Settings tal-kamra",
+            "description": "Issostitwixxi s-settings globali għal din il-kamra. Is-settings għal kull apparat huma f'YAML biss.",
+            "data": {
+              "too_hot_threshold": "Sħun wisq minn",
+              "too_cold_threshold": "Kiesaħ wisq taħt",
+              "fan_preset": "Preset tal-fann",
+              "fan_open_preset": "Preset tal-fann, tieqa miftuħa",
+              "fan_off_preset": "Preset tal-fann qabel jintefa",
+              "purifier_open_preset": "Preset tal-purifikatur, tieqa miftuħa",
+              "purifier_closed_preset": "Preset tal-purifikatur, twieqi magħluqa",
+              "purifier_mode_select": "Selettur tal-modalità tal-purifikatur",
+              "purifier_open_mode": "Għażla tal-modalità, tieqa miftuħa",
+              "purifier_closed_mode": "Għażla tal-modalità, twieqi magħluqa",
+              "purifier_keep_on": "Żomm il-purifikaturi mixgħula"
+            }
+          }
+        },
+        "data_description": {
+          "lights": "Dwal dimmable: il-luminożità tagħhom issegwi l-ħin tal-ġurnata waqt li jkunu mixgħula (dawl adattiv)."
+        }
+      },
+      "room": {
+        "title": "Editja l-kamra",
+        "data": {
+          "name": "Isem",
+          "temperature": "Temperatura",
+          "co2": "CO₂",
+          "humidity": "Umdità",
+          "noise": "Storbju",
+          "openings": "Twieqi u bibien",
+          "climate": "Arja kundizzjonata",
+          "fans": "Fannijiet",
+          "purifiers": "Purifikaturi tal-arja",
+          "lights": "Dwal"
+        },
+        "description": "Is-sensuri u l-apparati tal-kamra. Ħalli vojt dak li m'għandhiex.",
+        "sections": {
+          "overrides": {
+            "name": "Settings tal-kamra",
+            "description": "Issostitwixxi s-settings globali għal din il-kamra. Is-settings għal kull apparat huma f'YAML biss.",
+            "data": {
+              "too_hot_threshold": "Sħun wisq minn",
+              "too_cold_threshold": "Kiesaħ wisq taħt",
+              "fan_preset": "Preset tal-fann",
+              "fan_open_preset": "Preset tal-fann, tieqa miftuħa",
+              "fan_off_preset": "Preset tal-fann qabel jintefa",
+              "purifier_open_preset": "Preset tal-purifikatur, tieqa miftuħa",
+              "purifier_closed_preset": "Preset tal-purifikatur, twieqi magħluqa",
+              "purifier_mode_select": "Selettur tal-modalità tal-purifikatur",
+              "purifier_open_mode": "Għażla tal-modalità, tieqa miftuħa",
+              "purifier_closed_mode": "Għażla tal-modalità, twieqi magħluqa",
+              "purifier_keep_on": "Żomm il-purifikaturi mixgħula"
+            }
+          }
+        },
+        "data_description": {
+          "lights": "Dwal dimmable: il-luminożità tagħhom issegwi l-ħin tal-ġurnata waqt li jkunu mixgħula (dawl adattiv)."
+        }
+      },
+      "outdoor": {
+        "title": "Post ta' barra",
+        "data": {
+          "name": "Isem",
+          "temperature": "Temperatura",
+          "air_quality": "Kwalità tal-arja",
+          "noise": "Storbju"
+        }
+      },
+      "edit_room": {
+        "title": "Editja kamra",
+        "data": {
+          "room": "Kamra"
+        }
+      },
+      "remove_room": {
+        "title": "Neħħi kmamar",
+        "data": {
+          "rooms": "Kmamar"
+        }
+      },
+      "lighting": {
+        "title": "Dawl adattiv",
+        "data": {
+          "enabled": "Dawl adattiv",
+          "day": "Luminożità tal-jum",
+          "evening": "Luminożità tal-għaxija",
+          "night": "Luminożità tal-lejl",
+          "warmth": "Adatta s-sħana tad-dawl",
+          "day_kelvin": "Sħana tad-dawl matul il-jum",
+          "evening_kelvin": "Sħana tad-dawl filgħaxija",
+          "night_kelvin": "Sħana tad-dawl bil-lejl",
+          "transition": "Transizzjoni",
+          "night_only": "Dawl tal-lejl",
+          "morning": "Luminożità ta' filgħodu",
+          "morning_kelvin": "Sħana tad-dawl filgħodu",
+          "morning_end": "Tmiem filgħodu",
+          "quiet_morning": "Għodwa kwieta",
+          "nap": "Luminożità tal-irqad",
+          "nap_kelvin": "Sħana tad-dawl waqt l-irqad"
+        },
+        "data_description": {
+          "day": "Bix-xemx 'il fuq (elevazzjoni 'l fuq minn 6°).",
+          "evening": "Ladarba x-xemx tkun inżlet (taħt −6°); fin-nofs, taħlita.",
+          "night": "Fis-sigħat tal-lejl kwiet (tab Skeda).",
+          "warmth": "Anke t-temperatura tal-kulur, għad-dwal li jappoġġjawha. Mitfi: luminożità biss.",
+          "transition": "Sekondi tal-bidliet graduwali; dawl li għadu kif inxtegħel jieħu l-luminożità tiegħu mill-ewwel.",
+          "night_only": "Issettjat biss fis-sigħat tal-lejl (jitħalla waħdu matul il-jum).",
+          "morning": "Fil-kmamar b'għodwa kwieta (kmamar tas-sodda), sa tmiem filgħodu (tab Skeda).",
+          "morning_end": "Sa meta l-kmamar tas-sodda jżommu l-luminożità ta' filgħodu.",
+          "quiet_morning": "Dwal aktar baxxi filgħodu, sa tmiem filgħodu (tab Skeda).",
+          "nap": "Matul il-ħinijiet tal-irqad ta' kamra."
+        }
+      }
+    },
+    "error": {
+      "name_required": "Agħti isem lill-kamra.",
+      "name_exists": "Diġà hemm kamra b'dan l-isem.",
+      "invalid_options": "Xi valuri mhumiex validi, iċċekkjahom."
+    }
+  },
+  "selector": {
+    "kind": {
+      "options": {
+        "too_hot": "Sħun wisq",
+        "close_windows": "Agħlaq it-twieqi (aktar sħun barra)",
+        "ventilate": "Iftaħ it-twieqi (aktar frisk barra)",
+        "too_cold": "Kiesaħ wisq",
+        "window_open_cold": "Tieqa miftuħa fil-kesħa",
+        "co2_high": "CO₂ għoli",
+        "humidity_high": "Umdità għolja",
+        "noise_high": "Kamra storbjuża",
+        "noisy_outside": "Agħlaq it-twieqi (storbju barra)",
+        "bad_air_outside": "Agħlaq it-twieqi (arja ħażina barra)"
+      }
+    },
+    "severity": {
+      "options": {
+        "info": "Informazzjoni (siekta)",
+        "warning": "Twissija (sensittiva għall-ħin, b'ħoss)",
+        "critical": "Kritika (taqbeż is-sigħat kwieti u l-modalità siekta)"
+      }
+    },
+    "outdoor_aggregate": {
+      "options": {
+        "min": "Minimu",
+        "max": "Massimu",
+        "mean": "Medja"
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "alerts": {
+        "name": "Twissijiet attivi",
+        "state_attributes": {
+          "alerts": {
+            "name": "Twissijiet"
+          },
+          "snoozes": {
+            "name": "Posponimenti"
+          },
+          "outdoor_temperature": {
+            "name": "Temperatura ta' barra"
+          },
+          "outdoor_noise": {
+            "name": "Storbju ta' barra"
+          },
+          "outdoor_air_quality": {
+            "name": "Kwalità tal-arja ta' barra"
+          }
+        }
+      },
+      "room": {
+        "name": "Kumdità {room}",
+        "state": {
+          "ok": "OK",
+          "too_hot": "Sħun wisq",
+          "close_windows": "Agħlaq it-twieqi (aktar sħun barra)",
+          "ventilate": "Iftaħ it-twieqi (aktar frisk barra)",
+          "too_cold": "Kiesaħ wisq",
+          "window_open_cold": "Tieqa miftuħa fil-kesħa",
+          "co2_high": "CO₂ għoli",
+          "humidity_high": "Umdità għolja",
+          "noise_high": "Kamra storbjuża",
+          "noisy_outside": "Agħlaq it-twieqi (storbju barra)",
+          "bad_air_outside": "Agħlaq it-twieqi (arja ħażina barra)"
+        }
+      },
+      "last_notification": {
+        "name": "L-aħħar notifika"
+      }
+    },
+    "switch": {
+      "notifications": {
+        "name": "Notifiki"
+      },
+      "control": {
+        "name": "Kontroll tal-apparati"
+      },
+      "lighting": {
+        "name": "Dawl adattiv"
+      }
+    },
+    "button": {
+      "notify_now": {
+        "name": "Innotifika issa"
+      },
+      "unsnooze": {
+        "name": "Ikkanċella l-posponimenti"
+      }
+    }
+  },
+  "services": {
+    "snooze": {
+      "name": "Ipposponi",
+      "description": "Jieqaf għal xi żmien milli jinnotifika t-twissijiet tal-kmamar u t-tipi mogħtija (kollha b'mod awtomatiku).",
+      "fields": {
+        "duration": {
+          "name": "Tul",
+          "description": "Minuti; b'mod awtomatiku t-tul tal-posponiment tal-għażliet."
+        },
+        "rooms": {
+          "name": "Kmamar",
+          "description": "Ismijiet jew ID tal-kmamar; kollha b'mod awtomatiku."
+        },
+        "kinds": {
+          "name": "Twissijiet",
+          "description": "Jekk issettjat, jiġu pposponuti biss it-twissijiet kurrenti ta' dawn it-tipi."
+        }
+      }
+    },
+    "unsnooze": {
+      "name": "Ikkanċella l-posponimenti",
+      "description": "Jerġa' jinnotifika t-twissijiet ipposponuti tal-kmamar mogħtija (kollha b'mod awtomatiku).",
+      "fields": {
+        "rooms": {
+          "name": "Kmamar",
+          "description": "Ismijiet jew ID tal-kmamar; kollha b'mod awtomatiku."
+        }
+      }
+    },
+    "acknowledge": {
+      "name": "Irrikonoxxi",
+      "description": "L-ebda tfakkira u l-ebda eskalazzjoni għat-twissijiet kurrenti sakemm jintemmu.",
+      "fields": {
+        "rooms": {
+          "name": "Kmamar",
+          "description": "Ismijiet jew ID tal-kmamar; kollha b'mod awtomatiku."
+        },
+        "kinds": {
+          "name": "Twissijiet",
+          "description": "Tipi ta' twissijiet; kollha b'mod awtomatiku."
+        }
+      }
+    },
+    "notify_now": {
+      "name": "Innotifika issa",
+      "description": "Jibgħat kull problema kurrenti f'notifika waħda, billi jinjora s-sigħat kwieti u t-tieqa tal-ġabra."
+    },
+    "get_config": {
+      "name": "Ikseb il-konfigurazzjoni",
+      "description": "Jirritorna l-għażliet fl-użu (kmamar, twissijiet, kontroll, dawl), biex tikkopjahom f'YAML jew biex tiċċekkja x'inhu ssettjat."
+    }
+  },
+  "common": {
+    "title_one": "{room}",
+    "title_many": "Twissijiet ta' kumdità: {count}",
+    "room_line": "{room}: {problem}",
+    "decimal": ".",
+    "duration_minutes": "{minutes} min",
+    "duration_hours": "{hours} siegħa {minutes:02d}",
+    "since": "ilu {duration}",
+    "worse": "sejjer għall-agħar",
+    "line_too_hot": "{value} °C, 'il fuq minn {threshold} °C",
+    "line_too_cold": "{value} °C, taħt {threshold} °C",
+    "line_ventilate": "{temperature} °C ġewwa, {outdoor} °C barra — iftaħ it-twieqi",
+    "line_close_windows": "{outdoor} °C barra, {temperature} °C ġewwa — agħlaq: {openings}",
+    "line_window_open_cold": "miftuħ: {openings}, {outdoor} °C barra",
+    "line_co2_high": "CO₂ {value} ppm — ivventila l-kamra",
+    "line_humidity_high": "umdità {value} % — ivventila l-kamra",
+    "line_noise_high": "storbju {value} dB, 'il fuq minn {threshold} dB",
+    "line_noisy_outside": "{value} dB barra — agħlaq: {openings}",
+    "line_bad_air_outside": "kwalità tal-arja barra {value}/6 — agħlaq: {openings}",
+    "action_snooze": "Ipposponi {hours} siegħa",
+    "action_snooze_minutes": "Ipposponi {minutes} min",
+    "action_ack": "Fhimt"
+  },
+  "exceptions": {
+    "not_loaded": {
+      "message": "Smart Comfort mhux mgħobbi."
+    },
+    "unknown_room": {
+      "message": "Kamra mhux magħrufa: {room}."
+    }
+  }
+}

@@ -1,0 +1,493 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Smart Comfort",
+        "data": {
+          "notify": "Akcie oznámení",
+          "outdoor_temperature": "Vonkajšia teplota",
+          "outdoor_aggregate": "Kombinovanie vonkajších senzorov"
+        },
+        "description": "Menej a múdrejších upozornení na komfort a ovládanie klimatizácií, ventilátorov a čističiek vzduchu. Miestnosti pridajte potom v možnostiach alebo všetko nakonfigurujte v YAML.",
+        "data_description": {
+          "notify": "Kam idú upozornenia (notify.mobile_app_…, skupina notify…).",
+          "outdoor_temperature": "Jeden alebo viac vonkajších senzorov; nedostupné sa ignorujú.",
+          "outdoor_aggregate": "Minimum vylúči senzor na slnku."
+        }
+      }
+    },
+    "error": {
+      "invalid_options": "Niektoré hodnoty sú neplatné, skontrolujte ich."
+    },
+    "abort": {
+      "already_configured": "Smart Comfort je už nakonfigurovaný.",
+      "single_instance_allowed": "Smart Comfort je už nakonfigurovaný."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Možnosti Smart Comfort",
+        "description": "Nakonfigurované miestnosti: {rooms}. Ak používate YAML, jeho zmena pri ďalšom reštarte nahradí tieto možnosti.",
+        "menu_options": {
+          "general": "Oznámenia",
+          "alerts": "Upozornenia",
+          "control": "Ovládanie zariadení",
+          "add_room": "Pridať miestnosť",
+          "edit_room": "Upraviť miestnosť",
+          "remove_room": "Odstrániť miestnosti"
+        }
+      },
+      "general": {
+        "title": "Oznámenia",
+        "data": {
+          "notify": "Akcie oznámení",
+          "outdoor_temperature": "Vonkajšia teplota",
+          "outdoor_aggregate": "Kombinovanie vonkajších senzorov",
+          "outdoor_noise": "Vonkajší hluk",
+          "outdoor_air_quality": "Kvalita vonkajšieho vzduchu",
+          "digest_window": "Okno zoskupenia",
+          "reminder": "Pripomenutie",
+          "snooze_duration": "Dĺžka odloženia",
+          "startup_grace": "Ochranná doba po spustení",
+          "quiet_start": "Začiatok tichých hodín",
+          "quiet_end": "Koniec tichých hodín",
+          "presence": "Prítomnosť",
+          "clear_when_resolved": "Vymazať po vyriešení",
+          "critical_volume": "Hlasitosť kritických upozornení",
+          "url": "Akcia po ťuknutí",
+          "tag": "Značka oznámenia"
+        },
+        "data_description": {
+          "notify": "Kam idú upozornenia (notify.mobile_app_…, skupina notify…).",
+          "outdoor_temperature": "Vonkajšie senzory mimo vonkajších miest (entita počasia, senzor bez oblasti); nedostupné sa ignorujú.",
+          "outdoor_aggregate": "Minimum vylúči senzor na slnku.",
+          "outdoor_noise": "Senzory hladiny hluku vonku (dB), pridané k senzorom vonkajších miest: žiadny návrh otvoriť okná, kým je hluk, a upozornenie, keď sú okná otvorené v hluku.",
+          "outdoor_air_quality": "Senzory indexu kvality vzduchu vonku alebo v meste (Atmo France, AQI…), pridané k senzorom vonkajších miest: žiadny návrh otvoriť okná, kým je vzduch zlý, a upozornenie, keď sú vtedy okná otvorené. Rozhoduje najhorší.",
+          "digest_window": "Minúty čakania na ďalšie upozornenia pred odoslaním jedného zoskupeného oznámenia. Kritické upozornenia nečakajú.",
+          "reminder": "Minúty, po ktorých sa ešte trvajúci problém oznámi znova. 0: nikdy (len keď sa zhorší).",
+          "snooze_duration": "Minúty tlačidla Odložiť v oznámení a predvolene aj akcie odloženia.",
+          "startup_grace": "Minúty po spustení Home Assistant, počas ktorých sa nič neodošle.",
+          "quiet_start": "Odvtedy až do konca sa posielajú len kritické upozornenia; ostatné odídu na konci, ak sú ešte aktuálne.",
+          "presence": "Zóna, osoba, skupina alebo boolean: kým nie je nikto doma, posielajú sa len kritické upozornenia.",
+          "clear_when_resolved": "Odstrániť oznámenie z telefónov, keď skončia všetky oznámené problémy.",
+          "critical_volume": "Hlasitosť kritického zvuku v iOS, 0 až 1.",
+          "url": "Otvorí sa po ťuknutí na oznámenie, napr. homeassistant://navigate/lovelace/comfort",
+          "tag": "Každé oznámenie nahradí predchádzajúce s touto značkou namiesto hromadenia."
+        }
+      },
+      "alerts": {
+        "title": "Upozornenia",
+        "data": {
+          "kind": "Upozornenie"
+        },
+        "description": "Nastavenia upozornenia pre všetky miestnosti. Miestnosť môže vo svojom formulári prepísať prahy príliš teplo / príliš chladno a v YAML čokoľvek."
+      },
+      "alert": {
+        "title": "Nastavenia upozornenia",
+        "data": {
+          "enabled": "Zapnuté",
+          "threshold": "Prah",
+          "min_indoor": "Minimálna vnútorná teplota",
+          "min_outdoor": "Minimálna vonkajšia teplota",
+          "max_outdoor": "Maximálna vonkajšia teplota",
+          "max_outdoor_noise": "Maximálny vonkajší hluk",
+          "max_outdoor_air": "Maximálna úroveň kvality vonkajšieho vzduchu",
+          "hysteresis": "Hysterézia",
+          "delay": "Oneskorenie",
+          "severity": "Závažnosť",
+          "escalation": "Krok eskalácie"
+        },
+        "data_description": {
+          "threshold": "Príliš teplo/chladno, CO₂, vlhkosť: hodnota. Otvoriť/zatvoriť okná: rozdiel medzi vnútrom a vonkajškom.",
+          "min_indoor": "Navrhnúť otvorenie, len keď je v miestnosti aspoň takto teplo.",
+          "min_outdoor": "Len keď je vonku aspoň takto teplo.",
+          "max_outdoor": "Len keď je vonku takto chladno alebo chladnejšie.",
+          "max_outdoor_noise": "Nenavrhuje sa, kým je vonkajší hluk nad touto hodnotou (vyžaduje vonkajší senzor hluku).",
+          "max_outdoor_air": "Nenavrhuje sa, kým je kvalita vonkajšieho vzduchu horšia než táto úroveň, od 1 (dobrá) po 6 (mimoriadne zlá).",
+          "hysteresis": "Problém skončí, až keď sa hodnota vráti za prah o toľko: žiadne kmitanie.",
+          "delay": "Minúty, počas ktorých musí podmienka trvať, kým sa z nej stane problém.",
+          "escalation": "Oznámiť znova, keď sa hodnota zhorší o toľko oproti poslednému oznámeniu. 0: nikdy."
+        }
+      },
+      "control": {
+        "title": "Ovládanie zariadení",
+        "data": {
+          "enabled": "Ovládať zariadenia",
+          "start": "Posilnenie pri okne od",
+          "end": "Posilnenie pri okne do",
+          "manual_override": "Ručný zásah",
+          "suppress_when_handled": "Bez upozornenia, keď sa to rieši",
+          "night_start": "Tichá noc od",
+          "night_end": "Tichá noc do",
+          "display": "Kontrolka alebo displej",
+          "reset_at": "Návrat do normálu o",
+          "display_off": "Displeje vypnuté od",
+          "display_on": "Displeje zapnuté od"
+        },
+        "data_description": {
+          "start": "Ventilátory a čističky prejdú na plný výkon pri otvorení okna alebo dverí len medzi týmito časmi. Obe prázdne: celý deň.",
+          "manual_override": "Minúty, počas ktorých sa ručne zmenené zariadenie nechá na pokoji. 0: nikdy sa nepozastaví.",
+          "suppress_when_handled": "Žiadne upozornenie „príliš teplo“ pre miestnosť, v ktorej Smart Comfort zapol klimatizáciu alebo ventilátor.",
+          "night_start": "Medzi týmito časmi používajú zariadenia nočné nastavenia (tichšia rýchlosť, predvoľba alebo režim ventilátora) a nemajú posilnenie pri okne.",
+          "display": "Vypne sa v hodinách „Displeje vypnuté“ na karte Plán a počas zdriemnutí v miestnosti, potom sa znova zapne.",
+          "reset_at": "V tomto čase sa zariadenie vráti do normálneho stavu, aj po ručnej zmene (čistička späť na auto…)."
+        },
+        "sections": {
+          "climate": {
+            "name": "Klimatizácie",
+            "data": {
+              "cool_above": "Chladiť od",
+              "off_below": "Vypnúť pod",
+              "setpoint": "Cieľová teplota",
+              "fan_mode": "Režim ventilátora",
+              "closed_for": "Okná a dvere zatvorené (min)",
+              "off_on_open": "Vypnúť pri otvorení na (min)",
+              "night_fan_mode": "Režim ventilátora v noci"
+            }
+          },
+          "fans": {
+            "name": "Ventilátory",
+            "data": {
+              "on_above": "Zapnúť od",
+              "off_below": "Vypnúť pod",
+              "percentage": "Rýchlosť",
+              "preset": "Predvoľba",
+              "open_percentage": "Rýchlosť, okno otvorené",
+              "open_preset": "Predvoľba, okno otvorené",
+              "off_preset": "Predvoľba pred vypnutím",
+              "night_percentage": "Rýchlosť v noci",
+              "night_preset": "Predvoľba v noci"
+            },
+            "description": "Nechajte „Zapnúť od“ a „Vypnúť pod“ prázdne pre ventilátory riadené len oknami."
+          },
+          "purifiers": {
+            "name": "Čističky vzduchu",
+            "data": {
+              "open_percentage": "Rýchlosť, okno otvorené",
+              "open_preset": "Predvoľba, okno otvorené",
+              "closed_preset": "Predvoľba, okná zatvorené",
+              "keep_on": "Nechať zapnuté",
+              "night_percentage": "Rýchlosť v noci",
+              "night_preset": "Predvoľba v noci",
+              "night_mode": "Voľba režimu v noci"
+            },
+            "data_description": {
+              "keep_on": "Znova zapnúť čističku, keď bola 10 s vypnutá (výpadok prúdu, porucha)."
+            }
+          }
+        }
+      },
+      "add_room": {
+        "title": "Pridať miestnosť",
+        "data": {
+          "name": "Názov",
+          "temperature": "Teplota",
+          "co2": "CO₂",
+          "humidity": "Vlhkosť",
+          "noise": "Hluk",
+          "openings": "Okná a dvere",
+          "climate": "Klimatizácia",
+          "fans": "Ventilátory",
+          "purifiers": "Čističky vzduchu",
+          "lights": "Svetlá"
+        },
+        "description": "Senzory a zariadenia miestnosti. Nechajte prázdne, čo nemá.",
+        "sections": {
+          "overrides": {
+            "name": "Nastavenia miestnosti",
+            "description": "Prepíše globálne nastavenia pre túto miestnosť. Nastavenia jednotlivých zariadení sú len v YAML.",
+            "data": {
+              "too_hot_threshold": "Príliš teplo od",
+              "too_cold_threshold": "Príliš chladno pod",
+              "fan_preset": "Predvoľba ventilátora",
+              "fan_open_preset": "Predvoľba ventilátora, okno otvorené",
+              "fan_off_preset": "Predvoľba ventilátora pred vypnutím",
+              "purifier_open_preset": "Predvoľba čističky, okno otvorené",
+              "purifier_closed_preset": "Predvoľba čističky, okná zatvorené",
+              "purifier_mode_select": "Výber režimu čističky",
+              "purifier_open_mode": "Voľba režimu, okno otvorené",
+              "purifier_closed_mode": "Voľba režimu, okná zatvorené",
+              "purifier_keep_on": "Nechať čističky zapnuté"
+            }
+          }
+        },
+        "data_description": {
+          "lights": "Stmievateľné svetlá: ich jas sleduje dennú dobu, kým svietia (adaptívne osvetlenie)."
+        }
+      },
+      "room": {
+        "title": "Upraviť miestnosť",
+        "data": {
+          "name": "Názov",
+          "temperature": "Teplota",
+          "co2": "CO₂",
+          "humidity": "Vlhkosť",
+          "noise": "Hluk",
+          "openings": "Okná a dvere",
+          "climate": "Klimatizácia",
+          "fans": "Ventilátory",
+          "purifiers": "Čističky vzduchu",
+          "lights": "Svetlá"
+        },
+        "description": "Senzory a zariadenia miestnosti. Nechajte prázdne, čo nemá.",
+        "sections": {
+          "overrides": {
+            "name": "Nastavenia miestnosti",
+            "description": "Prepíše globálne nastavenia pre túto miestnosť. Nastavenia jednotlivých zariadení sú len v YAML.",
+            "data": {
+              "too_hot_threshold": "Príliš teplo od",
+              "too_cold_threshold": "Príliš chladno pod",
+              "fan_preset": "Predvoľba ventilátora",
+              "fan_open_preset": "Predvoľba ventilátora, okno otvorené",
+              "fan_off_preset": "Predvoľba ventilátora pred vypnutím",
+              "purifier_open_preset": "Predvoľba čističky, okno otvorené",
+              "purifier_closed_preset": "Predvoľba čističky, okná zatvorené",
+              "purifier_mode_select": "Výber režimu čističky",
+              "purifier_open_mode": "Voľba režimu, okno otvorené",
+              "purifier_closed_mode": "Voľba režimu, okná zatvorené",
+              "purifier_keep_on": "Nechať čističky zapnuté"
+            }
+          }
+        },
+        "data_description": {
+          "lights": "Stmievateľné svetlá: ich jas sleduje dennú dobu, kým svietia (adaptívne osvetlenie)."
+        }
+      },
+      "outdoor": {
+        "title": "Vonkajšie miesto",
+        "data": {
+          "name": "Názov",
+          "temperature": "Teplota",
+          "air_quality": "Kvalita vzduchu",
+          "noise": "Hluk"
+        }
+      },
+      "edit_room": {
+        "title": "Upraviť miestnosť",
+        "data": {
+          "room": "Miestnosť"
+        }
+      },
+      "remove_room": {
+        "title": "Odstrániť miestnosti",
+        "data": {
+          "rooms": "Miestnosti"
+        }
+      },
+      "lighting": {
+        "title": "Adaptívne osvetlenie",
+        "data": {
+          "enabled": "Adaptívne osvetlenie",
+          "day": "Jas cez deň",
+          "evening": "Jas večer",
+          "night": "Jas v noci",
+          "warmth": "Prispôsobiť teplotu farby",
+          "day_kelvin": "Teplota farby cez deň",
+          "evening_kelvin": "Teplota farby večer",
+          "night_kelvin": "Teplota farby v noci",
+          "transition": "Prechod",
+          "night_only": "Nočné svetlo",
+          "morning": "Jas ráno",
+          "morning_kelvin": "Teplota farby ráno",
+          "morning_end": "Koniec rána",
+          "quiet_morning": "Tiché ráno",
+          "nap": "Jas pri zdriemnutí",
+          "nap_kelvin": "Teplota farby pri zdriemnutí"
+        },
+        "data_description": {
+          "day": "Keď je slnko hore (výška nad 6°).",
+          "evening": "Po západe slnka (pod −6°); medzi tým plynulý prechod.",
+          "night": "V hodinách tichej noci (karta Plán).",
+          "warmth": "Aj teplotu farby pre svetlá, ktoré ju podporujú. Vypnuté: len jas.",
+          "transition": "Sekundy postupných zmien; práve zapnuté svetlo dostane svoj jas hneď.",
+          "night_only": "Nastavuje sa len v nočných hodinách (cez deň sa nechá na pokoji).",
+          "morning": "V miestnostiach s tichým ránom (spálne), do konca rána (karta Plán).",
+          "morning_end": "Dokedy si spálne ponechajú ranný jas.",
+          "quiet_morning": "Tlmenejšie svetlá ráno, do konca rána (karta Plán).",
+          "nap": "Počas časov zdriemnutia v miestnosti."
+        }
+      }
+    },
+    "error": {
+      "name_required": "Pomenujte miestnosť.",
+      "name_exists": "Miestnosť s týmto názvom už existuje.",
+      "invalid_options": "Niektoré hodnoty sú neplatné, skontrolujte ich."
+    }
+  },
+  "selector": {
+    "kind": {
+      "options": {
+        "too_hot": "Príliš teplo",
+        "close_windows": "Zatvorte okná (vonku je teplejšie)",
+        "ventilate": "Otvorte okná (vonku je chladnejšie)",
+        "too_cold": "Príliš chladno",
+        "window_open_cold": "Otvorené okno v chlade",
+        "co2_high": "Vysoké CO₂",
+        "humidity_high": "Vysoká vlhkosť",
+        "noise_high": "Hlučná miestnosť",
+        "noisy_outside": "Zatvorte okná (vonku je hluk)",
+        "bad_air_outside": "Zatvorte okná (vonku je zlý vzduch)"
+      }
+    },
+    "severity": {
+      "options": {
+        "info": "Informácia (tichá)",
+        "warning": "Varovanie (časovo citlivé, so zvukom)",
+        "critical": "Kritické (obíde tiché hodiny a tichý režim)"
+      }
+    },
+    "outdoor_aggregate": {
+      "options": {
+        "min": "Minimum",
+        "max": "Maximum",
+        "mean": "Priemer"
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "alerts": {
+        "name": "Aktívne upozornenia",
+        "state_attributes": {
+          "alerts": {
+            "name": "Upozornenia"
+          },
+          "snoozes": {
+            "name": "Odloženia"
+          },
+          "outdoor_temperature": {
+            "name": "Vonkajšia teplota"
+          },
+          "outdoor_noise": {
+            "name": "Vonkajší hluk"
+          },
+          "outdoor_air_quality": {
+            "name": "Kvalita vonkajšieho vzduchu"
+          }
+        }
+      },
+      "room": {
+        "name": "Komfort {room}",
+        "state": {
+          "ok": "OK",
+          "too_hot": "Príliš teplo",
+          "close_windows": "Zatvorte okná (vonku je teplejšie)",
+          "ventilate": "Otvorte okná (vonku je chladnejšie)",
+          "too_cold": "Príliš chladno",
+          "window_open_cold": "Otvorené okno v chlade",
+          "co2_high": "Vysoké CO₂",
+          "humidity_high": "Vysoká vlhkosť",
+          "noise_high": "Hlučná miestnosť",
+          "noisy_outside": "Zatvorte okná (vonku je hluk)",
+          "bad_air_outside": "Zatvorte okná (vonku je zlý vzduch)"
+        }
+      },
+      "last_notification": {
+        "name": "Posledné oznámenie"
+      }
+    },
+    "switch": {
+      "notifications": {
+        "name": "Oznámenia"
+      },
+      "control": {
+        "name": "Ovládanie zariadení"
+      },
+      "lighting": {
+        "name": "Adaptívne osvetlenie"
+      }
+    },
+    "button": {
+      "notify_now": {
+        "name": "Oznámiť teraz"
+      },
+      "unsnooze": {
+        "name": "Zrušiť odloženia"
+      }
+    }
+  },
+  "services": {
+    "snooze": {
+      "name": "Odložiť",
+      "description": "Na chvíľu prestane oznamovať upozornenia zadaných miestností a typov (predvolene všetky).",
+      "fields": {
+        "duration": {
+          "name": "Trvanie",
+          "description": "Minúty; predvolene dĺžka odloženia z možností."
+        },
+        "rooms": {
+          "name": "Miestnosti",
+          "description": "Názvy alebo ID miestností; predvolene všetky."
+        },
+        "kinds": {
+          "name": "Upozornenia",
+          "description": "Ak je zadané, odložia sa len aktuálne upozornenia týchto typov."
+        }
+      }
+    },
+    "unsnooze": {
+      "name": "Zrušiť odloženia",
+      "description": "Znova oznamuje odložené upozornenia zadaných miestností (predvolene všetky).",
+      "fields": {
+        "rooms": {
+          "name": "Miestnosti",
+          "description": "Názvy alebo ID miestností; predvolene všetky."
+        }
+      }
+    },
+    "acknowledge": {
+      "name": "Potvrdiť",
+      "description": "Žiadne pripomenutie ani eskalácia pre aktuálne upozornenia, kým neskončia.",
+      "fields": {
+        "rooms": {
+          "name": "Miestnosti",
+          "description": "Názvy alebo ID miestností; predvolene všetky."
+        },
+        "kinds": {
+          "name": "Upozornenia",
+          "description": "Typy upozornení; predvolene všetky."
+        }
+      }
+    },
+    "notify_now": {
+      "name": "Oznámiť teraz",
+      "description": "Odošle všetky aktuálne problémy v jednom oznámení a ignoruje tiché hodiny aj okno zoskupenia."
+    },
+    "get_config": {
+      "name": "Získať konfiguráciu",
+      "description": "Vráti používané možnosti (miestnosti, upozornenia, ovládanie, osvetlenie) na skopírovanie do YAML alebo na kontrolu nastavení."
+    }
+  },
+  "common": {
+    "title_one": "{room}",
+    "title_many": "Upozornenia na komfort: {count}",
+    "room_line": "{room}: {problem}",
+    "decimal": ",",
+    "duration_minutes": "{minutes} min",
+    "duration_hours": "{hours} h {minutes:02d}",
+    "since": "už {duration}",
+    "worse": "zhoršuje sa",
+    "line_too_hot": "{value} °C, nad {threshold} °C",
+    "line_too_cold": "{value} °C, pod {threshold} °C",
+    "line_ventilate": "{temperature} °C vnútri, {outdoor} °C vonku — otvorte okná",
+    "line_close_windows": "{outdoor} °C vonku, {temperature} °C vnútri — zatvorte: {openings}",
+    "line_window_open_cold": "otvorené: {openings}, {outdoor} °C vonku",
+    "line_co2_high": "CO₂ {value} ppm — vyvetrajte miestnosť",
+    "line_humidity_high": "vlhkosť {value} % — vyvetrajte miestnosť",
+    "line_noise_high": "hluk {value} dB, nad {threshold} dB",
+    "line_noisy_outside": "{value} dB vonku — zatvorte: {openings}",
+    "line_bad_air_outside": "kvalita vzduchu vonku {value}/6 — zatvorte: {openings}",
+    "action_snooze": "Odložiť na {hours} h",
+    "action_snooze_minutes": "Odložiť na {minutes} min",
+    "action_ack": "Rozumiem"
+  },
+  "exceptions": {
+    "not_loaded": {
+      "message": "Smart Comfort nie je načítaný."
+    },
+    "unknown_room": {
+      "message": "Neznáma miestnosť: {room}."
+    }
+  }
+}

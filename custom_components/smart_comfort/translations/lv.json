@@ -1,0 +1,493 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Smart Comfort",
+        "data": {
+          "notify": "Paziņošanas darbības",
+          "outdoor_temperature": "Āra temperatūra",
+          "outdoor_aggregate": "Apvienot āra sensorus"
+        },
+        "description": "Mazāk un gudrāki komforta brīdinājumi, kā arī gaisa kondicionieru, ventilatoru un gaisa attīrītāju vadība. Telpas pievienojiet vēlāk opcijās vai konfigurējiet visu YAML.",
+        "data_description": {
+          "notify": "Kur nonāk brīdinājumi (notify.mobile_app_…, notify grupa…).",
+          "outdoor_temperature": "Viens vai vairāki āra sensori; nepieejamie tiek ignorēti.",
+          "outdoor_aggregate": "Minimums izvairās no sensora saulē."
+        }
+      }
+    },
+    "error": {
+      "invalid_options": "Dažas vērtības nav derīgas, pārbaudiet tās."
+    },
+    "abort": {
+      "already_configured": "Smart Comfort jau ir konfigurēts.",
+      "single_instance_allowed": "Smart Comfort jau ir konfigurēts."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Smart Comfort opcijas",
+        "description": "Konfigurētās telpas: {rooms}. Ja izmantojat YAML, tā maiņa nākamajā restartēšanā aizstās šīs opcijas.",
+        "menu_options": {
+          "general": "Paziņojumi",
+          "alerts": "Brīdinājumi",
+          "control": "Ierīču vadība",
+          "add_room": "Pievienot telpu",
+          "edit_room": "Rediģēt telpu",
+          "remove_room": "Noņemt telpas"
+        }
+      },
+      "general": {
+        "title": "Paziņojumi",
+        "data": {
+          "notify": "Paziņošanas darbības",
+          "outdoor_temperature": "Āra temperatūra",
+          "outdoor_aggregate": "Apvienot āra sensorus",
+          "outdoor_noise": "Āra troksnis",
+          "outdoor_air_quality": "Āra gaisa kvalitāte",
+          "digest_window": "Apkopošanas logs",
+          "reminder": "Atgādinājums",
+          "snooze_duration": "Atlikšanas ilgums",
+          "startup_grace": "Starta nogaidīšanas periods",
+          "quiet_start": "Kluso stundu sākums",
+          "quiet_end": "Kluso stundu beigas",
+          "presence": "Klātbūtne",
+          "clear_when_resolved": "Notīrīt, kad atrisināts",
+          "critical_volume": "Kritisko brīdinājumu skaļums",
+          "url": "Pieskāriena darbība",
+          "tag": "Paziņojuma tags"
+        },
+        "data_description": {
+          "notify": "Kur nonāk brīdinājumi (notify.mobile_app_…, notify grupa…).",
+          "outdoor_temperature": "Āra sensori ārpus āra vietām (laikapstākļu entītija, sensors bez apgabala); nepieejamie tiek ignorēti.",
+          "outdoor_aggregate": "Minimums izvairās no sensora saulē.",
+          "outdoor_noise": "Skaņas līmeņa sensori ārā (dB), pievienoti āra vietu sensoriem: nav ieteikuma atvērt logus, kamēr ir troksnis, un brīdinājums, kad logi ir atvērti troksnī.",
+          "outdoor_air_quality": "Gaisa kvalitātes indeksa sensori ārā vai pilsētā (Atmo France, AQI…), pievienoti āra vietu sensoriem: nav ieteikuma atvērt logus, kamēr gaiss ir slikts, un brīdinājums, kad logi tad ir atvērti. Skaitās sliktākais.",
+          "digest_window": "Minūtes, cik gaidīt citus brīdinājumus pirms viena apkopota paziņojuma nosūtīšanas. Kritiskie brīdinājumi negaida.",
+          "reminder": "Minūtes, pēc kurām par joprojām esošu problēmu paziņo atkārtoti. 0: nekad (tikai tad, kad kļūst sliktāk).",
+          "snooze_duration": "Paziņojuma pogas Atlikt un pēc noklusējuma atlikšanas darbības minūtes.",
+          "startup_grace": "Minūtes pēc Home Assistant palaišanas, kuru laikā nekas netiek sūtīts.",
+          "quiet_start": "No šī brīža līdz beigām tiek sūtīti tikai kritiskie brīdinājumi; pārējie aiziet beigās, ja vēl ir aktuāli.",
+          "presence": "Zona, persona, grupa vai būla palīgs: kamēr neviena nav mājās, tiek sūtīti tikai kritiskie brīdinājumi.",
+          "clear_when_resolved": "Noņemt paziņojumu no tālruņiem, kad visas paziņotās problēmas ir beigušās.",
+          "critical_volume": "Kritiskās skaņas skaļums iOS, no 0 līdz 1.",
+          "url": "Tiek atvērts, pieskaroties paziņojumam, piem., homeassistant://navigate/lovelace/comfort",
+          "tag": "Katrs paziņojums aizstāj iepriekšējo ar šo tagu, nevis tie krājas."
+        }
+      },
+      "alerts": {
+        "title": "Brīdinājumi",
+        "data": {
+          "kind": "Brīdinājums"
+        },
+        "description": "Brīdinājuma iestatījumi visām telpām. Telpa savā formā var ignorēt pārāk karsts / pārāk auksts sliekšņus, bet YAML — jebko."
+      },
+      "alert": {
+        "title": "Brīdinājuma iestatījumi",
+        "data": {
+          "enabled": "Iespējots",
+          "threshold": "Slieksnis",
+          "min_indoor": "Minimālā iekštelpu temperatūra",
+          "min_outdoor": "Minimālā āra temperatūra",
+          "max_outdoor": "Maksimālā āra temperatūra",
+          "max_outdoor_noise": "Maksimālais āra troksnis",
+          "max_outdoor_air": "Maksimālais āra gaisa kvalitātes līmenis",
+          "hysteresis": "Histerēze",
+          "delay": "Aizture",
+          "severity": "Nopietnība",
+          "escalation": "Eskalācijas solis"
+        },
+        "data_description": {
+          "threshold": "Pārāk karsts/auksts, CO₂, mitrums: vērtība. Atvērt/aizvērt logus: starpība starp iekšā un ārā.",
+          "min_indoor": "Ieteikt atvērt tikai tad, ja telpā ir vismaz tik silts.",
+          "min_outdoor": "Tikai tad, ja ārā ir vismaz tik karsts.",
+          "max_outdoor": "Tikai tad, ja ārā ir tik auksts vai aukstāks.",
+          "max_outdoor_noise": "Netiek ieteikts, kamēr āra troksnis ir virs šīs vērtības (nepieciešams āra trokšņa sensors).",
+          "max_outdoor_air": "Netiek ieteikts, kamēr āra gaisa kvalitāte ir sliktāka par šo līmeni, no 1 (laba) līdz 6 (ārkārtīgi slikta).",
+          "hysteresis": "Problēma beidzas tikai tad, kad vērtība ir atgriezusies aiz sliekšņa par tik: bez svārstībām.",
+          "delay": "Minūtes, cik ilgi nosacījumam jāsaglabājas, pirms tā ir problēma.",
+          "escalation": "Paziņot atkārtoti, kad vērtība kļūst par tik sliktāka nekā pēdējā paziņojumā. 0: nekad."
+        }
+      },
+      "control": {
+        "title": "Ierīču vadība",
+        "data": {
+          "enabled": "Vadīt ierīces",
+          "start": "Loga pastiprinājums no",
+          "end": "Loga pastiprinājums līdz",
+          "manual_override": "Manuāla ignorēšana",
+          "suppress_when_handled": "Nav brīdinājuma, ja tiek risināts",
+          "night_start": "Klusā nakts no",
+          "night_end": "Klusā nakts līdz",
+          "display": "Indikatora gaisma vai displejs",
+          "reset_at": "Atpakaļ uz normālu plkst.",
+          "display_off": "Displeji izslēgti no",
+          "display_on": "Displeji ieslēgti no"
+        },
+        "data_description": {
+          "start": "Ventilatori un attīrītāji pāriet uz pilnu ātrumu, kad atveras logs vai durvis, tikai starp šiem laikiem. Abi tukši: visu dienu.",
+          "manual_override": "Minūtes, cik ilgi manuāli mainīta ierīce tiek atstāta mierā. 0: nekad netiek pauzēta.",
+          "suppress_when_handled": "Nav brīdinājuma „pārāk karsts“ telpai, kurā Smart Comfort ir ieslēdzis gaisa kondicionieri vai ventilatoru.",
+          "night_start": "Starp šiem laikiem ierīces izmanto nakts iestatījumus (klusāks ātrums, iepriekšējs iestatījums vai ventilatora režīms), un tām nav loga pastiprinājuma.",
+          "display": "Izslēgts cilnes Grafiks stundās „Displeji izslēgti“ un telpas diendusas laikā, pēc tam atkal ieslēgts.",
+          "reset_at": "Šajā laikā ierīce atgriežas normālā stāvoklī, arī pēc manuālas maiņas (attīrītājs atpakaļ uz auto…)."
+        },
+        "sections": {
+          "climate": {
+            "name": "Gaisa kondicionieri",
+            "data": {
+              "cool_above": "Dzesēt no",
+              "off_below": "Izslēgt zem",
+              "setpoint": "Iestatītā temperatūra",
+              "fan_mode": "Ventilatora režīms",
+              "closed_for": "Atveres aizvērtas (min)",
+              "off_on_open": "Izslēgt, ja atvērts (min)",
+              "night_fan_mode": "Ventilatora režīms naktī"
+            }
+          },
+          "fans": {
+            "name": "Ventilatori",
+            "data": {
+              "on_above": "Ieslēgt no",
+              "off_below": "Izslēgt zem",
+              "percentage": "Ātrums",
+              "preset": "Iepriekšējs iestatījums",
+              "open_percentage": "Ātrums, logs atvērts",
+              "open_preset": "Iepriekšējs iestatījums, logs atvērts",
+              "off_preset": "Iepriekšējs iestatījums pirms izslēgšanas",
+              "night_percentage": "Ātrums naktī",
+              "night_preset": "Iepriekšējs iestatījums naktī"
+            },
+            "description": "Atstājiet „Ieslēgt no“ un „Izslēgt zem“ tukšus ventilatoriem, kurus vada tikai logi."
+          },
+          "purifiers": {
+            "name": "Gaisa attīrītāji",
+            "data": {
+              "open_percentage": "Ātrums, logs atvērts",
+              "open_preset": "Iepriekšējs iestatījums, logs atvērts",
+              "closed_preset": "Iepriekšējs iestatījums, logi aizvērti",
+              "keep_on": "Turēt ieslēgtu",
+              "night_percentage": "Ātrums naktī",
+              "night_preset": "Iepriekšējs iestatījums naktī",
+              "night_mode": "Režīma opcija naktī"
+            },
+            "data_description": {
+              "keep_on": "Atkal ieslēgt attīrītāju, ja tas bijis izslēgts 10 s (strāvas pārrāvums, kļūme)."
+            }
+          }
+        }
+      },
+      "add_room": {
+        "title": "Pievienot telpu",
+        "data": {
+          "name": "Nosaukums",
+          "temperature": "Temperatūra",
+          "co2": "CO₂",
+          "humidity": "Mitrums",
+          "noise": "Troksnis",
+          "openings": "Logi un durvis",
+          "climate": "Gaisa kondicionieris",
+          "fans": "Ventilatori",
+          "purifiers": "Gaisa attīrītāji",
+          "lights": "Gaismas"
+        },
+        "description": "Telpas sensori un ierīces. Atstājiet tukšu to, kā tai nav.",
+        "sections": {
+          "overrides": {
+            "name": "Telpas iestatījumi",
+            "description": "Ignorēt globālos iestatījumus šai telpai. Iestatījumi katrai ierīcei ir tikai YAML.",
+            "data": {
+              "too_hot_threshold": "Pārāk karsts no",
+              "too_cold_threshold": "Pārāk auksts zem",
+              "fan_preset": "Ventilatora iepriekšējs iestatījums",
+              "fan_open_preset": "Ventilatora iepriekšējs iestatījums, logs atvērts",
+              "fan_off_preset": "Ventilatora iepriekšējs iestatījums pirms izslēgšanas",
+              "purifier_open_preset": "Attīrītāja iepriekšējs iestatījums, logs atvērts",
+              "purifier_closed_preset": "Attīrītāja iepriekšējs iestatījums, logi aizvērti",
+              "purifier_mode_select": "Attīrītāja režīma atlase",
+              "purifier_open_mode": "Režīma opcija, logs atvērts",
+              "purifier_closed_mode": "Režīma opcija, logi aizvērti",
+              "purifier_keep_on": "Turēt attīrītājus ieslēgtus"
+            }
+          }
+        },
+        "data_description": {
+          "lights": "Regulējamas gaismas: to spilgtums seko diennakts laikam, kamēr tās ir ieslēgtas (adaptīvais apgaismojums)."
+        }
+      },
+      "room": {
+        "title": "Rediģēt telpu",
+        "data": {
+          "name": "Nosaukums",
+          "temperature": "Temperatūra",
+          "co2": "CO₂",
+          "humidity": "Mitrums",
+          "noise": "Troksnis",
+          "openings": "Logi un durvis",
+          "climate": "Gaisa kondicionieris",
+          "fans": "Ventilatori",
+          "purifiers": "Gaisa attīrītāji",
+          "lights": "Gaismas"
+        },
+        "description": "Telpas sensori un ierīces. Atstājiet tukšu to, kā tai nav.",
+        "sections": {
+          "overrides": {
+            "name": "Telpas iestatījumi",
+            "description": "Ignorēt globālos iestatījumus šai telpai. Iestatījumi katrai ierīcei ir tikai YAML.",
+            "data": {
+              "too_hot_threshold": "Pārāk karsts no",
+              "too_cold_threshold": "Pārāk auksts zem",
+              "fan_preset": "Ventilatora iepriekšējs iestatījums",
+              "fan_open_preset": "Ventilatora iepriekšējs iestatījums, logs atvērts",
+              "fan_off_preset": "Ventilatora iepriekšējs iestatījums pirms izslēgšanas",
+              "purifier_open_preset": "Attīrītāja iepriekšējs iestatījums, logs atvērts",
+              "purifier_closed_preset": "Attīrītāja iepriekšējs iestatījums, logi aizvērti",
+              "purifier_mode_select": "Attīrītāja režīma atlase",
+              "purifier_open_mode": "Režīma opcija, logs atvērts",
+              "purifier_closed_mode": "Režīma opcija, logi aizvērti",
+              "purifier_keep_on": "Turēt attīrītājus ieslēgtus"
+            }
+          }
+        },
+        "data_description": {
+          "lights": "Regulējamas gaismas: to spilgtums seko diennakts laikam, kamēr tās ir ieslēgtas (adaptīvais apgaismojums)."
+        }
+      },
+      "outdoor": {
+        "title": "Āra vieta",
+        "data": {
+          "name": "Nosaukums",
+          "temperature": "Temperatūra",
+          "air_quality": "Gaisa kvalitāte",
+          "noise": "Troksnis"
+        }
+      },
+      "edit_room": {
+        "title": "Rediģēt telpu",
+        "data": {
+          "room": "Telpa"
+        }
+      },
+      "remove_room": {
+        "title": "Noņemt telpas",
+        "data": {
+          "rooms": "Telpas"
+        }
+      },
+      "lighting": {
+        "title": "Adaptīvais apgaismojums",
+        "data": {
+          "enabled": "Adaptīvais apgaismojums",
+          "day": "Spilgtums dienā",
+          "evening": "Spilgtums vakarā",
+          "night": "Spilgtums naktī",
+          "warmth": "Pielāgot krāsas temperatūru",
+          "day_kelvin": "Krāsas temperatūra dienā",
+          "evening_kelvin": "Krāsas temperatūra vakarā",
+          "night_kelvin": "Krāsas temperatūra naktī",
+          "transition": "Pāreja",
+          "night_only": "Naktslampa",
+          "morning": "Spilgtums no rīta",
+          "morning_kelvin": "Krāsas temperatūra no rīta",
+          "morning_end": "Rīta beigas",
+          "quiet_morning": "Kluss rīts",
+          "nap": "Spilgtums diendusā",
+          "nap_kelvin": "Krāsas temperatūra diendusā"
+        },
+        "data_description": {
+          "day": "Kad saule ir augšā (augstums virs 6°).",
+          "evening": "Kad saule ir norietējusi (zem −6°); starp tiem — pāreja.",
+          "night": "Klusās nakts stundās (cilne Grafiks).",
+          "warmth": "Arī krāsas temperatūru gaismām, kas to atbalsta. Izslēgts: tikai spilgtums.",
+          "transition": "Pakāpenisko izmaiņu sekundes; tikko ieslēgta gaisma savu spilgtumu saņem uzreiz.",
+          "night_only": "Iestatīts tikai nakts stundās (dienā atstāts mierā).",
+          "morning": "Telpās ar klusu rītu (guļamistabās), līdz rīta beigām (cilne Grafiks).",
+          "morning_end": "Līdz kuram laikam guļamistabas saglabā rīta spilgtumu.",
+          "quiet_morning": "Blāvākas gaismas no rīta, līdz rīta beigām (cilne Grafiks).",
+          "nap": "Telpas diendusas laikos."
+        }
+      }
+    },
+    "error": {
+      "name_required": "Piešķiriet telpai nosaukumu.",
+      "name_exists": "Telpa ar šādu nosaukumu jau ir.",
+      "invalid_options": "Dažas vērtības nav derīgas, pārbaudiet tās."
+    }
+  },
+  "selector": {
+    "kind": {
+      "options": {
+        "too_hot": "Pārāk karsts",
+        "close_windows": "Aizveriet logus (ārā ir karstāks)",
+        "ventilate": "Atveriet logus (ārā ir vēsāks)",
+        "too_cold": "Pārāk auksts",
+        "window_open_cold": "Logs atvērts aukstumā",
+        "co2_high": "Augsts CO₂",
+        "humidity_high": "Augsts mitrums",
+        "noise_high": "Trokšņaina telpa",
+        "noisy_outside": "Aizveriet logus (ārā ir troksnis)",
+        "bad_air_outside": "Aizveriet logus (ārā ir slikts gaiss)"
+      }
+    },
+    "severity": {
+      "options": {
+        "info": "Informācija (klusa)",
+        "warning": "Brīdinājums (laikjutīgs, ar skaņu)",
+        "critical": "Kritisks (apiet klusās stundas un kluso režīmu)"
+      }
+    },
+    "outdoor_aggregate": {
+      "options": {
+        "min": "Minimums",
+        "max": "Maksimums",
+        "mean": "Vidējais"
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "alerts": {
+        "name": "Aktīvie brīdinājumi",
+        "state_attributes": {
+          "alerts": {
+            "name": "Brīdinājumi"
+          },
+          "snoozes": {
+            "name": "Atlikšanas"
+          },
+          "outdoor_temperature": {
+            "name": "Āra temperatūra"
+          },
+          "outdoor_noise": {
+            "name": "Āra troksnis"
+          },
+          "outdoor_air_quality": {
+            "name": "Āra gaisa kvalitāte"
+          }
+        }
+      },
+      "room": {
+        "name": "Komforts: {room}",
+        "state": {
+          "ok": "OK",
+          "too_hot": "Pārāk karsts",
+          "close_windows": "Aizveriet logus (ārā ir karstāks)",
+          "ventilate": "Atveriet logus (ārā ir vēsāks)",
+          "too_cold": "Pārāk auksts",
+          "window_open_cold": "Logs atvērts aukstumā",
+          "co2_high": "Augsts CO₂",
+          "humidity_high": "Augsts mitrums",
+          "noise_high": "Trokšņaina telpa",
+          "noisy_outside": "Aizveriet logus (ārā ir troksnis)",
+          "bad_air_outside": "Aizveriet logus (ārā ir slikts gaiss)"
+        }
+      },
+      "last_notification": {
+        "name": "Pēdējais paziņojums"
+      }
+    },
+    "switch": {
+      "notifications": {
+        "name": "Paziņojumi"
+      },
+      "control": {
+        "name": "Ierīču vadība"
+      },
+      "lighting": {
+        "name": "Adaptīvais apgaismojums"
+      }
+    },
+    "button": {
+      "notify_now": {
+        "name": "Paziņot tagad"
+      },
+      "unsnooze": {
+        "name": "Atcelt atlikšanas"
+      }
+    }
+  },
+  "services": {
+    "snooze": {
+      "name": "Atlikt",
+      "description": "Uz laiku pārtrauc paziņot par norādīto telpu un veidu brīdinājumiem (pēc noklusējuma visiem).",
+      "fields": {
+        "duration": {
+          "name": "Ilgums",
+          "description": "Minūtes; pēc noklusējuma opciju atlikšanas ilgums."
+        },
+        "rooms": {
+          "name": "Telpas",
+          "description": "Telpu nosaukumi vai ID; pēc noklusējuma visas."
+        },
+        "kinds": {
+          "name": "Brīdinājumi",
+          "description": "Ja iestatīts, tiek atlikti tikai šo veidu pašreizējie brīdinājumi."
+        }
+      }
+    },
+    "unsnooze": {
+      "name": "Atcelt atlikšanas",
+      "description": "Atkal paziņo par norādīto telpu atliktajiem brīdinājumiem (pēc noklusējuma visām).",
+      "fields": {
+        "rooms": {
+          "name": "Telpas",
+          "description": "Telpu nosaukumi vai ID; pēc noklusējuma visas."
+        }
+      }
+    },
+    "acknowledge": {
+      "name": "Apstiprināt",
+      "description": "Nav atgādinājumu un eskalācijas pašreizējiem brīdinājumiem, līdz tie beidzas.",
+      "fields": {
+        "rooms": {
+          "name": "Telpas",
+          "description": "Telpu nosaukumi vai ID; pēc noklusējuma visas."
+        },
+        "kinds": {
+          "name": "Brīdinājumi",
+          "description": "Brīdinājumu veidi; pēc noklusējuma visi."
+        }
+      }
+    },
+    "notify_now": {
+      "name": "Paziņot tagad",
+      "description": "Nosūta visas pašreizējās problēmas vienā paziņojumā, ignorējot klusās stundas un apkopošanas logu."
+    },
+    "get_config": {
+      "name": "Iegūt konfigurāciju",
+      "description": "Atgriež izmantotās opcijas (telpas, brīdinājumi, vadība, apgaismojums), lai kopētu tās YAML vai pārbaudītu iestatīto."
+    }
+  },
+  "common": {
+    "title_one": "{room}",
+    "title_many": "Komforta brīdinājumi: {count}",
+    "room_line": "{room}: {problem}",
+    "decimal": ",",
+    "duration_minutes": "{minutes} min",
+    "duration_hours": "{hours} h {minutes:02d}",
+    "since": "jau {duration}",
+    "worse": "pasliktinās",
+    "line_too_hot": "{value} °C, virs {threshold} °C",
+    "line_too_cold": "{value} °C, zem {threshold} °C",
+    "line_ventilate": "{temperature} °C iekšā, {outdoor} °C ārā — atveriet logus",
+    "line_close_windows": "{outdoor} °C ārā, {temperature} °C iekšā — aizveriet: {openings}",
+    "line_window_open_cold": "atvērts: {openings}, {outdoor} °C ārā",
+    "line_co2_high": "CO₂ {value} ppm — izvēdiniet telpu",
+    "line_humidity_high": "mitrums {value} % — izvēdiniet telpu",
+    "line_noise_high": "troksnis {value} dB, virs {threshold} dB",
+    "line_noisy_outside": "{value} dB ārā — aizveriet: {openings}",
+    "line_bad_air_outside": "gaisa kvalitāte ārā {value}/6 — aizveriet: {openings}",
+    "action_snooze": "Atlikt uz {hours} h",
+    "action_snooze_minutes": "Atlikt uz {minutes} min",
+    "action_ack": "Sapratu"
+  },
+  "exceptions": {
+    "not_loaded": {
+      "message": "Smart Comfort nav ielādēts."
+    },
+    "unknown_room": {
+      "message": "Nezināma telpa: {room}."
+    }
+  }
+}

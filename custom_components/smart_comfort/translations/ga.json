@@ -1,0 +1,493 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Smart Comfort",
+        "data": {
+          "notify": "Gníomhartha fógartha",
+          "outdoor_temperature": "Teocht amuigh",
+          "outdoor_aggregate": "Braiteoirí amuigh a chomhcheangal"
+        },
+        "description": "Níos lú foláirimh chompoird, agus iad níos cliste, mar aon le rialú do chuid aerchóiritheoirí, gaothrán agus íonaitheoirí aeir. Cuir na seomraí leis ina dhiaidh sin sna roghanna, nó cumraigh gach rud in YAML.",
+        "data_description": {
+          "notify": "Cá dtéann na foláirimh (notify.mobile_app_…, grúpa notify…).",
+          "outdoor_temperature": "Braiteoir amuigh amháin nó níos mó; déantar neamhaird díobh siúd nach bhfuil ar fáil.",
+          "outdoor_aggregate": "Seachnaíonn an íosmhéid braiteoir atá faoin ngrian."
+        }
+      }
+    },
+    "error": {
+      "invalid_options": "Tá roinnt luachanna neamhbhailí, seiceáil iad."
+    },
+    "abort": {
+      "already_configured": "Tá Smart Comfort cumraithe cheana féin.",
+      "single_instance_allowed": "Tá Smart Comfort cumraithe cheana féin."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Roghanna Smart Comfort",
+        "description": "Seomraí cumraithe: {rooms}. Má úsáideann tú YAML, cuirfidh athrú air na roghanna seo in ionad a chéile ag an gcéad atosú eile.",
+        "menu_options": {
+          "general": "Fógraí",
+          "alerts": "Foláirimh",
+          "control": "Rialú gléasanna",
+          "add_room": "Cuir seomra leis",
+          "edit_room": "Cuir seomra in eagar",
+          "remove_room": "Bain seomraí"
+        }
+      },
+      "general": {
+        "title": "Fógraí",
+        "data": {
+          "notify": "Gníomhartha fógartha",
+          "outdoor_temperature": "Teocht amuigh",
+          "outdoor_aggregate": "Braiteoirí amuigh a chomhcheangal",
+          "outdoor_noise": "Torann amuigh",
+          "outdoor_air_quality": "Cáilíocht an aeir amuigh",
+          "digest_window": "Fuinneog achoimre",
+          "reminder": "Meabhrúchán",
+          "snooze_duration": "Fad an tsoip",
+          "startup_grace": "Tréimhse cairde tosaithe",
+          "quiet_start": "Tús na n-uaireanta ciúine",
+          "quiet_end": "Deireadh na n-uaireanta ciúine",
+          "presence": "Láithreacht",
+          "clear_when_resolved": "Glan nuair a réitítear",
+          "critical_volume": "Airde fuaime na bhfoláireamh criticiúil",
+          "url": "Gníomh tapála",
+          "tag": "Clib an fhógra"
+        },
+        "data_description": {
+          "notify": "Cá dtéann na foláirimh (notify.mobile_app_…, grúpa notify…).",
+          "outdoor_temperature": "Braiteoirí amuigh lasmuigh de na háiteanna amuigh (aonán aimsire, braiteoir gan limistéar); déantar neamhaird díobh siúd nach bhfuil ar fáil.",
+          "outdoor_aggregate": "Seachnaíonn an íosmhéid braiteoir atá faoin ngrian.",
+          "outdoor_noise": "Braiteoirí leibhéal fuaime amuigh (dB), curtha le braiteoirí na n-áiteanna amuigh: ní mholtar na fuinneoga a oscailt fad is atá torann ann, agus foláireamh nuair a bhíonn fuinneoga ar oscailt sa torann.",
+          "outdoor_air_quality": "Braiteoirí innéacs cháilíocht an aeir amuigh nó sa chathair (Atmo France, AQI…), curtha le braiteoirí na n-áiteanna amuigh: ní mholtar na fuinneoga a oscailt fad is atá an t-aer go dona, agus foláireamh nuair a bhíonn fuinneoga ar oscailt ansin. Is é an ceann is measa a áirítear.",
+          "digest_window": "Nóiméid le fanacht ar fholáirimh eile sula seoltar fógra grúpáilte amháin. Ní fhanann foláirimh chriticiúla.",
+          "reminder": "Nóiméid ina dhiaidh sin a fhógraítear fadhb atá fós ar siúl arís. 0: riamh (ach amháin nuair a théann sí in olcas).",
+          "snooze_duration": "Nóiméid an chnaipe Soip san fhógra agus an ghnímh soip de réir réamhshocraithe.",
+          "startup_grace": "Nóiméid tar éis do Home Assistant tosú nach seoltar aon rud.",
+          "quiet_start": "Ón am sin go dtí an deireadh, ní sheoltar ach foláirimh chriticiúla; imíonn na cinn eile ag an deireadh má bhaineann siad le hábhar fós.",
+          "presence": "Crios, duine, grúpa nó boolean: fad nach bhfuil aon duine sa bhaile, ní sheoltar ach foláirimh chriticiúla.",
+          "clear_when_resolved": "Bain an fógra de na fóin nuair a bhíonn gach fadhb a fógraíodh thart.",
+          "critical_volume": "Airde na fuaime criticiúla ar iOS, 0 go 1.",
+          "url": "Osclaítear é nuair a thapáiltear an fógra, m.sh. homeassistant://navigate/lovelace/comfort",
+          "tag": "Cuireann gach fógra an ceann roimhe leis an gclib seo ar ceal in ionad iad a charnadh."
+        }
+      },
+      "alerts": {
+        "title": "Foláirimh",
+        "data": {
+          "kind": "Foláireamh"
+        },
+        "description": "Socruithe foláirimh do gach seomra. Is féidir le seomra na tairseacha róthe / rófhuar a shárú ina fhoirm féin, agus gach rud in YAML."
+      },
+      "alert": {
+        "title": "Socruithe an fholáirimh",
+        "data": {
+          "enabled": "Cumasaithe",
+          "threshold": "Tairseach",
+          "min_indoor": "Íosteocht istigh",
+          "min_outdoor": "Íosteocht amuigh",
+          "max_outdoor": "Uasteocht amuigh",
+          "max_outdoor_noise": "Uastorann amuigh",
+          "max_outdoor_air": "Uasleibhéal cháilíocht an aeir amuigh",
+          "hysteresis": "Histéiréis",
+          "delay": "Moill",
+          "severity": "Déine",
+          "escalation": "Céim ardaithe"
+        },
+        "data_description": {
+          "threshold": "Róthe/rófhuar, CO₂, taise: an luach. Oscail/dún na fuinneoga: an difríocht idir istigh agus amuigh.",
+          "min_indoor": "Ná mol oscailt ach nuair atá an seomra chomh te seo ar a laghad.",
+          "min_outdoor": "Ach amháin nuair atá sé chomh te seo amuigh ar a laghad.",
+          "max_outdoor": "Ach amháin nuair atá sé chomh fuar seo nó níos fuaire amuigh.",
+          "max_outdoor_noise": "Ní mholtar fad is atá an torann amuigh os cionn seo (teastaíonn braiteoir torainn amuigh).",
+          "max_outdoor_air": "Ní mholtar fad is atá cáilíocht an aeir amuigh níos measa ná an leibhéal seo, ó 1 (maith) go 6 (an-dona ar fad).",
+          "hysteresis": "Ní chríochnaíonn an fhadhb go dtí go mbíonn an luach tar éis filleadh thar an tairseach an méid seo: gan luascadh.",
+          "delay": "Nóiméid a chaithfidh an coinníoll maireachtáil sula mbíonn sé ina fhadhb.",
+          "escalation": "Fógair arís nuair a théann an luach in olcas an méid seo ón bhfógra deireanach. 0: riamh."
+        }
+      },
+      "control": {
+        "title": "Rialú gléasanna",
+        "data": {
+          "enabled": "Rialaigh na gléasanna",
+          "start": "Treisiú fuinneoige ó",
+          "end": "Treisiú fuinneoige go dtí",
+          "manual_override": "Sárú de láimh",
+          "suppress_when_handled": "Gan foláireamh nuair a láimhseáiltear",
+          "night_start": "Oíche chiúin ó",
+          "night_end": "Oíche chiúin go dtí",
+          "display": "Solas táscaire nó taispeáint",
+          "reset_at": "Ar ais go gnáth ag",
+          "display_off": "Taispeántais múchta ó",
+          "display_on": "Taispeántais ar siúl ó"
+        },
+        "data_description": {
+          "start": "Téann gaothráin agus íonaitheoirí go lánluas nuair a osclaítear oscailt, idir na hamanna seo amháin. Iad araon folamh: an lá ar fad.",
+          "manual_override": "Nóiméid a fhágtar gléas a athraíodh de láimh i ngan fhios. 0: ní chuirtear ar sos riamh.",
+          "suppress_when_handled": "Gan foláireamh „róthe“ do sheomra ina bhfuil an t-aerchóiritheoir nó an gaothrán curtha ar siúl ag Smart Comfort.",
+          "night_start": "Idir na hamanna seo úsáideann na gléasanna a socruithe oíche (luas níos ciúine, réamhshocrú nó mód gaothráin) agus níl aon treisiú fuinneoige dóibh.",
+          "display": "Múchtar é le linn uaireanta „Taispeántais múchta“ an chluaisín Sceideal agus le linn néanna an tseomra, agus lastar arís ina dhiaidh.",
+          "reset_at": "Ag an am seo filleann an gléas ar a ghnáthstaid, fiú tar éis athrú de láimh (íonaitheoir ar ais ar uathoibríoch…)."
+        },
+        "sections": {
+          "climate": {
+            "name": "Aerchóiritheoirí",
+            "data": {
+              "cool_above": "Fuaraigh ó",
+              "off_below": "Múch faoi",
+              "setpoint": "Teocht sprice",
+              "fan_mode": "Mód gaothráin",
+              "closed_for": "Oscailtí dúnta le (nóim)",
+              "off_on_open": "Múch nuair atá ar oscailt le (nóim)",
+              "night_fan_mode": "Mód gaothráin san oíche"
+            }
+          },
+          "fans": {
+            "name": "Gaothráin",
+            "data": {
+              "on_above": "Ar siúl ó",
+              "off_below": "Múch faoi",
+              "percentage": "Luas",
+              "preset": "Réamhshocrú",
+              "open_percentage": "Luas, fuinneog ar oscailt",
+              "open_preset": "Réamhshocrú, fuinneog ar oscailt",
+              "off_preset": "Réamhshocrú roimh mhúchadh",
+              "night_percentage": "Luas san oíche",
+              "night_preset": "Réamhshocrú san oíche"
+            },
+            "description": "Fág „Ar siúl ó“ agus „Múch faoi“ folamh do ghaothráin a rialaíonn na fuinneoga amháin."
+          },
+          "purifiers": {
+            "name": "Íonaitheoirí aeir",
+            "data": {
+              "open_percentage": "Luas, fuinneog ar oscailt",
+              "open_preset": "Réamhshocrú, fuinneog ar oscailt",
+              "closed_preset": "Réamhshocrú, fuinneoga dúnta",
+              "keep_on": "Coinnigh ar siúl",
+              "night_percentage": "Luas san oíche",
+              "night_preset": "Réamhshocrú san oíche",
+              "night_mode": "Rogha móid san oíche"
+            },
+            "data_description": {
+              "keep_on": "Cuir íonaitheoir ar siúl arís nuair a bhíonn sé múchta ar feadh 10 s (briseadh cumhachta, fabht)."
+            }
+          }
+        }
+      },
+      "add_room": {
+        "title": "Cuir seomra leis",
+        "data": {
+          "name": "Ainm",
+          "temperature": "Teocht",
+          "co2": "CO₂",
+          "humidity": "Taise",
+          "noise": "Torann",
+          "openings": "Fuinneoga agus doirse",
+          "climate": "Aerchóiritheoir",
+          "fans": "Gaothráin",
+          "purifiers": "Íonaitheoirí aeir",
+          "lights": "Soilse"
+        },
+        "description": "Braiteoirí agus gléasanna an tseomra. Fág folamh an rud nach bhfuil aige.",
+        "sections": {
+          "overrides": {
+            "name": "Socruithe an tseomra",
+            "description": "Sáraigh na socruithe ginearálta don seomra seo. Is in YAML amháin atá socruithe in aghaidh an ghléis.",
+            "data": {
+              "too_hot_threshold": "Róthe ó",
+              "too_cold_threshold": "Rófhuar faoi",
+              "fan_preset": "Réamhshocrú an ghaothráin",
+              "fan_open_preset": "Réamhshocrú an ghaothráin, fuinneog ar oscailt",
+              "fan_off_preset": "Réamhshocrú an ghaothráin roimh mhúchadh",
+              "purifier_open_preset": "Réamhshocrú an íonaitheora, fuinneog ar oscailt",
+              "purifier_closed_preset": "Réamhshocrú an íonaitheora, fuinneoga dúnta",
+              "purifier_mode_select": "Roghnóir móid an íonaitheora",
+              "purifier_open_mode": "Rogha móid, fuinneog ar oscailt",
+              "purifier_closed_mode": "Rogha móid, fuinneoga dúnta",
+              "purifier_keep_on": "Coinnigh na híonaitheoirí ar siúl"
+            }
+          }
+        },
+        "data_description": {
+          "lights": "Soilse in-chaolaithe: leanann a ngile am an lae fad is atá siad ar siúl (soilsiú oiriúnaitheach)."
+        }
+      },
+      "room": {
+        "title": "Cuir an seomra in eagar",
+        "data": {
+          "name": "Ainm",
+          "temperature": "Teocht",
+          "co2": "CO₂",
+          "humidity": "Taise",
+          "noise": "Torann",
+          "openings": "Fuinneoga agus doirse",
+          "climate": "Aerchóiritheoir",
+          "fans": "Gaothráin",
+          "purifiers": "Íonaitheoirí aeir",
+          "lights": "Soilse"
+        },
+        "description": "Braiteoirí agus gléasanna an tseomra. Fág folamh an rud nach bhfuil aige.",
+        "sections": {
+          "overrides": {
+            "name": "Socruithe an tseomra",
+            "description": "Sáraigh na socruithe ginearálta don seomra seo. Is in YAML amháin atá socruithe in aghaidh an ghléis.",
+            "data": {
+              "too_hot_threshold": "Róthe ó",
+              "too_cold_threshold": "Rófhuar faoi",
+              "fan_preset": "Réamhshocrú an ghaothráin",
+              "fan_open_preset": "Réamhshocrú an ghaothráin, fuinneog ar oscailt",
+              "fan_off_preset": "Réamhshocrú an ghaothráin roimh mhúchadh",
+              "purifier_open_preset": "Réamhshocrú an íonaitheora, fuinneog ar oscailt",
+              "purifier_closed_preset": "Réamhshocrú an íonaitheora, fuinneoga dúnta",
+              "purifier_mode_select": "Roghnóir móid an íonaitheora",
+              "purifier_open_mode": "Rogha móid, fuinneog ar oscailt",
+              "purifier_closed_mode": "Rogha móid, fuinneoga dúnta",
+              "purifier_keep_on": "Coinnigh na híonaitheoirí ar siúl"
+            }
+          }
+        },
+        "data_description": {
+          "lights": "Soilse in-chaolaithe: leanann a ngile am an lae fad is atá siad ar siúl (soilsiú oiriúnaitheach)."
+        }
+      },
+      "outdoor": {
+        "title": "Áit amuigh",
+        "data": {
+          "name": "Ainm",
+          "temperature": "Teocht",
+          "air_quality": "Cáilíocht an aeir",
+          "noise": "Torann"
+        }
+      },
+      "edit_room": {
+        "title": "Cuir seomra in eagar",
+        "data": {
+          "room": "Seomra"
+        }
+      },
+      "remove_room": {
+        "title": "Bain seomraí",
+        "data": {
+          "rooms": "Seomraí"
+        }
+      },
+      "lighting": {
+        "title": "Soilsiú oiriúnaitheach",
+        "data": {
+          "enabled": "Soilsiú oiriúnaitheach",
+          "day": "Gile an lae",
+          "evening": "Gile an tráthnóna",
+          "night": "Gile na hoíche",
+          "warmth": "Oiriúnaigh an teas",
+          "day_kelvin": "Teas an lae",
+          "evening_kelvin": "Teas an tráthnóna",
+          "night_kelvin": "Teas na hoíche",
+          "transition": "Trasdul",
+          "night_only": "Solas oíche",
+          "morning": "Gile na maidine",
+          "morning_kelvin": "Teas na maidine",
+          "morning_end": "Deireadh na maidine",
+          "quiet_morning": "Maidin chiúin",
+          "nap": "Gile an néil",
+          "nap_kelvin": "Teas an néil"
+        },
+        "data_description": {
+          "day": "Agus an ghrian in airde (ingearchló os cionn 6°).",
+          "evening": "Nuair atá an ghrian faoi (faoi −6°); eatarthu, meascán.",
+          "night": "In uaireanta na hoíche ciúine (cluaisín Sceideal).",
+          "warmth": "An teocht datha freisin, do na soilse a thacaíonn léi. Múchta: gile amháin.",
+          "transition": "Soicindí na n-athruithe de réir a chéile; faigheann solas atá díreach curtha ar siúl a ghile láithreach.",
+          "night_only": "Socraítear é in uaireanta na hoíche amháin (fágtar i ngan fhios é sa lá).",
+          "morning": "Sna seomraí a bhfuil maidin chiúin acu (seomraí leapa), go deireadh na maidine (cluaisín Sceideal).",
+          "morning_end": "Go dtí cén t-am a choinníonn na seomraí leapa gile na maidine.",
+          "quiet_morning": "Soilse níos laige ar maidin, go deireadh na maidine (cluaisín Sceideal).",
+          "nap": "Le linn sliotán néil seomra."
+        }
+      }
+    },
+    "error": {
+      "name_required": "Tabhair ainm don seomra.",
+      "name_exists": "Tá an t-ainm seo ar sheomra cheana.",
+      "invalid_options": "Tá roinnt luachanna neamhbhailí, seiceáil iad."
+    }
+  },
+  "selector": {
+    "kind": {
+      "options": {
+        "too_hot": "Róthe",
+        "close_windows": "Dún na fuinneoga (níos teo amuigh)",
+        "ventilate": "Oscail na fuinneoga (níos fionnuaire amuigh)",
+        "too_cold": "Rófhuar",
+        "window_open_cold": "Fuinneog ar oscailt san fhuacht",
+        "co2_high": "CO₂ ard",
+        "humidity_high": "Taise ard",
+        "noise_high": "Seomra torannach",
+        "noisy_outside": "Dún na fuinneoga (torann amuigh)",
+        "bad_air_outside": "Dún na fuinneoga (droch-aer amuigh)"
+      }
+    },
+    "severity": {
+      "options": {
+        "info": "Eolas (ciúin)",
+        "warning": "Rabhadh (práinneach, le fuaim)",
+        "critical": "Criticiúil (seachnaíonn uaireanta ciúine agus mód ciúin)"
+      }
+    },
+    "outdoor_aggregate": {
+      "options": {
+        "min": "Íosmhéid",
+        "max": "Uasmhéid",
+        "mean": "Meán"
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "alerts": {
+        "name": "Foláirimh ghníomhacha",
+        "state_attributes": {
+          "alerts": {
+            "name": "Foláirimh"
+          },
+          "snoozes": {
+            "name": "Soip"
+          },
+          "outdoor_temperature": {
+            "name": "Teocht amuigh"
+          },
+          "outdoor_noise": {
+            "name": "Torann amuigh"
+          },
+          "outdoor_air_quality": {
+            "name": "Cáilíocht an aeir amuigh"
+          }
+        }
+      },
+      "room": {
+        "name": "Compord {room}",
+        "state": {
+          "ok": "OK",
+          "too_hot": "Róthe",
+          "close_windows": "Dún na fuinneoga (níos teo amuigh)",
+          "ventilate": "Oscail na fuinneoga (níos fionnuaire amuigh)",
+          "too_cold": "Rófhuar",
+          "window_open_cold": "Fuinneog ar oscailt san fhuacht",
+          "co2_high": "CO₂ ard",
+          "humidity_high": "Taise ard",
+          "noise_high": "Seomra torannach",
+          "noisy_outside": "Dún na fuinneoga (torann amuigh)",
+          "bad_air_outside": "Dún na fuinneoga (droch-aer amuigh)"
+        }
+      },
+      "last_notification": {
+        "name": "An fógra deireanach"
+      }
+    },
+    "switch": {
+      "notifications": {
+        "name": "Fógraí"
+      },
+      "control": {
+        "name": "Rialú gléasanna"
+      },
+      "lighting": {
+        "name": "Soilsiú oiriúnaitheach"
+      }
+    },
+    "button": {
+      "notify_now": {
+        "name": "Fógair anois"
+      },
+      "unsnooze": {
+        "name": "Cealaigh na soip"
+      }
+    }
+  },
+  "services": {
+    "snooze": {
+      "name": "Soip",
+      "description": "Stopann sé ar feadh tamaill ag fógairt foláirimh na seomraí agus na gcineálacha a thugtar (iad uile de réir réamhshocraithe).",
+      "fields": {
+        "duration": {
+          "name": "Fad",
+          "description": "Nóiméid; fad an tsoip sna roghanna de réir réamhshocraithe."
+        },
+        "rooms": {
+          "name": "Seomraí",
+          "description": "Ainmneacha nó aitheantais na seomraí; iad uile de réir réamhshocraithe."
+        },
+        "kinds": {
+          "name": "Foláirimh",
+          "description": "Má shocraítear é, ní chuirtear ach na foláirimh reatha de na cineálacha seo ina soip."
+        }
+      }
+    },
+    "unsnooze": {
+      "name": "Cealaigh na soip",
+      "description": "Fógraíonn sé arís foláirimh na seomraí a thugtar atá ina soip (iad uile de réir réamhshocraithe).",
+      "fields": {
+        "rooms": {
+          "name": "Seomraí",
+          "description": "Ainmneacha nó aitheantais na seomraí; iad uile de réir réamhshocraithe."
+        }
+      }
+    },
+    "acknowledge": {
+      "name": "Admhaigh",
+      "description": "Gan meabhrúchán ná ardú do na foláirimh reatha go dtí go gcríochnaíonn siad.",
+      "fields": {
+        "rooms": {
+          "name": "Seomraí",
+          "description": "Ainmneacha nó aitheantais na seomraí; iad uile de réir réamhshocraithe."
+        },
+        "kinds": {
+          "name": "Foláirimh",
+          "description": "Cineálacha foláireamh; iad uile de réir réamhshocraithe."
+        }
+      }
+    },
+    "notify_now": {
+      "name": "Fógair anois",
+      "description": "Seolann sé gach fadhb reatha in aon fhógra amháin, gan aird ar na huaireanta ciúine ná ar an bhfuinneog achoimre."
+    },
+    "get_config": {
+      "name": "Faigh an chumraíocht",
+      "description": "Tugann sé ar ais na roghanna atá in úsáid (seomraí, foláirimh, rialú, soilsiú), le cóipeáil isteach in YAML nó le seiceáil cad atá socraithe."
+    }
+  },
+  "common": {
+    "title_one": "{room}",
+    "title_many": "Foláirimh chompoird: {count}",
+    "room_line": "{room}: {problem}",
+    "decimal": ".",
+    "duration_minutes": "{minutes} nóim",
+    "duration_hours": "{hours} u {minutes:02d}",
+    "since": "le {duration}",
+    "worse": "ag dul in olcas",
+    "line_too_hot": "{value} °C, os cionn {threshold} °C",
+    "line_too_cold": "{value} °C, faoi {threshold} °C",
+    "line_ventilate": "{temperature} °C istigh, {outdoor} °C amuigh — oscail na fuinneoga",
+    "line_close_windows": "{outdoor} °C amuigh, {temperature} °C istigh — dún: {openings}",
+    "line_window_open_cold": "ar oscailt: {openings}, {outdoor} °C amuigh",
+    "line_co2_high": "CO₂ {value} ppm — aeráil an seomra",
+    "line_humidity_high": "taise {value} % — aeráil an seomra",
+    "line_noise_high": "torann {value} dB, os cionn {threshold} dB",
+    "line_noisy_outside": "{value} dB amuigh — dún: {openings}",
+    "line_bad_air_outside": "cáilíocht an aeir amuigh {value}/6 — dún: {openings}",
+    "action_snooze": "Soip {hours} u",
+    "action_snooze_minutes": "Soip {minutes} nóim",
+    "action_ack": "Tuigim"
+  },
+  "exceptions": {
+    "not_loaded": {
+      "message": "Níl Smart Comfort luchtaithe."
+    },
+    "unknown_room": {
+      "message": "Seomra anaithnid: {room}."
+    }
+  }
+}

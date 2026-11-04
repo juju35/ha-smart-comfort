@@ -375,7 +375,7 @@ function editorIn(language) {
 }
 
 test("visual editor: translated kinds, and a hint for the room", () => {
-  for (const language of ["en", "fr", "de", "es", "it", "nl", "pt", "pl", "sr", "sr-Latn"]) {
+  for (const language of ["en", "fr", "de", "es", "it", "nl", "pt", "pl", "sr", "sr-Latn", "ro", "da", "sv", "bg", "ru", "uk", "hu", "ga", "sk", "cs", "sl", "mt", "lv", "el"]) {
     const { field, helper } = editorIn(language);
     const options = field("kinds").selector.select.options;
     assert.deepEqual(
