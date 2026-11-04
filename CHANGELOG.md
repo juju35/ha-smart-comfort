@@ -3,7 +3,7 @@
 ## 1.8.1 - 2026-11-04
 
 ### What's new
-- Added Romanian, Danish, Swedish, Bulgarian, Russian, Ukrainian, Hungarian, Irish, Slovak, Czech, Slovenian, Maltese, Latvian and Greek translations (`ro`, `da`, `sv`, `bg`, `ru`, `uk`, `hu`, `ga`, `sk`, `cs`, `sl`, `mt`, `lv`, `el`): integration, notifications, panel, activity card and mini card (with the plural forms of each language for the alert count).
+- Added Romanian, Danish, Swedish, Bulgarian, Russian, Ukrainian, Hungarian, Slovak, Czech, Slovenian, Latvian and Greek translations (`ro`, `da`, `sv`, `bg`, `ru`, `uk`, `hu`, `sk`, `cs`, `sl`, `lv`, `el`): integration, notifications, panel, activity card and mini card (with the plural forms of each language for the alert count).
 
 ## 1.8.0 - 2026-11-04
 

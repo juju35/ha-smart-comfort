@@ -43,7 +43,7 @@ Comfort automations built with a cooldown keep notifying every couple of hours a
 - **YAML or UI**: configure everything in YAML (imported at startup), in the **Smart Comfort panel** of the sidebar, or in the integration options — rooms, alerts, control
 - **Dashboard cards**, added by the integration: a **mini card** (the alerts of the moment and the switches, with a button that opens the full card: every alert, the rooms, the latest activity) and an **activity card**
 - Sensors for the active alerts and the comfort of each room, switches to pause the notifications or the device control, buttons, actions and events
-- English, French, German, Spanish, Italian, Dutch, European Portuguese, Polish, Serbian (Cyrillic and Latin), Romanian, Danish, Swedish, Bulgarian, Russian, Ukrainian, Hungarian, Irish, Slovak, Czech, Slovenian, Maltese, Latvian and Greek
+- English, French, German, Spanish, Italian, Dutch, European Portuguese, Polish, Serbian (Cyrillic and Latin), Romanian, Danish, Swedish, Bulgarian, Russian, Ukrainian, Hungarian, Slovak, Czech, Slovenian, Latvian and Greek
 
 ## Prerequisites
 
@@ -538,11 +538,9 @@ The integration and its notifications follow the language of Home Assistant. Cur
 | Русский | `ru` |
 | Українська | `uk` |
 | Magyar | `hu` |
-| Gaeilge | `ga` |
 | Slovenčina | `sk` |
 | Čeština | `cs` |
 | Slovenščina | `sl` |
-| Malti | `mt` |
 | Latviešu | `lv` |
 | Ελληνικά | `el` |
 

@@ -53,7 +53,7 @@ function textIn(file, language, key) {
   return element._t(key);
 }
 
-const LANGUAGES = ["en", "fr", "de", "es", "sr", "sr-Latn", "it", "nl", "pt", "pl", "ro", "da", "sv", "bg", "ru", "uk", "hu", "ga", "sk", "cs", "sl", "mt", "lv", "el"];
+const LANGUAGES = ["en", "fr", "de", "es", "sr", "sr-Latn", "it", "nl", "pt", "pl", "ro", "da", "sv", "bg", "ru", "uk", "hu", "sk", "cs", "sl", "lv", "el"];
 // pt-BR falls back to European Portuguese, on purpose; an untranslated language to English.
 const CASES = {
   "fr-FR": "fr",
@@ -73,11 +73,9 @@ const CASES = {
   ru: "ru",
   uk: "uk",
   "hu-HU": "hu",
-  ga: "ga",
   sk: "sk",
   "cs-CZ": "cs",
   sl: "sl",
-  mt: "mt",
   lv: "lv",
   "el-GR": "el",
   ja: "en",
@@ -167,9 +165,6 @@ test("mini card: the plural form of each language (one, few, many, other)", () =
   assert.equal(count("ro", 20), "20 de alerte");
   assert.equal(count("lv", 10), "10 brīdinājumu");
   assert.equal(count("lv", 21), "21 brīdinājums");
-  assert.equal(count("ga", 7), "7 bhfoláireamh");
-  assert.equal(count("mt", 2), "2 twissijiet");
-  assert.equal(count("mt", 11), "11 twissija");
   assert.equal(count("el", 2), "2 προειδοποιήσεις");
   // Each extra form is one the language really has.
   const all = strings("mini");

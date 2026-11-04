@@ -12,7 +12,7 @@ import pytest
 TRANSLATIONS = Path(__file__).parent.parent / "custom_components" / "smart_comfort" / "translations"
 LANGUAGES = [
     "de", "es", "fr", "it", "nl", "pl", "pt", "pt-BR", "sr", "sr-Latn",
-    "ro", "da", "sv", "bg", "ru", "uk", "hu", "ga", "sk", "cs", "sl", "mt", "lv", "el",
+    "ro", "da", "sv", "bg", "ru", "uk", "hu", "sk", "cs", "sl", "lv", "el",
 ]  # fmt: skip
 
 
