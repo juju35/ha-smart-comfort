@@ -1,0 +1,493 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Smart Comfort",
+        "data": {
+          "notify": "Dejanja obveščanja",
+          "outdoor_temperature": "Zunanja temperatura",
+          "outdoor_aggregate": "Združevanje zunanjih tipal"
+        },
+        "description": "Manj in pametnejših opozoril o udobju ter upravljanje klimatskih naprav, ventilatorjev in čistilnikov zraka. Prostore dodajte pozneje v možnostih ali vse nastavite v YAML.",
+        "data_description": {
+          "notify": "Kam gredo opozorila (notify.mobile_app_…, skupina notify…).",
+          "outdoor_temperature": "Eno ali več zunanjih tipal; nedosegljiva se prezrejo.",
+          "outdoor_aggregate": "Minimum se izogne tipalu na soncu."
+        }
+      }
+    },
+    "error": {
+      "invalid_options": "Nekatere vrednosti niso veljavne, preverite jih."
+    },
+    "abort": {
+      "already_configured": "Smart Comfort je že nastavljen.",
+      "single_instance_allowed": "Smart Comfort je že nastavljen."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Možnosti Smart Comfort",
+        "description": "Nastavljeni prostori: {rooms}. Če uporabljate YAML, njegova sprememba ob naslednjem ponovnem zagonu nadomesti te možnosti.",
+        "menu_options": {
+          "general": "Obvestila",
+          "alerts": "Opozorila",
+          "control": "Upravljanje naprav",
+          "add_room": "Dodaj prostor",
+          "edit_room": "Uredi prostor",
+          "remove_room": "Odstrani prostore"
+        }
+      },
+      "general": {
+        "title": "Obvestila",
+        "data": {
+          "notify": "Dejanja obveščanja",
+          "outdoor_temperature": "Zunanja temperatura",
+          "outdoor_aggregate": "Združevanje zunanjih tipal",
+          "outdoor_noise": "Zunanji hrup",
+          "outdoor_air_quality": "Kakovost zunanjega zraka",
+          "digest_window": "Okno združevanja",
+          "reminder": "Opomnik",
+          "snooze_duration": "Trajanje odloga",
+          "startup_grace": "Mirovanje ob zagonu",
+          "quiet_start": "Začetek tihih ur",
+          "quiet_end": "Konec tihih ur",
+          "presence": "Prisotnost",
+          "clear_when_resolved": "Počisti ob rešitvi",
+          "critical_volume": "Glasnost kritičnih opozoril",
+          "url": "Dejanje ob dotiku",
+          "tag": "Oznaka obvestila"
+        },
+        "data_description": {
+          "notify": "Kam gredo opozorila (notify.mobile_app_…, skupina notify…).",
+          "outdoor_temperature": "Zunanja tipala zunaj zunanjih mest (entiteta vremena, tipalo brez območja); nedosegljiva se prezrejo.",
+          "outdoor_aggregate": "Minimum se izogne tipalu na soncu.",
+          "outdoor_noise": "Tipala ravni hrupa zunaj (dB), dodana k tipalom zunanjih mest: noben predlog za odpiranje oken, dokler je hrupno, in opozorilo, ko so okna odprta v hrupu.",
+          "outdoor_air_quality": "Tipala indeksa kakovosti zraka zunaj ali v mestu (Atmo France, AQI…), dodana k tipalom zunanjih mest: noben predlog za odpiranje oken, dokler je zrak slab, in opozorilo, ko so takrat okna odprta. Šteje najslabše.",
+          "digest_window": "Minute čakanja na druga opozorila pred pošiljanjem enega združenega obvestila. Kritična opozorila ne čakajo.",
+          "reminder": "Minute, po katerih se o težavi, ki še traja, znova obvesti. 0: nikoli (le ko se poslabša).",
+          "snooze_duration": "Minute gumba Odloži v obvestilu in privzeto dejanja odloga.",
+          "startup_grace": "Minute po zagonu Home Assistant, ko se nič ne pošlje.",
+          "quiet_start": "Od takrat do konca se pošiljajo le kritična opozorila; druga gredo ob koncu, če so še aktualna.",
+          "presence": "Območje, oseba, skupina ali logična vrednost: dokler ni nikogar doma, se pošiljajo le kritična opozorila.",
+          "clear_when_resolved": "Odstrani obvestilo s telefonov, ko so vse obveščene težave mimo.",
+          "critical_volume": "Glasnost kritičnega zvoka v iOS, od 0 do 1.",
+          "url": "Odpre se ob dotiku obvestila, npr. homeassistant://navigate/lovelace/comfort",
+          "tag": "Vsako obvestilo nadomesti prejšnje s to oznako, namesto da bi se kopičila."
+        }
+      },
+      "alerts": {
+        "title": "Opozorila",
+        "data": {
+          "kind": "Opozorilo"
+        },
+        "description": "Nastavitve opozorila za vse prostore. Prostor lahko v svojem obrazcu preglasi pragove prevroče / prehladno, v YAML pa karkoli."
+      },
+      "alert": {
+        "title": "Nastavitve opozorila",
+        "data": {
+          "enabled": "Omogočeno",
+          "threshold": "Prag",
+          "min_indoor": "Najnižja notranja temperatura",
+          "min_outdoor": "Najnižja zunanja temperatura",
+          "max_outdoor": "Najvišja zunanja temperatura",
+          "max_outdoor_noise": "Največji zunanji hrup",
+          "max_outdoor_air": "Najvišja raven kakovosti zunanjega zraka",
+          "hysteresis": "Histereza",
+          "delay": "Zamik",
+          "severity": "Resnost",
+          "escalation": "Korak stopnjevanja"
+        },
+        "data_description": {
+          "threshold": "Prevroče/prehladno, CO₂, vlažnost: vrednost. Odpri/zapri okna: razlika med notranjostjo in zunanjostjo.",
+          "min_indoor": "Odpiranje predlagaj le, ko je v prostoru vsaj tako toplo.",
+          "min_outdoor": "Le ko je zunaj vsaj tako vroče.",
+          "max_outdoor": "Le ko je zunaj tako mrzlo ali bolj.",
+          "max_outdoor_noise": "Ne predlaga se, dokler je zunanji hrup nad to vrednostjo (potrebno je zunanje tipalo hrupa).",
+          "max_outdoor_air": "Ne predlaga se, dokler je kakovost zunanjega zraka slabša od te ravni, od 1 (dobra) do 6 (izjemno slaba).",
+          "hysteresis": "Težava se konča šele, ko se vrednost vrne čez prag za toliko: brez nihanja.",
+          "delay": "Minute, ko mora pogoj trajati, preden postane težava.",
+          "escalation": "Znova obvesti, ko se vrednost poslabša za toliko glede na zadnje obvestilo. 0: nikoli."
+        }
+      },
+      "control": {
+        "title": "Upravljanje naprav",
+        "data": {
+          "enabled": "Upravljaj naprave",
+          "start": "Okenska okrepitev od",
+          "end": "Okenska okrepitev do",
+          "manual_override": "Ročni poseg",
+          "suppress_when_handled": "Brez opozorila, ko je poskrbljeno",
+          "night_start": "Tiha noč od",
+          "night_end": "Tiha noč do",
+          "display": "Indikatorska lučka ali zaslon",
+          "reset_at": "Nazaj na običajno ob",
+          "display_off": "Zasloni izklopljeni od",
+          "display_on": "Zasloni vklopljeni od"
+        },
+        "data_description": {
+          "start": "Ventilatorji in čistilniki preklopijo na polno hitrost ob odprtju okna ali vrat le med temi urami. Obe prazni: ves dan.",
+          "manual_override": "Minute, ko se ročno spremenjena naprava pusti pri miru. 0: brez premora.",
+          "suppress_when_handled": "Brez opozorila »prevroče« za prostor, v katerem je Smart Comfort vklopil klimatsko napravo ali ventilator.",
+          "night_start": "Med temi urami naprave uporabljajo nočne nastavitve (tišja hitrost, prednastavitev ali način ventilatorja) in zanje ni okenske okrepitve.",
+          "display": "Izklopi se v urah »Zasloni izklopljeni« na zavihku Urnik in med dremeži v prostoru, nato se znova vklopi.",
+          "reset_at": "Ob tej uri se naprava vrne v običajno stanje, tudi po ročni spremembi (čistilnik nazaj na samodejno…)."
+        },
+        "sections": {
+          "climate": {
+            "name": "Klimatske naprave",
+            "data": {
+              "cool_above": "Hlajenje od",
+              "off_below": "Izklop pod",
+              "setpoint": "Nastavljena temperatura",
+              "fan_mode": "Način ventilatorja",
+              "closed_for": "Odprtine zaprte (min)",
+              "off_on_open": "Izklop, ko je odprto (min)",
+              "night_fan_mode": "Način ventilatorja ponoči"
+            }
+          },
+          "fans": {
+            "name": "Ventilatorji",
+            "data": {
+              "on_above": "Vklop od",
+              "off_below": "Izklop pod",
+              "percentage": "Hitrost",
+              "preset": "Prednastavitev",
+              "open_percentage": "Hitrost, okno odprto",
+              "open_preset": "Prednastavitev, okno odprto",
+              "off_preset": "Prednastavitev pred izklopom",
+              "night_percentage": "Hitrost ponoči",
+              "night_preset": "Prednastavitev ponoči"
+            },
+            "description": "Pri ventilatorjih, ki jih upravljajo le okna, pustite »Vklop od« in »Izklop pod« prazni."
+          },
+          "purifiers": {
+            "name": "Čistilniki zraka",
+            "data": {
+              "open_percentage": "Hitrost, okno odprto",
+              "open_preset": "Prednastavitev, okno odprto",
+              "closed_preset": "Prednastavitev, okna zaprta",
+              "keep_on": "Ohrani vklopljeno",
+              "night_percentage": "Hitrost ponoči",
+              "night_preset": "Prednastavitev ponoči",
+              "night_mode": "Možnost načina ponoči"
+            },
+            "data_description": {
+              "keep_on": "Znova vklopi čistilnik, ko je bil 10 s izklopljen (izpad elektrike, napaka)."
+            }
+          }
+        }
+      },
+      "add_room": {
+        "title": "Dodaj prostor",
+        "data": {
+          "name": "Ime",
+          "temperature": "Temperatura",
+          "co2": "CO₂",
+          "humidity": "Vlažnost",
+          "noise": "Hrup",
+          "openings": "Okna in vrata",
+          "climate": "Klimatska naprava",
+          "fans": "Ventilatorji",
+          "purifiers": "Čistilniki zraka",
+          "lights": "Luči"
+        },
+        "description": "Tipala in naprave prostora. Pustite prazno, česar nima.",
+        "sections": {
+          "overrides": {
+            "name": "Nastavitve prostora",
+            "description": "Preglasi splošne nastavitve za ta prostor. Nastavitve posameznih naprav so le v YAML.",
+            "data": {
+              "too_hot_threshold": "Prevroče od",
+              "too_cold_threshold": "Prehladno pod",
+              "fan_preset": "Prednastavitev ventilatorja",
+              "fan_open_preset": "Prednastavitev ventilatorja, okno odprto",
+              "fan_off_preset": "Prednastavitev ventilatorja pred izklopom",
+              "purifier_open_preset": "Prednastavitev čistilnika, okno odprto",
+              "purifier_closed_preset": "Prednastavitev čistilnika, okna zaprta",
+              "purifier_mode_select": "Izbirnik načina čistilnika",
+              "purifier_open_mode": "Možnost načina, okno odprto",
+              "purifier_closed_mode": "Možnost načina, okna zaprta",
+              "purifier_keep_on": "Ohrani čistilnike vklopljene"
+            }
+          }
+        },
+        "data_description": {
+          "lights": "Zatemnilne luči: njihova svetlost sledi času dneva, dokler so prižgane (prilagodljiva razsvetljava)."
+        }
+      },
+      "room": {
+        "title": "Uredi prostor",
+        "data": {
+          "name": "Ime",
+          "temperature": "Temperatura",
+          "co2": "CO₂",
+          "humidity": "Vlažnost",
+          "noise": "Hrup",
+          "openings": "Okna in vrata",
+          "climate": "Klimatska naprava",
+          "fans": "Ventilatorji",
+          "purifiers": "Čistilniki zraka",
+          "lights": "Luči"
+        },
+        "description": "Tipala in naprave prostora. Pustite prazno, česar nima.",
+        "sections": {
+          "overrides": {
+            "name": "Nastavitve prostora",
+            "description": "Preglasi splošne nastavitve za ta prostor. Nastavitve posameznih naprav so le v YAML.",
+            "data": {
+              "too_hot_threshold": "Prevroče od",
+              "too_cold_threshold": "Prehladno pod",
+              "fan_preset": "Prednastavitev ventilatorja",
+              "fan_open_preset": "Prednastavitev ventilatorja, okno odprto",
+              "fan_off_preset": "Prednastavitev ventilatorja pred izklopom",
+              "purifier_open_preset": "Prednastavitev čistilnika, okno odprto",
+              "purifier_closed_preset": "Prednastavitev čistilnika, okna zaprta",
+              "purifier_mode_select": "Izbirnik načina čistilnika",
+              "purifier_open_mode": "Možnost načina, okno odprto",
+              "purifier_closed_mode": "Možnost načina, okna zaprta",
+              "purifier_keep_on": "Ohrani čistilnike vklopljene"
+            }
+          }
+        },
+        "data_description": {
+          "lights": "Zatemnilne luči: njihova svetlost sledi času dneva, dokler so prižgane (prilagodljiva razsvetljava)."
+        }
+      },
+      "outdoor": {
+        "title": "Zunanje mesto",
+        "data": {
+          "name": "Ime",
+          "temperature": "Temperatura",
+          "air_quality": "Kakovost zraka",
+          "noise": "Hrup"
+        }
+      },
+      "edit_room": {
+        "title": "Uredi prostor",
+        "data": {
+          "room": "Prostor"
+        }
+      },
+      "remove_room": {
+        "title": "Odstrani prostore",
+        "data": {
+          "rooms": "Prostori"
+        }
+      },
+      "lighting": {
+        "title": "Prilagodljiva razsvetljava",
+        "data": {
+          "enabled": "Prilagodljiva razsvetljava",
+          "day": "Svetlost podnevi",
+          "evening": "Svetlost zvečer",
+          "night": "Svetlost ponoči",
+          "warmth": "Prilagodi barvno temperaturo",
+          "day_kelvin": "Barvna temperatura podnevi",
+          "evening_kelvin": "Barvna temperatura zvečer",
+          "night_kelvin": "Barvna temperatura ponoči",
+          "transition": "Prehod",
+          "night_only": "Nočna lučka",
+          "morning": "Svetlost zjutraj",
+          "morning_kelvin": "Barvna temperatura zjutraj",
+          "morning_end": "Konec jutra",
+          "quiet_morning": "Tiho jutro",
+          "nap": "Svetlost med dremežem",
+          "nap_kelvin": "Barvna temperatura med dremežem"
+        },
+        "data_description": {
+          "day": "Ko je sonce zgoraj (višina nad 6°).",
+          "evening": "Po sončnem zahodu (pod −6°); vmes mešanica.",
+          "night": "V urah tihe noči (zavihek Urnik).",
+          "warmth": "Tudi barvno temperaturo, za luči, ki jo podpirajo. Izklopljeno: le svetlost.",
+          "transition": "Sekunde postopnih sprememb; ravnokar prižgana luč takoj dobi svojo svetlost.",
+          "night_only": "Nastavi se le v nočnih urah (podnevi se pusti pri miru).",
+          "morning": "V prostorih s tihim jutrom (spalnice), do konca jutra (zavihek Urnik).",
+          "morning_end": "Do kdaj spalnice ohranijo jutranjo svetlost.",
+          "quiet_morning": "Šibkejše luči zjutraj, do konca jutra (zavihek Urnik).",
+          "nap": "Med časi dremeža v prostoru."
+        }
+      }
+    },
+    "error": {
+      "name_required": "Poimenujte prostor.",
+      "name_exists": "Prostor s tem imenom že obstaja.",
+      "invalid_options": "Nekatere vrednosti niso veljavne, preverite jih."
+    }
+  },
+  "selector": {
+    "kind": {
+      "options": {
+        "too_hot": "Prevroče",
+        "close_windows": "Zaprite okna (zunaj je topleje)",
+        "ventilate": "Odprite okna (zunaj je hladneje)",
+        "too_cold": "Prehladno",
+        "window_open_cold": "Odprto okno v mrazu",
+        "co2_high": "Visok CO₂",
+        "humidity_high": "Visoka vlažnost",
+        "noise_high": "Hrupen prostor",
+        "noisy_outside": "Zaprite okna (zunaj je hrupno)",
+        "bad_air_outside": "Zaprite okna (zunaj je slab zrak)"
+      }
+    },
+    "severity": {
+      "options": {
+        "info": "Informacija (tiho)",
+        "warning": "Opozorilo (časovno občutljivo, z zvokom)",
+        "critical": "Kritično (obide tihe ure in tihi način)"
+      }
+    },
+    "outdoor_aggregate": {
+      "options": {
+        "min": "Najmanj",
+        "max": "Največ",
+        "mean": "Povprečje"
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "alerts": {
+        "name": "Aktivna opozorila",
+        "state_attributes": {
+          "alerts": {
+            "name": "Opozorila"
+          },
+          "snoozes": {
+            "name": "Odlogi"
+          },
+          "outdoor_temperature": {
+            "name": "Zunanja temperatura"
+          },
+          "outdoor_noise": {
+            "name": "Zunanji hrup"
+          },
+          "outdoor_air_quality": {
+            "name": "Kakovost zunanjega zraka"
+          }
+        }
+      },
+      "room": {
+        "name": "Udobje {room}",
+        "state": {
+          "ok": "OK",
+          "too_hot": "Prevroče",
+          "close_windows": "Zaprite okna (zunaj je topleje)",
+          "ventilate": "Odprite okna (zunaj je hladneje)",
+          "too_cold": "Prehladno",
+          "window_open_cold": "Odprto okno v mrazu",
+          "co2_high": "Visok CO₂",
+          "humidity_high": "Visoka vlažnost",
+          "noise_high": "Hrupen prostor",
+          "noisy_outside": "Zaprite okna (zunaj je hrupno)",
+          "bad_air_outside": "Zaprite okna (zunaj je slab zrak)"
+        }
+      },
+      "last_notification": {
+        "name": "Zadnje obvestilo"
+      }
+    },
+    "switch": {
+      "notifications": {
+        "name": "Obvestila"
+      },
+      "control": {
+        "name": "Upravljanje naprav"
+      },
+      "lighting": {
+        "name": "Prilagodljiva razsvetljava"
+      }
+    },
+    "button": {
+      "notify_now": {
+        "name": "Obvesti zdaj"
+      },
+      "unsnooze": {
+        "name": "Prekliči odloge"
+      }
+    }
+  },
+  "services": {
+    "snooze": {
+      "name": "Odloži",
+      "description": "Za nekaj časa preneha obveščati o opozorilih navedenih prostorov in vrst (privzeto vseh).",
+      "fields": {
+        "duration": {
+          "name": "Trajanje",
+          "description": "Minute; privzeto trajanje odloga iz možnosti."
+        },
+        "rooms": {
+          "name": "Prostori",
+          "description": "Imena ali ID-ji prostorov; privzeto vsi."
+        },
+        "kinds": {
+          "name": "Opozorila",
+          "description": "Če je nastavljeno, se odložijo le trenutna opozorila teh vrst."
+        }
+      }
+    },
+    "unsnooze": {
+      "name": "Prekliči odloge",
+      "description": "Znova obvešča o odloženih opozorilih navedenih prostorov (privzeto vseh).",
+      "fields": {
+        "rooms": {
+          "name": "Prostori",
+          "description": "Imena ali ID-ji prostorov; privzeto vsi."
+        }
+      }
+    },
+    "acknowledge": {
+      "name": "Potrdi",
+      "description": "Brez opomnika in stopnjevanja za trenutna opozorila, dokler se ne končajo.",
+      "fields": {
+        "rooms": {
+          "name": "Prostori",
+          "description": "Imena ali ID-ji prostorov; privzeto vsi."
+        },
+        "kinds": {
+          "name": "Opozorila",
+          "description": "Vrste opozoril; privzeto vse."
+        }
+      }
+    },
+    "notify_now": {
+      "name": "Obvesti zdaj",
+      "description": "Pošlje vse trenutne težave v enem obvestilu in prezre tihe ure ter okno združevanja."
+    },
+    "get_config": {
+      "name": "Pridobi konfiguracijo",
+      "description": "Vrne uporabljene možnosti (prostori, opozorila, upravljanje, razsvetljava) za kopiranje v YAML ali za preverjanje nastavitev."
+    }
+  },
+  "common": {
+    "title_one": "{room}",
+    "title_many": "Opozorila o udobju: {count}",
+    "room_line": "{room}: {problem}",
+    "decimal": ",",
+    "duration_minutes": "{minutes} min",
+    "duration_hours": "{hours} h {minutes:02d}",
+    "since": "že {duration}",
+    "worse": "se slabša",
+    "line_too_hot": "{value} °C, nad {threshold} °C",
+    "line_too_cold": "{value} °C, pod {threshold} °C",
+    "line_ventilate": "{temperature} °C notri, {outdoor} °C zunaj — odprite okna",
+    "line_close_windows": "{outdoor} °C zunaj, {temperature} °C notri — zaprite: {openings}",
+    "line_window_open_cold": "odprto: {openings}, {outdoor} °C zunaj",
+    "line_co2_high": "CO₂ {value} ppm — prezračite prostor",
+    "line_humidity_high": "vlažnost {value} % — prezračite prostor",
+    "line_noise_high": "hrup {value} dB, nad {threshold} dB",
+    "line_noisy_outside": "{value} dB zunaj — zaprite: {openings}",
+    "line_bad_air_outside": "kakovost zraka zunaj {value}/6 — zaprite: {openings}",
+    "action_snooze": "Odloži za {hours} h",
+    "action_snooze_minutes": "Odloži za {minutes} min",
+    "action_ack": "Razumem"
+  },
+  "exceptions": {
+    "not_loaded": {
+      "message": "Smart Comfort ni naložen."
+    },
+    "unknown_room": {
+      "message": "Neznan prostor: {room}."
+    }
+  }
+}

@@ -1,0 +1,493 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Smart Comfort",
+        "data": {
+          "notify": "Notify-handlinger",
+          "outdoor_temperature": "Udendørstemperatur",
+          "outdoor_aggregate": "Kombiner udendørs sensorer"
+        },
+        "description": "Færre og smartere komfortadvarsler samt styring af dine klimaanlæg, ventilatorer og luftrensere. Tilføj rummene bagefter i indstillingerne, eller konfigurer det hele i YAML.",
+        "data_description": {
+          "notify": "Hvor advarslerne sendes hen (notify.mobile_app_…, en notify-gruppe…).",
+          "outdoor_temperature": "En eller flere udendørs sensorer; utilgængelige ignoreres.",
+          "outdoor_aggregate": "Minimum undgår en sensor i solen."
+        }
+      }
+    },
+    "error": {
+      "invalid_options": "Nogle værdier er ugyldige, kontrollér dem."
+    },
+    "abort": {
+      "already_configured": "Smart Comfort er allerede konfigureret.",
+      "single_instance_allowed": "Smart Comfort er allerede konfigureret."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Smart Comfort-indstillinger",
+        "description": "Konfigurerede rum: {rooms}. Hvis du bruger YAML, erstatter en ændring af den disse indstillinger ved næste genstart.",
+        "menu_options": {
+          "general": "Notifikationer",
+          "alerts": "Advarsler",
+          "control": "Styring af enheder",
+          "add_room": "Tilføj et rum",
+          "edit_room": "Rediger et rum",
+          "remove_room": "Fjern rum"
+        }
+      },
+      "general": {
+        "title": "Notifikationer",
+        "data": {
+          "notify": "Notify-handlinger",
+          "outdoor_temperature": "Udendørstemperatur",
+          "outdoor_aggregate": "Kombiner udendørs sensorer",
+          "outdoor_noise": "Udendørs støj",
+          "outdoor_air_quality": "Udendørs luftkvalitet",
+          "digest_window": "Samlevindue",
+          "reminder": "Påmindelse",
+          "snooze_duration": "Udsættelsesvarighed",
+          "startup_grace": "Opstartsfrist",
+          "quiet_start": "Start på stille timer",
+          "quiet_end": "Slut på stille timer",
+          "presence": "Tilstedeværelse",
+          "clear_when_resolved": "Ryd når løst",
+          "critical_volume": "Lydstyrke for kritiske advarsler",
+          "url": "Tryk-handling",
+          "tag": "Notifikationsmærke"
+        },
+        "data_description": {
+          "notify": "Hvor advarslerne sendes hen (notify.mobile_app_…, en notify-gruppe…).",
+          "outdoor_temperature": "Udendørs sensorer uden for de udendørs steder (vejrentitet, sensor uden område); utilgængelige ignoreres.",
+          "outdoor_aggregate": "Minimum undgår en sensor i solen.",
+          "outdoor_noise": "Lydniveausensorer udenfor (dB), lagt til de udendørs steders: intet forslag om at åbne vinduerne, mens der er støj, og en advarsel, når vinduer står åbne i støjen.",
+          "outdoor_air_quality": "Luftkvalitetsindeks-sensorer udenfor eller i byen (Atmo France, AQI…), lagt til de udendørs steders: intet forslag om at åbne vinduerne, mens luften er dårlig, og en advarsel, når vinduer står åbne imens. Den dårligste tæller.",
+          "digest_window": "Minutter der ventes på andre advarsler, før der sendes én samlet notifikation. Kritiske advarsler venter ikke.",
+          "reminder": "Minutter efter hvilke et problem, der stadig står på, notificeres igen. 0: aldrig (kun når det bliver værre).",
+          "snooze_duration": "Minutter for notifikationens Udsæt-knap og for udsæt-handlingen som standard.",
+          "startup_grace": "Minutter efter Home Assistant starter, hvor intet sendes.",
+          "quiet_start": "Fra da af og til slutningen sendes kun kritiske advarsler; de andre sendes ved slutningen, hvis de stadig er relevante.",
+          "presence": "Zone, person, gruppe eller boolean: mens ingen er hjemme, sendes kun kritiske advarsler.",
+          "clear_when_resolved": "Fjern notifikationen fra telefonerne, når alle notificerede problemer er overstået.",
+          "critical_volume": "Lydstyrke for kritiske lyde på iOS, 0 til 1.",
+          "url": "Åbnes, når der trykkes på notifikationen, f.eks. homeassistant://navigate/lovelace/comfort",
+          "tag": "Hver notifikation erstatter den forrige med dette mærke i stedet for at hobe sig op."
+        }
+      },
+      "alerts": {
+        "title": "Advarsler",
+        "data": {
+          "kind": "Advarsel"
+        },
+        "description": "Indstillinger for en advarsel i alle rum. Et rum kan tilsidesætte grænserne for for varmt / for koldt i sin formular, og alt i YAML."
+      },
+      "alert": {
+        "title": "Advarselsindstillinger",
+        "data": {
+          "enabled": "Aktiveret",
+          "threshold": "Grænse",
+          "min_indoor": "Mindste indendørstemperatur",
+          "min_outdoor": "Mindste udendørstemperatur",
+          "max_outdoor": "Højeste udendørstemperatur",
+          "max_outdoor_noise": "Højeste udendørs støj",
+          "max_outdoor_air": "Højeste niveau for udendørs luftkvalitet",
+          "hysteresis": "Hysterese",
+          "delay": "Forsinkelse",
+          "severity": "Alvorlighed",
+          "escalation": "Eskaleringstrin"
+        },
+        "data_description": {
+          "threshold": "For varmt/koldt, CO₂, luftfugtighed: værdien. Åbn/luk vinduerne: forskellen mellem inde og ude.",
+          "min_indoor": "Foreslå kun at åbne, når rummet er mindst så varmt.",
+          "min_outdoor": "Kun når det er mindst så varmt udenfor.",
+          "max_outdoor": "Kun når det er så koldt eller koldere udenfor.",
+          "max_outdoor_noise": "Foreslås ikke, mens den udendørs støj er over dette (kræver en udendørs støjsensor).",
+          "max_outdoor_air": "Foreslås ikke, mens den udendørs luftkvalitet er dårligere end dette niveau, fra 1 (god) til 6 (ekstremt dårlig).",
+          "hysteresis": "Problemet slutter først, når værdien er kommet så meget tilbage forbi grænsen: ingen flimren.",
+          "delay": "Minutter betingelsen skal vare, før det er et problem.",
+          "escalation": "Notificer igen, når værdien bliver så meget værre end ved sidste notifikation. 0: aldrig."
+        }
+      },
+      "control": {
+        "title": "Styring af enheder",
+        "data": {
+          "enabled": "Styr enhederne",
+          "start": "Vinduesboost fra",
+          "end": "Vinduesboost indtil",
+          "manual_override": "Manuel tilsidesættelse",
+          "suppress_when_handled": "Ingen advarsel når håndteret",
+          "night_start": "Stille nat fra",
+          "night_end": "Stille nat indtil",
+          "display": "Indikatorlys eller display",
+          "reset_at": "Tilbage til normal kl.",
+          "display_off": "Displays slukket fra",
+          "display_on": "Displays tændt fra"
+        },
+        "data_description": {
+          "start": "Ventilatorer og luftrensere går på fuld hastighed, når en åbning åbnes, kun mellem disse tidspunkter. Begge tomme: hele dagen.",
+          "manual_override": "Minutter en enhed, der er ændret manuelt, lades i fred. 0: aldrig sat på pause.",
+          "suppress_when_handled": "Ingen „for varmt“-advarsel for et rum, hvis klimaanlæg eller ventilator Smart Comfort har tændt.",
+          "night_start": "Mellem disse tidspunkter bruger enhederne deres natindstillinger (roligere hastighed, forudindstilling eller ventilatortilstand), og der er ingen vinduesboost for dem.",
+          "display": "Slukkes i timerne „Displays slukket“ på fanen Tidsplan og under rummets lure, tændes igen bagefter.",
+          "reset_at": "På dette tidspunkt går enheden tilbage til sin normale tilstand, også efter en manuel ændring (en luftrenser tilbage på auto…)."
+        },
+        "sections": {
+          "climate": {
+            "name": "Klimaanlæg",
+            "data": {
+              "cool_above": "Køl fra",
+              "off_below": "Sluk under",
+              "setpoint": "Måltemperatur",
+              "fan_mode": "Ventilatortilstand",
+              "closed_for": "Åbninger lukket i (min)",
+              "off_on_open": "Sluk når åben i (min)",
+              "night_fan_mode": "Ventilatortilstand om natten"
+            }
+          },
+          "fans": {
+            "name": "Ventilatorer",
+            "data": {
+              "on_above": "Tænd fra",
+              "off_below": "Sluk under",
+              "percentage": "Hastighed",
+              "preset": "Forudindstilling",
+              "open_percentage": "Hastighed, vindue åbent",
+              "open_preset": "Forudindstilling, vindue åbent",
+              "off_preset": "Forudindstilling før slukning",
+              "night_percentage": "Hastighed om natten",
+              "night_preset": "Forudindstilling om natten"
+            },
+            "description": "Lad „Tænd fra“ og „Sluk under“ være tomme for ventilatorer, der kun styres af vinduerne."
+          },
+          "purifiers": {
+            "name": "Luftrensere",
+            "data": {
+              "open_percentage": "Hastighed, vindue åbent",
+              "open_preset": "Forudindstilling, vindue åbent",
+              "closed_preset": "Forudindstilling, vinduer lukkede",
+              "keep_on": "Hold tændt",
+              "night_percentage": "Hastighed om natten",
+              "night_preset": "Forudindstilling om natten",
+              "night_mode": "Tilstandsvalg om natten"
+            },
+            "data_description": {
+              "keep_on": "Tænd en luftrenser igen, når den har været slukket i 10 s (strømsvigt, fejl)."
+            }
+          }
+        }
+      },
+      "add_room": {
+        "title": "Tilføj et rum",
+        "data": {
+          "name": "Navn",
+          "temperature": "Temperatur",
+          "co2": "CO₂",
+          "humidity": "Luftfugtighed",
+          "noise": "Støj",
+          "openings": "Vinduer og døre",
+          "climate": "Klimaanlæg",
+          "fans": "Ventilatorer",
+          "purifiers": "Luftrensere",
+          "lights": "Lys"
+        },
+        "description": "Rummets sensorer og enheder. Lad det, rummet ikke har, være tomt.",
+        "sections": {
+          "overrides": {
+            "name": "Rumindstillinger",
+            "description": "Tilsidesæt de globale indstillinger for dette rum. Indstillinger pr. enhed findes kun i YAML.",
+            "data": {
+              "too_hot_threshold": "For varmt fra",
+              "too_cold_threshold": "For koldt under",
+              "fan_preset": "Ventilatorens forudindstilling",
+              "fan_open_preset": "Ventilatorens forudindstilling, vindue åbent",
+              "fan_off_preset": "Ventilatorens forudindstilling før slukning",
+              "purifier_open_preset": "Luftrenserens forudindstilling, vindue åbent",
+              "purifier_closed_preset": "Luftrenserens forudindstilling, vinduer lukkede",
+              "purifier_mode_select": "Luftrenserens tilstandsvælger",
+              "purifier_open_mode": "Tilstandsvalg, vindue åbent",
+              "purifier_closed_mode": "Tilstandsvalg, vinduer lukkede",
+              "purifier_keep_on": "Hold luftrenserne tændt"
+            }
+          }
+        },
+        "data_description": {
+          "lights": "Dæmpbare lys: deres lysstyrke følger tidspunktet på dagen, mens de er tændt (adaptiv belysning)."
+        }
+      },
+      "room": {
+        "title": "Rediger rummet",
+        "data": {
+          "name": "Navn",
+          "temperature": "Temperatur",
+          "co2": "CO₂",
+          "humidity": "Luftfugtighed",
+          "noise": "Støj",
+          "openings": "Vinduer og døre",
+          "climate": "Klimaanlæg",
+          "fans": "Ventilatorer",
+          "purifiers": "Luftrensere",
+          "lights": "Lys"
+        },
+        "description": "Rummets sensorer og enheder. Lad det, rummet ikke har, være tomt.",
+        "sections": {
+          "overrides": {
+            "name": "Rumindstillinger",
+            "description": "Tilsidesæt de globale indstillinger for dette rum. Indstillinger pr. enhed findes kun i YAML.",
+            "data": {
+              "too_hot_threshold": "For varmt fra",
+              "too_cold_threshold": "For koldt under",
+              "fan_preset": "Ventilatorens forudindstilling",
+              "fan_open_preset": "Ventilatorens forudindstilling, vindue åbent",
+              "fan_off_preset": "Ventilatorens forudindstilling før slukning",
+              "purifier_open_preset": "Luftrenserens forudindstilling, vindue åbent",
+              "purifier_closed_preset": "Luftrenserens forudindstilling, vinduer lukkede",
+              "purifier_mode_select": "Luftrenserens tilstandsvælger",
+              "purifier_open_mode": "Tilstandsvalg, vindue åbent",
+              "purifier_closed_mode": "Tilstandsvalg, vinduer lukkede",
+              "purifier_keep_on": "Hold luftrenserne tændt"
+            }
+          }
+        },
+        "data_description": {
+          "lights": "Dæmpbare lys: deres lysstyrke følger tidspunktet på dagen, mens de er tændt (adaptiv belysning)."
+        }
+      },
+      "outdoor": {
+        "title": "Udendørs sted",
+        "data": {
+          "name": "Navn",
+          "temperature": "Temperatur",
+          "air_quality": "Luftkvalitet",
+          "noise": "Støj"
+        }
+      },
+      "edit_room": {
+        "title": "Rediger et rum",
+        "data": {
+          "room": "Rum"
+        }
+      },
+      "remove_room": {
+        "title": "Fjern rum",
+        "data": {
+          "rooms": "Rum"
+        }
+      },
+      "lighting": {
+        "title": "Adaptiv belysning",
+        "data": {
+          "enabled": "Adaptiv belysning",
+          "day": "Lysstyrke om dagen",
+          "evening": "Lysstyrke om aftenen",
+          "night": "Lysstyrke om natten",
+          "warmth": "Tilpas farvetemperaturen",
+          "day_kelvin": "Farvetemperatur om dagen",
+          "evening_kelvin": "Farvetemperatur om aftenen",
+          "night_kelvin": "Farvetemperatur om natten",
+          "transition": "Overgang",
+          "night_only": "Natlys",
+          "morning": "Lysstyrke om morgenen",
+          "morning_kelvin": "Farvetemperatur om morgenen",
+          "morning_end": "Morgenens afslutning",
+          "quiet_morning": "Stille morgen",
+          "nap": "Lysstyrke under lur",
+          "nap_kelvin": "Farvetemperatur under lur"
+        },
+        "data_description": {
+          "day": "Med solen oppe (elevation over 6°).",
+          "evening": "Når solen er gået ned (under −6°); ind imellem en blanding.",
+          "night": "I timerne med stille nat (fanen Tidsplan).",
+          "warmth": "Også farvetemperaturen for de lys, der understøtter det. Fra: kun lysstyrke.",
+          "transition": "Sekunder for de gradvise ændringer; et lys, der lige er tændt, får sin lysstyrke med det samme.",
+          "night_only": "Indstilles kun i nattetimerne (lades i fred om dagen).",
+          "morning": "I rummene med stille morgen (soveværelser), indtil morgenens afslutning (fanen Tidsplan).",
+          "morning_end": "Indtil hvornår soveværelserne beholder deres morgenlysstyrke.",
+          "quiet_morning": "Svagere lys om morgenen, indtil morgenens afslutning (fanen Tidsplan).",
+          "nap": "I et rums lurperioder."
+        }
+      }
+    },
+    "error": {
+      "name_required": "Giv rummet et navn.",
+      "name_exists": "Et rum har allerede dette navn.",
+      "invalid_options": "Nogle værdier er ugyldige, kontrollér dem."
+    }
+  },
+  "selector": {
+    "kind": {
+      "options": {
+        "too_hot": "For varmt",
+        "close_windows": "Luk vinduerne (varmere udenfor)",
+        "ventilate": "Åbn vinduerne (køligere udenfor)",
+        "too_cold": "For koldt",
+        "window_open_cold": "Vindue åbent i kulden",
+        "co2_high": "Højt CO₂",
+        "humidity_high": "Høj luftfugtighed",
+        "noise_high": "Støjende rum",
+        "noisy_outside": "Luk vinduerne (støj udenfor)",
+        "bad_air_outside": "Luk vinduerne (dårlig luft udenfor)"
+      }
+    },
+    "severity": {
+      "options": {
+        "info": "Info (lydløs)",
+        "warning": "Advarsel (tidsfølsom, lyd)",
+        "critical": "Kritisk (omgår stille timer og lydløs tilstand)"
+      }
+    },
+    "outdoor_aggregate": {
+      "options": {
+        "min": "Minimum",
+        "max": "Maksimum",
+        "mean": "Gennemsnit"
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "alerts": {
+        "name": "Aktive advarsler",
+        "state_attributes": {
+          "alerts": {
+            "name": "Advarsler"
+          },
+          "snoozes": {
+            "name": "Udsættelser"
+          },
+          "outdoor_temperature": {
+            "name": "Udendørstemperatur"
+          },
+          "outdoor_noise": {
+            "name": "Udendørs støj"
+          },
+          "outdoor_air_quality": {
+            "name": "Udendørs luftkvalitet"
+          }
+        }
+      },
+      "room": {
+        "name": "Komfort {room}",
+        "state": {
+          "ok": "OK",
+          "too_hot": "For varmt",
+          "close_windows": "Luk vinduerne (varmere udenfor)",
+          "ventilate": "Åbn vinduerne (køligere udenfor)",
+          "too_cold": "For koldt",
+          "window_open_cold": "Vindue åbent i kulden",
+          "co2_high": "Højt CO₂",
+          "humidity_high": "Høj luftfugtighed",
+          "noise_high": "Støjende rum",
+          "noisy_outside": "Luk vinduerne (støj udenfor)",
+          "bad_air_outside": "Luk vinduerne (dårlig luft udenfor)"
+        }
+      },
+      "last_notification": {
+        "name": "Seneste notifikation"
+      }
+    },
+    "switch": {
+      "notifications": {
+        "name": "Notifikationer"
+      },
+      "control": {
+        "name": "Styring af enheder"
+      },
+      "lighting": {
+        "name": "Adaptiv belysning"
+      }
+    },
+    "button": {
+      "notify_now": {
+        "name": "Notificer nu"
+      },
+      "unsnooze": {
+        "name": "Annuller udsættelser"
+      }
+    }
+  },
+  "services": {
+    "snooze": {
+      "name": "Udsæt",
+      "description": "Stopper i et stykke tid med at notificere advarslerne for de angivne rum og typer (alle som standard).",
+      "fields": {
+        "duration": {
+          "name": "Varighed",
+          "description": "Minutter; indstillingernes udsættelsesvarighed som standard."
+        },
+        "rooms": {
+          "name": "Rum",
+          "description": "Navne eller id'er på rummene; alle som standard."
+        },
+        "kinds": {
+          "name": "Advarsler",
+          "description": "Hvis angivet, udsættes kun de aktuelle advarsler af disse typer."
+        }
+      }
+    },
+    "unsnooze": {
+      "name": "Annuller udsættelser",
+      "description": "Notificerer igen de udsatte advarsler for de angivne rum (alle som standard).",
+      "fields": {
+        "rooms": {
+          "name": "Rum",
+          "description": "Navne eller id'er på rummene; alle som standard."
+        }
+      }
+    },
+    "acknowledge": {
+      "name": "Kvitter",
+      "description": "Ingen påmindelse eller eskalering for de aktuelle advarsler, før de slutter.",
+      "fields": {
+        "rooms": {
+          "name": "Rum",
+          "description": "Navne eller id'er på rummene; alle som standard."
+        },
+        "kinds": {
+          "name": "Advarsler",
+          "description": "Typer af advarsler; alle som standard."
+        }
+      }
+    },
+    "notify_now": {
+      "name": "Notificer nu",
+      "description": "Sender alle aktuelle problemer i én notifikation og ignorerer stille timer og samlevinduet."
+    },
+    "get_config": {
+      "name": "Hent konfigurationen",
+      "description": "Returnerer de anvendte indstillinger (rum, advarsler, styring, belysning) til at kopiere ind i YAML eller til at kontrollere, hvad der er sat."
+    }
+  },
+  "common": {
+    "title_one": "{room}",
+    "title_many": "{count} komfortadvarsler",
+    "room_line": "{room}: {problem}",
+    "decimal": ",",
+    "duration_minutes": "{minutes} min.",
+    "duration_hours": "{hours} t {minutes:02d}",
+    "since": "i {duration}",
+    "worse": "bliver værre",
+    "line_too_hot": "{value} °C, over {threshold} °C",
+    "line_too_cold": "{value} °C, under {threshold} °C",
+    "line_ventilate": "{temperature} °C inde, {outdoor} °C ude — åbn vinduerne",
+    "line_close_windows": "{outdoor} °C ude, {temperature} °C inde — luk {openings}",
+    "line_window_open_cold": "{openings} åben, {outdoor} °C ude",
+    "line_co2_high": "CO₂ {value} ppm — luft ud",
+    "line_humidity_high": "luftfugtighed {value} % — luft ud",
+    "line_noise_high": "støj {value} dB, over {threshold} dB",
+    "line_noisy_outside": "{value} dB ude — luk {openings}",
+    "line_bad_air_outside": "udendørs luftkvalitet {value}/6 — luk {openings}",
+    "action_snooze": "Udsæt {hours} t",
+    "action_snooze_minutes": "Udsæt {minutes} min.",
+    "action_ack": "Forstået"
+  },
+  "exceptions": {
+    "not_loaded": {
+      "message": "Smart Comfort er ikke indlæst."
+    },
+    "unknown_room": {
+      "message": "Ukendt rum: {room}."
+    }
+  }
+}

@@ -53,7 +53,7 @@ function textIn(file, language, key) {
   return element._t(key);
 }
 
-const LANGUAGES = ["en", "fr", "de", "es", "sr", "sr-Latn", "it", "nl", "pt", "pl"];
+const LANGUAGES = ["en", "fr", "de", "es", "sr", "sr-Latn", "it", "nl", "pt", "pl", "ro", "da", "sv", "bg", "ru", "uk", "hu", "sk", "cs", "sl", "lv", "el"];
 // pt-BR falls back to European Portuguese, on purpose; an untranslated language to English.
 const CASES = {
   "fr-FR": "fr",
@@ -66,6 +66,18 @@ const CASES = {
   pt: "pt",
   "pt-BR": "pt",
   "pl-PL": "pl",
+  "ro-RO": "ro",
+  "da-DK": "da",
+  "sv-SE": "sv",
+  bg: "bg",
+  ru: "ru",
+  uk: "uk",
+  "hu-HU": "hu",
+  sk: "sk",
+  "cs-CZ": "cs",
+  sl: "sl",
+  lv: "lv",
+  "el-GR": "el",
   ja: "en",
 };
 const SAMPLE = { panel: "rooms", card: "today", mini: "all_good" };
@@ -140,6 +152,20 @@ test("mini card: the plural form of each language (one, few, many, other)", () =
   assert.equal(count("sr", 21), "21 упозорење");
   assert.equal(count("sr", 3), "3 упозорења");
   assert.equal(count("sr-Latn", 5), "5 upozorenja");
+  assert.equal(count("ru", 21), "21 оповещение");
+  assert.equal(count("ru", 3), "3 оповещения");
+  assert.equal(count("ru", 11), "11 оповещений");
+  assert.equal(count("uk", 5), "5 попереджень");
+  assert.equal(count("cs", 3), "3 upozornění");
+  assert.equal(count("sk", 3), "3 upozornenia");
+  assert.equal(count("sk", 5), "5 upozornení");
+  assert.equal(count("sl", 2), "2 opozorili");
+  assert.equal(count("sl", 5), "5 opozoril");
+  assert.equal(count("ro", 3), "3 alerte");
+  assert.equal(count("ro", 20), "20 de alerte");
+  assert.equal(count("lv", 10), "10 brīdinājumu");
+  assert.equal(count("lv", 21), "21 brīdinājums");
+  assert.equal(count("el", 2), "2 προειδοποιήσεις");
   // Each extra form is one the language really has.
   const all = strings("mini");
   for (const [language, table] of Object.entries(all)) {

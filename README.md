@@ -43,7 +43,7 @@ Comfort automations built with a cooldown keep notifying every couple of hours a
 - **YAML or UI**: configure everything in YAML (imported at startup), in the **Smart Comfort panel** of the sidebar, or in the integration options — rooms, alerts, control
 - **Dashboard cards**, added by the integration: a **mini card** (the alerts of the moment and the switches, with a button that opens the full card: every alert, the rooms, the latest activity) and an **activity card**
 - Sensors for the active alerts and the comfort of each room, switches to pause the notifications or the device control, buttons, actions and events
-- English, French, German, Spanish, Italian, Dutch, European Portuguese, Polish and Serbian (Cyrillic and Latin)
+- English, French, German, Spanish, Italian, Dutch, European Portuguese, Polish, Serbian (Cyrillic and Latin), Romanian, Danish, Swedish, Bulgarian, Russian, Ukrainian, Hungarian, Slovak, Czech, Slovenian, Latvian and Greek
 
 ## Prerequisites
 
@@ -85,7 +85,7 @@ Once set up, Smart Comfort adds a **Smart Comfort** page to the sidebar, for adm
 
 - **Overview**: while nothing is set up (no room nor outdoor place), a **Discover** button that runs the discovery and opens its result in the Rooms tab; the active alerts with their state (notified, snoozed, acknowledged, handled by a running device) and **Snooze** / **Got it** buttons, the readings and devices of each room with their targets and manual overrides, the last notification, and switches for the notifications and the device control
 - **Activity**: what Smart Comfort did and why, live and by day — devices (cooling, window boost, night mode, back to normal…), lights (brightness of the moment, on with presence, off with nobody), indicator lights, notifications sent and cleared, changes by hand that pause a device or a light, reset times, commands that failed — with filters (devices, lights, notifications, by hand); a line opens its entity
-- **Rooms**: **Discover** adds a room for every Home Assistant area with something to follow (a comfort sensor, an air conditioner, a fan, a purifier or a dimmable light — not a hallway with only its door) and sets it up: temperature, CO₂, humidity and noise sensors (a weather station preferred over a device's own sensor; never the temperatures of machines — NAS, internet box, server, UPS, printer, fridge…), windows and doors, air conditioner (only one that can cool), fans with their natural / direct presets, purifiers with their auto / manual mode select or presets, dimmable lights (not the indicators of devices nor the floodlights of cameras; night lights flagged as such), the quiet morning of the bedrooms, and the night settings from their quiet presets and fan modes. Areas, bedrooms, night lights, indicators and machines are recognised by their names in every supported language (Garden, Jardin, Giardino, Tuin, Jardim, Ogród, Bašta / Башта…). The outdoor areas (garden, terrace, balcony…) with a sensor become outdoor places (an outdoor module counts by its device's area); outdoor sensors in no area — a sensor named outdoor, a city air quality index (Atmo France, WAQI…), and the weather entity when there is no outdoor temperature sensor — go to the other outdoor sensors. What is already set is kept, and running it again only adds what is new. Nothing is saved until **Save**. Each room shows the icon of its area (or one from its name) and folds into sections — **Sensors**, **Windows and doors**, **Devices**, **Lighting** (lights, quiet morning, naps), **Alerts** — each with a one-line summary; only what the room has is shown, and **+** buttons add the rest (a CO₂ sensor, a fan, a light, a nap, a customized alert…). Device settings stay folded under each device
+- **Rooms**: **Discover** adds a room for every Home Assistant area with something to follow (a comfort sensor, an air conditioner, a fan, a purifier or a dimmable light — not a hallway with only its door) and sets it up: temperature, CO₂, humidity and noise sensors (a weather station preferred over a device's own sensor; never the temperatures of machines — NAS, internet box, server, UPS, printer, fridge…), windows and doors, air conditioner (only one that can cool), fans with their natural / direct presets, purifiers with their auto / manual mode select or presets, dimmable lights (not the indicators of devices nor the floodlights of cameras; night lights flagged as such), the quiet morning of the bedrooms, and the night settings from their quiet presets and fan modes. Areas, bedrooms, night lights, indicators and machines are recognised by their names in English, French, German, Spanish, Italian, Dutch, Portuguese, Polish and Serbian (Garden, Jardin, Giardino, Tuin, Jardim, Ogród, Bašta / Башта…). The outdoor areas (garden, terrace, balcony…) with a sensor become outdoor places (an outdoor module counts by its device's area); outdoor sensors in no area — a sensor named outdoor, a city air quality index (Atmo France, WAQI…), and the weather entity when there is no outdoor temperature sensor — go to the other outdoor sensors. What is already set is kept, and running it again only adds what is new. Nothing is saved until **Save**. Each room shows the icon of its area (or one from its name) and folds into sections — **Sensors**, **Windows and doors**, **Devices**, **Lighting** (lights, quiet morning, naps), **Alerts** — each with a one-line summary; only what the room has is shown, and **+** buttons add the rest (a CO₂ sensor, a fan, a light, a nap, a customized alert…). Device settings stay folded under each device
 - **Outdoors**: the outdoor places (garden, terrace…) with their temperature, air quality and noise sensors, and the other outdoor sensors (weather entity, city air quality index) with how the temperatures are combined
 - **Alerts**: one line per alert with its state, threshold and severity; open it to change them (hysteresis, delay and escalation under **Advanced**)
 - **Schedule**: every time window on one 24-hour line with the time now — quiet hours (notifications), quiet night (devices and lights), quiet morning (bedroom lights) and window boost — and their times, all in one place
@@ -531,6 +531,18 @@ The integration and its notifications follow the language of Home Assistant. Cur
 | Nederlands | `nl` |
 | Português (Portugal) | `pt` |
 | Polski | `pl` |
+| Română | `ro` |
+| Dansk | `da` |
+| Svenska | `sv` |
+| Български | `bg` |
+| Русский | `ru` |
+| Українська | `uk` |
+| Magyar | `hu` |
+| Slovenčina | `sk` |
+| Čeština | `cs` |
+| Slovenščina | `sl` |
+| Latviešu | `lv` |
+| Ελληνικά | `el` |
 
 Contributions for additional languages are welcome!
 

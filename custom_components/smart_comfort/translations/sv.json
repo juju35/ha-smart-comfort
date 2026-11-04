@@ -1,0 +1,493 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Smart Comfort",
+        "data": {
+          "notify": "Notify-åtgärder",
+          "outdoor_temperature": "Utomhustemperatur",
+          "outdoor_aggregate": "Kombinera utomhussensorer"
+        },
+        "description": "Färre och smartare komfortvarningar samt styrning av dina luftkonditioneringar, fläktar och luftrenare. Lägg till rummen efteråt i alternativen, eller konfigurera allt i YAML.",
+        "data_description": {
+          "notify": "Vart varningarna skickas (notify.mobile_app_…, en notify-grupp…).",
+          "outdoor_temperature": "En eller flera utomhussensorer; otillgängliga ignoreras.",
+          "outdoor_aggregate": "Minimum undviker en sensor i solen."
+        }
+      }
+    },
+    "error": {
+      "invalid_options": "Vissa värden är ogiltiga, kontrollera dem."
+    },
+    "abort": {
+      "already_configured": "Smart Comfort är redan konfigurerat.",
+      "single_instance_allowed": "Smart Comfort är redan konfigurerat."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Smart Comfort-alternativ",
+        "description": "Konfigurerade rum: {rooms}. Om du använder YAML ersätter en ändring av den dessa alternativ vid nästa omstart.",
+        "menu_options": {
+          "general": "Aviseringar",
+          "alerts": "Varningar",
+          "control": "Styrning av enheter",
+          "add_room": "Lägg till ett rum",
+          "edit_room": "Redigera ett rum",
+          "remove_room": "Ta bort rum"
+        }
+      },
+      "general": {
+        "title": "Aviseringar",
+        "data": {
+          "notify": "Notify-åtgärder",
+          "outdoor_temperature": "Utomhustemperatur",
+          "outdoor_aggregate": "Kombinera utomhussensorer",
+          "outdoor_noise": "Buller utomhus",
+          "outdoor_air_quality": "Luftkvalitet utomhus",
+          "digest_window": "Samlingsfönster",
+          "reminder": "Påminnelse",
+          "snooze_duration": "Snooze-tid",
+          "startup_grace": "Startfrist",
+          "quiet_start": "Början på tysta timmar",
+          "quiet_end": "Slut på tysta timmar",
+          "presence": "Närvaro",
+          "clear_when_resolved": "Rensa när löst",
+          "critical_volume": "Volym för kritiska varningar",
+          "url": "Tryckåtgärd",
+          "tag": "Aviseringstagg"
+        },
+        "data_description": {
+          "notify": "Vart varningarna skickas (notify.mobile_app_…, en notify-grupp…).",
+          "outdoor_temperature": "Utomhussensorer utanför utomhusplatserna (väderentitet, sensor utan område); otillgängliga ignoreras.",
+          "outdoor_aggregate": "Minimum undviker en sensor i solen.",
+          "outdoor_noise": "Ljudnivåsensorer utomhus (dB), tillagda till utomhusplatsernas: inget förslag att öppna fönstren medan det är bullrigt, och en varning när fönster är öppna i bullret.",
+          "outdoor_air_quality": "Luftkvalitetsindexsensorer utomhus eller i staden (Atmo France, AQI…), tillagda till utomhusplatsernas: inget förslag att öppna fönstren medan luften är dålig, och en varning när fönster är öppna då. Den sämsta räknas.",
+          "digest_window": "Minuter att vänta på andra varningar innan en samlad avisering skickas. Kritiska varningar väntar inte.",
+          "reminder": "Minuter efter vilka ett problem som fortfarande pågår aviseras igen. 0: aldrig (bara när det blir värre).",
+          "snooze_duration": "Minuter för aviseringens Snooze-knapp och för snooze-åtgärden som standard.",
+          "startup_grace": "Minuter efter att Home Assistant startat då inget skickas.",
+          "quiet_start": "Från då till slutet skickas bara kritiska varningar; de andra skickas vid slutet om de fortfarande är aktuella.",
+          "presence": "Zon, person, grupp eller boolean: medan ingen är hemma skickas bara kritiska varningar.",
+          "clear_when_resolved": "Ta bort aviseringen från telefonerna när alla aviserade problem är över.",
+          "critical_volume": "Volym för kritiskt ljud på iOS, 0 till 1.",
+          "url": "Öppnas när man trycker på aviseringen, t.ex. homeassistant://navigate/lovelace/comfort",
+          "tag": "Varje avisering ersätter den föregående med denna tagg i stället för att samlas på hög."
+        }
+      },
+      "alerts": {
+        "title": "Varningar",
+        "data": {
+          "kind": "Varning"
+        },
+        "description": "Inställningar för en varning i alla rum. Ett rum kan åsidosätta gränserna för för varmt / för kallt i sitt formulär, och allt i YAML."
+      },
+      "alert": {
+        "title": "Varningsinställningar",
+        "data": {
+          "enabled": "Aktiverad",
+          "threshold": "Gränsvärde",
+          "min_indoor": "Lägsta inomhustemperatur",
+          "min_outdoor": "Lägsta utomhustemperatur",
+          "max_outdoor": "Högsta utomhustemperatur",
+          "max_outdoor_noise": "Högsta buller utomhus",
+          "max_outdoor_air": "Högsta nivå för luftkvalitet utomhus",
+          "hysteresis": "Hysteres",
+          "delay": "Fördröjning",
+          "severity": "Allvarlighetsgrad",
+          "escalation": "Eskaleringssteg"
+        },
+        "data_description": {
+          "threshold": "För varmt/kallt, CO₂, luftfuktighet: värdet. Öppna/stäng fönstren: skillnaden mellan inne och ute.",
+          "min_indoor": "Föreslå öppning bara när rummet är minst så varmt.",
+          "min_outdoor": "Bara när det är minst så varmt ute.",
+          "max_outdoor": "Bara när det är så kallt eller kallare ute.",
+          "max_outdoor_noise": "Föreslås inte medan bullret utomhus är över detta (kräver en bullersensor utomhus).",
+          "max_outdoor_air": "Föreslås inte medan luftkvaliteten utomhus är sämre än denna nivå, från 1 (bra) till 6 (extremt dålig).",
+          "hysteresis": "Problemet upphör först när värdet har gått tillbaka förbi gränsvärdet med så mycket: inget fladder.",
+          "delay": "Minuter villkoret måste hålla i sig innan det är ett problem.",
+          "escalation": "Avisera igen när värdet blir så mycket sämre än vid senaste aviseringen. 0: aldrig."
+        }
+      },
+      "control": {
+        "title": "Styrning av enheter",
+        "data": {
+          "enabled": "Styr enheterna",
+          "start": "Fönsterboost från",
+          "end": "Fönsterboost till",
+          "manual_override": "Manuell åsidosättning",
+          "suppress_when_handled": "Ingen varning när hanterat",
+          "night_start": "Tyst natt från",
+          "night_end": "Tyst natt till",
+          "display": "Indikatorlampa eller display",
+          "reset_at": "Tillbaka till normalt kl.",
+          "display_off": "Displayer av från",
+          "display_on": "Displayer på från"
+        },
+        "data_description": {
+          "start": "Fläktar och luftrenare går på full hastighet när en öppning öppnas, bara mellan dessa tider. Båda tomma: hela dagen.",
+          "manual_override": "Minuter som en enhet som ändrats manuellt lämnas ifred. 0: pausas aldrig.",
+          "suppress_when_handled": "Ingen ”för varmt”-varning för ett rum vars luftkonditionering eller fläkt Smart Comfort har slagit på.",
+          "night_start": "Mellan dessa tider använder enheterna sina nattinställningar (tystare hastighet, förinställning eller fläktläge) och det blir ingen fönsterboost för dem.",
+          "display": "Släcks under timmarna ”Displayer av” på fliken Schema och under rummets tupplurar, tänds igen efteråt.",
+          "reset_at": "Vid denna tid går enheten tillbaka till sitt normala läge, även efter en manuell ändring (en luftrenare tillbaka på auto…)."
+        },
+        "sections": {
+          "climate": {
+            "name": "Luftkonditioneringar",
+            "data": {
+              "cool_above": "Kyl från",
+              "off_below": "Av under",
+              "setpoint": "Börvärde",
+              "fan_mode": "Fläktläge",
+              "closed_for": "Öppningar stängda i (min)",
+              "off_on_open": "Av när öppen i (min)",
+              "night_fan_mode": "Fläktläge på natten"
+            }
+          },
+          "fans": {
+            "name": "Fläktar",
+            "data": {
+              "on_above": "På från",
+              "off_below": "Av under",
+              "percentage": "Hastighet",
+              "preset": "Förinställning",
+              "open_percentage": "Hastighet, fönster öppet",
+              "open_preset": "Förinställning, fönster öppet",
+              "off_preset": "Förinställning före avstängning",
+              "night_percentage": "Hastighet på natten",
+              "night_preset": "Förinställning på natten"
+            },
+            "description": "Lämna ”På från” och ”Av under” tomma för fläktar som bara styrs av fönstren."
+          },
+          "purifiers": {
+            "name": "Luftrenare",
+            "data": {
+              "open_percentage": "Hastighet, fönster öppet",
+              "open_preset": "Förinställning, fönster öppet",
+              "closed_preset": "Förinställning, fönster stängda",
+              "keep_on": "Håll på",
+              "night_percentage": "Hastighet på natten",
+              "night_preset": "Förinställning på natten",
+              "night_mode": "Lägesalternativ på natten"
+            },
+            "data_description": {
+              "keep_on": "Slå på en luftrenare igen när den har varit avstängd i 10 s (strömavbrott, fel)."
+            }
+          }
+        }
+      },
+      "add_room": {
+        "title": "Lägg till ett rum",
+        "data": {
+          "name": "Namn",
+          "temperature": "Temperatur",
+          "co2": "CO₂",
+          "humidity": "Luftfuktighet",
+          "noise": "Buller",
+          "openings": "Fönster och dörrar",
+          "climate": "Luftkonditionering",
+          "fans": "Fläktar",
+          "purifiers": "Luftrenare",
+          "lights": "Lampor"
+        },
+        "description": "Rummets sensorer och enheter. Lämna tomt det som rummet inte har.",
+        "sections": {
+          "overrides": {
+            "name": "Rumsinställningar",
+            "description": "Åsidosätt de globala inställningarna för detta rum. Inställningar per enhet finns bara i YAML.",
+            "data": {
+              "too_hot_threshold": "För varmt från",
+              "too_cold_threshold": "För kallt under",
+              "fan_preset": "Fläktens förinställning",
+              "fan_open_preset": "Fläktens förinställning, fönster öppet",
+              "fan_off_preset": "Fläktens förinställning före avstängning",
+              "purifier_open_preset": "Luftrenarens förinställning, fönster öppet",
+              "purifier_closed_preset": "Luftrenarens förinställning, fönster stängda",
+              "purifier_mode_select": "Luftrenarens lägesväljare",
+              "purifier_open_mode": "Lägesalternativ, fönster öppet",
+              "purifier_closed_mode": "Lägesalternativ, fönster stängda",
+              "purifier_keep_on": "Håll luftrenarna på"
+            }
+          }
+        },
+        "data_description": {
+          "lights": "Dimbara lampor: deras ljusstyrka följer tiden på dygnet medan de är tända (adaptiv belysning)."
+        }
+      },
+      "room": {
+        "title": "Redigera rummet",
+        "data": {
+          "name": "Namn",
+          "temperature": "Temperatur",
+          "co2": "CO₂",
+          "humidity": "Luftfuktighet",
+          "noise": "Buller",
+          "openings": "Fönster och dörrar",
+          "climate": "Luftkonditionering",
+          "fans": "Fläktar",
+          "purifiers": "Luftrenare",
+          "lights": "Lampor"
+        },
+        "description": "Rummets sensorer och enheter. Lämna tomt det som rummet inte har.",
+        "sections": {
+          "overrides": {
+            "name": "Rumsinställningar",
+            "description": "Åsidosätt de globala inställningarna för detta rum. Inställningar per enhet finns bara i YAML.",
+            "data": {
+              "too_hot_threshold": "För varmt från",
+              "too_cold_threshold": "För kallt under",
+              "fan_preset": "Fläktens förinställning",
+              "fan_open_preset": "Fläktens förinställning, fönster öppet",
+              "fan_off_preset": "Fläktens förinställning före avstängning",
+              "purifier_open_preset": "Luftrenarens förinställning, fönster öppet",
+              "purifier_closed_preset": "Luftrenarens förinställning, fönster stängda",
+              "purifier_mode_select": "Luftrenarens lägesväljare",
+              "purifier_open_mode": "Lägesalternativ, fönster öppet",
+              "purifier_closed_mode": "Lägesalternativ, fönster stängda",
+              "purifier_keep_on": "Håll luftrenarna på"
+            }
+          }
+        },
+        "data_description": {
+          "lights": "Dimbara lampor: deras ljusstyrka följer tiden på dygnet medan de är tända (adaptiv belysning)."
+        }
+      },
+      "outdoor": {
+        "title": "Utomhusplats",
+        "data": {
+          "name": "Namn",
+          "temperature": "Temperatur",
+          "air_quality": "Luftkvalitet",
+          "noise": "Buller"
+        }
+      },
+      "edit_room": {
+        "title": "Redigera ett rum",
+        "data": {
+          "room": "Rum"
+        }
+      },
+      "remove_room": {
+        "title": "Ta bort rum",
+        "data": {
+          "rooms": "Rum"
+        }
+      },
+      "lighting": {
+        "title": "Adaptiv belysning",
+        "data": {
+          "enabled": "Adaptiv belysning",
+          "day": "Ljusstyrka på dagen",
+          "evening": "Ljusstyrka på kvällen",
+          "night": "Ljusstyrka på natten",
+          "warmth": "Anpassa färgtemperaturen",
+          "day_kelvin": "Färgtemperatur på dagen",
+          "evening_kelvin": "Färgtemperatur på kvällen",
+          "night_kelvin": "Färgtemperatur på natten",
+          "transition": "Övergång",
+          "night_only": "Nattlampa",
+          "morning": "Ljusstyrka på morgonen",
+          "morning_kelvin": "Färgtemperatur på morgonen",
+          "morning_end": "Morgonens slut",
+          "quiet_morning": "Tyst morgon",
+          "nap": "Ljusstyrka vid tupplur",
+          "nap_kelvin": "Färgtemperatur vid tupplur"
+        },
+        "data_description": {
+          "day": "Med solen uppe (höjd över 6°).",
+          "evening": "När solen har gått ner (under −6°); däremellan en blandning.",
+          "night": "Under timmarna för tyst natt (fliken Schema).",
+          "warmth": "Även färgtemperaturen, för lampor som stöder det. Av: bara ljusstyrka.",
+          "transition": "Sekunder för de gradvisa ändringarna; en lampa som just tänts får sin ljusstyrka direkt.",
+          "night_only": "Ställs bara in under nattimmarna (lämnas ifred på dagen).",
+          "morning": "I rummen med tyst morgon (sovrum), till morgonens slut (fliken Schema).",
+          "morning_end": "Till när sovrummen behåller sin morgonljusstyrka.",
+          "quiet_morning": "Svagare ljus på morgonen, till morgonens slut (fliken Schema).",
+          "nap": "Under ett rums tupplursperioder."
+        }
+      }
+    },
+    "error": {
+      "name_required": "Ge rummet ett namn.",
+      "name_exists": "Ett rum har redan detta namn.",
+      "invalid_options": "Vissa värden är ogiltiga, kontrollera dem."
+    }
+  },
+  "selector": {
+    "kind": {
+      "options": {
+        "too_hot": "För varmt",
+        "close_windows": "Stäng fönstren (varmare ute)",
+        "ventilate": "Öppna fönstren (svalare ute)",
+        "too_cold": "För kallt",
+        "window_open_cold": "Fönster öppet i kylan",
+        "co2_high": "Hög CO₂-halt",
+        "humidity_high": "Hög luftfuktighet",
+        "noise_high": "Bullrigt rum",
+        "noisy_outside": "Stäng fönstren (buller ute)",
+        "bad_air_outside": "Stäng fönstren (dålig luft ute)"
+      }
+    },
+    "severity": {
+      "options": {
+        "info": "Info (tyst)",
+        "warning": "Varning (tidskänslig, ljud)",
+        "critical": "Kritisk (går förbi tysta timmar och tyst läge)"
+      }
+    },
+    "outdoor_aggregate": {
+      "options": {
+        "min": "Minimum",
+        "max": "Maximum",
+        "mean": "Medelvärde"
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "alerts": {
+        "name": "Aktiva varningar",
+        "state_attributes": {
+          "alerts": {
+            "name": "Varningar"
+          },
+          "snoozes": {
+            "name": "Snoozade"
+          },
+          "outdoor_temperature": {
+            "name": "Utomhustemperatur"
+          },
+          "outdoor_noise": {
+            "name": "Buller utomhus"
+          },
+          "outdoor_air_quality": {
+            "name": "Luftkvalitet utomhus"
+          }
+        }
+      },
+      "room": {
+        "name": "Komfort {room}",
+        "state": {
+          "ok": "OK",
+          "too_hot": "För varmt",
+          "close_windows": "Stäng fönstren (varmare ute)",
+          "ventilate": "Öppna fönstren (svalare ute)",
+          "too_cold": "För kallt",
+          "window_open_cold": "Fönster öppet i kylan",
+          "co2_high": "Hög CO₂-halt",
+          "humidity_high": "Hög luftfuktighet",
+          "noise_high": "Bullrigt rum",
+          "noisy_outside": "Stäng fönstren (buller ute)",
+          "bad_air_outside": "Stäng fönstren (dålig luft ute)"
+        }
+      },
+      "last_notification": {
+        "name": "Senaste avisering"
+      }
+    },
+    "switch": {
+      "notifications": {
+        "name": "Aviseringar"
+      },
+      "control": {
+        "name": "Styrning av enheter"
+      },
+      "lighting": {
+        "name": "Adaptiv belysning"
+      }
+    },
+    "button": {
+      "notify_now": {
+        "name": "Avisera nu"
+      },
+      "unsnooze": {
+        "name": "Avbryt snooze"
+      }
+    }
+  },
+  "services": {
+    "snooze": {
+      "name": "Snooza",
+      "description": "Slutar en stund att avisera varningarna för angivna rum och typer (alla som standard).",
+      "fields": {
+        "duration": {
+          "name": "Varaktighet",
+          "description": "Minuter; alternativens snooze-tid som standard."
+        },
+        "rooms": {
+          "name": "Rum",
+          "description": "Namn eller id för rummen; alla som standard."
+        },
+        "kinds": {
+          "name": "Varningar",
+          "description": "Om angivet snoozas bara de aktuella varningarna av dessa typer."
+        }
+      }
+    },
+    "unsnooze": {
+      "name": "Avbryt snooze",
+      "description": "Aviserar igen de snoozade varningarna för angivna rum (alla som standard).",
+      "fields": {
+        "rooms": {
+          "name": "Rum",
+          "description": "Namn eller id för rummen; alla som standard."
+        }
+      }
+    },
+    "acknowledge": {
+      "name": "Kvittera",
+      "description": "Ingen påminnelse eller eskalering för de aktuella varningarna tills de upphör.",
+      "fields": {
+        "rooms": {
+          "name": "Rum",
+          "description": "Namn eller id för rummen; alla som standard."
+        },
+        "kinds": {
+          "name": "Varningar",
+          "description": "Typer av varningar; alla som standard."
+        }
+      }
+    },
+    "notify_now": {
+      "name": "Avisera nu",
+      "description": "Skickar alla aktuella problem i en avisering och ignorerar tysta timmar och samlingsfönstret."
+    },
+    "get_config": {
+      "name": "Hämta konfigurationen",
+      "description": "Returnerar alternativen som används (rum, varningar, styrning, belysning), för att kopiera in i YAML eller kontrollera vad som är inställt."
+    }
+  },
+  "common": {
+    "title_one": "{room}",
+    "title_many": "{count} komfortvarningar",
+    "room_line": "{room}: {problem}",
+    "decimal": ",",
+    "duration_minutes": "{minutes} min",
+    "duration_hours": "{hours} h {minutes:02d}",
+    "since": "i {duration}",
+    "worse": "blir sämre",
+    "line_too_hot": "{value} °C, över {threshold} °C",
+    "line_too_cold": "{value} °C, under {threshold} °C",
+    "line_ventilate": "{temperature} °C inne, {outdoor} °C ute — öppna fönstren",
+    "line_close_windows": "{outdoor} °C ute, {temperature} °C inne — stäng {openings}",
+    "line_window_open_cold": "{openings} öppen, {outdoor} °C ute",
+    "line_co2_high": "CO₂ {value} ppm — vädra rummet",
+    "line_humidity_high": "luftfuktighet {value} % — vädra rummet",
+    "line_noise_high": "buller {value} dB, över {threshold} dB",
+    "line_noisy_outside": "{value} dB ute — stäng {openings}",
+    "line_bad_air_outside": "luftkvalitet ute {value}/6 — stäng {openings}",
+    "action_snooze": "Snooza {hours} h",
+    "action_snooze_minutes": "Snooza {minutes} min",
+    "action_ack": "Uppfattat"
+  },
+  "exceptions": {
+    "not_loaded": {
+      "message": "Smart Comfort är inte inläst."
+    },
+    "unknown_room": {
+      "message": "Okänt rum: {room}."
+    }
+  }
+}

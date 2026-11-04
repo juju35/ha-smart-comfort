@@ -1,0 +1,493 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Smart Comfort",
+        "data": {
+          "notify": "Értesítési műveletek",
+          "outdoor_temperature": "Kültéri hőmérséklet",
+          "outdoor_aggregate": "Kültéri érzékelők összevonása"
+        },
+        "description": "Kevesebb és okosabb komfortriasztás, valamint a klímák, ventilátorok és légtisztítók vezérlése. A helyiségeket utána adja hozzá a beállításokban, vagy konfiguráljon mindent YAML-ben.",
+        "data_description": {
+          "notify": "Hová mennek a riasztások (notify.mobile_app_…, egy notify csoport…).",
+          "outdoor_temperature": "Egy vagy több kültéri érzékelő; az elérhetetleneket figyelmen kívül hagyja.",
+          "outdoor_aggregate": "A minimum elkerüli a napon lévő érzékelőt."
+        }
+      }
+    },
+    "error": {
+      "invalid_options": "Néhány érték érvénytelen, ellenőrizze őket."
+    },
+    "abort": {
+      "already_configured": "A Smart Comfort már be van állítva.",
+      "single_instance_allowed": "A Smart Comfort már be van állítva."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Smart Comfort beállításai",
+        "description": "Beállított helyiségek: {rooms}. Ha YAML-t használ, annak módosítása a következő újraindításkor felülírja ezeket a beállításokat.",
+        "menu_options": {
+          "general": "Értesítések",
+          "alerts": "Riasztások",
+          "control": "Eszközvezérlés",
+          "add_room": "Helyiség hozzáadása",
+          "edit_room": "Helyiség szerkesztése",
+          "remove_room": "Helyiségek eltávolítása"
+        }
+      },
+      "general": {
+        "title": "Értesítések",
+        "data": {
+          "notify": "Értesítési műveletek",
+          "outdoor_temperature": "Kültéri hőmérséklet",
+          "outdoor_aggregate": "Kültéri érzékelők összevonása",
+          "outdoor_noise": "Kültéri zaj",
+          "outdoor_air_quality": "Kültéri levegőminőség",
+          "digest_window": "Összevonási időablak",
+          "reminder": "Emlékeztető",
+          "snooze_duration": "Szundi időtartama",
+          "startup_grace": "Indítási türelmi idő",
+          "quiet_start": "Csendes órák kezdete",
+          "quiet_end": "Csendes órák vége",
+          "presence": "Jelenlét",
+          "clear_when_resolved": "Törlés megoldáskor",
+          "critical_volume": "Kritikus riasztás hangereje",
+          "url": "Koppintási művelet",
+          "tag": "Értesítési címke"
+        },
+        "data_description": {
+          "notify": "Hová mennek a riasztások (notify.mobile_app_…, egy notify csoport…).",
+          "outdoor_temperature": "Kültéri érzékelők a kültéri helyeken kívül (időjárás-entitás, terület nélküli érzékelő); az elérhetetleneket figyelmen kívül hagyja.",
+          "outdoor_aggregate": "A minimum elkerüli a napon lévő érzékelőt.",
+          "outdoor_noise": "Kültéri zajszintérzékelők (dB), a kültéri helyek érzékelői mellé: zajban nincs javaslat az ablakok kinyitására, és riasztás, ha az ablakok nyitva vannak a zajban.",
+          "outdoor_air_quality": "Kültéri vagy városi levegőminőségi index érzékelők (Atmo France, AQI…), a kültéri helyek érzékelői mellé: rossz levegőnél nincs javaslat az ablakok kinyitására, és riasztás, ha az ablakok ekkor nyitva vannak. A legrosszabb számít.",
+          "digest_window": "Ennyi percig vár más riasztásokra, mielőtt egyetlen összevont értesítést küld. A kritikus riasztások nem várnak.",
+          "reminder": "Ennyi perc után értesít újra egy még fennálló problémáról. 0: soha (csak ha rosszabbodik).",
+          "snooze_duration": "Az értesítés Szundi gombjának és alapértelmezésben a szundi műveletnek a perce.",
+          "startup_grace": "A Home Assistant indulása utáni percek, amíg semmit sem küld.",
+          "quiet_start": "Ettől kezdve a végéig csak kritikus riasztások mennek ki; a többi a végén, ha még aktuális.",
+          "presence": "Zóna, személy, csoport vagy logikai segéd: amíg senki sincs otthon, csak kritikus riasztások mennek ki.",
+          "clear_when_resolved": "Eltávolítja az értesítést a telefonokról, amint minden értesített probléma megszűnt.",
+          "critical_volume": "Kritikus hang hangereje iOS-en, 0 és 1 között.",
+          "url": "Az értesítésre koppintva nyílik meg, pl. homeassistant://navigate/lovelace/comfort",
+          "tag": "Minden értesítés lecseréli az előzőt ezzel a címkével, ahelyett hogy felhalmozódnának."
+        }
+      },
+      "alerts": {
+        "title": "Riasztások",
+        "data": {
+          "kind": "Riasztás"
+        },
+        "description": "Egy riasztás beállításai minden helyiségre. Egy helyiség a saját űrlapján felülírhatja a túl meleg / túl hideg küszöböket, YAML-ben pedig bármit."
+      },
+      "alert": {
+        "title": "Riasztás beállításai",
+        "data": {
+          "enabled": "Engedélyezve",
+          "threshold": "Küszöb",
+          "min_indoor": "Minimális beltéri hőmérséklet",
+          "min_outdoor": "Minimális kültéri hőmérséklet",
+          "max_outdoor": "Maximális kültéri hőmérséklet",
+          "max_outdoor_noise": "Maximális kültéri zaj",
+          "max_outdoor_air": "Kültéri levegőminőség maximális szintje",
+          "hysteresis": "Hiszterézis",
+          "delay": "Késleltetés",
+          "severity": "Súlyosság",
+          "escalation": "Eszkalációs lépés"
+        },
+        "data_description": {
+          "threshold": "Túl meleg/hideg, CO₂, páratartalom: az érték. Ablakok nyitása/zárása: a bent és kint közötti különbség.",
+          "min_indoor": "Csak akkor javasol nyitást, ha a helyiség legalább ilyen meleg.",
+          "min_outdoor": "Csak ha kint legalább ilyen meleg van.",
+          "max_outdoor": "Csak ha kint ilyen hideg vagy hidegebb van.",
+          "max_outdoor_noise": "Nem javasolja, amíg a kültéri zaj ennél nagyobb (kültéri zajérzékelő kell hozzá).",
+          "max_outdoor_air": "Nem javasolja, amíg a kültéri levegőminőség rosszabb ennél a szintnél, 1-től (jó) 6-ig (rendkívül rossz).",
+          "hysteresis": "A probléma csak akkor ér véget, ha az érték ennyivel visszatért a küszöbön túlra: nincs ide-oda ugrálás.",
+          "delay": "Ennyi percig kell fennállnia a feltételnek, hogy probléma legyen.",
+          "escalation": "Újra értesít, ha az érték ennyivel rosszabb lesz, mint a legutóbbi értesítéskor. 0: soha."
+        }
+      },
+      "control": {
+        "title": "Eszközvezérlés",
+        "data": {
+          "enabled": "Eszközök vezérlése",
+          "start": "Ablakos rásegítés ettől",
+          "end": "Ablakos rásegítés eddig",
+          "manual_override": "Kézi felülbírálás",
+          "suppress_when_handled": "Nincs riasztás, ha kezelve van",
+          "night_start": "Csendes éjszaka ettől",
+          "night_end": "Csendes éjszaka eddig",
+          "display": "Jelzőfény vagy kijelző",
+          "reset_at": "Visszaállás a normálra ekkor",
+          "display_off": "Kijelzők kikapcsolva ettől",
+          "display_on": "Kijelzők bekapcsolva ettől"
+        },
+        "data_description": {
+          "start": "A ventilátorok és légtisztítók csak ezen időpontok között kapcsolnak teljes sebességre, amikor egy nyílászáró kinyílik. Mindkettő üres: egész nap.",
+          "manual_override": "Ennyi percig hagyja békén a kézzel módosított eszközt. 0: nincs szünet.",
+          "suppress_when_handled": "Nincs „túl meleg” riasztás olyan helyiségre, ahol a Smart Comfort bekapcsolta a klímát vagy a ventilátort.",
+          "night_start": "Ezen időpontok között az eszközök az éjszakai beállításaikat használják (halkabb sebesség, előbeállítás vagy ventilátormód), és nincs számukra ablakos rásegítés.",
+          "display": "Kikapcsol az Ütemezés lap „Kijelzők kikapcsolva” óráiban és a helyiség szunyókálásai alatt, utána visszakapcsol.",
+          "reset_at": "Ekkor az eszköz visszaáll a normál állapotába, kézi módosítás után is (egy légtisztító vissza automatára…)."
+        },
+        "sections": {
+          "climate": {
+            "name": "Klímák",
+            "data": {
+              "cool_above": "Hűtés ettől",
+              "off_below": "Kikapcsolás ez alatt",
+              "setpoint": "Célhőmérséklet",
+              "fan_mode": "Ventilátormód",
+              "closed_for": "Nyílászárók zárva ennyi ideje (perc)",
+              "off_on_open": "Kikapcsolás, ha nyitva ennyi ideje (perc)",
+              "night_fan_mode": "Ventilátormód éjjel"
+            }
+          },
+          "fans": {
+            "name": "Ventilátorok",
+            "data": {
+              "on_above": "Bekapcsolás ettől",
+              "off_below": "Kikapcsolás ez alatt",
+              "percentage": "Sebesség",
+              "preset": "Előbeállítás",
+              "open_percentage": "Sebesség, nyitott ablak",
+              "open_preset": "Előbeállítás, nyitott ablak",
+              "off_preset": "Előbeállítás kikapcsolás előtt",
+              "night_percentage": "Sebesség éjjel",
+              "night_preset": "Előbeállítás éjjel"
+            },
+            "description": "Hagyja üresen a „Bekapcsolás ettől” és a „Kikapcsolás ez alatt” mezőt a csak az ablakok által vezérelt ventilátoroknál."
+          },
+          "purifiers": {
+            "name": "Légtisztítók",
+            "data": {
+              "open_percentage": "Sebesség, nyitott ablak",
+              "open_preset": "Előbeállítás, nyitott ablak",
+              "closed_preset": "Előbeállítás, zárt ablakok",
+              "keep_on": "Bekapcsolva tartás",
+              "night_percentage": "Sebesség éjjel",
+              "night_preset": "Előbeállítás éjjel",
+              "night_mode": "Módopció éjjel"
+            },
+            "data_description": {
+              "keep_on": "Visszakapcsolja a légtisztítót, ha 10 s-ig ki volt kapcsolva (áramszünet, hiba)."
+            }
+          }
+        }
+      },
+      "add_room": {
+        "title": "Helyiség hozzáadása",
+        "data": {
+          "name": "Név",
+          "temperature": "Hőmérséklet",
+          "co2": "CO₂",
+          "humidity": "Páratartalom",
+          "noise": "Zaj",
+          "openings": "Ablakok és ajtók",
+          "climate": "Klíma",
+          "fans": "Ventilátorok",
+          "purifiers": "Légtisztítók",
+          "lights": "Lámpák"
+        },
+        "description": "A helyiség érzékelői és eszközei. Hagyja üresen, ami nincs benne.",
+        "sections": {
+          "overrides": {
+            "name": "Helyiség beállításai",
+            "description": "Felülírja a globális beállításokat ennél a helyiségnél. Az eszközönkénti beállítások csak YAML-ben érhetők el.",
+            "data": {
+              "too_hot_threshold": "Túl meleg ettől",
+              "too_cold_threshold": "Túl hideg ez alatt",
+              "fan_preset": "Ventilátor előbeállítása",
+              "fan_open_preset": "Ventilátor előbeállítása, nyitott ablak",
+              "fan_off_preset": "Ventilátor előbeállítása kikapcsolás előtt",
+              "purifier_open_preset": "Légtisztító előbeállítása, nyitott ablak",
+              "purifier_closed_preset": "Légtisztító előbeállítása, zárt ablakok",
+              "purifier_mode_select": "Légtisztító módválasztója",
+              "purifier_open_mode": "Módopció, nyitott ablak",
+              "purifier_closed_mode": "Módopció, zárt ablakok",
+              "purifier_keep_on": "Légtisztítók bekapcsolva tartása"
+            }
+          }
+        },
+        "data_description": {
+          "lights": "Szabályozható fényerejű lámpák: fényerejük a napszakot követi, amíg be vannak kapcsolva (adaptív világítás)."
+        }
+      },
+      "room": {
+        "title": "Helyiség szerkesztése",
+        "data": {
+          "name": "Név",
+          "temperature": "Hőmérséklet",
+          "co2": "CO₂",
+          "humidity": "Páratartalom",
+          "noise": "Zaj",
+          "openings": "Ablakok és ajtók",
+          "climate": "Klíma",
+          "fans": "Ventilátorok",
+          "purifiers": "Légtisztítók",
+          "lights": "Lámpák"
+        },
+        "description": "A helyiség érzékelői és eszközei. Hagyja üresen, ami nincs benne.",
+        "sections": {
+          "overrides": {
+            "name": "Helyiség beállításai",
+            "description": "Felülírja a globális beállításokat ennél a helyiségnél. Az eszközönkénti beállítások csak YAML-ben érhetők el.",
+            "data": {
+              "too_hot_threshold": "Túl meleg ettől",
+              "too_cold_threshold": "Túl hideg ez alatt",
+              "fan_preset": "Ventilátor előbeállítása",
+              "fan_open_preset": "Ventilátor előbeállítása, nyitott ablak",
+              "fan_off_preset": "Ventilátor előbeállítása kikapcsolás előtt",
+              "purifier_open_preset": "Légtisztító előbeállítása, nyitott ablak",
+              "purifier_closed_preset": "Légtisztító előbeállítása, zárt ablakok",
+              "purifier_mode_select": "Légtisztító módválasztója",
+              "purifier_open_mode": "Módopció, nyitott ablak",
+              "purifier_closed_mode": "Módopció, zárt ablakok",
+              "purifier_keep_on": "Légtisztítók bekapcsolva tartása"
+            }
+          }
+        },
+        "data_description": {
+          "lights": "Szabályozható fényerejű lámpák: fényerejük a napszakot követi, amíg be vannak kapcsolva (adaptív világítás)."
+        }
+      },
+      "outdoor": {
+        "title": "Kültéri hely",
+        "data": {
+          "name": "Név",
+          "temperature": "Hőmérséklet",
+          "air_quality": "Levegőminőség",
+          "noise": "Zaj"
+        }
+      },
+      "edit_room": {
+        "title": "Helyiség szerkesztése",
+        "data": {
+          "room": "Helyiség"
+        }
+      },
+      "remove_room": {
+        "title": "Helyiségek eltávolítása",
+        "data": {
+          "rooms": "Helyiségek"
+        }
+      },
+      "lighting": {
+        "title": "Adaptív világítás",
+        "data": {
+          "enabled": "Adaptív világítás",
+          "day": "Nappali fényerő",
+          "evening": "Esti fényerő",
+          "night": "Éjszakai fényerő",
+          "warmth": "Színhőmérséklet igazítása",
+          "day_kelvin": "Nappali színhőmérséklet",
+          "evening_kelvin": "Esti színhőmérséklet",
+          "night_kelvin": "Éjszakai színhőmérséklet",
+          "transition": "Átmenet",
+          "night_only": "Éjszakai fény",
+          "morning": "Reggeli fényerő",
+          "morning_kelvin": "Reggeli színhőmérséklet",
+          "morning_end": "Reggel vége",
+          "quiet_morning": "Csendes reggel",
+          "nap": "Fényerő szunyókáláskor",
+          "nap_kelvin": "Színhőmérséklet szunyókáláskor"
+        },
+        "data_description": {
+          "day": "Amikor fent van a nap (6° feletti magasság).",
+          "evening": "Napnyugta után (−6° alatt); a kettő között átmenet.",
+          "night": "A csendes éjszaka óráiban (Ütemezés lap).",
+          "warmth": "A színhőmérsékletet is, az ezt támogató lámpáknál. Ki: csak a fényerő.",
+          "transition": "A fokozatos változások másodpercei; egy épp bekapcsolt lámpa azonnal megkapja a fényerejét.",
+          "night_only": "Csak az éjszakai órákban állítja be (nappal békén hagyja).",
+          "morning": "A csendes reggelű helyiségekben (hálószobák), a reggel végéig (Ütemezés lap).",
+          "morning_end": "Meddig tartják meg a hálószobák a reggeli fényerőt.",
+          "quiet_morning": "Halványabb fények reggel, a reggel végéig (Ütemezés lap).",
+          "nap": "Egy helyiség szunyókálási idősávjaiban."
+        }
+      }
+    },
+    "error": {
+      "name_required": "Adjon nevet a helyiségnek.",
+      "name_exists": "Már van ilyen nevű helyiség.",
+      "invalid_options": "Néhány érték érvénytelen, ellenőrizze őket."
+    }
+  },
+  "selector": {
+    "kind": {
+      "options": {
+        "too_hot": "Túl meleg",
+        "close_windows": "Zárja be az ablakokat (kint melegebb)",
+        "ventilate": "Szellőztessen (kint hűvösebb van)",
+        "too_cold": "Túl hideg",
+        "window_open_cold": "Nyitott ablak hidegben",
+        "co2_high": "Magas CO₂",
+        "humidity_high": "Magas páratartalom",
+        "noise_high": "Zajos helyiség",
+        "noisy_outside": "Zárja be az ablakokat (kint zaj van)",
+        "bad_air_outside": "Zárja be az ablakokat (rossz a levegő)"
+      }
+    },
+    "severity": {
+      "options": {
+        "info": "Információ (néma)",
+        "warning": "Figyelmeztetés (időérzékeny, hanggal)",
+        "critical": "Kritikus (megkerüli a csendes órákat és a néma módot)"
+      }
+    },
+    "outdoor_aggregate": {
+      "options": {
+        "min": "Minimum",
+        "max": "Maximum",
+        "mean": "Átlag"
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "alerts": {
+        "name": "Aktív riasztások",
+        "state_attributes": {
+          "alerts": {
+            "name": "Riasztások"
+          },
+          "snoozes": {
+            "name": "Szundik"
+          },
+          "outdoor_temperature": {
+            "name": "Kültéri hőmérséklet"
+          },
+          "outdoor_noise": {
+            "name": "Kültéri zaj"
+          },
+          "outdoor_air_quality": {
+            "name": "Kültéri levegőminőség"
+          }
+        }
+      },
+      "room": {
+        "name": "Komfort: {room}",
+        "state": {
+          "ok": "OK",
+          "too_hot": "Túl meleg",
+          "close_windows": "Zárja be az ablakokat (kint melegebb)",
+          "ventilate": "Szellőztessen (kint hűvösebb van)",
+          "too_cold": "Túl hideg",
+          "window_open_cold": "Nyitott ablak hidegben",
+          "co2_high": "Magas CO₂",
+          "humidity_high": "Magas páratartalom",
+          "noise_high": "Zajos helyiség",
+          "noisy_outside": "Zárja be az ablakokat (kint zaj van)",
+          "bad_air_outside": "Zárja be az ablakokat (rossz a levegő)"
+        }
+      },
+      "last_notification": {
+        "name": "Utolsó értesítés"
+      }
+    },
+    "switch": {
+      "notifications": {
+        "name": "Értesítések"
+      },
+      "control": {
+        "name": "Eszközvezérlés"
+      },
+      "lighting": {
+        "name": "Adaptív világítás"
+      }
+    },
+    "button": {
+      "notify_now": {
+        "name": "Értesítés most"
+      },
+      "unsnooze": {
+        "name": "Szundik törlése"
+      }
+    }
+  },
+  "services": {
+    "snooze": {
+      "name": "Szundi",
+      "description": "Egy időre leállítja a megadott helyiségek és típusok riasztásainak értesítését (alapértelmezés: mind).",
+      "fields": {
+        "duration": {
+          "name": "Időtartam",
+          "description": "Perc; alapértelmezésben a beállítások szundi időtartama."
+        },
+        "rooms": {
+          "name": "Helyiségek",
+          "description": "A helyiségek nevei vagy azonosítói; alapértelmezés: mind."
+        },
+        "kinds": {
+          "name": "Riasztások",
+          "description": "Ha meg van adva, csak az ilyen típusú aktuális riasztások szunyókálnak."
+        }
+      }
+    },
+    "unsnooze": {
+      "name": "Szundik törlése",
+      "description": "Újra értesít a megadott helyiségek szundizott riasztásairól (alapértelmezés: mind).",
+      "fields": {
+        "rooms": {
+          "name": "Helyiségek",
+          "description": "A helyiségek nevei vagy azonosítói; alapértelmezés: mind."
+        }
+      }
+    },
+    "acknowledge": {
+      "name": "Nyugtázás",
+      "description": "Nincs emlékeztető és eszkaláció az aktuális riasztásokra, amíg véget nem érnek.",
+      "fields": {
+        "rooms": {
+          "name": "Helyiségek",
+          "description": "A helyiségek nevei vagy azonosítói; alapértelmezés: mind."
+        },
+        "kinds": {
+          "name": "Riasztások",
+          "description": "Riasztástípusok; alapértelmezés: mind."
+        }
+      }
+    },
+    "notify_now": {
+      "name": "Értesítés most",
+      "description": "Minden aktuális problémát egyetlen értesítésben küld el, figyelmen kívül hagyva a csendes órákat és az összevonási időablakot."
+    },
+    "get_config": {
+      "name": "Konfiguráció lekérése",
+      "description": "Visszaadja a használt beállításokat (helyiségek, riasztások, vezérlés, világítás), YAML-be másoláshoz vagy annak ellenőrzéséhez, mi van beállítva."
+    }
+  },
+  "common": {
+    "title_one": "{room}",
+    "title_many": "{count} komfortriasztás",
+    "room_line": "{room}: {problem}",
+    "decimal": ",",
+    "duration_minutes": "{minutes} perc",
+    "duration_hours": "{hours} óra {minutes:02d}",
+    "since": "{duration} óta",
+    "worse": "romlik",
+    "line_too_hot": "{value} °C, {threshold} °C felett",
+    "line_too_cold": "{value} °C, {threshold} °C alatt",
+    "line_ventilate": "bent {temperature} °C, kint {outdoor} °C — nyissa ki az ablakokat",
+    "line_close_windows": "kint {outdoor} °C, bent {temperature} °C — csukja be: {openings}",
+    "line_window_open_cold": "nyitva: {openings}, kint {outdoor} °C",
+    "line_co2_high": "CO₂ {value} ppm — szellőztessen",
+    "line_humidity_high": "páratartalom {value} % — szellőztessen",
+    "line_noise_high": "zaj {value} dB, {threshold} dB felett",
+    "line_noisy_outside": "kint {value} dB — csukja be: {openings}",
+    "line_bad_air_outside": "kültéri levegőminőség {value}/6 — csukja be: {openings}",
+    "action_snooze": "Szundi {hours} óra",
+    "action_snooze_minutes": "Szundi {minutes} perc",
+    "action_ack": "Értem"
+  },
+  "exceptions": {
+    "not_loaded": {
+      "message": "A Smart Comfort nincs betöltve."
+    },
+    "unknown_room": {
+      "message": "Ismeretlen helyiség: {room}."
+    }
+  }
+}

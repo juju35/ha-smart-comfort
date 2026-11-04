@@ -1,0 +1,493 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Smart Comfort",
+        "data": {
+          "notify": "Acțiuni de notificare",
+          "outdoor_temperature": "Temperatura exterioară",
+          "outdoor_aggregate": "Combinarea senzorilor exteriori"
+        },
+        "description": "Mai puține alerte de confort, mai inteligente, și controlul aparatelor de aer condiționat, ventilatoarelor și purificatoarelor. Adăugați camerele apoi din opțiuni sau configurați totul în YAML.",
+        "data_description": {
+          "notify": "Unde ajung alertele (notify.mobile_app_…, un grup notify…).",
+          "outdoor_temperature": "Unul sau mai mulți senzori exteriori; cei indisponibili sunt ignorați.",
+          "outdoor_aggregate": "Minimul evită un senzor aflat în soare."
+        }
+      }
+    },
+    "error": {
+      "invalid_options": "Unele valori nu sunt valide, verificați-le."
+    },
+    "abort": {
+      "already_configured": "Smart Comfort este deja configurat.",
+      "single_instance_allowed": "Smart Comfort este deja configurat."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Opțiuni Smart Comfort",
+        "description": "Camere configurate: {rooms}. Dacă folosiți YAML, modificarea lui înlocuiește aceste opțiuni la următoarea repornire.",
+        "menu_options": {
+          "general": "Notificări",
+          "alerts": "Alerte",
+          "control": "Controlul aparatelor",
+          "add_room": "Adăugați o cameră",
+          "edit_room": "Editați o cameră",
+          "remove_room": "Eliminați camere"
+        }
+      },
+      "general": {
+        "title": "Notificări",
+        "data": {
+          "notify": "Acțiuni de notificare",
+          "outdoor_temperature": "Temperatura exterioară",
+          "outdoor_aggregate": "Combinarea senzorilor exteriori",
+          "outdoor_noise": "Zgomot exterior",
+          "outdoor_air_quality": "Calitatea aerului exterior",
+          "digest_window": "Interval de grupare",
+          "reminder": "Reamintire",
+          "snooze_duration": "Durata amânării",
+          "startup_grace": "Perioadă de grație la pornire",
+          "quiet_start": "Începutul orelor de liniște",
+          "quiet_end": "Sfârșitul orelor de liniște",
+          "presence": "Prezență",
+          "clear_when_resolved": "Ștergere la rezolvare",
+          "critical_volume": "Volumul alertelor critice",
+          "url": "Acțiune la atingere",
+          "tag": "Etichetă notificare"
+        },
+        "data_description": {
+          "notify": "Unde ajung alertele (notify.mobile_app_…, un grup notify…).",
+          "outdoor_temperature": "Senzori exteriori din afara locurilor exterioare (entitate meteo, senzor fără zonă); cei indisponibili sunt ignorați.",
+          "outdoor_aggregate": "Minimul evită un senzor aflat în soare.",
+          "outdoor_noise": "Senzori de nivel sonor afară (dB), adăugați la cei ai locurilor exterioare: nicio sugestie de a deschide ferestrele cât timp e zgomot și o alertă când ferestrele sunt deschise în zgomot.",
+          "outdoor_air_quality": "Senzori de indice al calității aerului afară sau în oraș (Atmo France, AQI…), adăugați la cei ai locurilor exterioare: nicio sugestie de a deschide ferestrele cât timp aerul e poluat și o alertă când ferestrele sunt deschise atunci. Contează cel mai prost.",
+          "digest_window": "Minute de așteptare a altor alerte înainte de a trimite o singură notificare grupată. Alertele critice nu așteaptă.",
+          "reminder": "Minute după care o problemă încă în curs este notificată din nou. 0: niciodată (doar când se agravează).",
+          "snooze_duration": "Minutele butonului Amână din notificare și ale acțiunii de amânare, implicit.",
+          "startup_grace": "Minute după pornirea Home Assistant în care nu se trimite nimic.",
+          "quiet_start": "De atunci până la sfârșit se trimit doar alertele critice; celelalte pleacă la sfârșit dacă mai sunt relevante.",
+          "presence": "Zonă, persoană, grup sau boolean: cât timp nu e nimeni acasă, se trimit doar alertele critice.",
+          "clear_when_resolved": "Șterge notificarea de pe telefoane după ce toate problemele notificate s-au încheiat.",
+          "critical_volume": "Volumul sunetului critic iOS, de la 0 la 1.",
+          "url": "Se deschide la atingerea notificării, de ex. homeassistant://navigate/lovelace/comfort",
+          "tag": "Fiecare notificare o înlocuiește pe cea anterioară cu această etichetă, în loc să se adune."
+        }
+      },
+      "alerts": {
+        "title": "Alerte",
+        "data": {
+          "kind": "Alertă"
+        },
+        "description": "Setările unei alerte pentru toate camerele. O cameră poate suprascrie pragurile prea cald / prea frig în formularul ei, și orice în YAML."
+      },
+      "alert": {
+        "title": "Setările alertei",
+        "data": {
+          "enabled": "Activată",
+          "threshold": "Prag",
+          "min_indoor": "Temperatură interioară minimă",
+          "min_outdoor": "Temperatură exterioară minimă",
+          "max_outdoor": "Temperatură exterioară maximă",
+          "max_outdoor_noise": "Zgomot exterior maxim",
+          "max_outdoor_air": "Nivel maxim al calității aerului exterior",
+          "hysteresis": "Histerezis",
+          "delay": "Întârziere",
+          "severity": "Gravitate",
+          "escalation": "Pas de escaladare"
+        },
+        "data_description": {
+          "threshold": "Prea cald/frig, CO₂, umiditate: valoarea. Deschideți/închideți ferestrele: diferența interior/exterior.",
+          "min_indoor": "Sugerează deschiderea doar când camera are cel puțin această temperatură.",
+          "min_outdoor": "Doar când afară e cel puțin atât de cald.",
+          "max_outdoor": "Doar când afară e atât de frig sau mai frig.",
+          "max_outdoor_noise": "Nu se sugerează cât timp zgomotul exterior depășește această valoare (necesită un senzor de zgomot exterior).",
+          "max_outdoor_air": "Nu se sugerează cât timp calitatea aerului exterior e mai proastă decât acest nivel, de la 1 (bună) la 6 (extrem de proastă).",
+          "hysteresis": "Problema se încheie doar când valoarea a revenit dincolo de prag cu atât: fără oscilații.",
+          "delay": "Minute în care condiția trebuie să persiste înainte de a deveni o problemă.",
+          "escalation": "Notifică din nou când valoarea se înrăutățește cu atât față de ultima notificare. 0: niciodată."
+        }
+      },
+      "control": {
+        "title": "Controlul aparatelor",
+        "data": {
+          "enabled": "Controlează aparatele",
+          "start": "Impuls la fereastră de la",
+          "end": "Impuls la fereastră până la",
+          "manual_override": "Intervenție manuală",
+          "suppress_when_handled": "Fără alertă când e gestionat",
+          "night_start": "Noapte liniștită de la",
+          "night_end": "Noapte liniștită până la",
+          "display": "Indicator luminos sau afișaj",
+          "reset_at": "Revenire la normal la",
+          "display_off": "Afișaje stinse de la",
+          "display_on": "Afișaje aprinse de la"
+        },
+        "data_description": {
+          "start": "Ventilatoarele și purificatoarele trec la viteză maximă când se deschide o fereastră sau o ușă doar între aceste ore. Ambele goale: toată ziua.",
+          "manual_override": "Minute în care un aparat modificat manual este lăsat în pace. 0: nicio pauză.",
+          "suppress_when_handled": "Nicio alertă „prea cald” pentru o cameră în care Smart Comfort a pornit aerul condiționat sau ventilatorul.",
+          "night_start": "Între aceste ore aparatele folosesc setările de noapte (viteză mai silențioasă, presetare sau mod ventilator) și nu au impuls la fereastră.",
+          "display": "Stins în orele „Afișaje stinse” din fila Program și în timpul siestelor din cameră, reaprins după.",
+          "reset_at": "La această oră aparatul revine la starea normală, chiar și după o modificare manuală (un purificator înapoi pe auto…)."
+        },
+        "sections": {
+          "climate": {
+            "name": "Aparate de aer condiționat",
+            "data": {
+              "cool_above": "Răcire de la",
+              "off_below": "Oprit sub",
+              "setpoint": "Temperatură setată",
+              "fan_mode": "Mod ventilator",
+              "closed_for": "Ferestre și uși închise de (min)",
+              "off_on_open": "Oprit când e deschis de (min)",
+              "night_fan_mode": "Mod ventilator noaptea"
+            }
+          },
+          "fans": {
+            "name": "Ventilatoare",
+            "data": {
+              "on_above": "Pornit de la",
+              "off_below": "Oprit sub",
+              "percentage": "Viteză",
+              "preset": "Presetare",
+              "open_percentage": "Viteză, fereastră deschisă",
+              "open_preset": "Presetare, fereastră deschisă",
+              "off_preset": "Presetare înainte de oprire",
+              "night_percentage": "Viteză noaptea",
+              "night_preset": "Presetare noaptea"
+            },
+            "description": "Lăsați „Pornit de la” și „Oprit sub” goale pentru ventilatoarele controlate doar de ferestre."
+          },
+          "purifiers": {
+            "name": "Purificatoare de aer",
+            "data": {
+              "open_percentage": "Viteză, fereastră deschisă",
+              "open_preset": "Presetare, fereastră deschisă",
+              "closed_preset": "Presetare, ferestre închise",
+              "keep_on": "Menține pornit",
+              "night_percentage": "Viteză noaptea",
+              "night_preset": "Presetare noaptea",
+              "night_mode": "Opțiune de mod noaptea"
+            },
+            "data_description": {
+              "keep_on": "Repornește un purificator când a fost oprit 10 s (pană de curent, defecțiune)."
+            }
+          }
+        }
+      },
+      "add_room": {
+        "title": "Adăugați o cameră",
+        "data": {
+          "name": "Nume",
+          "temperature": "Temperatură",
+          "co2": "CO₂",
+          "humidity": "Umiditate",
+          "noise": "Zgomot",
+          "openings": "Ferestre și uși",
+          "climate": "Aer condiționat",
+          "fans": "Ventilatoare",
+          "purifiers": "Purificatoare de aer",
+          "lights": "Lumini"
+        },
+        "description": "Senzorii și aparatele camerei. Lăsați gol ce nu are.",
+        "sections": {
+          "overrides": {
+            "name": "Setările camerei",
+            "description": "Suprascrie setările globale pentru această cameră. Setările pe aparat sunt doar în YAML.",
+            "data": {
+              "too_hot_threshold": "Prea cald de la",
+              "too_cold_threshold": "Prea frig sub",
+              "fan_preset": "Presetare ventilator",
+              "fan_open_preset": "Presetare ventilator, fereastră deschisă",
+              "fan_off_preset": "Presetare ventilator înainte de oprire",
+              "purifier_open_preset": "Presetare purificator, fereastră deschisă",
+              "purifier_closed_preset": "Presetare purificator, ferestre închise",
+              "purifier_mode_select": "Selector de mod al purificatorului",
+              "purifier_open_mode": "Opțiune de mod, fereastră deschisă",
+              "purifier_closed_mode": "Opțiune de mod, ferestre închise",
+              "purifier_keep_on": "Menține purificatoarele pornite"
+            }
+          }
+        },
+        "data_description": {
+          "lights": "Lumini reglabile: luminozitatea lor urmează momentul zilei cât timp sunt aprinse (iluminare adaptivă)."
+        }
+      },
+      "room": {
+        "title": "Editați camera",
+        "data": {
+          "name": "Nume",
+          "temperature": "Temperatură",
+          "co2": "CO₂",
+          "humidity": "Umiditate",
+          "noise": "Zgomot",
+          "openings": "Ferestre și uși",
+          "climate": "Aer condiționat",
+          "fans": "Ventilatoare",
+          "purifiers": "Purificatoare de aer",
+          "lights": "Lumini"
+        },
+        "description": "Senzorii și aparatele camerei. Lăsați gol ce nu are.",
+        "sections": {
+          "overrides": {
+            "name": "Setările camerei",
+            "description": "Suprascrie setările globale pentru această cameră. Setările pe aparat sunt doar în YAML.",
+            "data": {
+              "too_hot_threshold": "Prea cald de la",
+              "too_cold_threshold": "Prea frig sub",
+              "fan_preset": "Presetare ventilator",
+              "fan_open_preset": "Presetare ventilator, fereastră deschisă",
+              "fan_off_preset": "Presetare ventilator înainte de oprire",
+              "purifier_open_preset": "Presetare purificator, fereastră deschisă",
+              "purifier_closed_preset": "Presetare purificator, ferestre închise",
+              "purifier_mode_select": "Selector de mod al purificatorului",
+              "purifier_open_mode": "Opțiune de mod, fereastră deschisă",
+              "purifier_closed_mode": "Opțiune de mod, ferestre închise",
+              "purifier_keep_on": "Menține purificatoarele pornite"
+            }
+          }
+        },
+        "data_description": {
+          "lights": "Lumini reglabile: luminozitatea lor urmează momentul zilei cât timp sunt aprinse (iluminare adaptivă)."
+        }
+      },
+      "outdoor": {
+        "title": "Loc exterior",
+        "data": {
+          "name": "Nume",
+          "temperature": "Temperatură",
+          "air_quality": "Calitatea aerului",
+          "noise": "Zgomot"
+        }
+      },
+      "edit_room": {
+        "title": "Editați o cameră",
+        "data": {
+          "room": "Cameră"
+        }
+      },
+      "remove_room": {
+        "title": "Eliminați camere",
+        "data": {
+          "rooms": "Camere"
+        }
+      },
+      "lighting": {
+        "title": "Iluminare adaptivă",
+        "data": {
+          "enabled": "Iluminare adaptivă",
+          "day": "Luminozitate ziua",
+          "evening": "Luminozitate seara",
+          "night": "Luminozitate noaptea",
+          "warmth": "Adaptează căldura luminii",
+          "day_kelvin": "Căldura luminii ziua",
+          "evening_kelvin": "Căldura luminii seara",
+          "night_kelvin": "Căldura luminii noaptea",
+          "transition": "Tranziție",
+          "night_only": "Lumină de veghe",
+          "morning": "Luminozitate dimineața",
+          "morning_kelvin": "Căldura luminii dimineața",
+          "morning_end": "Sfârșitul dimineții",
+          "quiet_morning": "Dimineață liniștită",
+          "nap": "Luminozitate la siestă",
+          "nap_kelvin": "Căldura luminii la siestă"
+        },
+        "data_description": {
+          "day": "Cu soarele sus (elevație peste 6°).",
+          "evening": "După apusul soarelui (sub −6°); între ele, o tranziție.",
+          "night": "În orele de noapte liniștită (fila Program).",
+          "warmth": "Și temperatura de culoare, pentru luminile care o suportă. Dezactivat: doar luminozitatea.",
+          "transition": "Secundele schimbărilor treptate; o lumină abia aprinsă primește imediat luminozitatea.",
+          "night_only": "Setată doar în orele de noapte (lăsată în pace ziua).",
+          "morning": "În camerele cu dimineață liniștită (dormitoare), până la sfârșitul dimineții (fila Program).",
+          "morning_end": "Până când dormitoarele își păstrează luminozitatea de dimineață.",
+          "quiet_morning": "Lumini mai slabe dimineața, până la sfârșitul dimineții (fila Program).",
+          "nap": "În intervalele de siestă ale unei camere."
+        }
+      }
+    },
+    "error": {
+      "name_required": "Dați un nume camerei.",
+      "name_exists": "O cameră are deja acest nume.",
+      "invalid_options": "Unele valori nu sunt valide, verificați-le."
+    }
+  },
+  "selector": {
+    "kind": {
+      "options": {
+        "too_hot": "Prea cald",
+        "close_windows": "Închideți ferestrele (mai cald afară)",
+        "ventilate": "Deschideți ferestrele (mai rece afară)",
+        "too_cold": "Prea frig",
+        "window_open_cold": "Fereastră deschisă în frig",
+        "co2_high": "CO₂ ridicat",
+        "humidity_high": "Umiditate ridicată",
+        "noise_high": "Cameră zgomotoasă",
+        "noisy_outside": "Închideți ferestrele (zgomot afară)",
+        "bad_air_outside": "Închideți ferestrele (aer poluat afară)"
+      }
+    },
+    "severity": {
+      "options": {
+        "info": "Informare (silențioasă)",
+        "warning": "Avertizare (urgentă, cu sunet)",
+        "critical": "Critică (ignoră orele de liniște și modul silențios)"
+      }
+    },
+    "outdoor_aggregate": {
+      "options": {
+        "min": "Minim",
+        "max": "Maxim",
+        "mean": "Medie"
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "alerts": {
+        "name": "Alerte active",
+        "state_attributes": {
+          "alerts": {
+            "name": "Alerte"
+          },
+          "snoozes": {
+            "name": "Amânări"
+          },
+          "outdoor_temperature": {
+            "name": "Temperatura exterioară"
+          },
+          "outdoor_noise": {
+            "name": "Zgomot exterior"
+          },
+          "outdoor_air_quality": {
+            "name": "Calitatea aerului exterior"
+          }
+        }
+      },
+      "room": {
+        "name": "Confort {room}",
+        "state": {
+          "ok": "OK",
+          "too_hot": "Prea cald",
+          "close_windows": "Închideți ferestrele (mai cald afară)",
+          "ventilate": "Deschideți ferestrele (mai rece afară)",
+          "too_cold": "Prea frig",
+          "window_open_cold": "Fereastră deschisă în frig",
+          "co2_high": "CO₂ ridicat",
+          "humidity_high": "Umiditate ridicată",
+          "noise_high": "Cameră zgomotoasă",
+          "noisy_outside": "Închideți ferestrele (zgomot afară)",
+          "bad_air_outside": "Închideți ferestrele (aer poluat afară)"
+        }
+      },
+      "last_notification": {
+        "name": "Ultima notificare"
+      }
+    },
+    "switch": {
+      "notifications": {
+        "name": "Notificări"
+      },
+      "control": {
+        "name": "Controlul aparatelor"
+      },
+      "lighting": {
+        "name": "Iluminare adaptivă"
+      }
+    },
+    "button": {
+      "notify_now": {
+        "name": "Notifică acum"
+      },
+      "unsnooze": {
+        "name": "Anulează amânările"
+      }
+    }
+  },
+  "services": {
+    "snooze": {
+      "name": "Amânare",
+      "description": "Oprește pentru o vreme notificarea alertelor din camerele și de tipurile date (toate, implicit).",
+      "fields": {
+        "duration": {
+          "name": "Durată",
+          "description": "Minute; implicit, durata amânării din opțiuni."
+        },
+        "rooms": {
+          "name": "Camere",
+          "description": "Numele sau ID-urile camerelor; implicit toate."
+        },
+        "kinds": {
+          "name": "Alerte",
+          "description": "Dacă e setat, sunt amânate doar alertele curente de aceste tipuri."
+        }
+      }
+    },
+    "unsnooze": {
+      "name": "Anulează amânările",
+      "description": "Notifică din nou alertele amânate din camerele date (toate, implicit).",
+      "fields": {
+        "rooms": {
+          "name": "Camere",
+          "description": "Numele sau ID-urile camerelor; implicit toate."
+        }
+      }
+    },
+    "acknowledge": {
+      "name": "Confirmă",
+      "description": "Nicio reamintire și nicio escaladare pentru alertele curente până se încheie.",
+      "fields": {
+        "rooms": {
+          "name": "Camere",
+          "description": "Numele sau ID-urile camerelor; implicit toate."
+        },
+        "kinds": {
+          "name": "Alerte",
+          "description": "Tipuri de alerte; implicit toate."
+        }
+      }
+    },
+    "notify_now": {
+      "name": "Notifică acum",
+      "description": "Trimite toate problemele curente într-o singură notificare, ignorând orele de liniște și intervalul de grupare."
+    },
+    "get_config": {
+      "name": "Obține configurația",
+      "description": "Returnează opțiunile în uz (camere, alerte, control, iluminare), de copiat în YAML sau pentru a verifica ce e setat."
+    }
+  },
+  "common": {
+    "title_one": "{room}",
+    "title_many": "Alerte de confort: {count}",
+    "room_line": "{room}: {problem}",
+    "decimal": ",",
+    "duration_minutes": "{minutes} min",
+    "duration_hours": "{hours} h {minutes:02d}",
+    "since": "de {duration}",
+    "worse": "se agravează",
+    "line_too_hot": "{value} °C, peste {threshold} °C",
+    "line_too_cold": "{value} °C, sub {threshold} °C",
+    "line_ventilate": "{temperature} °C înăuntru, {outdoor} °C afară — deschideți ferestrele",
+    "line_close_windows": "{outdoor} °C afară, {temperature} °C înăuntru — închideți: {openings}",
+    "line_window_open_cold": "deschis: {openings}, {outdoor} °C afară",
+    "line_co2_high": "CO₂ {value} ppm — aerisiți camera",
+    "line_humidity_high": "umiditate {value} % — aerisiți camera",
+    "line_noise_high": "zgomot {value} dB, peste {threshold} dB",
+    "line_noisy_outside": "{value} dB afară — închideți: {openings}",
+    "line_bad_air_outside": "calitatea aerului afară {value}/6 — închideți: {openings}",
+    "action_snooze": "Amână {hours} h",
+    "action_snooze_minutes": "Amână {minutes} min",
+    "action_ack": "Am înțeles"
+  },
+  "exceptions": {
+    "not_loaded": {
+      "message": "Smart Comfort nu este încărcat."
+    },
+    "unknown_room": {
+      "message": "Cameră necunoscută: {room}."
+    }
+  }
+}
