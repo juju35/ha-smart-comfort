@@ -5,10 +5,10 @@
 [![Validate](https://github.com/juju35/ha-smart-comfort/actions/workflows/validate.yml/badge.svg)](https://github.com/juju35/ha-smart-comfort/actions/workflows/validate.yml)
 [![Lint](https://github.com/juju35/ha-smart-comfort/actions/workflows/lint.yml/badge.svg)](https://github.com/juju35/ha-smart-comfort/actions/workflows/lint.yml)
 [![Release](https://img.shields.io/github/v/release/juju35/ha-smart-comfort)](https://github.com/juju35/ha-smart-comfort/releases/latest)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/juju35/ha-smart-comfort/blob/main/LICENSE)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-FFDD00?logo=buymeacoffee&logoColor=black)](https://buymeacoffee.com/julienstep9)
 
-<p align="center"><img src="custom_components/smart_comfort/brand/icon.png" alt="Smart Comfort" width="120"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/juju35/ha-smart-comfort/main/custom_components/smart_comfort/brand/icon.png" alt="Smart Comfort" width="120"></p>
 
 Home Assistant integration for **fewer, smarter comfort alerts** — temperature, CO₂, humidity, windows to open or close — and **automatic control of air conditioners, fans and air purifiers**, room by room.
 
@@ -99,54 +99,54 @@ Each tab has its own address, e.g. `/smart-comfort/rooms` (the addresses of earl
 
 | Overview of the Smart Comfort panel | Dark mode |
 |---|---|
-| ![Overview of the Smart Comfort panel](screenshots/panel-overview.png) | ![Overview of the Smart Comfort panel, dark mode](screenshots/panel-overview-dark.png) |
+| ![Overview of the Smart Comfort panel](https://raw.githubusercontent.com/juju35/ha-smart-comfort/main/screenshots/panel-overview.png) | ![Overview of the Smart Comfort panel, dark mode](https://raw.githubusercontent.com/juju35/ha-smart-comfort/main/screenshots/panel-overview-dark.png) |
 
 <details>
 <summary>More screenshots</summary>
 
 | Discover offered in the overview while nothing is set up | Dark mode |
 |---|---|
-| ![Discover offered in the overview while nothing is set up](screenshots/panel-start.png) | ![Discover offered in the overview while nothing is set up, dark mode](screenshots/panel-start-dark.png) |
+| ![Discover offered in the overview while nothing is set up](https://raw.githubusercontent.com/juju35/ha-smart-comfort/main/screenshots/panel-start.png) | ![Discover offered in the overview while nothing is set up, dark mode](https://raw.githubusercontent.com/juju35/ha-smart-comfort/main/screenshots/panel-start-dark.png) |
 
 | Rooms found by Discover, before saving | Dark mode |
 |---|---|
-| ![Rooms found by Discover, before saving](screenshots/panel-discover.png) | ![Rooms found by Discover, before saving, dark mode](screenshots/panel-discover-dark.png) |
+| ![Rooms found by Discover, before saving](https://raw.githubusercontent.com/juju35/ha-smart-comfort/main/screenshots/panel-discover.png) | ![Rooms found by Discover, before saving, dark mode](https://raw.githubusercontent.com/juju35/ha-smart-comfort/main/screenshots/panel-discover-dark.png) |
 
 | The Activity tab: what Smart Comfort did and why, by day | Dark mode |
 |---|---|
-| ![The Activity tab: what Smart Comfort did and why, by day](screenshots/panel-activity.png) | ![The Activity tab, dark mode](screenshots/panel-activity-dark.png) |
+| ![The Activity tab: what Smart Comfort did and why, by day](https://raw.githubusercontent.com/juju35/ha-smart-comfort/main/screenshots/panel-activity.png) | ![The Activity tab, dark mode](https://raw.githubusercontent.com/juju35/ha-smart-comfort/main/screenshots/panel-activity-dark.png) |
 
 | A room in the Smart Comfort panel | Dark mode |
 |---|---|
-| ![A room in the Smart Comfort panel](screenshots/panel-room.png) | ![A room in the Smart Comfort panel, dark mode](screenshots/panel-room-dark.png) |
+| ![A room in the Smart Comfort panel](https://raw.githubusercontent.com/juju35/ha-smart-comfort/main/screenshots/panel-room.png) | ![A room in the Smart Comfort panel, dark mode](https://raw.githubusercontent.com/juju35/ha-smart-comfort/main/screenshots/panel-room-dark.png) |
 
 | The Outdoors tab | Dark mode |
 |---|---|
-| ![The outdoor places and the other outdoor sensors](screenshots/panel-outdoors.png) | ![The outdoor places and the other outdoor sensors, dark mode](screenshots/panel-outdoors-dark.png) |
+| ![The outdoor places and the other outdoor sensors](https://raw.githubusercontent.com/juju35/ha-smart-comfort/main/screenshots/panel-outdoors.png) | ![The outdoor places and the other outdoor sensors, dark mode](https://raw.githubusercontent.com/juju35/ha-smart-comfort/main/screenshots/panel-outdoors-dark.png) |
 
 | Alert settings in the Smart Comfort panel | Dark mode |
 |---|---|
-| ![Alert settings in the Smart Comfort panel](screenshots/panel-alerts.png) | ![Alert settings in the Smart Comfort panel, dark mode](screenshots/panel-alerts-dark.png) |
+| ![Alert settings in the Smart Comfort panel](https://raw.githubusercontent.com/juju35/ha-smart-comfort/main/screenshots/panel-alerts.png) | ![Alert settings in the Smart Comfort panel, dark mode](https://raw.githubusercontent.com/juju35/ha-smart-comfort/main/screenshots/panel-alerts-dark.png) |
 
 | The day on one line: quiet hours, quiet night, quiet morning, window boost | Dark mode |
 |---|---|
-| ![The Schedule tab](screenshots/panel-schedule.png) | ![The Schedule tab, dark mode](screenshots/panel-schedule-dark.png) |
+| ![The Schedule tab](https://raw.githubusercontent.com/juju35/ha-smart-comfort/main/screenshots/panel-schedule.png) | ![The Schedule tab, dark mode](https://raw.githubusercontent.com/juju35/ha-smart-comfort/main/screenshots/panel-schedule-dark.png) |
 
 | Adaptive lighting settings | Dark mode |
 |---|---|
-| ![Adaptive lighting settings in the Settings tab](screenshots/panel-lighting.png) | ![Adaptive lighting settings in the Settings tab, dark mode](screenshots/panel-lighting-dark.png) |
+| ![Adaptive lighting settings in the Settings tab](https://raw.githubusercontent.com/juju35/ha-smart-comfort/main/screenshots/panel-lighting.png) | ![Adaptive lighting settings in the Settings tab, dark mode](https://raw.githubusercontent.com/juju35/ha-smart-comfort/main/screenshots/panel-lighting-dark.png) |
 
 | Quiet morning and naps of a bedroom | Dark mode |
 |---|---|
-| ![Quiet morning and nap slots of a bedroom](screenshots/panel-naps.png) | ![Quiet morning and nap slots of a bedroom, dark mode](screenshots/panel-naps-dark.png) |
+| ![Quiet morning and nap slots of a bedroom](https://raw.githubusercontent.com/juju35/ha-smart-comfort/main/screenshots/panel-naps.png) | ![Quiet morning and nap slots of a bedroom, dark mode](https://raw.githubusercontent.com/juju35/ha-smart-comfort/main/screenshots/panel-naps-dark.png) |
 
 | Lights on presence of the entrance | Dark mode |
 |---|---|
-| ![Lights on presence: sensors, lights, light level, naps and slots](screenshots/panel-presence.png) | ![Lights on presence, dark mode](screenshots/panel-presence-dark.png) |
+| ![Lights on presence: sensors, lights, light level, naps and slots](https://raw.githubusercontent.com/juju35/ha-smart-comfort/main/screenshots/panel-presence.png) | ![Lights on presence, dark mode](https://raw.githubusercontent.com/juju35/ha-smart-comfort/main/screenshots/panel-presence-dark.png) |
 
 | The YAML tab: the configuration as it goes in `configuration.yaml` | Dark mode |
 |---|---|
-| ![The YAML tab](screenshots/panel-yaml.png) | ![The YAML tab, dark mode](screenshots/panel-yaml-dark.png) |
+| ![The YAML tab](https://raw.githubusercontent.com/juju35/ha-smart-comfort/main/screenshots/panel-yaml.png) | ![The YAML tab, dark mode](https://raw.githubusercontent.com/juju35/ha-smart-comfort/main/screenshots/panel-yaml-dark.png) |
 
 </details>
 
@@ -415,8 +415,8 @@ The integration also adds a mini card (no resource to add), for any user: the al
 
 | Light | Dark |
 |---|---|
-| ![The mini card: alerts of the moment and switches](screenshots/card-mini.png) | ![The mini card, dark mode](screenshots/card-mini-dark.png) |
-| ![The mini card switched to the full card: alerts, rooms and activity](screenshots/card-mini-full.png) | ![The full card, dark mode](screenshots/card-mini-full-dark.png) |
+| ![The mini card: alerts of the moment and switches](https://raw.githubusercontent.com/juju35/ha-smart-comfort/main/screenshots/card-mini.png) | ![The mini card, dark mode](https://raw.githubusercontent.com/juju35/ha-smart-comfort/main/screenshots/card-mini-dark.png) |
+| ![The mini card switched to the full card: alerts, rooms and activity](https://raw.githubusercontent.com/juju35/ha-smart-comfort/main/screenshots/card-mini-full.png) | ![The full card, dark mode](https://raw.githubusercontent.com/juju35/ha-smart-comfort/main/screenshots/card-mini-full-dark.png) |
 
 ```yaml
 type: custom:smart-comfort-mini-card
@@ -513,7 +513,7 @@ The screenshots are rendered by `python scripts/screenshots.py` (Playwright and 
 ### Releasing
 
 1. Bump the version in `custom_components/smart_comfort/manifest.json`
-2. Add a `## <version>` section at the top of [CHANGELOG.md](CHANGELOG.md)
+2. Add a `## <version>` section at the top of [CHANGELOG.md](https://github.com/juju35/ha-smart-comfort/blob/main/CHANGELOG.md)
 3. Push to `main`: the **Release** workflow creates the tag and the GitHub release with the changelog section as notes
 
 ## Translations
@@ -549,7 +549,7 @@ Contributions for additional languages are welcome!
 
 ## License
 
-[MIT](LICENSE)
+[MIT](https://github.com/juju35/ha-smart-comfort/blob/main/LICENSE)
 
 ## Support
 
