@@ -15,10 +15,10 @@ from .const import DOMAIN, PANEL_ICON, PANEL_URL, TITLE
 STATIC_URL = f"/{DOMAIN}_static"
 FRONTEND_DIR = Path(__file__).parent / "frontend"
 MODULE = "smart-comfort-panel.js"
-# The activity card, loaded on every dashboard.
-CARD = "smart-comfort-activity-card.js"
+# The cards, loaded on every dashboard: the activity card and the mini card.
+CARDS = ("smart-comfort-activity-card.js", "smart-comfort-mini-card.js")
 ELEMENT = "smart-comfort-panel"
-CARD_URL = f"{STATIC_URL}/{CARD}"
+CARD_URLS = tuple(f"{STATIC_URL}/{card}" for card in CARDS)
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -41,7 +41,7 @@ async def async_register_panel(hass: HomeAssistant) -> None:
         await hass.http.async_register_static_paths([StaticPathConfig(STATIC_URL, str(FRONTEND_DIR), False)])
         data["static_registered"] = True
     version = await hass.async_add_executor_job(_version)
-    await _async_register_card(hass, data, f"{CARD_URL}?v={version}")
+    await _async_register_cards(hass, data, [f"{url}?v={version}" for url in CARD_URLS])
     if PANEL_URL in hass.data.get(frontend.DATA_PANELS, {}):
         return
     frontend.async_register_built_in_panel(
@@ -62,21 +62,16 @@ async def async_register_panel(hass: HomeAssistant) -> None:
     )
 
 
-async def _async_register_card(hass: HomeAssistant, data: dict[str, Any], url: str) -> None:
-    """Load the activity card on the dashboards: a dashboard resource, else (resources in YAML) an extra module.
+async def _async_register_cards(hass: HomeAssistant, data: dict[str, Any], urls: list[str]) -> None:
+    """Load the cards on the dashboards: dashboard resources, else (resources in YAML) extra modules.
 
     A dashboard only waits for its resources before building its cards; an extra module may come too late, and the
     card then stays "Custom element not found". Once Home Assistant runs: the resources are loaded by then.
     """
 
     async def register(_: Event | None = None) -> None:
-        if await _async_register_resource(hass, url) or data.get("card_extra_js"):
-            return
-        from homeassistant.components import frontend
-
-        if frontend.DATA_EXTRA_MODULE_URL in hass.data:
-            frontend.add_extra_js_url(hass, url)
-            data["card_extra_js"] = True
+        for url in urls:
+            await _async_register_card(hass, data, url)
 
     if hass.state is CoreState.running:
         await register()
@@ -88,6 +83,21 @@ async def _async_register_card(hass: HomeAssistant, data: dict[str, Any], url: s
             await register(event)
 
         hass.bus.async_listen_once(EVENT_HOMEASSISTANT_STARTED, started)
+
+
+async def _async_register_card(hass: HomeAssistant, data: dict[str, Any], url: str) -> None:
+    """One card: a dashboard resource, else an extra module (once per run)."""
+    if await _async_register_resource(hass, url):
+        return
+    added = data.setdefault("card_extra_js", set())
+    base = url.split("?")[0]
+    if base in added:
+        return
+    from homeassistant.components import frontend
+
+    if frontend.DATA_EXTRA_MODULE_URL in hass.data:
+        frontend.add_extra_js_url(hass, url)
+        added.add(base)
 
 
 def _storage_resources(hass: HomeAssistant) -> Any | None:
@@ -105,12 +115,13 @@ def _storage_resources(hass: HomeAssistant) -> Any | None:
 
 
 async def _async_register_resource(hass: HomeAssistant, url: str) -> bool:
-    """Add or update the card in the dashboard resources (one item, current version). False: not possible."""
+    """Add or update a card in the dashboard resources (one item, current version). False: not possible."""
     if (resources := _storage_resources(hass)) is None:
         return False
+    base = url.split("?")[0]
     try:
         await resources.async_get_info()  # Loads the collection from storage.
-        existing = [i for i in resources.async_items() if i.get("url", "").split("?")[0] == CARD_URL]
+        existing = [i for i in resources.async_items() if i.get("url", "").split("?")[0] == base]
         if not existing:
             await resources.async_create_item({"res_type": "module", "url": url})
             return True
@@ -119,17 +130,17 @@ async def _async_register_resource(hass: HomeAssistant, url: str) -> bool:
         for duplicate in existing[1:]:
             await resources.async_delete_item(duplicate["id"])
     except Exception:  # noqa: BLE001 - never block the integration on the card
-        _LOGGER.exception("Could not add the Smart Comfort activity card to the dashboard resources")
+        _LOGGER.exception("Could not add %s to the dashboard resources", base)
         return False
     return True
 
 
 async def async_remove_card(hass: HomeAssistant) -> None:
-    """Drop the card from the dashboard resources (the integration was removed)."""
+    """Drop the cards from the dashboard resources (the integration was removed)."""
     if (resources := _storage_resources(hass)) is None:
         return
     for item in list(resources.async_items()):
-        if item.get("url", "").split("?")[0] == CARD_URL:
+        if item.get("url", "").split("?")[0] in CARD_URLS:
             await resources.async_delete_item(item["id"])
 
 

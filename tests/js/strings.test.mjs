@@ -1,4 +1,4 @@
-// Strings of the panel and the activity card: the language picked from Home Assistant's, and the same keys in every language.
+// Strings of the panel, the activity card and the mini card: the language picked from Home Assistant's, and the same keys in every language.
 // Run by tests/test_frontend.py (pytest), or directly: node --test tests/js/
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
@@ -8,6 +8,7 @@ const FRONTEND = new URL("../../custom_components/smart_comfort/frontend/", impo
 const FILES = {
   panel: new URL("smart-comfort-panel.js", FRONTEND),
   card: new URL("smart-comfort-activity-card.js", FRONTEND),
+  mini: new URL("smart-comfort-mini-card.js", FRONTEND),
 };
 
 globalThis.window = globalThis;
@@ -30,9 +31,11 @@ globalThis.document = {
 
 await import(FILES.panel);
 await import(FILES.card);
+await import(FILES.mini);
 const ELEMENTS = {
   panel: customElements.get("smart-comfort-panel"),
   card: customElements.get("smart-comfort-activity-card"),
+  mini: customElements.get("smart-comfort-mini-card"),
 };
 
 /** The STRINGS table of a frontend file, read from its source (it is not exported). */
@@ -65,7 +68,9 @@ const CASES = {
   "pl-PL": "pl",
   ja: "en",
 };
-const SAMPLE = { panel: "rooms", card: "today" };
+const SAMPLE = { panel: "rooms", card: "today", mini: "all_good" };
+// Plural forms that only some languages have (Intl.PluralRules categories), besides one and other.
+const PLURAL_ONLY = /_(zero|two|few|many)$/;
 
 /** Key paths of a value; an array counts as its length and its items. */
 function shape(value, path = "") {
@@ -89,7 +94,7 @@ for (const file of Object.keys(FILES)) {
     const all = strings(file);
     const english = shape(all.en).sort();
     for (const [language, table] of Object.entries(all)) {
-      assert.deepEqual(shape(table).sort(), english, language);
+      assert.deepEqual(shape(table).filter((k) => !PLURAL_ONLY.test(k)).sort(), english, language);
       for (const [key, text] of Object.entries(table)) {
         if (typeof text === "string") assert.ok(text.trim(), `${language}.${key}`);
       }
@@ -118,6 +123,42 @@ for (const file of Object.keys(FILES)) {
     }
   });
 }
+
+test("mini card: the plural form of each language (one, few, many, other)", () => {
+  const count = (language, n) => {
+    const card = new ELEMENTS.mini();
+    card._hass = { language };
+    return card._count(n);
+  };
+  assert.equal(count("en", 1), "1 alert");
+  assert.equal(count("en", 3), "3 alerts");
+  assert.equal(count("fr", 1), "1 alerte");
+  assert.equal(count("fr", 2), "2 alertes");
+  assert.equal(count("pl", 1), "1 alert");
+  assert.equal(count("pl", 3), "3 alerty");
+  assert.equal(count("pl", 5), "5 alertów");
+  assert.equal(count("sr", 21), "21 упозорење");
+  assert.equal(count("sr", 3), "3 упозорења");
+  assert.equal(count("sr-Latn", 5), "5 upozorenja");
+  // Each extra form is one the language really has.
+  const all = strings("mini");
+  for (const [language, table] of Object.entries(all)) {
+    const categories = new Intl.PluralRules(language).resolvedOptions().pluralCategories;
+    for (const key of Object.keys(table).filter((k) => PLURAL_ONLY.test(k))) {
+      assert.ok(categories.includes(key.split("_").pop()), `${language}.${key}`);
+    }
+  }
+});
+
+test("mini card editor labels: same language resolution", () => {
+  const all = strings("mini");
+  const label = ELEMENTS.mini.getConfigForm().computeLabel;
+  for (const [language, expected] of Object.entries(CASES)) {
+    haLanguage = language;
+    assert.equal(label({ name: "rooms" }), all[expected].f_rooms, language);
+  }
+  haLanguage = undefined;
+});
 
 test("card editor labels: same language resolution", () => {
   const all = strings("card");

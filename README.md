@@ -41,6 +41,7 @@ Comfort automations built with a cooldown keep notifying every couple of hours a
 - **Outdoor air quality**: an index from 1 (good) to 6 (extremely poor) — European indexes (Atmo, EAQI) as is, US AQI by its bands, text states (good, poor…) — the worst sensor counts: no suggestion to open the windows while the air is poor, and an alert to close them when they are open then
 - **No re-notification after a restart**: episodes, snoozes and device targets are stored; nothing is sent during the startup grace period
 - **YAML or UI**: configure everything in YAML (imported at startup), in the **Smart Comfort panel** of the sidebar, or in the integration options — rooms, alerts, control
+- **Dashboard cards**, added by the integration: a **mini card** (the alerts of the moment and the switches, with a button that opens the full card: every alert, the rooms, the latest activity) and an **activity card**
 - Sensors for the active alerts and the comfort of each room, switches to pause the notifications or the device control, buttons, actions and events
 - English, French, German, Spanish, Italian, Dutch, European Portuguese, Polish and Serbian (Cyrillic and Latin)
 
@@ -407,6 +408,26 @@ A light is turned on only when none of the presence lights is already on, at the
 
 A slot color, like a slot brightness, is kept until the light is turned off (the adaptive lighting leaves it alone).
 
+### Mini card
+
+The integration also adds a mini card (no resource to add), for any user: the alerts of the moment (the ones to deal with first, then the snoozed or handled ones), the outdoor temperature, and the notifications, device control and adaptive lighting switches, which a tap turns on or off. Its button at the top right switches it to the full card — every alert with since when and its state (snoozed, handled by a device, seen), a tile per room with its temperature (else humidity, else CO₂) and its main problem, the latest activity — and back; a click anywhere outside the card brings it back to the compact view too. A tap on an alert or a room opens its comfort sensor.
+
+| Light | Dark |
+|---|---|
+| ![The mini card: alerts of the moment and switches](screenshots/card-mini.png) | ![The mini card, dark mode](screenshots/card-mini-dark.png) |
+| ![The mini card switched to the full card: alerts, rooms and activity](screenshots/card-mini-full.png) | ![The full card, dark mode](screenshots/card-mini-full-dark.png) |
+
+```yaml
+type: custom:smart-comfort-mini-card
+title: Smart Comfort        # optional
+rooms: [Living room]        # optional: only these rooms, their names as shown in the panel
+alerts: 3                   # alerts listed in the compact view (3 by default)
+activity: 5                 # activity entries in the full card (5 by default, 0 for none)
+zoom: false                 # optional: no full card button
+```
+
+In a Sections view the mini card is 6 columns wide (half a section), the full card a whole section. On a narrow card the switches keep their icon only. With `rooms` set to a single room, the activity of the full card is that room's.
+
 ### Activity card
 
 The integration also adds a Lovelace card (no resource to add): the latest activity of Smart Comfort, live, for any user.
@@ -428,7 +449,7 @@ The activity (the last 300 entries) is kept across restarts. It is also availabl
 | Entity | Description |
 |---|---|
 | `sensor.smart_comfort_active_alerts` | Number of current problems. Attributes: `alerts` (room, kind, value, since, notified_at, snoozed, acknowledged, handled…), `snoozes`, `outdoor_temperature`, `outdoor_noise`, `outdoor_air_quality` |
-| `sensor.smart_comfort_<room>_comfort` | `ok` or the main problem of the room. Attributes: readings, open and ignored openings, alerts, device targets and manual overrides |
+| `sensor.smart_comfort_<room>_comfort` | `ok` or the main problem of the room. Attributes: `room_name`, readings, open and ignored openings, alerts, device targets and manual overrides |
 | `sensor.smart_comfort_last_notification` | Time of the last notification. Attributes: `title`, `message`, `severity`, `alerts` |
 | `switch.smart_comfort_notifications` | Send notifications (problems are still tracked when off) |
 | `switch.smart_comfort_device_control` | Control the devices |
@@ -496,7 +517,7 @@ The screenshots are rendered by `python scripts/screenshots.py` (Playwright and 
 
 ## Translations
 
-The integration and its notifications follow the language of Home Assistant. Currently supported (Brazilian Portuguese: pt-BR uses the European Portuguese texts, in the integration, the notifications, the panel and the activity card):
+The integration and its notifications follow the language of Home Assistant. Currently supported (Brazilian Portuguese: pt-BR uses the European Portuguese texts, in the integration, the notifications, the panel and the cards):
 
 | Language | Code |
 |---|---|

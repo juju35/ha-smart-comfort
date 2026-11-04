@@ -472,18 +472,35 @@ const STRINGS = {
   },
 };
 
-// Language of the texts: the full tag when translated (sr-Latn), else its base (fr-FR: fr), else English.
-const resolvedLanguage = (language) => [language, String(language || "").split("-")[0]].find((l) => STRINGS[l]) || "en";
-const stringsFor = (language) => STRINGS[resolvedLanguage(language)];
+/** The language helpers over a table of texts by language (this card's, the mini card's). */
+export function languageOf(strings) {
+  // Language of the texts: the full tag when translated (sr-Latn), else its base (fr-FR: fr), else English.
+  const resolve = (language) => [language, String(language || "").split("-")[0]].find((l) => strings[l]) || "en";
+  // Locale of numbers and dates: Home Assistant's own (pt-BR keeps its formats) when it speaks the language of the
+  // texts, else that language; pt alone is European Portuguese for Home Assistant, pt-PT for Intl.
+  const intlLocale = (hass) => {
+    const resolved = resolve(hass?.language);
+    const full = hass?.locale?.language || hass?.language || "";
+    if (full.split("-")[0] !== resolved.split("-")[0]) return resolved === "pt" ? "pt-PT" : resolved;
+    return full === "pt" ? "pt-PT" : full;
+  };
+  // A text in that language, else in English, else its key; {name} placeholders filled from `values`.
+  const translate = (language, key, values = {}) => {
+    const text = strings[resolve(language)][key] ?? strings.en[key] ?? key;
+    return text.replace(/\{(\w+)\}/g, (_, k) => values[k] ?? "");
+  };
+  return { resolve, stringsFor: (language) => strings[resolve(language)], intlLocale, translate };
+}
 
-// Locale of numbers and dates: Home Assistant's own (pt-BR keeps its formats) when it speaks the language of the
-// texts, else that language; pt alone is European Portuguese for Home Assistant, pt-PT for Intl.
-const intlLocale = (hass) => {
-  const resolved = resolvedLanguage(hass?.language);
-  const full = hass?.locale?.language || hass?.language || "";
-  if (full.split("-")[0] !== resolved.split("-")[0]) return resolved === "pt" ? "pt-PT" : resolved;
-  return full === "pt" ? "pt-PT" : full;
-};
+const { stringsFor, intlLocale, translate } = languageOf(STRINGS);
+
+/** An element with a class and a text. */
+export function el(tag, cls, text) {
+  const node = document.createElement(tag);
+  if (cls) node.className = cls;
+  if (text !== undefined) node.textContent = text;
+  return node;
+}
 
 const ICONS = {
   device: "mdi:fan",
@@ -590,8 +607,7 @@ class SmartComfortActivityCard extends HTMLElement {
   }
 
   _t(key, values = {}) {
-    const text = stringsFor(this._hass?.language)[key] ?? STRINGS.en[key] ?? key;
-    return text.replace(/\{(\w+)\}/g, (_, k) => values[k] ?? "");
+    return translate(this._hass?.language, key, values);
   }
 
   /** One subscription at a time: `_subscription` is set from the request on, not only once it is ready. */
@@ -817,21 +833,23 @@ class SmartComfortActivityCard extends HTMLElement {
   }
 
   _el(tag, cls, text) {
-    const el = document.createElement(tag);
-    if (cls) el.className = cls;
-    if (text !== undefined) el.textContent = text;
-    return el;
+    return el(tag, cls, text);
   }
 }
 
-const STYLE = `
-  :host { display: block; }
-  .header { display: flex; align-items: center; gap: 10px; padding: 12px 16px 4px; }
+// Header like the other cards, shared with the mini card: a tinted round badge, the title block shrinks and truncates.
+export const HEADER_STYLE = `
   .hbadge { --c: var(--primary-color, #03a9f4); width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; flex: none;
     background: color-mix(in srgb, var(--c) 16%, transparent); color: var(--c); --mdc-icon-size: 24px; }
   .titles { flex: 1 1 0; min-width: 4ch; }
   .hname { min-width: 4ch; font-size: 16px; font-weight: 500; line-height: 1.25; color: var(--primary-text-color);
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+`;
+
+const STYLE = `
+  :host { display: block; }
+  .header { display: flex; align-items: center; gap: 10px; padding: 12px 16px 4px; }
+  ${HEADER_STYLE}
   .body { padding: 0 16px 12px; }
   .body.flat { padding: 0; }
   .empty { color: var(--secondary-text-color); padding: 12px 0; }
