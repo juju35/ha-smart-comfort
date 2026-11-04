@@ -320,7 +320,7 @@
       "options": {
         "too_hot": "Prea cald",
         "close_windows": "Închideți ferestrele (mai cald afară)",
-        "ventilate": "Deschideți ferestrele (mai răcoare afară)",
+        "ventilate": "Deschideți ferestrele (mai rece afară)",
         "too_cold": "Prea frig",
         "window_open_cold": "Fereastră deschisă în frig",
         "co2_high": "CO₂ ridicat",
@@ -373,7 +373,7 @@
           "ok": "OK",
           "too_hot": "Prea cald",
           "close_windows": "Închideți ferestrele (mai cald afară)",
-          "ventilate": "Deschideți ferestrele (mai răcoare afară)",
+          "ventilate": "Deschideți ferestrele (mai rece afară)",
           "too_cold": "Prea frig",
           "window_open_cold": "Fereastră deschisă în frig",
           "co2_high": "CO₂ ridicat",

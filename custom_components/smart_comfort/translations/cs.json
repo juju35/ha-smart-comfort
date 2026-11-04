@@ -92,7 +92,7 @@
           "min_outdoor": "Minimální venkovní teplota",
           "max_outdoor": "Maximální venkovní teplota",
           "max_outdoor_noise": "Maximální venkovní hluk",
-          "max_outdoor_air": "Maximální úroveň kvality venkovního vzduchu",
+          "max_outdoor_air": "Max. úroveň kvality venkovního vzduchu",
           "hysteresis": "Hystereze",
           "delay": "Zpoždění",
           "severity": "Závažnost",

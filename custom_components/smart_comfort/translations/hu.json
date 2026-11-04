@@ -319,15 +319,15 @@
     "kind": {
       "options": {
         "too_hot": "Túl meleg",
-        "close_windows": "Csukja be az ablakokat (kint melegebb van)",
-        "ventilate": "Nyissa ki az ablakokat (kint hűvösebb van)",
+        "close_windows": "Zárja be az ablakokat (kint melegebb)",
+        "ventilate": "Szellőztessen (kint hűvösebb van)",
         "too_cold": "Túl hideg",
         "window_open_cold": "Nyitott ablak hidegben",
         "co2_high": "Magas CO₂",
         "humidity_high": "Magas páratartalom",
         "noise_high": "Zajos helyiség",
-        "noisy_outside": "Csukja be az ablakokat (kint zaj van)",
-        "bad_air_outside": "Csukja be az ablakokat (kint rossz a levegő)"
+        "noisy_outside": "Zárja be az ablakokat (kint zaj van)",
+        "bad_air_outside": "Zárja be az ablakokat (rossz a levegő)"
       }
     },
     "severity": {
@@ -372,15 +372,15 @@
         "state": {
           "ok": "OK",
           "too_hot": "Túl meleg",
-          "close_windows": "Csukja be az ablakokat (kint melegebb van)",
-          "ventilate": "Nyissa ki az ablakokat (kint hűvösebb van)",
+          "close_windows": "Zárja be az ablakokat (kint melegebb)",
+          "ventilate": "Szellőztessen (kint hűvösebb van)",
           "too_cold": "Túl hideg",
           "window_open_cold": "Nyitott ablak hidegben",
           "co2_high": "Magas CO₂",
           "humidity_high": "Magas páratartalom",
           "noise_high": "Zajos helyiség",
-          "noisy_outside": "Csukja be az ablakokat (kint zaj van)",
-          "bad_air_outside": "Csukja be az ablakokat (kint rossz a levegő)"
+          "noisy_outside": "Zárja be az ablakokat (kint zaj van)",
+          "bad_air_outside": "Zárja be az ablakokat (rossz a levegő)"
         }
       },
       "last_notification": {

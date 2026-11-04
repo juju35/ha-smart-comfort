@@ -330,7 +330,7 @@ const STRINGS = {
   ro: {
     title: "Smart Comfort",
     not_loaded: "Smart Comfort nu este încărcat.",
-    all_good: "Totul e în regulă",
+    all_good: "Totul e bine",
     alerts_one: "{n} alertă",
     alerts_few: "{n} alerte",
     alerts_other: "{n} de alerte",
@@ -424,7 +424,7 @@ const STRINGS = {
   bg: {
     title: "Smart Comfort",
     not_loaded: "Smart Comfort не е зареден.",
-    all_good: "Всичко е наред",
+    all_good: "Всичко наред",
     alerts_one: "{n} сигнал",
     alerts_other: "{n} сигнала",
     no_alerts: "Няма сигнали",
@@ -521,7 +521,7 @@ const STRINGS = {
   hu: {
     title: "Smart Comfort",
     not_loaded: "A Smart Comfort nincs betöltve.",
-    all_good: "Minden rendben",
+    all_good: "Rendben",
     alerts_one: "{n} riasztás",
     alerts_other: "{n} riasztás",
     no_alerts: "Nincs riasztás",
@@ -552,7 +552,7 @@ const STRINGS = {
   sk: {
     title: "Smart Comfort",
     not_loaded: "Smart Comfort nie je načítaný.",
-    all_good: "Všetko v poriadku",
+    all_good: "V poriadku",
     alerts_one: "{n} upozornenie",
     alerts_few: "{n} upozornenia",
     alerts_many: "{n} upozornenia",
