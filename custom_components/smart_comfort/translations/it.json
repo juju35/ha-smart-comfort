@@ -405,6 +405,11 @@
       "unsnooze": {
         "name": "Annulla i posticipi"
       }
+    },
+    "calendar": {
+      "alerts_calendar": {
+        "name": "Avvisi comfort"
+      }
     }
   },
   "services": {

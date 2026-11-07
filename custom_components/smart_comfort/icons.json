@@ -1,5 +1,8 @@
 {
   "entity": {
+    "calendar": {
+      "alerts_calendar": { "default": "mdi:calendar-alert" }
+    },
     "sensor": {
       "alerts": { "default": "mdi:home-thermometer-outline" },
       "room": {

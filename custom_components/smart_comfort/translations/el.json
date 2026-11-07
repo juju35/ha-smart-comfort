@@ -405,6 +405,11 @@
       "unsnooze": {
         "name": "Ακύρωση αναβολών"
       }
+    },
+    "calendar": {
+      "alerts_calendar": {
+        "name": "Ειδοποιήσεις άνεσης"
+      }
     }
   },
   "services": {

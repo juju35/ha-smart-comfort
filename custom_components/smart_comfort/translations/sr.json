@@ -405,6 +405,11 @@
       "unsnooze": {
         "name": "Поништи одлагања"
       }
+    },
+    "calendar": {
+      "alerts_calendar": {
+        "name": "Упозорења за удобност"
+      }
     }
   },
   "services": {

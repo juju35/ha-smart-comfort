@@ -405,6 +405,11 @@
       "unsnooze": {
         "name": "Annuler les sourdines"
       }
+    },
+    "calendar": {
+      "alerts_calendar": {
+        "name": "Alertes confort"
+      }
     }
   },
   "services": {

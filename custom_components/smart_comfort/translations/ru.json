@@ -405,6 +405,11 @@
       "unsnooze": {
         "name": "Отменить откладывания"
       }
+    },
+    "calendar": {
+      "alerts_calendar": {
+        "name": "Оповещения о комфорте"
+      }
     }
   },
   "services": {

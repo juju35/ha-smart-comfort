@@ -405,6 +405,11 @@
       "unsnooze": {
         "name": "Anuluj wyciszenia"
       }
+    },
+    "calendar": {
+      "alerts_calendar": {
+        "name": "Alerty komfortu"
+      }
     }
   },
   "services": {

@@ -405,6 +405,11 @@
       "unsnooze": {
         "name": "Zrušit odložení"
       }
+    },
+    "calendar": {
+      "alerts_calendar": {
+        "name": "Upozornění na komfort"
+      }
     }
   },
   "services": {

@@ -405,6 +405,11 @@
       "unsnooze": {
         "name": "Cancelar pausas"
       }
+    },
+    "calendar": {
+      "alerts_calendar": {
+        "name": "Alertas de confort"
+      }
     }
   },
   "services": {

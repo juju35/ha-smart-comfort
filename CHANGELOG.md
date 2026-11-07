@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.9.0 - 2026-11-07
+
+### What's new
+- **Calendar of the alerts** (`calendar.smart_comfort_comfort_alerts`): every alert becomes an event, from when it started to when it ended, with the room as location, its kind in the summary (`🌡️ Bedroom: Too hot`) and its worst value in the description. The finished alerts are kept 90 days (at most 1000) across restarts; the ones going on are listed too, and the calendar is `on` while one lasts — usable as a trigger, and in the calendar view of Home Assistant to see when each room was too hot, too humid or noisy. Translated in every language of the integration.
+
 ## 1.8.2 - 2026-11-04
 
 ### Documentation

@@ -85,6 +85,28 @@ def duration(texts: dict[str, str], minutes: float) -> str:
     return format_text(texts, "duration_hours", hours=total // 60, minutes=total % 60)
 
 
+def problem_text(
+    texts: dict[str, str],
+    kind: str,
+    value: float | None,
+    details: dict[str, object],
+    names: dict[str, str] | None = None,
+) -> str:
+    """The problem of an episode in words ("27.4 °C, above 26 °C"): notification lines and calendar events."""
+    names = names or {}
+    digits = DIGITS.get(kind, 1)
+    openings = ", ".join(names.get(o, o) for o in details.get("openings", []) or [])  # type: ignore[union-attr]
+    return format_text(
+        texts,
+        f"line_{kind}",
+        value=number(texts, value, digits),
+        threshold=number(texts, details.get("threshold"), digits),
+        outdoor=number(texts, details.get("outdoor")),
+        temperature=number(texts, details.get("temperature")),
+        openings=openings,
+    )
+
+
 def render(
     digest: Digest, texts: dict[str, str], now: datetime, names: dict[str, str] | None = None
 ) -> tuple[str, str, str]:
@@ -94,18 +116,7 @@ def render(
     problems: list[str] = []
     for item in digest.items:
         ep = item.episode
-        details = ep.details
-        digits = DIGITS.get(ep.kind, 1)
-        openings = ", ".join(names.get(o, o) for o in details.get("openings", []))
-        problem = format_text(
-            texts,
-            f"line_{ep.kind}",
-            value=number(texts, ep.value, digits),
-            threshold=number(texts, details.get("threshold"), digits),
-            outdoor=number(texts, details.get("outdoor")),
-            temperature=number(texts, details.get("temperature")),
-            openings=openings,
-        )
+        problem = problem_text(texts, ep.kind, ep.value, ep.details, names)
         if item.reason == REASON_WORSE:
             problem += f" ({format_text(texts, 'worse')})"
         elif item.reason != REASON_NEW:

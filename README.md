@@ -40,6 +40,7 @@ Comfort automations built with a cooldown keep notifying every couple of hours a
 - **Outdoors**: outdoor places (garden, terrace…) with their temperature, air quality and noise sensors, plus sensors in no area (weather entity, a city air quality index such as Atmo France)
 - **Noise**: a sound level sensor per room (noisy room alert), and outdoor noise sensors: no suggestion to open the windows while it is noisy outside, and an alert to close them when they are open in the noise
 - **Outdoor air quality**: an index from 1 (good) to 6 (extremely poor) — European indexes (Atmo, EAQI) as is, US AQI by its bands, text states (good, poor…) — the worst sensor counts: no suggestion to open the windows while the air is poor, and an alert to close them when they are open then
+- **Calendar of the alerts**: every alert is an event of the *Comfort alerts* calendar, from when it started to when it ended, with its room, its kind and its worst value ("29.5 °C, above 26 °C"); kept 90 days, so the calendar view of Home Assistant shows when each room was too hot, too humid or noisy
 - **No re-notification after a restart**: episodes, snoozes and device targets are stored; nothing is sent during the startup grace period
 - **YAML or UI**: configure everything in YAML (imported at startup), in the **Smart Comfort panel** of the sidebar, or in the integration options — rooms, alerts, control
 - **Dashboard cards**, added by the integration: a **mini card** (the alerts of the moment and the switches, with a button that opens the full card: every alert, the rooms, the latest activity) and an **activity card**
@@ -452,6 +453,7 @@ The activity (the last 300 entries) is kept across restarts. It is also availabl
 | `sensor.smart_comfort_active_alerts` | Number of current problems. Attributes: `alerts` (room, kind, value, since, notified_at, snoozed, acknowledged, handled…), `snoozes`, `outdoor_temperature`, `outdoor_noise`, `outdoor_air_quality` |
 | `sensor.smart_comfort_<room>_comfort` | `ok` or the main problem of the room. Attributes: `room_name`, readings, open and ignored openings, alerts, device targets and manual overrides |
 | `sensor.smart_comfort_last_notification` | Time of the last notification. Attributes: `title`, `message`, `severity`, `alerts` |
+| `calendar.smart_comfort_comfort_alerts` | The alerts as events: one per alert, from its start to its end (the ones going on end a minute ahead, so the calendar is `on` while they last). Summary `🌡️ Bedroom: Too hot`, location the room, description its worst value. Finished alerts are kept 90 days (at most 1000) |
 | `switch.smart_comfort_notifications` | Send notifications (problems are still tracked when off) |
 | `switch.smart_comfort_device_control` | Control the devices |
 | `switch.smart_comfort_adaptive_lighting` | Adapt the brightness of the lights |

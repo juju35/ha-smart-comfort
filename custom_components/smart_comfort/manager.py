@@ -236,6 +236,11 @@ class SmartComfort:
         if entities := sorted(sensors | devices | selects):
             self._unsubs.append(async_track_state_change_event(self.hass, entities, self._state_changed))
 
+    @property
+    def texts(self) -> dict[str, str]:
+        """The notification texts (translations common.*), also used by the calendar."""
+        return self._texts
+
     async def _load_texts(self) -> None:
         prefix = f"component.{DOMAIN}.common."
         try:

@@ -405,6 +405,11 @@
       "unsnooze": {
         "name": "Poništi odlaganja"
       }
+    },
+    "calendar": {
+      "alerts_calendar": {
+        "name": "Upozorenja za udobnost"
+      }
     }
   },
   "services": {

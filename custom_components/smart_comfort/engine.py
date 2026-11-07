@@ -14,6 +14,8 @@ from typing import Any
 
 from .config import AlertSettings, Room, Settings
 from .const import (
+    HISTORY_DAYS,
+    HISTORY_SIZE,
     KIND_BAD_AIR_OUTSIDE,
     KIND_CLOSE_WINDOWS,
     KIND_CO2,
@@ -199,6 +201,8 @@ class Episode:
     notified_value: float | None = None
     acknowledged: bool = False
     snoozed_until: datetime | None = None
+    # The worst value seen during the episode (highest, or lowest for the kinds that go down).
+    peak: float | None = None
 
     @property
     def key(self) -> str:
@@ -216,6 +220,20 @@ class Episode:
             "notified_value": self.notified_value,
             "acknowledged": self.acknowledged,
             "snoozed_until": _iso(self.snoozed_until),
+            "peak": self.peak,
+        }
+
+    def finished(self, end: datetime) -> dict[str, Any]:
+        """The record kept in the history once the episode is over (the calendar's events)."""
+        return {
+            "room": self.room,
+            "kind": self.kind,
+            "start": _iso(self.since),
+            "end": _iso(end),
+            "value": self.value,
+            "peak": self.peak if self.peak is not None else self.value,
+            "details": self.details,
+            "notified": self.notified_at is not None,
         }
 
     @classmethod
@@ -231,6 +249,7 @@ class Episode:
             notified_value=data.get("notified_value"),
             acknowledged=bool(data.get("acknowledged")),
             snoozed_until=_dt(data.get("snoozed_until")),
+            peak=data.get("peak"),
         )
 
 
@@ -285,6 +304,8 @@ class Engine:
         self.shown = False
         # Episode keys of the last notification sent, for its Snooze / Got it buttons.
         self.last_keys: list[str] | None = None
+        # Finished episodes, oldest first (Episode.finished): what the calendar shows.
+        self.history: list[dict[str, Any]] = []
 
     # Settings and persistence.
 
@@ -316,6 +337,7 @@ class Engine:
             "snoozes": {k: v.isoformat() for k, v in self.snoozes.items()},
             "shown": self.shown,
             "last_keys": self.last_keys,
+            "history": self.history,
         }
 
     def restore(self, data: dict[str, Any]) -> None:
@@ -332,6 +354,10 @@ class Engine:
             except (TypeError, ValueError):
                 continue
         self.shown = bool(data.get("shown"))
+        if isinstance(history := data.get("history"), list):
+            self.history = [h for h in history if isinstance(h, dict) and h.get("start") and h.get("end")][
+                -HISTORY_SIZE:
+            ]
         if isinstance(last_keys := data.get("last_keys"), list):
             self.last_keys = [str(k) for k in last_keys]
         self.update_settings(self.settings)
@@ -354,17 +380,30 @@ class Engine:
                 if result.state is None:
                     # Unknown: the episode holds, unless its sensor is gone for good.
                     if ep is not None and reading.missing.intersection(SOURCES[kind]):
-                        del self.episodes[key]
+                        self._finish(self.episodes.pop(key), now)
                     continue
                 if not result.state:
-                    self.episodes.pop(key, None)
+                    if ep is not None:
+                        self._finish(self.episodes.pop(key), now)
                     continue
                 if ep is None:
                     ep = self.episodes[key] = Episode(room.id, kind, now)
                 ep.value, ep.details = result.value, result.details
+                if ep.peak is None or worsening(kind, ep.value, ep.peak) > 0:
+                    ep.peak = ep.value
                 if not ep.active and now - ep.since >= timedelta(minutes=s.delay):
                     ep.active = True
         self.snoozes = {k: v for k, v in self.snoozes.items() if v > now}
+        oldest = (now - timedelta(days=HISTORY_DAYS)).isoformat()
+        if self.history and self.history[0]["end"] < oldest:
+            self.history = [h for h in self.history if h["end"] >= oldest]
+
+    def _finish(self, ep: Episode, now: datetime) -> None:
+        """Keep an episode that was an alert (active) in the history; a pending one that never became one is dropped."""
+        if not ep.active:
+            return
+        self.history.append(ep.finished(now))
+        del self.history[:-HISTORY_SIZE]
 
     # Queries.
 

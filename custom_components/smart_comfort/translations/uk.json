@@ -405,6 +405,11 @@
       "unsnooze": {
         "name": "Скасувати відкладення"
       }
+    },
+    "calendar": {
+      "alerts_calendar": {
+        "name": "Сповіщення про комфорт"
+      }
     }
   },
   "services": {

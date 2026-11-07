@@ -405,6 +405,11 @@
       "unsnooze": {
         "name": "Cancelar os adiamentos"
       }
+    },
+    "calendar": {
+      "alerts_calendar": {
+        "name": "Alertas de conforto"
+      }
     }
   },
   "services": {
