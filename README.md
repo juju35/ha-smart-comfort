@@ -1,6 +1,6 @@
 # ha-smart-comfort
 
-[![HACS](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://github.com/hacs/integration)
+[![Marketplace](https://img.shields.io/badge/Marketplace-Custom-41BDF5.svg)](https://www.home-assistant.io/integrations/marketplace/)
 [![HACS Validation](https://github.com/juju35/ha-smart-comfort/actions/workflows/hacs.yml/badge.svg)](https://github.com/juju35/ha-smart-comfort/actions/workflows/hacs.yml)
 [![Validate](https://github.com/juju35/ha-smart-comfort/actions/workflows/validate.yml/badge.svg)](https://github.com/juju35/ha-smart-comfort/actions/workflows/validate.yml)
 [![Lint](https://github.com/juju35/ha-smart-comfort/actions/workflows/lint.yml/badge.svg)](https://github.com/juju35/ha-smart-comfort/actions/workflows/lint.yml)
@@ -14,7 +14,7 @@ Home Assistant integration for **fewer, smarter comfort alerts** — temperature
 
 Comfort automations built with a cooldown keep notifying every couple of hours as long as a room stays warm, flap around a threshold, and pile up one notification per sensor. Smart Comfort tracks each problem as an **episode**: notified once when it starts, again only if it gets worse (or after a reminder delay, if you want one), grouped with the others into a single notification that replaces the previous one, held during quiet hours, and cleared from the phones when everything is back to normal.
 
-[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=juju35&repository=ha-smart-comfort&category=integration)
+[![Open your Home Assistant instance and open a repository inside the Marketplace.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/marketplace_repository/?owner=juju35&repository=ha-smart-comfort&category=integration)
 
 ## Features
 
@@ -54,19 +54,19 @@ Comfort automations built with a cooldown keep notifying every couple of hours a
 
 ## Installation
 
-### Via HACS (recommended)
+### Via the Marketplace (recommended)
 
 Click the button below to add the repository directly:
 
-[![Add to HACS](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=juju35&repository=ha-smart-comfort&category=integration)
+[![Add to the Marketplace](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/marketplace_repository/?owner=juju35&repository=ha-smart-comfort&category=integration)
 
-Then click **Download** and restart Home Assistant.
+Then click **Install** and restart Home Assistant.
 
 Or manually:
 
-1. Open HACS → **⋮** (top right) → **Custom repositories**
+1. Open **Settings → Marketplace → Add from link** (top right; this needs a GitHub account connected)
 2. Add `https://github.com/juju35/ha-smart-comfort` — Type: **Integration**
-3. Search for **Smart Comfort** and click **Download**
+3. Open **Smart Comfort** and click **Install**
 4. Restart Home Assistant
 
 ### Manual
