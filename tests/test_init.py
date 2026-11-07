@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import asyncio
-from datetime import timedelta
+from datetime import UTC, timedelta
 
 import pytest
 from homeassistant.config_entries import ConfigEntryState
@@ -645,3 +645,63 @@ def test_air_level() -> None:
     assert level("Très mauvais") == 5.0
     assert level("unavailable") is None
     assert level("whatever") is None
+
+
+async def test_alerts_calendar(hass: HomeAssistant, notify, fan_calls, freezer) -> None:
+    """An alert is an event from when it started; once over it stays in the calendar, with its worst value."""
+    _states(hass, chambre=28.0)
+    entry = await _setup(hass)
+    await _evaluate(hass, entry)
+    calendar = next(s.entity_id for s in hass.states.async_all("calendar"))
+    state = hass.states.get(calendar)
+    assert state.state == "on"
+    assert "Chambre" in state.attributes["message"]
+    freezer.tick(timedelta(minutes=20))
+    _states(hass, chambre=29.5)
+    await _evaluate(hass, entry)
+    freezer.tick(timedelta(minutes=20))
+    _states(hass)
+    await _evaluate(hass, entry)
+    assert hass.states.get(calendar).state == "off"
+
+    history = entry.runtime_data.engine.history
+    assert [(h["room"], h["kind"], h["peak"]) for h in history][-1][1:] == ("too_hot", 29.5)
+    now = dt_util.utcnow()
+    response = await hass.services.async_call(
+        "calendar",
+        "get_events",
+        {"entity_id": calendar, "start_date_time": now - timedelta(hours=2), "end_date_time": now},
+        blocking=True,
+        return_response=True,
+    )
+    events = response[calendar]["events"]
+    chambre = [e for e in events if "Chambre" in e["summary"]]
+    assert len(chambre) == 1
+    assert "Too hot" in chambre[0]["summary"]
+    # The worst value of the episode, not the last one.
+    assert "29.5 °C" in chambre[0]["description"]
+    assert chambre[0]["location"] == "Chambre"
+
+    # Kept across a reload.
+    await hass.config_entries.async_reload(entry.entry_id)
+    await hass.async_block_till_done()
+    assert len(entry.runtime_data.engine.history) == len(history)
+
+
+def test_history_kept_90_days_and_pending_episodes_dropped() -> None:
+    from datetime import datetime
+
+    from custom_components.smart_comfort.engine import Engine, Episode
+
+    engine = Engine(build_settings(OPTIONS))
+    now = datetime(2026, 11, 7, 12, tzinfo=UTC)
+    engine._finish(Episode("x", "too_hot", now - timedelta(minutes=5)), now)
+    assert engine.history == []
+    active = Episode("x", "too_hot", now - timedelta(days=100), value=27.0, active=True)
+    engine._finish(active, now - timedelta(days=95))
+    engine._finish(Episode("x", "too_hot", now - timedelta(hours=2), value=27.0, active=True), now)
+    engine.evaluate(now, {}, None)
+    assert len(engine.history) == 1
+    restored = Engine(build_settings(OPTIONS))
+    restored.restore(engine.as_dict())
+    assert restored.history == engine.history

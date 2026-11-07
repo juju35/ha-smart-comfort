@@ -405,6 +405,11 @@
       "unsnooze": {
         "name": "Avbryt snooze"
       }
+    },
+    "calendar": {
+      "alerts_calendar": {
+        "name": "Komfortvarningar"
+      }
     }
   },
   "services": {

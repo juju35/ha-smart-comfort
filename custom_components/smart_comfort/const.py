@@ -387,3 +387,6 @@ SIGNAL_UPDATE: Final = f"{DOMAIN}_update"
 # New activity entries (a list), for the panel and the activity card.
 SIGNAL_ACTIVITY: Final = f"{DOMAIN}_activity"
 ACTIVITY_SIZE: Final = 300
+# Finished episodes kept for the calendar: at most this many, none older than HISTORY_DAYS.
+HISTORY_SIZE: Final = 1000
+HISTORY_DAYS: Final = 90

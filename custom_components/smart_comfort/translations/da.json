@@ -405,6 +405,11 @@
       "unsnooze": {
         "name": "Annuller udsættelser"
       }
+    },
+    "calendar": {
+      "alerts_calendar": {
+        "name": "Komfortadvarsler"
+      }
     }
   },
   "services": {

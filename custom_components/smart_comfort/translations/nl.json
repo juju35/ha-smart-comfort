@@ -405,6 +405,11 @@
       "unsnooze": {
         "name": "Sluimeren annuleren"
       }
+    },
+    "calendar": {
+      "alerts_calendar": {
+        "name": "Comfortmeldingen"
+      }
     }
   },
   "services": {

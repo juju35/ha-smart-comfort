@@ -116,6 +116,8 @@ async def test_not_admin(hass: HomeAssistant, hass_ws_client, hass_read_only_acc
 async def test_panel_registered(hass: HomeAssistant) -> None:
     # The frontend itself isn't needed (its package may not be installed): only its panel registry.
     hass.config.components.add("frontend")
+    # The calendar platform depends on http: marked loaded, so that its setup keeps this stand-in.
+    hass.config.components.add("http")
     hass.http = Mock(async_register_static_paths=AsyncMock())
     hass.data["frontend_extra_module_url"] = extra = Mock()
     await _setup(hass)
@@ -174,6 +176,8 @@ async def test_card_dashboard_resource(hass: HomeAssistant) -> None:
     from types import SimpleNamespace
 
     hass.config.components.add("frontend")
+    # The calendar platform depends on http: marked loaded, so that its setup keeps this stand-in.
+    hass.config.components.add("http")
     hass.http = Mock(async_register_static_paths=AsyncMock())
     hass.data["frontend_extra_module_url"] = extra = Mock()
     card = "/smart_comfort_static/smart-comfort-activity-card.js"

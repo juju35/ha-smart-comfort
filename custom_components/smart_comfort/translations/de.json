@@ -405,6 +405,11 @@
       "unsnooze": {
         "name": "Stummschaltungen aufheben"
       }
+    },
+    "calendar": {
+      "alerts_calendar": {
+        "name": "Komfortwarnungen"
+      }
     }
   },
   "services": {

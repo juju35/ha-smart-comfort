@@ -36,7 +36,7 @@ from .manager import SmartComfort
 from .panel import async_register_panel, async_remove_card, async_remove_panel
 from .schema import CONFIG_SCHEMA as _CONFIG_SCHEMA
 
-PLATFORMS = [Platform.BUTTON, Platform.SENSOR, Platform.SWITCH]
+PLATFORMS = [Platform.BUTTON, Platform.CALENDAR, Platform.SENSOR, Platform.SWITCH]
 CONFIG_SCHEMA = _CONFIG_SCHEMA
 
 type SmartComfortConfigEntry = ConfigEntry[SmartComfort]

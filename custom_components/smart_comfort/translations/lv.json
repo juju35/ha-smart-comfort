@@ -405,6 +405,11 @@
       "unsnooze": {
         "name": "Atcelt atlikšanas"
       }
+    },
+    "calendar": {
+      "alerts_calendar": {
+        "name": "Komforta brīdinājumi"
+      }
     }
   },
   "services": {

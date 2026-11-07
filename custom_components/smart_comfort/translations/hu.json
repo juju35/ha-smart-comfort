@@ -405,6 +405,11 @@
       "unsnooze": {
         "name": "Szundik törlése"
       }
+    },
+    "calendar": {
+      "alerts_calendar": {
+        "name": "Komfortriasztások"
+      }
     }
   },
   "services": {

@@ -405,6 +405,11 @@
       "unsnooze": {
         "name": "Prekliči odloge"
       }
+    },
+    "calendar": {
+      "alerts_calendar": {
+        "name": "Opozorila udobja"
+      }
     }
   },
   "services": {

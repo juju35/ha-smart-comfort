@@ -405,6 +405,11 @@
       "unsnooze": {
         "name": "Cancel snoozes"
       }
+    },
+    "calendar": {
+      "alerts_calendar": {
+        "name": "Comfort alerts"
+      }
     }
   },
   "services": {

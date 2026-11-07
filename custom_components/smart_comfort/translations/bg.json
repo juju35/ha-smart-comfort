@@ -405,6 +405,11 @@
       "unsnooze": {
         "name": "Отмяна на отлаганията"
       }
+    },
+    "calendar": {
+      "alerts_calendar": {
+        "name": "Сигнали за комфорт"
+      }
     }
   },
   "services": {

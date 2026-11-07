@@ -405,6 +405,11 @@
       "unsnooze": {
         "name": "Anulează amânările"
       }
+    },
+    "calendar": {
+      "alerts_calendar": {
+        "name": "Alerte de confort"
+      }
     }
   },
   "services": {
