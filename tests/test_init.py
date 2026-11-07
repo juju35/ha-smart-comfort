@@ -705,3 +705,103 @@ def test_history_kept_90_days_and_pending_episodes_dropped() -> None:
     restored = Engine(build_settings(OPTIONS))
     restored.restore(engine.as_dict())
     assert restored.history == engine.history
+
+
+async def test_commands_of_different_devices_run_together_lights_first(hass: HomeAssistant, notify, fan_calls) -> None:
+    from custom_components.smart_comfort.control import Command
+
+    _states(hass)
+    entry = await _setup(hass)
+    m = entry.runtime_data
+    log: list[tuple[str, str]] = []
+    running: set[str] = set()
+    seen_together: list[int] = []
+
+    async def command(cmd: Command, now) -> bool:
+        log.append(("start", cmd.entity_id))
+        running.add(cmd.entity_id)
+        seen_together.append(len(running))
+        await asyncio.sleep(0.01)
+        running.discard(cmd.entity_id)
+        log.append(("end", cmd.entity_id))
+        return cmd.entity_id != "fan.b"
+
+    m._command = command
+    commands = [
+        Command("fan.a", "fan", "turn_on", device="fan.a"),
+        Command("light.a", "light", "turn_on", device="light.a"),
+        Command("fan.a", "fan", "set_percentage", {"percentage": 50}, device="fan.a"),
+        Command("fan.b", "fan", "turn_on", device="fan.b"),
+        Command("light.b", "light", "turn_on", device="light.b"),
+        Command("select.a_mode", "select", "select_option", {"option": "auto"}, device="fan.a"),
+    ]
+    sent = await m._run(commands, dt_util.utcnow())
+    # Results in the order of the commands.
+    assert [(c, ok) for c, ok in sent] == [(c, c.entity_id != "fan.b") for c in commands]
+    # The lights first, both at once.
+    assert log[:2] == [("start", "light.a"), ("start", "light.b")]
+    last_light = max(i for i, (_, e) in enumerate(log) if e.startswith("light."))
+    assert all(e.startswith("light.") for _, e in log[: last_light + 1])
+    # Then the two fans at once, the commands of one device in order.
+    assert max(seen_together) == 2
+    fan_a = [e for kind, e in log if kind == "start" and e in ("fan.a", "select.a_mode")]
+    assert fan_a == ["fan.a", "fan.a", "select.a_mode"]
+    assert log.index(("start", "fan.b")) < log.index(("end", "fan.a"))
+
+
+async def test_notification_sent_after_the_evaluation_lock(hass: HomeAssistant, fan_calls) -> None:
+    calls: list = []
+    release = asyncio.Event()
+
+    async def phone(call) -> None:
+        calls.append(call)
+        await release.wait()
+
+    _states(hass)
+    entry = await _setup(hass)
+    m = entry.runtime_data
+    hass.services.async_register("notify", "phone", phone)
+    hass.states.async_set("sensor.t_chambre", "28.0")
+    evaluation = hass.async_create_task(m.async_evaluate())
+    while not calls:
+        await asyncio.sleep(0)
+    # The notifier is slow: the lock is free, another evaluation goes through without sending it again.
+    assert not m._lock.locked()
+    await asyncio.wait_for(m.async_evaluate(), 1)
+    assert len(calls) == 1
+    assert m.engine.episodes["chambre|too_hot"].notified_at is None
+    release.set()
+    await evaluation
+    await hass.async_block_till_done()
+    assert m.engine.episodes["chambre|too_hot"].notified_at is not None
+    assert m._deliveries == 0
+    # Sent once, so nothing more at the next evaluation.
+    await _evaluate(hass, entry)
+    assert len(calls) == 1
+
+
+async def test_stop_waits_for_the_notification(hass: HomeAssistant, fan_calls) -> None:
+    calls: list = []
+    release = asyncio.Event()
+
+    async def phone(call) -> None:
+        calls.append(call)
+        await release.wait()
+
+    _states(hass)
+    entry = await _setup(hass)
+    m = entry.runtime_data
+    hass.services.async_register("notify", "phone", phone)
+    hass.states.async_set("sensor.t_chambre", "28.0")
+    evaluation = hass.async_create_task(m.async_evaluate())
+    while not calls:
+        await asyncio.sleep(0)
+    stop = hass.async_create_task(m.async_stop())
+    await asyncio.sleep(0.01)
+    assert not stop.done()
+    release.set()
+    await evaluation
+    await stop
+    # The state handed to the next instance knows the notification went out.
+    episodes = hass.data[DOMAIN]["state"]["engine"]["episodes"]
+    assert [e["notified_at"] is not None for e in episodes if e["room"] == "chambre"] == [True]

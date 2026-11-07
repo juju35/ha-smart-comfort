@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.11.0 - 2026-11-07
+
+### What's new
+- Faster device control: the commands of different devices are sent at the same time (the lights first), so a slow or unreachable device no longer delays the others.
+- Notifications are sent after the evaluation instead of during it, so a slow notifier no longer holds the next evaluations and device commands.
+
 ## 1.10.0 - 2026-11-07
 
 ### What's new
