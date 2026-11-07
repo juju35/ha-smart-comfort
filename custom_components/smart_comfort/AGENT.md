@@ -22,6 +22,7 @@ custom_components/smart_comfort/
 ├── switch.py        # notifications, control (restored)
 ├── button.py        # notify_now, unsnooze
 ├── status.py        # episode_info / room_info / status: shared by the sensors and the panel
+├── diagnostics.py   # async_get_config_entry_diagnostics: entry data/options + status(), notify and url redacted
 ├── websocket.py     # smart_comfort/config, smart_comfort/config/save (OPTIONS + unique room names), smart_comfort/subscribe (SIGNAL_UPDATE)
 ├── discovery.py     # discover_rooms -> Found (areas -> rooms, outdoor areas -> outdoor places, outdoor sensors in no area), merge (keeps what is set, matches on area then name; place sensors leave the top-level lists)
 ├── panel.py         # Static path /smart_comfort_static (once per run) + custom panel "smart-comfort" (admin), removed with the entry; activity and mini cards = dashboard resources (storage mode, once HA runs), else extra modules (YAML resources), resources removed with the entry
