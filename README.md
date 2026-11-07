@@ -484,6 +484,10 @@ data:
 - `smart_comfort_notified`: `at`, `title`, `message`, `severity`, `alerts`
 - `smart_comfort_control`: `entity_id`, `action`, `data`, `target`, for each command sent to a device
 
+### Diagnostics
+
+**Settings → Devices & services → Smart Comfort → ⋮ → Download diagnostics** gives the options and the current state (alerts, snoozes, rooms with their readings and device targets, outdoor values, switches, last notification), to attach to an issue. The notifiers (`notify`) and the notification link (`url`) are redacted.
+
 ## How it works
 
 Every 30 seconds, and a few seconds after a watched sensor or device changes, Smart Comfort reads the rooms, decides the device targets and sends their commands, updates the episodes, then decides whether a notification is due:

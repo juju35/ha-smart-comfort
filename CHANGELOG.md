@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.10.0 - 2026-11-07
+
+### What's new
+- Diagnostics: **Download diagnostics** on the integration gives the options and the current state (alerts, rooms, device targets, switches), with the notifiers and the notification link redacted.
+
 ## 1.9.0 - 2026-11-07
 
 ### What's new
