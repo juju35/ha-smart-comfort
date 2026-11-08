@@ -16,6 +16,7 @@ from homeassistant.helpers.event import async_call_later, async_track_state_chan
 from homeassistant.helpers.storage import Store
 from homeassistant.helpers.translation import async_get_translations
 from homeassistant.util import dt as dt_util
+from homeassistant.util.async_ import create_eager_task
 from homeassistant.util.unit_conversion import TemperatureConverter
 
 from .activity import CLEARED, MANUAL, NOTIFIED, RESET, Activity
@@ -178,6 +179,10 @@ class SmartComfort:
         self._presence_checks: set[CALLBACK_TYPE] = set()
         self._debounce: CALLBACK_TYPE | None = None
         self._lock = asyncio.Lock()
+        # Notifications go out after the evaluation lock, one at a time; while one is on its way,
+        # the evaluations don't look for another one (it would be the same until marked sent).
+        self._notify_lock = asyncio.Lock()
+        self._deliveries = 0
         self._contexts: deque[str] = deque(maxlen=200)
         self._commanded: dict[str, datetime] = {}
         self._stopped = False
@@ -219,7 +224,7 @@ class SmartComfort:
         if self._debounce:
             self._debounce()
             self._debounce = None
-        async with self._lock:
+        async with self._lock, self._notify_lock:
             data = self._data()
             self.hass.data.setdefault(DOMAIN, {})["state"] = data
             await self.store.async_save(data)
@@ -621,20 +626,44 @@ class SmartComfort:
                 readings[room.id] = reading
             self.engine.evaluate(now, readings, self.outdoor())
             self.handled = handled
-            sent = [(c, await self._command(c, now)) for c in commands]
+            sent = await self._run(commands, now)
             failed = {c.device for c, ok in sent if not ok}
             if sent:
                 async_dispatcher_send(self.hass, SIGNAL_ACTIVITY, self.activity.commands(now, sent))
             for device in {c.device for c in commands if c.device} - failed:
                 self.controller.command_succeeded(device)
-            result = self.engine.step(now, self.gates(now), handled)
-            if isinstance(result, Digest):
-                await self._send(result, now)
-            elif isinstance(result, Clear):
-                await self._clear()
+            result = None if self._deliveries else self.engine.step(now, self.gates(now), handled)
+            if result is not None:
+                self._deliveries += 1
             self.save()
+        if result is not None:
+            await self._deliver(result, now)
         if not self._stopped:
             self._update_listeners()
+
+    async def _run(self, commands: list[Command], now: datetime) -> list[tuple[Command, bool]]:
+        """Run the commands, in their order: the lights first, then the other devices.
+
+        The commands of different devices run at the same time, so a slow device doesn't hold the
+        others; those of one device stay in order (turn on, then set its speed).
+        """
+        groups: dict[str, list[Command]] = {}
+        for cmd in commands:
+            groups.setdefault(cmd.device or cmd.entity_id, []).append(cmd)
+        done: dict[int, bool] = {}
+
+        async def run(group: list[Command]) -> None:
+            for cmd in group:
+                done[id(cmd)] = await self._command(cmd, now)
+
+        lights: list[list[Command]] = []
+        others: list[list[Command]] = []
+        for group in groups.values():
+            (lights if any(c.domain == "light" for c in group) else others).append(group)
+        for batch in (lights, others):
+            # Eager: a command answered at once doesn't wait for the event loop.
+            await asyncio.gather(*(create_eager_task(run(g)) for g in batch))
+        return [(cmd, done[id(cmd)]) for cmd in commands]
 
     async def _command(self, cmd: Command, now: datetime) -> bool:
         context = Context()
@@ -720,6 +749,21 @@ class SmartComfort:
                 sent = True
         return sent
 
+    async def _deliver(self, result: Digest | Clear, now: datetime) -> bool:
+        """Send a digest or clear the notification, out of the evaluation lock (counted in `_deliveries`)."""
+        try:
+            async with self._notify_lock:
+                if self._stopped:
+                    return False  # Not marked sent: the next instance sends it.
+                if isinstance(result, Clear):
+                    await self._clear()
+                    return True
+                sent = await self._send(result, now)
+                self.save()
+                return sent
+        finally:
+            self._deliveries -= 1
+
     async def _send(self, digest: Digest, now: datetime) -> bool:
         """Send the digest; its problems are marked notified only when at least one notifier got it."""
         names = {}
@@ -794,8 +838,8 @@ class SmartComfort:
             digest = self.engine.summary(now, self.handled)
             if digest is None:
                 return False
-            sent = await self._send(digest, now)
-            self.save()
+            self._deliveries += 1
+        sent = await self._deliver(digest, now)
         self._update_listeners()
         return sent
 
