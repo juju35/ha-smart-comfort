@@ -14,6 +14,8 @@ from typing import Any
 
 from .config import AlertSettings, Room, Settings
 from .const import (
+    CLEAR_RETRIES,
+    CLEAR_RETRY,
     HISTORY_DAYS,
     HISTORY_SIZE,
     KIND_BAD_AIR_OUTSIDE,
@@ -302,6 +304,9 @@ class Engine:
         self.batch_started: datetime | None = None
         # Notified problems are on screen: a Clear is due once none is left.
         self.shown = False
+        # A clear no phone got: tried again from `clear_after`, after `clear_failures` failures in a row.
+        self.clear_after: datetime | None = None
+        self.clear_failures = 0
         # Episode keys of the last notification sent, for its Snooze / Got it buttons.
         self.last_keys: list[str] | None = None
         # Finished episodes, oldest first (Episode.finished): what the calendar shows.
@@ -452,10 +457,16 @@ class Engine:
     def step(self, now: datetime, gates: Gates, handled: set[str]) -> Digest | Clear | None:
         """What to send now, if anything. The caller sends it, then marks a digest with `sent()`."""
         visible = self.visible(now, handled)
-        if self.shown and not any(ep.notified_at for ep, _ in visible):
+        if (
+            self.shown
+            and not any(ep.notified_at for ep, _ in visible)
+            and (self.clear_after is None or now >= self.clear_after)
+        ):
             self.shown = False
             self.batch_started = None
+            self.clear_after = None
             return Clear() if self.settings.clear_when_resolved else None
+        # A clear waiting for its retry doesn't hold a new digest back (it replaces the notification).
 
         due: dict[str, str] = {}
         for ep, room in visible:
@@ -491,9 +502,25 @@ class Engine:
         """The digest went out: its episodes are notified. Not called when it could not be sent."""
         self.batch_started = None
         self.shown = True
+        self.cleared()
         for item in digest.items:
             item.episode.notified_at, item.episode.notified_value = now, item.episode.value
         self.last_keys = digest.keys
+
+    def clear_failed(self, now: datetime) -> bool:
+        """The clear got to no phone: tried again later, the delay doubled each time; False once given up."""
+        self.clear_failures += 1
+        if self.clear_failures > CLEAR_RETRIES:
+            self.cleared()
+            return False
+        self.shown = True
+        self.clear_after = now + timedelta(minutes=CLEAR_RETRY * 2 ** (self.clear_failures - 1))
+        return True
+
+    def cleared(self) -> None:
+        """Nothing left to clear (cleared, given up, or replaced by a new notification)."""
+        self.clear_failures = 0
+        self.clear_after = None
 
     def summary(self, now: datetime, handled: set[str]) -> Digest | None:
         """Every visible problem, for "notify now": ignores the gates and the digest window."""

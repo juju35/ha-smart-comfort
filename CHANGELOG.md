@@ -4,6 +4,7 @@
 
 ### Fixes
 - A notification clear that no phone received, or that was waiting while the integration stopped, is now sent again at the next evaluation instead of being lost.
+- A clear that keeps failing is tried again after 1, 2, 4… minutes and given up after about an hour, with one warning in the log, and it no longer holds back the notification of a new alert.
 - Less work in the background: the state is written to storage only when it changed, and the calendar no longer reads its whole history again at every update.
 
 ## 1.11.0 - 2026-11-07

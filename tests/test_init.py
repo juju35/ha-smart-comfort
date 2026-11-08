@@ -807,8 +807,8 @@ async def test_stop_waits_for_the_notification(hass: HomeAssistant, fan_calls) -
     assert [e["notified_at"] is not None for e in episodes if e["room"] == "chambre"] == [True]
 
 
-async def test_failed_clear_is_tried_again(hass: HomeAssistant, notify, fan_calls) -> None:
-    """A clear that no phone got leaves the notification shown, so the next evaluation clears it again."""
+async def test_failed_clear_is_tried_again(hass: HomeAssistant, notify, fan_calls, freezer, caplog) -> None:
+    """A clear no phone got is tried again later (not at every evaluation), reported once."""
     calls: list = []
     fail = False
 
@@ -828,10 +828,22 @@ async def test_failed_clear_is_tried_again(hass: HomeAssistant, notify, fan_call
     await _evaluate(hass, entry)
     assert calls[-1].data["message"] == "clear_notification"
     assert m.engine.shown
-    fail = False
+    tried = len(calls)
+    # Not at the next evaluation: after a minute.
     await _evaluate(hass, entry)
-    assert [c.data["message"] for c in calls[-2:]] == ["clear_notification"] * 2
+    assert len(calls) == tried
+    freezer.tick(timedelta(minutes=1))
+    await _evaluate(hass, entry)
+    assert len(calls) == tried + 1
+    warnings = [r.getMessage() for r in caplog.records if r.levelname == "WARNING"]
+    assert sum("Could not clear the notification" in w for w in warnings) == 1
+    assert sum("Notification with notify.mobile_app_phone failed" in w for w in warnings) == 1
+    fail = False
+    freezer.tick(timedelta(minutes=2))
+    await _evaluate(hass, entry)
+    assert calls[-1].data["message"] == "clear_notification"
     assert not m.engine.shown
+    assert m.engine.clear_failures == 0
     sent = len(calls)
     await _evaluate(hass, entry)
     assert len(calls) == sent

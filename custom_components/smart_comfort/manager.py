@@ -746,8 +746,11 @@ class SmartComfort:
     def _text(self, key: str, **values: Any) -> str:
         return format_text(self._texts, key, **values)
 
-    async def _notify(self, payload: dict[str, Any], services: list[str] | None = None) -> bool:
-        """Send with every notifier; False when all of them failed (True without any notifier)."""
+    async def _notify(self, payload: dict[str, Any], services: list[str] | None = None, quiet: bool = False) -> bool:
+        """Send with every notifier; False when all of them failed (True without any notifier).
+
+        `quiet`: failures logged at debug level (a retry, already reported once).
+        """
         services = list(self.settings.notify) if services is None else services
         sent = not services
         for service in services:
@@ -756,7 +759,7 @@ class SmartComfort:
                 async with asyncio.timeout(NOTIFY_TIMEOUT):
                     await self.hass.services.async_call(domain, name, payload, blocking=True)
             except Exception as err:  # noqa: BLE001 - one failing notifier doesn't stop the others
-                _LOGGER.warning("Notification with %s failed: %s", service, err)
+                (_LOGGER.debug if quiet else _LOGGER.warning)("Notification with %s failed: %s", service, err)
             else:
                 sent = True
         return sent
@@ -766,11 +769,16 @@ class SmartComfort:
         try:
             async with self._notify_lock:
                 if isinstance(result, Clear):
-                    if self._stopped or not await self._clear():
-                        # Still on the phones: cleared again at the next evaluation (of this or the next instance).
-                        self.engine.shown = True
+                    if self._stopped:
+                        self.engine.shown = True  # Still on the phones: the next instance clears it.
                         return False
-                    return True
+                    if await self._clear(quiet=self.engine.clear_failures > 0):
+                        self.engine.cleared()
+                        return True
+                    if not self.engine.clear_failed(now):
+                        _LOGGER.warning("Could not clear the notification, giving up")
+                    self.save()
+                    return False
                 if self._stopped:
                     return False  # Not marked sent: the next instance sends it.
                 sent = await self._send(result, now)
@@ -802,13 +810,14 @@ class SmartComfort:
         self._log(now, NOTIFIED, title=title, message=message, severity=digest.severity)
         return True
 
-    async def _clear(self) -> bool:
-        """Clear the notification; False when no Companion app notifier could do it."""
+    async def _clear(self, quiet: bool = False) -> bool:
+        """Clear the notification; False when no Companion app notifier could do it (`quiet`: a retry)."""
         # Only the Companion app understands it: other notifiers would show the text "clear_notification".
         mobile = [s for s in self.settings.notify if self._companion(s)]
         payload = {"message": "clear_notification", "data": {"tag": self.settings.tag}}
-        if mobile and not await self._notify(payload, mobile):
-            _LOGGER.warning("Could not clear the notification, trying again at the next evaluation")
+        if mobile and not await self._notify(payload, mobile, quiet):
+            if not quiet:
+                _LOGGER.warning("Could not clear the notification, trying again later")
             return False
         self._log(dt_util.utcnow(), CLEARED)
         return True
