@@ -103,13 +103,13 @@
           "escalation": "Passo di escalation"
         },
         "data_description": {
-          "threshold": "Troppo caldo/freddo, CO₂, umidità: il valore. Aprire/chiudere le finestre: la differenza interno/esterno.",
+          "threshold": "Troppo caldo/freddo, CO₂, umidità: il valore. Aprire/chiudere le finestre: la differenza interno/esterno. Aria inquinata: PM2.5 (µg/m³).",
           "min_indoor": "Suggerisci di aprire solo quando la stanza è almeno a questa temperatura.",
           "min_outdoor": "Solo quando fuori fa almeno questo caldo.",
           "max_outdoor": "Solo quando fuori fa questo freddo o di più.",
           "max_outdoor_noise": "Non suggerito quando il rumore esterno supera questo valore (serve un sensore di rumore esterno).",
           "max_outdoor_air": "Non suggerito quando la qualità dell'aria esterna è peggiore di questo livello, da 1 (buona) a 6 (estremamente scadente).",
-          "pm10_threshold": "Aria inquinata: anche quando il PM10 supera questo valore (µg/m³); la soglia sopra è quella del PM2.5.",
+          "pm10_threshold": "Aria inquinata: anche quando il PM10 supera questo valore (µg/m³).",
           "aqi_threshold": "Aria inquinata: anche quando l'indice di qualità dell'aria della stanza è peggiore di questo livello, da 1 (buono) a 6 (estremamente scadente). Gli indici HomeKit vanno da 1 a 5; un AQI statunitense conta per le sue fasce (sopra 150: livello 4).",
           "hysteresis": "Il problema finisce solo quando il valore è tornato oltre la soglia di questa quantità: niente oscillazioni.",
           "delay": "Minuti in cui la condizione deve persistere prima di diventare un problema.",

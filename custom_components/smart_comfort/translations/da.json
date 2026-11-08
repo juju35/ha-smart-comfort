@@ -103,13 +103,13 @@
           "escalation": "Eskaleringstrin"
         },
         "data_description": {
-          "threshold": "For varmt/koldt, CO₂, luftfugtighed: værdien. Åbn/luk vinduerne: forskellen mellem inde og ude.",
+          "threshold": "For varmt/koldt, CO₂, luftfugtighed: værdien. Åbn/luk vinduerne: forskellen mellem inde og ude. Forurenet luft: PM2.5 (µg/m³).",
           "min_indoor": "Foreslå kun at åbne, når rummet er mindst så varmt.",
           "min_outdoor": "Kun når det er mindst så varmt udenfor.",
           "max_outdoor": "Kun når det er så koldt eller koldere udenfor.",
           "max_outdoor_noise": "Foreslås ikke, mens den udendørs støj er over dette (kræver en udendørs støjsensor).",
           "max_outdoor_air": "Foreslås ikke, mens den udendørs luftkvalitet er dårligere end dette niveau, fra 1 (god) til 6 (ekstremt dårlig).",
-          "pm10_threshold": "Forurenet luft: også når PM10 er over dette (µg/m³); grænsen ovenfor er den for PM2.5.",
+          "pm10_threshold": "Forurenet luft: også når PM10 er over dette (µg/m³).",
           "aqi_threshold": "Forurenet luft: også når rummets luftkvalitetsindeks er dårligere end dette niveau, fra 1 (god) til 6 (ekstremt dårlig). HomeKit-indeks går fra 1 til 5; et amerikansk AQI tæller efter sine intervaller (over 150: niveau 4).",
           "hysteresis": "Problemet slutter først, når værdien er kommet så meget tilbage forbi grænsen: ingen flimren.",
           "delay": "Minutter betingelsen skal vare, før det er et problem.",

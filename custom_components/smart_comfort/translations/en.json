@@ -103,13 +103,13 @@
           "escalation": "Escalation step"
         },
         "data_description": {
-          "threshold": "Too hot/cold, CO₂, humidity: the value. Open/close the windows: the indoor/outdoor difference.",
+          "threshold": "Too hot/cold, CO₂, humidity: the value. Open/close the windows: the indoor/outdoor difference. Polluted air: PM2.5 (µg/m³).",
           "min_indoor": "Suggest opening only when the room is at least this warm.",
           "min_outdoor": "Only when it is at least this hot outside.",
           "max_outdoor": "Only when it is this cold or colder outside.",
           "max_outdoor_noise": "Not suggested while the outdoor noise is above this (needs an outdoor noise sensor).",
           "max_outdoor_air": "Not suggested while the outdoor air quality is worse than this level, from 1 (good) to 6 (extremely poor).",
-          "pm10_threshold": "Polluted air: also when PM10 is above this (µg/m³); the threshold above is the PM2.5 one.",
+          "pm10_threshold": "Polluted air: also when PM10 is above this (µg/m³).",
           "aqi_threshold": "Polluted air: also when the room's air quality index is worse than this level, from 1 (good) to 6 (extremely poor). HomeKit indexes go from 1 to 5; a US AQI counts by its bands (above 150: level 4).",
           "hysteresis": "The problem ends only once the value is back past the threshold by this much: no flapping.",
           "delay": "Minutes the condition must hold before it is a problem.",

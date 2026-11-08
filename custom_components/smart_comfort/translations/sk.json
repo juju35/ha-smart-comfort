@@ -103,13 +103,13 @@
           "escalation": "Krok eskalácie"
         },
         "data_description": {
-          "threshold": "Príliš teplo/chladno, CO₂, vlhkosť: hodnota. Otvoriť/zatvoriť okná: rozdiel medzi vnútrom a vonkajškom.",
+          "threshold": "Príliš teplo/chladno, CO₂, vlhkosť: hodnota. Otvoriť/zatvoriť okná: rozdiel medzi vnútrom a vonkajškom. Znečistený vzduch: PM2,5 (µg/m³).",
           "min_indoor": "Navrhnúť otvorenie, len keď je v miestnosti aspoň takto teplo.",
           "min_outdoor": "Len keď je vonku aspoň takto teplo.",
           "max_outdoor": "Len keď je vonku takto chladno alebo chladnejšie.",
           "max_outdoor_noise": "Nenavrhuje sa, kým je vonkajší hluk nad touto hodnotou (vyžaduje vonkajší senzor hluku).",
           "max_outdoor_air": "Nenavrhuje sa, kým je kvalita vonkajšieho vzduchu horšia než táto úroveň, od 1 (dobrá) po 6 (mimoriadne zlá).",
-          "pm10_threshold": "Znečistený vzduch: aj keď je PM10 nad touto hodnotou (µg/m³); prah vyššie je pre PM2,5.",
+          "pm10_threshold": "Znečistený vzduch: aj keď je PM10 nad touto hodnotou (µg/m³).",
           "aqi_threshold": "Znečistený vzduch: aj keď je index kvality vzduchu v miestnosti horší ako táto úroveň, od 1 (dobrá) po 6 (mimoriadne zlá). Indexy HomeKit idú od 1 do 5; americký AQI sa počíta podľa svojich pásiem (nad 150: úroveň 4).",
           "hysteresis": "Problém skončí, až keď sa hodnota vráti za prah o toľko: žiadne kmitanie.",
           "delay": "Minúty, počas ktorých musí podmienka trvať, kým sa z nej stane problém.",

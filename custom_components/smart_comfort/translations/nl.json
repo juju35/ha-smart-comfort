@@ -103,13 +103,13 @@
           "escalation": "Escalatiestap"
         },
         "data_description": {
-          "threshold": "Te warm/koud, CO₂, vochtigheid: de waarde. Ramen openen/sluiten: het verschil binnen/buiten.",
+          "threshold": "Te warm/koud, CO₂, vochtigheid: de waarde. Ramen openen/sluiten: het verschil binnen/buiten. Vervuilde lucht: PM2.5 (µg/m³).",
           "min_indoor": "Stel alleen openen voor als de kamer minstens zo warm is.",
           "min_outdoor": "Alleen als het buiten minstens zo warm is.",
           "max_outdoor": "Alleen als het buiten zo koud of kouder is.",
           "max_outdoor_noise": "Niet voorgesteld als het buitengeluid hoger is dan dit (vereist een buitengeluidssensor).",
           "max_outdoor_air": "Niet voorgesteld als de buitenluchtkwaliteit slechter is dan dit niveau, van 1 (goed) tot 6 (extreem slecht).",
-          "pm10_threshold": "Vervuilde lucht: ook wanneer PM10 hierboven ligt (µg/m³); de drempel hierboven is die van PM2.5.",
+          "pm10_threshold": "Vervuilde lucht: ook wanneer PM10 hierboven ligt (µg/m³).",
           "aqi_threshold": "Vervuilde lucht: ook wanneer de luchtkwaliteitsindex van de ruimte slechter is dan dit niveau, van 1 (goed) tot 6 (extreem slecht). HomeKit-indexen gaan van 1 tot 5; een Amerikaanse AQI telt volgens zijn klassen (boven 150: niveau 4).",
           "hysteresis": "Het probleem eindigt pas als de waarde zoveel voorbij de drempel terug is: geen heen-en-weer schakelen.",
           "delay": "Minuten dat de voorwaarde moet aanhouden voordat het een probleem is.",

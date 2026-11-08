@@ -126,7 +126,7 @@ for (const file of Object.keys(FILES)) {
 
   test(`${file}: each Serbian script stays in its alphabet (apart from names, code and units)`, () => {
     const all = strings(file);
-    const allowed = /Home Assistant|Smart Comfort|Atmo France|smart_comfort:|configuration\.yaml|YAML|CO₂|\{\w+\}/g;
+    const allowed = /Home Assistant|Smart Comfort|Atmo France|smart_comfort:|configuration\.yaml|YAML|CO₂|PM2\.5|PM10|µg\/m³|\{\w+\}/g;
     for (const [key, text] of Object.entries(all.sr)) {
       assert.doesNotMatch(text.replace(allowed, ""), /[A-Za-z]/, `sr.${key}`);
     }

@@ -103,13 +103,13 @@
           "escalation": "Pas de escaladare"
         },
         "data_description": {
-          "threshold": "Prea cald/frig, CO₂, umiditate: valoarea. Deschideți/închideți ferestrele: diferența interior/exterior.",
+          "threshold": "Prea cald/frig, CO₂, umiditate: valoarea. Deschideți/închideți ferestrele: diferența interior/exterior. Aer poluat: PM2.5 (µg/m³).",
           "min_indoor": "Sugerează deschiderea doar când camera are cel puțin această temperatură.",
           "min_outdoor": "Doar când afară e cel puțin atât de cald.",
           "max_outdoor": "Doar când afară e atât de frig sau mai frig.",
           "max_outdoor_noise": "Nu se sugerează cât timp zgomotul exterior depășește această valoare (necesită un senzor de zgomot exterior).",
           "max_outdoor_air": "Nu se sugerează cât timp calitatea aerului exterior e mai proastă decât acest nivel, de la 1 (bună) la 6 (extrem de proastă).",
-          "pm10_threshold": "Aer poluat: și când PM10 depășește această valoare (µg/m³); pragul de mai sus este cel pentru PM2.5.",
+          "pm10_threshold": "Aer poluat: și când PM10 depășește această valoare (µg/m³).",
           "aqi_threshold": "Aer poluat: și când indicele de calitate a aerului din cameră este mai rău decât acest nivel, de la 1 (bun) la 6 (extrem de rău). Indicii HomeKit merg de la 1 la 5; un AQI american contează după intervalele sale (peste 150: nivelul 4).",
           "hysteresis": "Problema se încheie doar când valoarea a revenit dincolo de prag cu atât: fără oscilații.",
           "delay": "Minute în care condiția trebuie să persiste înainte de a deveni o problemă.",

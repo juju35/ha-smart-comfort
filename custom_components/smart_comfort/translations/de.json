@@ -103,13 +103,13 @@
           "escalation": "Verschlechterungsschritt"
         },
         "data_description": {
-          "threshold": "Zu warm/kalt, CO₂, Feuchte: der Wert. Lüften/Schließen: die Differenz innen/außen.",
+          "threshold": "Zu warm/kalt, CO₂, Feuchte: der Wert. Lüften/Schließen: die Differenz innen/außen. Verschmutzte Luft: PM2.5 (µg/m³).",
           "min_indoor": "Lüften nur vorschlagen, wenn der Raum mindestens so warm ist.",
           "min_outdoor": "Nur wenn es draußen mindestens so warm ist.",
           "max_outdoor": "Nur wenn es draußen höchstens so warm ist.",
           "max_outdoor_noise": "Kein Vorschlag, solange der Außenlärm darüber liegt (mit Außenlärmsensor).",
           "max_outdoor_air": "Kein Vorschlag, solange die Außenluft schlechter als diese Stufe ist, von 1 (gut) bis 6 (extrem schlecht).",
-          "pm10_threshold": "Verschmutzte Luft: auch wenn PM10 darüber liegt (µg/m³); der Schwellenwert oben ist der für PM2.5.",
+          "pm10_threshold": "Verschmutzte Luft: auch wenn PM10 darüber liegt (µg/m³).",
           "aqi_threshold": "Verschmutzte Luft: auch wenn der Luftqualitätsindex des Raums schlechter als diese Stufe ist, von 1 (gut) bis 6 (extrem schlecht). HomeKit-Indizes gehen von 1 bis 5; ein US-AQI zählt nach seinen Stufen (über 150: Stufe 4).",
           "hysteresis": "Das Problem endet erst, wenn der Wert um diesen Betrag über den Schwellenwert zurückgekehrt ist: kein Flattern.",
           "delay": "Minuten, die die Bedingung anhalten muss, bevor sie ein Problem ist.",

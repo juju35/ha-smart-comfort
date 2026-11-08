@@ -103,13 +103,13 @@
           "escalation": "Paso de empeoramiento"
         },
         "data_description": {
-          "threshold": "Calor/frío, CO₂, humedad: el valor. Ventilar/cerrar: la diferencia interior/exterior.",
+          "threshold": "Calor/frío, CO₂, humedad: el valor. Ventilar/cerrar: la diferencia interior/exterior. Aire contaminado: PM2.5 (µg/m³).",
           "min_indoor": "Solo sugiere ventilar si la estancia está al menos a esta temperatura.",
           "min_outdoor": "Solo si fuera hace al menos esta temperatura.",
           "max_outdoor": "Solo si fuera hace como máximo esta temperatura.",
           "max_outdoor_noise": "No se sugiere mientras el ruido exterior supere este valor (con sensor de ruido exterior).",
           "max_outdoor_air": "No se sugiere mientras la calidad del aire fuera sea peor que este nivel, de 1 (buena) a 6 (extremadamente mala).",
-          "pm10_threshold": "Aire contaminado: también cuando las PM10 superan este valor (µg/m³); el umbral de arriba es el de las PM2.5.",
+          "pm10_threshold": "Aire contaminado: también cuando las PM10 superan este valor (µg/m³).",
           "aqi_threshold": "Aire contaminado: también cuando el índice de calidad del aire de la estancia es peor que este nivel, de 1 (bueno) a 6 (extremadamente malo). Los índices HomeKit van de 1 a 5; un AQI de EE. UU. cuenta por sus tramos (por encima de 150: nivel 4).",
           "hysteresis": "El problema termina solo cuando el valor vuelve a pasar el umbral en al menos esta cantidad: sin oscilaciones.",
           "delay": "Minutos que la condición debe mantenerse antes de ser un problema.",

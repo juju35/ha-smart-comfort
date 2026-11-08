@@ -103,13 +103,13 @@
           "escalation": "Korak eskalacije"
         },
         "data_description": {
-          "threshold": "Pretoplo/prehladno, CO₂, vlažnost vazduha: vrednost. Otvaranje/zatvaranje prozora: razlika između unutrašnje i spoljašnje vrednosti.",
+          "threshold": "Pretoplo/prehladno, CO₂, vlažnost vazduha: vrednost. Otvaranje/zatvaranje prozora: razlika između unutrašnje i spoljašnje vrednosti. Zagađen vazduh: PM2,5 (µg/m³).",
           "min_indoor": "Predlog za otvaranje samo kada je u prostoriji barem ovoliko toplo.",
           "min_outdoor": "Samo kada je napolju barem ovoliko toplo.",
           "max_outdoor": "Samo kada je napolju ovoliko hladno ili hladnije.",
           "max_outdoor_noise": "Ne predlaže se dok je spoljašnja buka iznad ovoga (zahteva spoljašnji senzor buke).",
           "max_outdoor_air": "Ne predlaže se dok je spoljašnji kvalitet vazduha lošiji od ovog nivoa, od 1 (dobar) do 6 (izuzetno loš).",
-          "pm10_threshold": "Zagađen vazduh: i kada PM10 pređe ovu vrednost (µg/m³); prag iznad je onaj za PM2,5.",
+          "pm10_threshold": "Zagađen vazduh: i kada PM10 pređe ovu vrednost (µg/m³).",
           "aqi_threshold": "Zagađen vazduh: i kada je indeks kvaliteta vazduha u prostoriji lošiji od ovog nivoa, od 1 (dobar) do 6 (izuzetno loš). Indeksi sistema HomeKit idu od 1 do 5; američki AQI se računa po svojim opsezima (iznad 150: nivo 4).",
           "hysteresis": "Problem se završava tek kada se vrednost vrati preko praga za ovoliko: sprečava nestabilnost (flapping).",
           "delay": "Minuti tokom kojih uslov mora biti ispunjen pre nego što se proglasi problem.",

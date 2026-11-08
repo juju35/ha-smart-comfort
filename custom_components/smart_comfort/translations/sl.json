@@ -103,13 +103,13 @@
           "escalation": "Korak stopnjevanja"
         },
         "data_description": {
-          "threshold": "Prevroče/prehladno, CO₂, vlažnost: vrednost. Odpri/zapri okna: razlika med notranjostjo in zunanjostjo.",
+          "threshold": "Prevroče/prehladno, CO₂, vlažnost: vrednost. Odpri/zapri okna: razlika med notranjostjo in zunanjostjo. Onesnažen zrak: PM2,5 (µg/m³).",
           "min_indoor": "Odpiranje predlagaj le, ko je v prostoru vsaj tako toplo.",
           "min_outdoor": "Le ko je zunaj vsaj tako vroče.",
           "max_outdoor": "Le ko je zunaj tako mrzlo ali bolj.",
           "max_outdoor_noise": "Ne predlaga se, dokler je zunanji hrup nad to vrednostjo (potrebno je zunanje tipalo hrupa).",
           "max_outdoor_air": "Ne predlaga se, dokler je kakovost zunanjega zraka slabša od te ravni, od 1 (dobra) do 6 (izjemno slaba).",
-          "pm10_threshold": "Onesnažen zrak: tudi ko je PM10 nad to vrednostjo (µg/m³); prag zgoraj je za PM2,5.",
+          "pm10_threshold": "Onesnažen zrak: tudi ko je PM10 nad to vrednostjo (µg/m³).",
           "aqi_threshold": "Onesnažen zrak: tudi ko je indeks kakovosti zraka v prostoru slabši od te ravni, od 1 (dobra) do 6 (izjemno slaba). Indeksi HomeKit gredo od 1 do 5; ameriški AQI se šteje po svojih razponih (nad 150: raven 4).",
           "hysteresis": "Težava se konča šele, ko se vrednost vrne čez prag za toliko: brez nihanja.",
           "delay": "Minute, ko mora pogoj trajati, preden postane težava.",

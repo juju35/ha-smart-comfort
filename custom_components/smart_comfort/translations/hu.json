@@ -103,13 +103,13 @@
           "escalation": "Eszkalációs lépés"
         },
         "data_description": {
-          "threshold": "Túl meleg/hideg, CO₂, páratartalom: az érték. Ablakok nyitása/zárása: a bent és kint közötti különbség.",
+          "threshold": "Túl meleg/hideg, CO₂, páratartalom: az érték. Ablakok nyitása/zárása: a bent és kint közötti különbség. Szennyezett levegő: PM2.5 (µg/m³).",
           "min_indoor": "Csak akkor javasol nyitást, ha a helyiség legalább ilyen meleg.",
           "min_outdoor": "Csak ha kint legalább ilyen meleg van.",
           "max_outdoor": "Csak ha kint ilyen hideg vagy hidegebb van.",
           "max_outdoor_noise": "Nem javasolja, amíg a kültéri zaj ennél nagyobb (kültéri zajérzékelő kell hozzá).",
           "max_outdoor_air": "Nem javasolja, amíg a kültéri levegőminőség rosszabb ennél a szintnél, 1-től (jó) 6-ig (rendkívül rossz).",
-          "pm10_threshold": "Szennyezett levegő: akkor is, ha a PM10 e fölött van (µg/m³); a fenti küszöb a PM2.5-é.",
+          "pm10_threshold": "Szennyezett levegő: akkor is, ha a PM10 e fölött van (µg/m³).",
           "aqi_threshold": "Szennyezett levegő: akkor is, ha a helyiség levegőminőségi indexe rosszabb ennél a szintnél, 1-től (jó) 6-ig (rendkívül rossz). A HomeKit-indexek 1-től 5-ig mennek; az amerikai AQI a sávjai szerint számít (150 felett: 4. szint).",
           "hysteresis": "A probléma csak akkor ér véget, ha az érték ennyivel visszatért a küszöbön túlra: nincs ide-oda ugrálás.",
           "delay": "Ennyi percig kell fennállnia a feltételnek, hogy probléma legyen.",

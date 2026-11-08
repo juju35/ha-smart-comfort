@@ -103,13 +103,13 @@
           "escalation": "Krok eskalacji"
         },
         "data_description": {
-          "threshold": "Za gorąco/zimno, CO₂, wilgotność: wartość. Otwórz/zamknij okna: różnica wewnątrz/na zewnątrz.",
+          "threshold": "Za gorąco/zimno, CO₂, wilgotność: wartość. Otwórz/zamknij okna: różnica wewnątrz/na zewnątrz. Zanieczyszczone powietrze: PM2.5 (µg/m³).",
           "min_indoor": "Proponuj otwarcie tylko, gdy w pomieszczeniu jest co najmniej tak ciepło.",
           "min_outdoor": "Tylko gdy na zewnątrz jest co najmniej tak gorąco.",
           "max_outdoor": "Tylko gdy na zewnątrz jest tak zimno lub zimniej.",
           "max_outdoor_noise": "Nie proponowane, gdy hałas na zewnątrz przekracza tę wartość (wymaga czujnika hałasu na zewnątrz).",
           "max_outdoor_air": "Nie proponowane, gdy jakość powietrza na zewnątrz jest gorsza niż ten poziom, od 1 (dobra) do 6 (skrajnie zła).",
-          "pm10_threshold": "Zanieczyszczone powietrze: także gdy PM10 przekracza tę wartość (µg/m³); próg powyżej dotyczy PM2.5.",
+          "pm10_threshold": "Zanieczyszczone powietrze: także gdy PM10 przekracza tę wartość (µg/m³).",
           "aqi_threshold": "Zanieczyszczone powietrze: także gdy indeks jakości powietrza w pomieszczeniu jest gorszy niż ten poziom, od 1 (dobry) do 6 (skrajnie zły). Indeksy HomeKit mają od 1 do 5; amerykański AQI liczy się według swoich przedziałów (powyżej 150: poziom 4).",
           "hysteresis": "Problem kończy się dopiero, gdy wartość wróci za próg o tyle: bez migotania.",
           "delay": "Minuty, przez które warunek musi trwać, zanim stanie się problemem.",

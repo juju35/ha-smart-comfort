@@ -103,13 +103,13 @@
           "escalation": "Eskalācijas solis"
         },
         "data_description": {
-          "threshold": "Pārāk karsts/auksts, CO₂, mitrums: vērtība. Atvērt/aizvērt logus: starpība starp iekšā un ārā.",
+          "threshold": "Pārāk karsts/auksts, CO₂, mitrums: vērtība. Atvērt/aizvērt logus: starpība starp iekšā un ārā. Piesārņots gaiss: PM2,5 (µg/m³).",
           "min_indoor": "Ieteikt atvērt tikai tad, ja telpā ir vismaz tik silts.",
           "min_outdoor": "Tikai tad, ja ārā ir vismaz tik karsts.",
           "max_outdoor": "Tikai tad, ja ārā ir tik auksts vai aukstāks.",
           "max_outdoor_noise": "Netiek ieteikts, kamēr āra troksnis ir virs šīs vērtības (nepieciešams āra trokšņa sensors).",
           "max_outdoor_air": "Netiek ieteikts, kamēr āra gaisa kvalitāte ir sliktāka par šo līmeni, no 1 (laba) līdz 6 (ārkārtīgi slikta).",
-          "pm10_threshold": "Piesārņots gaiss: arī tad, ja PM10 pārsniedz šo vērtību (µg/m³); augstāk norādītais slieksnis ir PM2,5.",
+          "pm10_threshold": "Piesārņots gaiss: arī tad, ja PM10 pārsniedz šo vērtību (µg/m³).",
           "aqi_threshold": "Piesārņots gaiss: arī tad, ja telpas gaisa kvalitātes indekss ir sliktāks par šo līmeni, no 1 (laba) līdz 6 (ārkārtīgi slikta). HomeKit indeksi ir no 1 līdz 5; ASV AQI tiek vērtēts pēc tā diapazoniem (virs 150: 4. līmenis).",
           "hysteresis": "Problēma beidzas tikai tad, kad vērtība ir atgriezusies aiz sliekšņa par tik: bez svārstībām.",
           "delay": "Minūtes, cik ilgi nosacījumam jāsaglabājas, pirms tā ir problēma.",

@@ -103,13 +103,13 @@
           "escalation": "Passo de escalonamento"
         },
         "data_description": {
-          "threshold": "Demasiado quente/frio, CO₂, humidade: o valor. Abrir/fechar as janelas: a diferença interior/exterior.",
+          "threshold": "Demasiado quente/frio, CO₂, humidade: o valor. Abrir/fechar as janelas: a diferença interior/exterior. Ar poluído: PM2.5 (µg/m³).",
           "min_indoor": "Sugerir abrir só quando a divisão está pelo menos a esta temperatura.",
           "min_outdoor": "Só quando está pelo menos este calor lá fora.",
           "max_outdoor": "Só quando está este frio ou mais lá fora.",
           "max_outdoor_noise": "Não sugerido enquanto o ruído exterior estiver acima disto (requer um sensor de ruído exterior).",
           "max_outdoor_air": "Não sugerido enquanto a qualidade do ar exterior for pior do que este nível, de 1 (boa) a 6 (extremamente má).",
-          "pm10_threshold": "Ar poluído: também quando as PM10 ultrapassam este valor (µg/m³); o limiar acima é o das PM2.5.",
+          "pm10_threshold": "Ar poluído: também quando as PM10 ultrapassam este valor (µg/m³).",
           "aqi_threshold": "Ar poluído: também quando o índice de qualidade do ar da divisão é pior do que este nível, de 1 (bom) a 6 (extremamente mau). Os índices HomeKit vão de 1 a 5; um AQI dos EUA conta pelas suas faixas (acima de 150: nível 4).",
           "hysteresis": "O problema só termina quando o valor voltar a passar o limiar desta quantidade: sem oscilações.",
           "delay": "Minutos durante os quais a condição tem de se manter antes de ser um problema.",

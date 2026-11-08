@@ -103,13 +103,13 @@
           "escalation": "Pas d'aggravation"
         },
         "data_description": {
-          "threshold": "Trop chaud/froid, CO₂, humidité : la valeur. Aérer / fermer : l'écart intérieur/extérieur.",
+          "threshold": "Trop chaud/froid, CO₂, humidité : la valeur. Aérer / fermer : l'écart intérieur/extérieur. Air pollué : PM2.5 (µg/m³).",
           "min_indoor": "Ne suggère d'aérer que si la pièce est au moins à cette température.",
           "min_outdoor": "Seulement s'il fait au moins cette température dehors.",
           "max_outdoor": "Seulement s'il fait au plus cette température dehors.",
           "max_outdoor_noise": "Pas de suggestion au-delà de ce bruit extérieur (avec un capteur de bruit extérieur).",
           "max_outdoor_air": "Pas de suggestion quand la qualité de l'air dehors est pire que ce niveau, de 1 (bon) à 6 (extrêmement mauvais).",
-          "pm10_threshold": "Air pollué : aussi quand les PM10 dépassent cette valeur (µg/m³) ; le seuil ci-dessus est celui des PM2.5.",
+          "pm10_threshold": "Air pollué : aussi quand les PM10 dépassent cette valeur (µg/m³).",
           "aqi_threshold": "Air pollué : aussi quand l'indice de qualité de l'air de la pièce est pire que ce niveau, de 1 (bon) à 6 (extrêmement mauvais). Les indices HomeKit vont de 1 à 5 ; un AQI américain compte par ses tranches (au-dessus de 150 : niveau 4).",
           "hysteresis": "Le problème ne se termine qu'une fois la valeur revenue de cet écart sous le seuil : pas de yo-yo.",
           "delay": "Minutes pendant lesquelles la condition doit tenir avant de devenir un problème.",

@@ -103,13 +103,13 @@
           "escalation": "Eskaleringssteg"
         },
         "data_description": {
-          "threshold": "För varmt/kallt, CO₂, luftfuktighet: värdet. Öppna/stäng fönstren: skillnaden mellan inne och ute.",
+          "threshold": "För varmt/kallt, CO₂, luftfuktighet: värdet. Öppna/stäng fönstren: skillnaden mellan inne och ute. Förorenad luft: PM2.5 (µg/m³).",
           "min_indoor": "Föreslå öppning bara när rummet är minst så varmt.",
           "min_outdoor": "Bara när det är minst så varmt ute.",
           "max_outdoor": "Bara när det är så kallt eller kallare ute.",
           "max_outdoor_noise": "Föreslås inte medan bullret utomhus är över detta (kräver en bullersensor utomhus).",
           "max_outdoor_air": "Föreslås inte medan luftkvaliteten utomhus är sämre än denna nivå, från 1 (bra) till 6 (extremt dålig).",
-          "pm10_threshold": "Förorenad luft: även när PM10 är över detta (µg/m³); gränsvärdet ovan är det för PM2.5.",
+          "pm10_threshold": "Förorenad luft: även när PM10 är över detta (µg/m³).",
           "aqi_threshold": "Förorenad luft: även när rummets luftkvalitetsindex är sämre än denna nivå, från 1 (bra) till 6 (extremt dålig). HomeKit-index går från 1 till 5; ett amerikanskt AQI räknas efter sina intervall (över 150: nivå 4).",
           "hysteresis": "Problemet upphör först när värdet har gått tillbaka förbi gränsvärdet med så mycket: inget fladder.",
           "delay": "Minuter villkoret måste hålla i sig innan det är ett problem.",
