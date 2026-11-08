@@ -93,18 +93,24 @@
           "max_outdoor": "Maximum outdoor temperature",
           "max_outdoor_noise": "Maximum outdoor noise",
           "max_outdoor_air": "Maximum outdoor air quality level",
+          "pm10_threshold": "PM10 threshold",
+          "pm10_hysteresis": "PM10 hysteresis",
+          "aqi_threshold": "Air quality index threshold",
+          "aqi_hysteresis": "Air quality index hysteresis",
           "hysteresis": "Hysteresis",
           "delay": "Delay",
           "severity": "Severity",
           "escalation": "Escalation step"
         },
         "data_description": {
-          "threshold": "Too hot/cold, CO₂, humidity: the value. Open/close the windows: the indoor/outdoor difference.",
+          "threshold": "Too hot/cold, CO₂, humidity: the value. Open/close the windows: the indoor/outdoor difference. Polluted air: PM2.5 (µg/m³).",
           "min_indoor": "Suggest opening only when the room is at least this warm.",
           "min_outdoor": "Only when it is at least this hot outside.",
           "max_outdoor": "Only when it is this cold or colder outside.",
           "max_outdoor_noise": "Not suggested while the outdoor noise is above this (needs an outdoor noise sensor).",
           "max_outdoor_air": "Not suggested while the outdoor air quality is worse than this level, from 1 (good) to 6 (extremely poor).",
+          "pm10_threshold": "Polluted air: also when PM10 is above this (µg/m³).",
+          "aqi_threshold": "Polluted air: also when the room's air quality index is worse than this level, from 1 (good) to 6 (extremely poor). HomeKit indexes go from 1 to 5; a US AQI counts by its bands (above 150: level 4).",
           "hysteresis": "The problem ends only once the value is back past the threshold by this much: no flapping.",
           "delay": "Minutes the condition must hold before it is a problem.",
           "escalation": "Notify again when the value gets this much worse than when last notified. 0: never."
@@ -186,6 +192,9 @@
           "co2": "CO₂",
           "humidity": "Humidity",
           "noise": "Noise",
+          "pm25": "PM2.5",
+          "pm10": "PM10",
+          "air_quality": "Air quality index",
           "openings": "Windows and doors",
           "climate": "Air conditioner",
           "fans": "Fans",
@@ -213,6 +222,8 @@
           }
         },
         "data_description": {
+          "pm25": "Fine particle sensors (µg/m³), those of the air purifiers too: a polluted air alert, and the purifiers boosted until the air is clean again.",
+          "air_quality": "Air quality index sensors of the room (HomeKit 1–5, European 1–6, US AQI).",
           "lights": "Dimmable lights: their brightness follows the time of day while they are on (adaptive lighting)."
         }
       },
@@ -224,6 +235,9 @@
           "co2": "CO₂",
           "humidity": "Humidity",
           "noise": "Noise",
+          "pm25": "PM2.5",
+          "pm10": "PM10",
+          "air_quality": "Air quality index",
           "openings": "Windows and doors",
           "climate": "Air conditioner",
           "fans": "Fans",
@@ -251,6 +265,8 @@
           }
         },
         "data_description": {
+          "pm25": "Fine particle sensors (µg/m³), those of the air purifiers too: a polluted air alert, and the purifiers boosted until the air is clean again.",
+          "air_quality": "Air quality index sensors of the room (HomeKit 1–5, European 1–6, US AQI).",
           "lights": "Dimmable lights: their brightness follows the time of day while they are on (adaptive lighting)."
         }
       },
@@ -324,6 +340,7 @@
         "too_cold": "Too cold",
         "window_open_cold": "Window open in the cold",
         "co2_high": "High CO₂",
+        "polluted_air": "Polluted air",
         "humidity_high": "High humidity",
         "noise_high": "Noisy room",
         "noisy_outside": "Close the windows (noisy outside)",
@@ -377,6 +394,7 @@
           "too_cold": "Too cold",
           "window_open_cold": "Window open in the cold",
           "co2_high": "High CO₂",
+          "polluted_air": "Polluted air",
           "humidity_high": "High humidity",
           "noise_high": "Noisy room",
           "noisy_outside": "Close the windows (noisy outside)",
@@ -479,6 +497,8 @@
     "line_close_windows": "{outdoor} °C outside, {temperature} °C inside — close {openings}",
     "line_window_open_cold": "{openings} open, {outdoor} °C outside",
     "line_co2_high": "CO₂ {value} ppm — air the room",
+    "line_polluted_air": "{pollutant} {value} µg/m³, above {threshold} µg/m³",
+    "line_polluted_air_index": "air quality {value}/6, above {threshold}/6",
     "line_humidity_high": "humidity {value} % — air the room",
     "line_noise_high": "noise {value} dB, above {threshold} dB",
     "line_noisy_outside": "{value} dB outside — close {openings}",

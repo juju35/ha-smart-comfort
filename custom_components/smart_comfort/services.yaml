@@ -23,6 +23,7 @@ snooze:
             - too_cold
             - window_open_cold
             - co2_high
+            - polluted_air
             - humidity_high
             - noise_high
             - noisy_outside
@@ -51,6 +52,7 @@ acknowledge:
             - too_cold
             - window_open_cold
             - co2_high
+            - polluted_air
             - humidity_high
             - noise_high
             - noisy_outside

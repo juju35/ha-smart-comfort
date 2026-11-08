@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.13.0 - 2026-11-08
+
+### What's new
+- Indoor air quality: rooms take PM2.5, PM10 and air quality index sensors (lists, the worst counts), those of the air purifiers too, and Discover finds them in each area, on the purifiers as well.
+- New **Polluted air** alert (`polluted_air`): PM2.5 above 25 µg/m³, PM10 above 50 µg/m³ or an air quality level above 3 of 6 for 10 minutes, over once back to 15 µg/m³, 30 µg/m³ or level 2; thresholds globally and per room, its value in the notification ("PM2.5 47 µg/m³, above 25 µg/m³").
+- A HomeKit air quality index (1 excellent to 5 poor) is read as is, other indexes like the outdoor ones (European 1–6, US AQI by its bands).
+- While a room's air is polluted, its purifiers are boosted with their window boost settings (mode, preset or speed), at any hour but quietly at night for those with night settings, and go back to their state before once the air is clean; a purifier changed by hand is left alone, and the alert counts as handled by a device while one is boosted.
+- Panel, card, mini card and activity card: the new sensors in the room editor and in the Discover help, the thresholds in the Alerts tab (the PM2.5 one in the threshold help), PM2.5, PM10 and index chips, and the alert with its icon and value; translated in every language.
+
 ## 1.12.0 - 2026-11-08
 
 ### What's new

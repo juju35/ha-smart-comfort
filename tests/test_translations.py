@@ -52,8 +52,8 @@ def test_translation_parity(language: str):
 
 # Kept as is in the Cyrillic text: names, code, units and placeholders.
 LATIN_ALLOWED = re.compile(
-    r"Home Assistant|Smart Comfort|Atmo France|YAML|AQI|iOS|CO₂|dB|ppm|°C|\b(?:min|h)\b|boolean|flapping"
-    r"|notify\.mobile_app_|homeassistant://\S+|\{[^}]*\}"
+    r"Home Assistant|Smart Comfort|Atmo France|YAML|AQI|iOS|CO₂|PM2\.5|PM10|µg/m³|dB|ppm|°C|\b(?:min|h)\b|boolean"
+    r"|flapping|notify\.mobile_app_|homeassistant://\S+|\{[^}]*\}"
 )
 
 

@@ -15,6 +15,7 @@
           "close_windows": "mdi:window-closed-variant",
           "window_open_cold": "mdi:snowflake-alert",
           "co2_high": "mdi:molecule-co2",
+          "polluted_air": "mdi:blur",
           "humidity_high": "mdi:water-percent-alert",
           "noise_high": "mdi:volume-high",
           "noisy_outside": "mdi:volume-off",

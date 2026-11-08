@@ -12,6 +12,7 @@ from .const import (
     KIND_HUMIDITY,
     KIND_NOISE,
     KIND_NOISY_OUTSIDE,
+    KIND_POLLUTED,
     KIND_TOO_COLD,
     KIND_TOO_HOT,
     KIND_VENTILATE,
@@ -28,11 +29,15 @@ ICONS = {
     KIND_TOO_COLD: "❄️",
     KIND_WINDOW_OPEN_COLD: "🥶",
     KIND_CO2: "🌬️",
+    KIND_POLLUTED: "🌫️",
     KIND_HUMIDITY: "💧",
     KIND_NOISE: "🔊",
     KIND_NOISY_OUTSIDE: "🔇",
     KIND_BAD_AIR_OUTSIDE: "😷",
 }
+
+# Names of the fine particles in the polluted air lines (the index has a line of its own).
+POLLUTANTS = {"pm25": "PM2.5", "pm10": "PM10"}
 
 # English fallbacks, used when a translation is missing or broken.
 FALLBACK = {
@@ -50,6 +55,8 @@ FALLBACK = {
     "line_close_windows": "{outdoor} °C outside, {temperature} °C inside — close {openings}",
     "line_window_open_cold": "{openings} open, {outdoor} °C outside",
     "line_co2_high": "CO₂ {value} ppm — air the room",
+    "line_polluted_air": "{pollutant} {value} µg/m³, above {threshold} µg/m³",
+    "line_polluted_air_index": "air quality {value}/6, above {threshold}/6",
     "line_humidity_high": "humidity {value} % — air the room",
     "line_noise_high": "noise {value} dB, above {threshold} dB",
     "line_noisy_outside": "{value} dB outside — close {openings}",
@@ -59,7 +66,14 @@ FALLBACK = {
     "action_ack": "Got it",
 }
 
-DIGITS = {KIND_CO2: 0, KIND_HUMIDITY: 0, KIND_NOISE: 0, KIND_NOISY_OUTSIDE: 0, KIND_BAD_AIR_OUTSIDE: 0}
+DIGITS = {
+    KIND_CO2: 0,
+    KIND_POLLUTED: 0,
+    KIND_HUMIDITY: 0,
+    KIND_NOISE: 0,
+    KIND_NOISY_OUTSIDE: 0,
+    KIND_BAD_AIR_OUTSIDE: 0,
+}
 
 
 def format_text(texts: dict[str, str], key: str, **values: object) -> str:
@@ -96,14 +110,18 @@ def problem_text(
     names = names or {}
     digits = DIGITS.get(kind, 1)
     openings = ", ".join(names.get(o, o) for o in details.get("openings", []) or [])  # type: ignore[union-attr]
+    key = f"line_{kind}"
+    if kind == KIND_POLLUTED and details.get("metric") == "aqi":
+        key = "line_polluted_air_index"
     return format_text(
         texts,
-        f"line_{kind}",
+        key,
         value=number(texts, value, digits),
         threshold=number(texts, details.get("threshold"), digits),
         outdoor=number(texts, details.get("outdoor")),
         temperature=number(texts, details.get("temperature")),
         openings=openings,
+        pollutant=POLLUTANTS.get(str(details.get("metric")), "PM2.5"),
     )
 
 

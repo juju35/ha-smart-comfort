@@ -24,6 +24,7 @@ from .const import (
     KIND_HUMIDITY,
     KIND_NOISE,
     KIND_NOISY_OUTSIDE,
+    KIND_POLLUTED,
     KIND_TOO_COLD,
     KIND_TOO_HOT,
     KIND_VENTILATE,
@@ -38,8 +39,9 @@ REASON_REMINDER = "reminder"
 REASON_WORSE = "worse"
 REASON_ONGOING = "ongoing"
 
-# Kinds a running air conditioner or fan takes care of: not notified when suppress_when_handled.
-HANDLED_KINDS = frozenset({KIND_TOO_HOT})
+# Kinds a running device takes care of: not notified when suppress_when_handled. Too hot: an air conditioner
+# cooling or a fan blowing (the room id in `handled`); polluted air: a purifier boosting (the episode key).
+HANDLED_KINDS = frozenset({KIND_TOO_HOT, KIND_POLLUTED})
 # Kinds that need the outdoor temperature.
 OUTDOOR_KINDS = frozenset({KIND_VENTILATE, KIND_CLOSE_WINDOWS, KIND_WINDOW_OPEN_COLD})
 # Kinds that need the outdoor noise.
@@ -57,6 +59,8 @@ SOURCES: dict[str, tuple[str, ...]] = {
     KIND_CLOSE_WINDOWS: ("temperature", "outdoor"),
     KIND_WINDOW_OPEN_COLD: ("outdoor",),
     KIND_CO2: ("co2",),
+    # Any of the room's PM2.5, PM10 and air quality index sensors.
+    KIND_POLLUTED: ("indoor_air",),
     KIND_HUMIDITY: ("humidity",),
     KIND_NOISE: ("noise",),
     KIND_NOISY_OUTSIDE: ("outdoor_noise",),
@@ -75,6 +79,10 @@ class RoomReading:
     co2: float | None = None
     humidity: float | None = None
     noise: float | None = None
+    # Indoor air: the worst PM2.5 and PM10 (µg/m³), the worst air quality level (1 good … 6 extremely poor).
+    pm25: float | None = None
+    pm10: float | None = None
+    aqi: float | None = None
     # Outdoor noise level (same for every room), None when unknown or without a sensor.
     outdoor_noise: float | None = None
     # Outdoor air quality level, 1 (good) to 6 (extremely poor), None when unknown or without a sensor.
@@ -113,6 +121,27 @@ def _below(value: float | None, threshold: float | None, hysteresis: float) -> b
     return value < threshold + hysteresis
 
 
+def _polluted(s: AlertSettings, r: RoomReading, active: bool) -> Check:
+    """PM2.5, PM10 or the air quality index above its threshold; the value is the first one that is (in that order).
+
+    Unknown only when none of them is known; once the episode exists, each one ends below its own hysteresis.
+    """
+    metrics = (
+        ("pm25", r.pm25, s.threshold, s.hysteresis),
+        ("pm10", r.pm10, s.pm10_threshold, s.pm10_hysteresis),
+        ("aqi", r.aqi, s.aqi_threshold, s.aqi_hysteresis),
+    )
+    known = [(name, value, threshold, h) for name, value, threshold, h in metrics if value is not None]
+    if not known:
+        return Check(None)
+    values = {name: value for name, value, _threshold, _h in known}
+    for name, value, threshold, h in known:
+        if _above(value, threshold, h if active else 0.0):
+            return Check(True, value, {"metric": name, "threshold": threshold, **values})
+    name, value, threshold, _h = known[0]
+    return Check(False, value, {"metric": name, "threshold": threshold, **values})
+
+
 def check(kind: str, s: AlertSettings, r: RoomReading, outdoor: float | None, active: bool) -> Check:
     """Evaluate one condition. `active`: the episode exists, hysteresis applies."""
     h = s.hysteresis if active else 0.0
@@ -122,6 +151,8 @@ def check(kind: str, s: AlertSettings, r: RoomReading, outdoor: float | None, ac
         return Check(_below(r.temperature, s.threshold, h), r.temperature, {"threshold": s.threshold})
     if kind == KIND_CO2:
         return Check(_above(r.co2, s.threshold, h), r.co2, {"threshold": s.threshold})
+    if kind == KIND_POLLUTED:
+        return _polluted(s, r, active)
     if kind == KIND_HUMIDITY:
         return Check(_above(r.humidity, s.threshold, h), r.humidity, {"threshold": s.threshold})
     if kind == KIND_NOISE:
@@ -174,6 +205,14 @@ def check(kind: str, s: AlertSettings, r: RoomReading, outdoor: float | None, ac
         cold = s.max_outdoor is None or outdoor <= s.max_outdoor + h
         return Check(bool(r.any_open) and cold, outdoor, details)
     raise ValueError(kind)
+
+
+def is_handled(ep: Episode, handled: set[str]) -> bool:
+    """A device takes care of the problem: `handled` holds the rooms whose air conditioner or fan runs (too hot)
+    and the keys of the problems a device works on (polluted air: a purifier boosting)."""
+    if ep.kind == KIND_TOO_HOT:
+        return ep.room in handled
+    return ep.kind in HANDLED_KINDS and ep.key in handled
 
 
 def worsening(kind: str, value: float | None, previous: float | None) -> float:
@@ -417,7 +456,12 @@ class Engine:
         return any(u is not None and u > now for u in until)
 
     def suppressed(self, ep: Episode, room: Room, handled: set[str]) -> bool:
-        return self.settings.suppress_handled and ep.kind in HANDLED_KINDS and room.id in handled
+        return self.settings.suppress_handled and is_handled(ep, handled)
+
+    def alerting(self, room_id: str, kind: str) -> bool:
+        """The room has this problem now (an active episode, snoozed or not)."""
+        ep = self.episodes.get(f"{room_id}|{kind}")
+        return ep is not None and ep.active
 
     def active(self) -> list[Episode]:
         order = {k: i for i, k in enumerate(KINDS)}

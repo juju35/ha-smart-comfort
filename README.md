@@ -18,7 +18,7 @@ Comfort automations built with a cooldown keep notifying every couple of hours a
 
 ## Features
 
-- **Ten alerts per room**: too hot, too cold, open the windows (warmer inside than outside), close the windows (hotter outside), window open in the cold, high CO₂, high humidity, noisy room, close the windows (noisy outside), close the windows (poor air outside) — each with its threshold, hysteresis, delay, severity and escalation step, globally and per room
+- **Eleven alerts per room**: too hot, too cold, open the windows (warmer inside than outside), close the windows (hotter outside), window open in the cold, high CO₂, polluted air (PM2.5, PM10 or air quality index), high humidity, noisy room, close the windows (noisy outside), close the windows (poor air outside) — each with its threshold, hysteresis, delay, severity and escalation step, globally and per room
 - **Episodes, not cooldowns**: one notification when a problem starts, none while it lasts; again when it gets worse by the escalation step, or after the reminder delay (off by default)
 - **Hysteresis and delay**: a problem starts once its condition has held for the delay, and ends only once the value is back past the threshold by the hysteresis — no flapping. An unavailable sensor changes nothing
 - **Digest**: what comes up within the digest window (5 minutes by default) goes out in **one** notification listing every current problem, replacing the previous one on the phone (notification `tag`) instead of piling up
@@ -29,9 +29,9 @@ Comfort automations built with a cooldown keep notifying every couple of hours a
 - **Device control** per room:
   - **air conditioner**: cools above a temperature once the openings have been closed for a while, turns off below another one, or when an opening stays open (whatever its mode, heating included)
   - **fans**: on above a temperature, off below another one (hysteresis band in between), full speed while a window is open during the day
-  - **air purifiers**: boost while a window is open during the day (preset, speed, or a mode select such as `manual`/`automatic`), back to normal when closed (the closed preset / mode, or else the state it had before the boost), and optionally **kept on** (turned back on after a power cut)
+  - **air purifiers**: boost while a window is open during the day (preset, speed, or a mode select such as `manual`/`automatic`), back to normal when closed (the closed preset / mode, or else the state it had before the boost), **boosted while the room's air is polluted** (the same settings, at any hour; a purifier with night settings stays quiet at night) and back to the state it had before once the air is clean again, and optionally **kept on** (turned back on after a power cut)
   - commands are sent only when the target changes and the device isn't already in that state; a device changed **by hand** is left alone for an hour (configurable)
-  - a room whose air conditioner or fan Smart Comfort has turned on gets no "too hot" alert (a device turned on by hand doesn't count)
+  - a room whose air conditioner or fan Smart Comfort has turned on gets no "too hot" alert, and one whose purifier it has boosted no "polluted air" alert (a device turned on by hand doesn't count)
   - **indicator lights and displays** of the devices (an on/off indicator light or switch, a display brightness, a brightness select such as bright / dim / off) turned off in their hours (the quiet night by default) and during the naps of their room, and back on after at the brightness or option they had; found by Discover
   - **back to normal at a set time**, per device (`reset_at`): the purifier back to its automatic mode at 20:40, even after a change by hand
   - **quiet night**: in the night hours (22:00–07:00 by default), devices with night settings run quieter — a fan at a lower speed or a sleep preset, a purifier in its sleep preset or mode, an air conditioner in its silent fan mode — and get no window boost; the day settings (or the state before the night) come back in the morning
@@ -39,6 +39,7 @@ Comfort automations built with a cooldown keep notifying every couple of hours a
 - **Lights on presence**, per room: lights turned on when someone comes in (only when the room is dark enough, with a light level sensor) at the brightness of the moment, and off once nobody is left for a while; slots keep some lights off (weekday mornings…) or set their brightness (a dim entrance at night), lights chosen to stay off during the naps of the house, night lights only at night, a color per slot (a blue night light), a presence that must last a few seconds (someone passing by doesn't count), and a light turned off by hand stays off until the room is empty
 - **Outdoors**: outdoor places (garden, terrace…) with their temperature, air quality and noise sensors, plus sensors in no area (weather entity, a city air quality index such as Atmo France)
 - **Noise**: a sound level sensor per room (noisy room alert), and outdoor noise sensors: no suggestion to open the windows while it is noisy outside, and an alert to close them when they are open in the noise
+- **Indoor air quality**: PM2.5, PM10 and air quality index sensors per room — those of the air purifiers too (`sensor.*_pm2_5_density`, a HomeKit air quality from 1 excellent to 5 poor…), the worst counts — for a **polluted air** alert with its value ("PM2.5 47 µg/m³, above 25 µg/m³"), and the purifiers of the room boosted until the air is clean again
 - **Outdoor air quality**: an index from 1 (good) to 6 (extremely poor) — European indexes (Atmo, EAQI) as is, US AQI by its bands, text states (good, poor…) — the worst sensor counts: no suggestion to open the windows while the air is poor, and an alert to close them when they are open then
 - **Calendar of the alerts**: every alert is an event of the *Comfort alerts* calendar, from when it started to when it ended, with its room, its kind and its worst value ("29.5 °C, above 26 °C"); kept 90 days, so the calendar view of Home Assistant shows when each room was too hot, too humid or noisy
 - **No re-notification after a restart**: episodes, snoozes and device targets are stored; nothing is sent during the startup grace period
@@ -51,7 +52,7 @@ Comfort automations built with a cooldown keep notifying every couple of hours a
 
 - Home Assistant 2024.12 or newer
 - A notify action: the [Companion app](https://companion.home-assistant.io/) (`notify.mobile_app_…`) or a notify group of several phones. The snooze buttons, replacement and clearing of notifications need the Companion app; other notifiers get the title and message (and no clearing message)
-- Temperature (and optionally CO₂ / humidity / noise) sensors per room, door/window `binary_sensor`s, and outdoor temperature sensors (or a weather entity) for the window alerts; optionally outdoor air quality and noise sensors
+- Temperature (and optionally CO₂ / humidity / noise / PM2.5 / PM10 / air quality index) sensors per room, door/window `binary_sensor`s, and outdoor temperature sensors (or a weather entity) for the window alerts; optionally outdoor air quality and noise sensors
 
 ## Installation
 
@@ -87,7 +88,7 @@ Once set up, Smart Comfort adds a **Smart Comfort** page to the sidebar, for adm
 
 - **Overview**: while nothing is set up (no room nor outdoor place), a **Discover** button that runs the discovery and opens its result in the Rooms tab; the active alerts with their state (notified, snoozed, acknowledged, handled by a running device) and **Snooze** / **Got it** buttons, the readings and devices of each room with their targets and manual overrides, the last notification, and switches for the notifications and the device control
 - **Activity**: what Smart Comfort did and why, live and by day — devices (cooling, window boost, night mode, back to normal…), lights (brightness of the moment, on with presence, off with nobody), indicator lights, notifications sent and cleared, changes by hand that pause a device or a light, reset times, commands that failed — with filters (devices, lights, notifications, by hand); a line opens its entity
-- **Rooms**: **Discover** adds a room for every Home Assistant area with something to follow (a comfort sensor, an air conditioner, a fan, a purifier or a dimmable light — not a hallway with only its door) and sets it up: temperature, CO₂, humidity and noise sensors (a weather station preferred over a device's own sensor; never the temperatures of machines — NAS, internet box, server, UPS, printer, fridge…), windows and doors, air conditioner (only one that can cool), fans with their natural / direct presets, purifiers with their auto / manual mode select or presets, dimmable lights (not the indicators of devices nor the floodlights of cameras; night lights flagged as such), the quiet morning of the bedrooms, and the night settings from their quiet presets and fan modes. Areas, bedrooms, night lights, indicators and machines are recognised by their names in English, French, German, Spanish, Italian, Dutch, Portuguese, Polish and Serbian (Garden, Jardin, Giardino, Tuin, Jardim, Ogród, Bašta / Башта…). The outdoor areas (garden, terrace, balcony…) with a sensor become outdoor places (an outdoor module counts by its device's area); outdoor sensors in no area — a sensor named outdoor, a city air quality index (Atmo France, WAQI…), and the weather entity when there is no outdoor temperature sensor — go to the other outdoor sensors. What is already set is kept, and running it again only adds what is new. Nothing is saved until **Save**. Each room shows the icon of its area (or one from its name) and folds into sections — **Sensors**, **Windows and doors**, **Devices**, **Lighting** (lights, quiet morning, naps), **Alerts** — each with a one-line summary; only what the room has is shown, and **+** buttons add the rest (a CO₂ sensor, a fan, a light, a nap, a customized alert…). Device settings stay folded under each device
+- **Rooms**: **Discover** adds a room for every Home Assistant area with something to follow (a comfort sensor, an air conditioner, a fan, a purifier or a dimmable light — not a hallway with only its door) and sets it up: temperature, CO₂, humidity and noise sensors (a weather station preferred over a device's own sensor; never the temperatures of machines — NAS, internet box, server, UPS, printer, fridge…), PM2.5, PM10 and air quality index sensors (those of the purifiers too), windows and doors, air conditioner (only one that can cool), fans with their natural / direct presets, purifiers with their auto / manual mode select or presets, dimmable lights (not the indicators of devices nor the floodlights of cameras; night lights flagged as such), the quiet morning of the bedrooms, and the night settings from their quiet presets and fan modes. Areas, bedrooms, night lights, indicators and machines are recognised by their names in English, French, German, Spanish, Italian, Dutch, Portuguese, Polish and Serbian (Garden, Jardin, Giardino, Tuin, Jardim, Ogród, Bašta / Башта…). The outdoor areas (garden, terrace, balcony…) with a sensor become outdoor places (an outdoor module counts by its device's area); outdoor sensors in no area — a sensor named outdoor, a city air quality index (Atmo France, WAQI…), and the weather entity when there is no outdoor temperature sensor — go to the other outdoor sensors. What is already set is kept, and running it again only adds what is new. Nothing is saved until **Save**. Each room shows the icon of its area (or one from its name) and folds into sections — **Sensors**, **Windows and doors**, **Devices**, **Lighting** (lights, quiet morning, naps), **Alerts** — each with a one-line summary; only what the room has is shown, and **+** buttons add the rest (a CO₂ sensor, a fan, a light, a nap, a customized alert…). Device settings stay folded under each device
 - **Outdoors**: the outdoor places (garden, terrace…) with their temperature, air quality and noise sensors, and the other outdoor sensors (weather entity, city air quality index) with how the temperatures are combined
 - **Alerts**: one line per alert with its state, threshold and severity; open it to change them (hysteresis, delay and escalation under **Advanced**)
 - **Schedule**: every time window on one 24-hour line with the time now — quiet hours (notifications), quiet night (devices and lights), quiet morning (bedroom lights) and window boost — and their times, all in one place
@@ -169,6 +170,7 @@ smart_comfort:
     too_hot: { threshold: 27, delay: 15, escalation: 1 }
     close_windows: { min_outdoor: 27, severity: critical }
     co2_high: { threshold: 1300 }
+    polluted_air: { threshold: 25, pm10_threshold: 50, aqi_threshold: 3 }
 
   control:
     start: "09:00"             # window boost hours
@@ -183,6 +185,8 @@ smart_comfort:
     - name: Living room
       temperature: sensor.living_room_temperature
       co2: sensor.living_room_co2
+      pm25: [sensor.living_room_purifier_pm2_5_density]   # lists: the worst counts
+      air_quality: [sensor.living_room_purifier_air_quality]
       openings:
         - binary_sensor.living_room_window
         - binary_sensor.living_room_french_door
@@ -258,10 +262,13 @@ Set under `alerts:` for every room, and under `rooms[].alerts:` for one room.
 | `close_windows` | an opening open, outdoor ≥ `min_outdoor` and ≥ temperature + `threshold` | 25 °C, +0.5 °C, warning |
 | `window_open_cold` | an opening open for the delay, outdoor ≤ `max_outdoor` | 12 °C, 20 min, **disabled** |
 | `co2_high` | CO₂ > `threshold` | 1200 ppm, info |
+| `polluted_air` | PM2.5 > `threshold`, or PM10 > `pm10_threshold`, or the air quality level > `aqi_threshold` (room `pm25`, `pm10`, `air_quality` sensors) | 25 µg/m³, 50 µg/m³, 3, warning |
 | `humidity_high` | humidity > `threshold` | 70 %, info |
 | `noise_high` | room noise > `threshold` (room `noise` sensor) | 60 dB, info |
 | `noisy_outside` | an opening open, outdoor noise > `threshold` (outdoor noise sensors) | 65 dB, info |
 | `bad_air_outside` | an opening open, outdoor air quality level > `threshold` (outdoor air quality sensors) | 3 (degraded), info |
+
+`polluted_air` ends at or below `threshold` − `hysteresis` (25 − 10 = 15 µg/m³ of PM2.5), `pm10_threshold` − `pm10_hysteresis` (50 − 20 = 30 µg/m³) and `aqi_threshold` − `aqi_hysteresis` (3 − 1: level 2), after 10 minutes by default; its value is the first reading over its threshold, PM2.5 first, with its unit (`metric` attribute: `pm25`, `pm10` or `aqi`). The room sensors are lists (`pm25`, `pm10`, `air_quality`): the worst one counts. The air quality index is read like the outdoor one (see below), except a HomeKit one (`homekit_controller`, 1 excellent … 5 poor), taken as is: level 4 (inferior) and 5 (poor) are polluted by default, a US AQI from 151. While the alert is on, the purifiers of the room are boosted with their window boost settings (`open_mode` / `open_preset` / `open_percentage`), at any hour but not at night for a purifier with night settings, and go back to the state they had before (or their closed preset / mode) once it ends; a purifier changed by hand is left alone for the manual override. With `suppress_when_handled`, the alert isn't notified while a purifier is boosted.
 
 `ventilate` also takes `max_outdoor_noise` (65 dB) and `max_outdoor_air` (3): no suggestion to open while the outdoor noise or air quality level is above them. Without an outdoor noise or air quality sensor (or while it is unavailable) it doesn't hold anything back.
 
@@ -282,7 +289,7 @@ The first six rows (`enabled`, `start` / `end`, `manual_override`, `suppress_whe
 | `enabled` | `true` | Control the devices (also the **Device control** switch) |
 | `start` / `end` | 09:00 / 21:00 | Window boost hours of the fans and purifiers. Both empty (or equal): all day |
 | `manual_override` | 60 min | A device changed by hand is left alone this long, then its target is applied again. 0: never paused |
-| `suppress_when_handled` | `true` | No "too hot" alert for a room whose air conditioner or fan is running on Smart Comfort's command |
+| `suppress_when_handled` | `true` | No "too hot" alert for a room whose air conditioner or fan is running on Smart Comfort's command, nor "polluted air" one while its purifier is boosted |
 | `night_start` / `night_end` | 22:00 / 07:00 | Quiet night hours: devices with night settings use them, and get no window boost |
 | `display_off` / `display_on` | the quiet night | Hours the indicator lights and displays of the devices are off (e.g. 20:00 / 10:00) |
 | `display` | none | On a device item: its indicator light or display — a `light` or `switch` (on/off), a `number` (off: its minimum), a `select` (off: its off option, such as `Off` or `Fermer`). Off in the display hours and during the naps of the room; Smart Comfort acts only when these start or end, so one turned back on by hand stays on until the next change |
@@ -296,7 +303,7 @@ The first six rows (`enabled`, `start` / `end`, `manual_override`, `suppress_whe
 | `fans.open_percentage` / `open_preset` | 100 % / none | While a window is open in the boost hours |
 | `fans.off_preset` | none | Preset set before turning off (the fan restarts in it) |
 | `fans.night_percentage` / `night_preset` | none | Speed and preset when on at night (unset: the day ones) |
-| `purifiers.open_percentage` / `open_preset` | 100 % / none | While a window is open in the boost hours |
+| `purifiers.open_percentage` / `open_preset` | 100 % / none | While a window is open in the boost hours, and while the room's air is polluted |
 | `purifiers.closed_preset` | none | When the windows are closed. Without it (nor `closed_mode`), the purifier goes back to the state it had before the boost |
 | `purifiers.mode_select` / `open_mode` / `closed_mode` | none | A `select` entity and its options for the two states (e.g. `manual` / `automatic`) |
 | `purifiers.keep_on` | `false` | Turn the purifier back on when it has been off for 10 seconds |

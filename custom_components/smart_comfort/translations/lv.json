@@ -93,18 +93,24 @@
           "max_outdoor": "Maksimālā āra temperatūra",
           "max_outdoor_noise": "Maksimālais āra troksnis",
           "max_outdoor_air": "Maksimālais āra gaisa kvalitātes līmenis",
+          "pm10_threshold": "PM10 slieksnis",
+          "pm10_hysteresis": "PM10 histerēze",
+          "aqi_threshold": "Gaisa kvalitātes indeksa slieksnis",
+          "aqi_hysteresis": "Gaisa kvalitātes indeksa histerēze",
           "hysteresis": "Histerēze",
           "delay": "Aizture",
           "severity": "Nopietnība",
           "escalation": "Eskalācijas solis"
         },
         "data_description": {
-          "threshold": "Pārāk karsts/auksts, CO₂, mitrums: vērtība. Atvērt/aizvērt logus: starpība starp iekšā un ārā.",
+          "threshold": "Pārāk karsts/auksts, CO₂, mitrums: vērtība. Atvērt/aizvērt logus: starpība starp iekšā un ārā. Piesārņots gaiss: PM2,5 (µg/m³).",
           "min_indoor": "Ieteikt atvērt tikai tad, ja telpā ir vismaz tik silts.",
           "min_outdoor": "Tikai tad, ja ārā ir vismaz tik karsts.",
           "max_outdoor": "Tikai tad, ja ārā ir tik auksts vai aukstāks.",
           "max_outdoor_noise": "Netiek ieteikts, kamēr āra troksnis ir virs šīs vērtības (nepieciešams āra trokšņa sensors).",
           "max_outdoor_air": "Netiek ieteikts, kamēr āra gaisa kvalitāte ir sliktāka par šo līmeni, no 1 (laba) līdz 6 (ārkārtīgi slikta).",
+          "pm10_threshold": "Piesārņots gaiss: arī tad, ja PM10 pārsniedz šo vērtību (µg/m³).",
+          "aqi_threshold": "Piesārņots gaiss: arī tad, ja telpas gaisa kvalitātes indekss ir sliktāks par šo līmeni, no 1 (laba) līdz 6 (ārkārtīgi slikta). HomeKit indeksi ir no 1 līdz 5; ASV AQI tiek vērtēts pēc tā diapazoniem (virs 150: 4. līmenis).",
           "hysteresis": "Problēma beidzas tikai tad, kad vērtība ir atgriezusies aiz sliekšņa par tik: bez svārstībām.",
           "delay": "Minūtes, cik ilgi nosacījumam jāsaglabājas, pirms tā ir problēma.",
           "escalation": "Paziņot atkārtoti, kad vērtība kļūst par tik sliktāka nekā pēdējā paziņojumā. 0: nekad."
@@ -186,6 +192,9 @@
           "co2": "CO₂",
           "humidity": "Mitrums",
           "noise": "Troksnis",
+          "pm25": "PM2.5",
+          "pm10": "PM10",
+          "air_quality": "Gaisa kvalitātes indekss",
           "openings": "Logi un durvis",
           "climate": "Gaisa kondicionieris",
           "fans": "Ventilatori",
@@ -213,6 +222,8 @@
           }
         },
         "data_description": {
+          "pm25": "Smalko daļiņu sensori (µg/m³), arī gaisa attīrītāju: brīdinājums par piesārņotu gaisu, un attīrītāji darbojas jaudīgāk, līdz gaiss atkal ir tīrs.",
+          "air_quality": "Telpas gaisa kvalitātes indeksa sensori (HomeKit 1–5, Eiropas 1–6, ASV AQI).",
           "lights": "Regulējamas gaismas: to spilgtums seko diennakts laikam, kamēr tās ir ieslēgtas (adaptīvais apgaismojums)."
         }
       },
@@ -224,6 +235,9 @@
           "co2": "CO₂",
           "humidity": "Mitrums",
           "noise": "Troksnis",
+          "pm25": "PM2.5",
+          "pm10": "PM10",
+          "air_quality": "Gaisa kvalitātes indekss",
           "openings": "Logi un durvis",
           "climate": "Gaisa kondicionieris",
           "fans": "Ventilatori",
@@ -251,6 +265,8 @@
           }
         },
         "data_description": {
+          "pm25": "Smalko daļiņu sensori (µg/m³), arī gaisa attīrītāju: brīdinājums par piesārņotu gaisu, un attīrītāji darbojas jaudīgāk, līdz gaiss atkal ir tīrs.",
+          "air_quality": "Telpas gaisa kvalitātes indeksa sensori (HomeKit 1–5, Eiropas 1–6, ASV AQI).",
           "lights": "Regulējamas gaismas: to spilgtums seko diennakts laikam, kamēr tās ir ieslēgtas (adaptīvais apgaismojums)."
         }
       },
@@ -324,6 +340,7 @@
         "too_cold": "Pārāk auksts",
         "window_open_cold": "Logs atvērts aukstumā",
         "co2_high": "Augsts CO₂",
+        "polluted_air": "Piesārņots gaiss",
         "humidity_high": "Augsts mitrums",
         "noise_high": "Trokšņaina telpa",
         "noisy_outside": "Aizveriet logus (ārā ir troksnis)",
@@ -377,6 +394,7 @@
           "too_cold": "Pārāk auksts",
           "window_open_cold": "Logs atvērts aukstumā",
           "co2_high": "Augsts CO₂",
+          "polluted_air": "Piesārņots gaiss",
           "humidity_high": "Augsts mitrums",
           "noise_high": "Trokšņaina telpa",
           "noisy_outside": "Aizveriet logus (ārā ir troksnis)",
@@ -479,6 +497,8 @@
     "line_close_windows": "{outdoor} °C ārā, {temperature} °C iekšā — aizveriet: {openings}",
     "line_window_open_cold": "atvērts: {openings}, {outdoor} °C ārā",
     "line_co2_high": "CO₂ {value} ppm — izvēdiniet telpu",
+    "line_polluted_air": "{pollutant} {value} µg/m³, virs {threshold} µg/m³",
+    "line_polluted_air_index": "gaisa kvalitāte {value}/6, virs {threshold}/6",
     "line_humidity_high": "mitrums {value} % — izvēdiniet telpu",
     "line_noise_high": "troksnis {value} dB, virs {threshold} dB",
     "line_noisy_outside": "{value} dB ārā — aizveriet: {openings}",

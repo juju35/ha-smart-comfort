@@ -915,3 +915,71 @@ async def test_calendar_parses_the_history_once(hass: HomeAssistant, notify, fan
     history = entry.runtime_data.engine.history
     assert len(history) == 2
     assert sum(any(r is h for h in history) for r in parsed) == 2
+
+
+async def test_polluted_air_boosts_the_purifier_then_restores_it(hass: HomeAssistant, notify, freezer) -> None:
+    """The living room at 47 µg/m³ with its purifier in manual: the alert, the purifier boosted (handled), restored."""
+    select = async_mock_service(hass, "select", "select_option")
+    fans = {s: async_mock_service(hass, "fan", s) for s in ("turn_on", "set_percentage", "set_preset_mode")}
+    registry = er.async_get(hass)
+    homekit = registry.async_get_or_create("sensor", "homekit_controller", "aq1", suggested_object_id="p_air_quality")
+    hass.states.async_set("sensor.p_pm2_5_density", "47", {"device_class": "pm25"})
+    hass.states.async_set(homekit.entity_id, "2", {"device_class": "aqi"})
+    hass.states.async_set("select.p_mode", "automatic", {"options": ["automatic", "manual"]})
+    hass.states.async_set("fan.p", "on", {"percentage": 30})
+    options = {
+        "notify": ["notify.phone"],
+        "digest_window": 0,
+        "startup_grace": 0,
+        "alerts": {"polluted_air": {"delay": 0}},
+        "rooms": [
+            {
+                "name": "Séjour",
+                "pm25": ["sensor.p_pm2_5_density"],
+                "air_quality": [homekit.entity_id],
+                "purifiers": [{"entity_id": "fan.p", "mode_select": "select.p_mode", "open_mode": "manual"}],
+            }
+        ],
+    }
+    entry = await _setup(hass, options)
+    await _evaluate(hass, entry)
+    manager = entry.runtime_data
+    assert manager.engine.episodes["sejour|polluted_air"].active
+    # Boosted in the same evaluation, so handled by the purifier: no notification.
+    assert [c.data["option"] for c in select] == ["manual"]
+    assert [c.data["percentage"] for c in fans["set_percentage"]] == [100]
+    assert manager.controller.targets["fan.p"] == "purify"
+    assert "sejour|polluted_air" in manager.handled
+    assert notify == []
+    attrs = hass.states.get("sensor.smart_comfort_sejour_comfort").attributes
+    assert attrs["pm25"] == 47.0 and attrs["air_quality"] == 2.0 and attrs["handled"]
+    alert = hass.states.get("sensor.smart_comfort_active_alerts").attributes["alerts"][0]
+    assert (alert["kind"], alert["value"], alert["metric"], alert["handled"]) == ("polluted_air", 47.0, "pm25", True)
+    # The HomeKit index (1 to 5) is taken as is: 5 (poor) alone keeps the alert.
+    hass.states.async_set("select.p_mode", "manual", {"options": ["automatic", "manual"]})
+    hass.states.async_set("fan.p", "on", {"percentage": 100})  # Its answer, within the grace: not by hand.
+    await hass.async_block_till_done()
+    assert "fan.p" not in manager.controller.overrides
+    freezer.tick(timedelta(minutes=5))
+    hass.states.async_set("sensor.p_pm2_5_density", "12", {"device_class": "pm25"})
+    hass.states.async_set(homekit.entity_id, "5", {"device_class": "aqi"})
+    await _evaluate(hass, entry)
+    assert manager.engine.episodes["sejour|polluted_air"].details["metric"] == "aqi"
+    # Clean air: back to automatic, at its speed before.
+    hass.states.async_set(homekit.entity_id, "1", {"device_class": "aqi"})
+    await _evaluate(hass, entry)
+    assert not manager.engine.episodes
+    assert [c.data["option"] for c in select] == ["manual", "automatic"]
+    assert [c.data["percentage"] for c in fans["set_percentage"]] == [100, 30]
+
+
+def test_indoor_air_level() -> None:
+    from homeassistant.core import State
+
+    from custom_components.smart_comfort.manager import indoor_air_level
+
+    homekit = State("sensor.x", "4", {"device_class": "aqi"})
+    assert indoor_air_level(homekit, homekit=True) == 4.0  # HomeKit 4: inferior.
+    assert indoor_air_level(homekit) == 1.0  # A US AQI of 4: good.
+    assert indoor_air_level(State("sensor.x", "0", {}), homekit=True) is None
+    assert indoor_air_level(State("sensor.x", "160", {"device_class": "aqi"})) == 4.0

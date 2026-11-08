@@ -15,6 +15,8 @@ from typing import Any
 from .const import (
     CONF_AIR_QUALITY,
     CONF_ALERTS,
+    CONF_AQI_HYSTERESIS,
+    CONF_AQI_THRESHOLD,
     CONF_AREA,
     CONF_BRIGHTNESS,
     CONF_CLEAR_WHEN_RESOLVED,
@@ -93,6 +95,10 @@ from .const import (
     CONF_OUTDOOR_NOISE,
     CONF_OUTDOORS,
     CONF_PERCENTAGE,
+    CONF_PM10,
+    CONF_PM10_HYSTERESIS,
+    CONF_PM10_THRESHOLD,
+    CONF_PM25,
     CONF_PRESENCE,
     CONF_PRESENCE_LIGHTS,
     CONF_PRESET,
@@ -187,6 +193,11 @@ class AlertSettings:
     min_indoor: float | None = None
     max_noise: float | None = None
     max_air: float | None = None
+    # Polluted air: PM10 and air quality index thresholds (`threshold` and `hysteresis` are the PM2.5 ones).
+    pm10_threshold: float | None = None
+    pm10_hysteresis: float = 0.0
+    aqi_threshold: float | None = None
+    aqi_hysteresis: float = 0.0
 
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> AlertSettings:
@@ -202,6 +213,10 @@ class AlertSettings:
             min_indoor=_float(data.get(CONF_MIN_INDOOR)),
             max_noise=_float(data.get(CONF_MAX_NOISE)),
             max_air=_float(data.get(CONF_MAX_AIR)),
+            pm10_threshold=_float(data.get(CONF_PM10_THRESHOLD)),
+            pm10_hysteresis=float(data.get(CONF_PM10_HYSTERESIS) or 0),
+            aqi_threshold=_float(data.get(CONF_AQI_THRESHOLD)),
+            aqi_hysteresis=float(data.get(CONF_AQI_HYSTERESIS) or 0),
         )
 
 
@@ -408,6 +423,10 @@ class Room:
     co2: str | None = None
     humidity: str | None = None
     noise: str | None = None
+    # Indoor air: fine particles (µg/m³) and air quality index sensors, the worst one counts.
+    pm25: tuple[str, ...] = ()
+    pm10: tuple[str, ...] = ()
+    air_quality: tuple[str, ...] = ()
     openings: tuple[str, ...] = ()
     climate: ClimateDevice | None = None
     fans: tuple[FanDevice, ...] = ()
@@ -441,8 +460,14 @@ class Room:
         return devices + [f.entity_id for f in self.fans] + [p.entity_id for p in self.purifiers]
 
     @property
+    def indoor_air(self) -> tuple[str, ...]:
+        """Every indoor air sensor of the room (PM2.5, PM10, air quality index)."""
+        return self.pm25 + self.pm10 + self.air_quality
+
+    @property
     def sensors(self) -> list[str]:
-        return [e for e in (self.temperature, self.co2, self.humidity, self.noise) if e] + list(self.openings)
+        sensors = [e for e in (self.temperature, self.co2, self.humidity, self.noise) if e]
+        return sensors + list(self.indoor_air) + list(self.openings)
 
 
 @dataclass(frozen=True)
@@ -617,6 +642,9 @@ def _room(
         co2=raw.get(CONF_CO2) or None,
         humidity=raw.get(CONF_HUMIDITY) or None,
         noise=raw.get(CONF_NOISE) or None,
+        pm25=_ids(raw.get(CONF_PM25)),
+        pm10=_ids(raw.get(CONF_PM10)),
+        air_quality=_ids(raw.get(CONF_AIR_QUALITY)),
         openings=tuple([openings] if isinstance(openings, str) else openings),
         climate=climate,
         fans=tuple(fans),

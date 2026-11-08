@@ -419,3 +419,57 @@ def test_no_night_settings_no_change():
         {"percentage": 50},
     )
     assert not s.night(NOON) and s.night(NIGHT) and s.night(time(3, 0)) and not s.night(MORNING)
+
+
+def polluted(temp=21.0, opened=False):
+    context = ctx(temp, opened)
+    context.polluted = True
+    return context
+
+
+def test_purifier_boosted_while_the_air_is_polluted_then_restored():
+    s = room_settings(
+        purifiers=[
+            {"entity_id": "fan.p", "mode_select": "select.p_mode", "open_mode": "manual", "night_preset": "Sleep"}
+        ]
+    )
+    c, room = Controller(s), s.rooms[0]
+    auto = {"fan.p": DeviceState(on=True, option="automatic", preset="Auto", percentage=30)}
+    assert c.evaluate(T0, NOON, room, ctx(21.0), auto) == []
+    # Polluted (any hour, here outside the window boost hours): manual mode, full speed.
+    late = time(21, 30)
+    assert calls(c.evaluate(T0, late, room, polluted(), auto)) == [
+        ("select.p_mode", "select.select_option", {"option": "manual"}),
+        ("fan.p", "fan.set_percentage", {"percentage": 100}),
+    ]
+    assert c.targets["fan.p"] == "purify"
+    boosted = {"fan.p": DeviceState(on=True, option="manual", preset=None, percentage=100)}
+    assert c.purifying(room, boosted)
+    assert not c.handled(room, boosted)  # Too hot is for the AC and the fans.
+    assert c.evaluate(T0, late, room, polluted(), boosted) == []
+    # Clean again: back to the state before the boost.
+    assert calls(c.evaluate(T0, late, room, ctx(21.0), boosted)) == [
+        ("select.p_mode", "select.select_option", {"option": "automatic"}),
+        ("fan.p", "fan.set_preset_mode", {"preset_mode": "Auto"}),
+    ]
+    assert c.before_boost == {}
+    assert not c.purifying(room, auto)
+
+
+def test_purifier_polluted_air_left_alone_after_a_change_by_hand_and_quiet_at_night():
+    s = room_settings(purifiers=[{"entity_id": "fan.p", "night_preset": "Sleep"}])
+    c, room = Controller(s), s.rooms[0]
+    off = {"fan.p": DeviceState(on=False)}
+    assert calls(c.evaluate(T0, NOON, room, polluted(), off)) == [
+        ("fan.p", "fan.turn_on", {}),
+        ("fan.p", "fan.set_percentage", {"percentage": 100}),
+    ]
+    # Turned off by hand: left alone until the manual override is over.
+    c.manual_change("fan.p", T0)
+    assert c.evaluate(T0 + timedelta(minutes=5), NOON, room, polluted(), off) == []
+    # A quiet purifier (night settings) stays quiet at night, polluted or not.
+    c2 = Controller(s)
+    on = {"fan.p": DeviceState(on=True, preset="Auto", percentage=30)}
+    assert calls(c2.evaluate(T0, NIGHT, room, polluted(), on)) == [
+        ("fan.p", "fan.set_preset_mode", {"preset_mode": "Sleep"}),
+    ]

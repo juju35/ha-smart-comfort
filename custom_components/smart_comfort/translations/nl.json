@@ -93,18 +93,24 @@
           "max_outdoor": "Maximale buitentemperatuur",
           "max_outdoor_noise": "Maximaal buitengeluid",
           "max_outdoor_air": "Maximaal niveau van buitenluchtkwaliteit",
+          "pm10_threshold": "PM10-drempel",
+          "pm10_hysteresis": "PM10-hysterese",
+          "aqi_threshold": "Drempel van de luchtkwaliteitsindex",
+          "aqi_hysteresis": "Hysterese van de luchtkwaliteitsindex",
           "hysteresis": "Hysterese",
           "delay": "Vertraging",
           "severity": "Ernst",
           "escalation": "Escalatiestap"
         },
         "data_description": {
-          "threshold": "Te warm/koud, CO₂, vochtigheid: de waarde. Ramen openen/sluiten: het verschil binnen/buiten.",
+          "threshold": "Te warm/koud, CO₂, vochtigheid: de waarde. Ramen openen/sluiten: het verschil binnen/buiten. Vervuilde lucht: PM2.5 (µg/m³).",
           "min_indoor": "Stel alleen openen voor als de kamer minstens zo warm is.",
           "min_outdoor": "Alleen als het buiten minstens zo warm is.",
           "max_outdoor": "Alleen als het buiten zo koud of kouder is.",
           "max_outdoor_noise": "Niet voorgesteld als het buitengeluid hoger is dan dit (vereist een buitengeluidssensor).",
           "max_outdoor_air": "Niet voorgesteld als de buitenluchtkwaliteit slechter is dan dit niveau, van 1 (goed) tot 6 (extreem slecht).",
+          "pm10_threshold": "Vervuilde lucht: ook wanneer PM10 hierboven ligt (µg/m³).",
+          "aqi_threshold": "Vervuilde lucht: ook wanneer de luchtkwaliteitsindex van de ruimte slechter is dan dit niveau, van 1 (goed) tot 6 (extreem slecht). HomeKit-indexen gaan van 1 tot 5; een Amerikaanse AQI telt volgens zijn klassen (boven 150: niveau 4).",
           "hysteresis": "Het probleem eindigt pas als de waarde zoveel voorbij de drempel terug is: geen heen-en-weer schakelen.",
           "delay": "Minuten dat de voorwaarde moet aanhouden voordat het een probleem is.",
           "escalation": "Opnieuw melden als de waarde zoveel slechter wordt dan bij de laatste melding. 0: nooit."
@@ -186,6 +192,9 @@
           "co2": "CO₂",
           "humidity": "Vochtigheid",
           "noise": "Geluid",
+          "pm25": "PM2.5",
+          "pm10": "PM10",
+          "air_quality": "Luchtkwaliteitsindex",
           "openings": "Ramen en deuren",
           "climate": "Airco",
           "fans": "Ventilatoren",
@@ -213,6 +222,8 @@
           }
         },
         "data_description": {
+          "pm25": "Fijnstofsensoren (µg/m³), ook die van de luchtreinigers: een melding bij vervuilde lucht, en de luchtreinigers harder tot de lucht weer schoon is.",
+          "air_quality": "Luchtkwaliteitsindexsensoren van de ruimte (HomeKit 1–5, Europees 1–6, Amerikaanse AQI).",
           "lights": "Dimbare lampen: hun helderheid volgt het moment van de dag zolang ze aan zijn (adaptieve verlichting)."
         }
       },
@@ -224,6 +235,9 @@
           "co2": "CO₂",
           "humidity": "Vochtigheid",
           "noise": "Geluid",
+          "pm25": "PM2.5",
+          "pm10": "PM10",
+          "air_quality": "Luchtkwaliteitsindex",
           "openings": "Ramen en deuren",
           "climate": "Airco",
           "fans": "Ventilatoren",
@@ -251,6 +265,8 @@
           }
         },
         "data_description": {
+          "pm25": "Fijnstofsensoren (µg/m³), ook die van de luchtreinigers: een melding bij vervuilde lucht, en de luchtreinigers harder tot de lucht weer schoon is.",
+          "air_quality": "Luchtkwaliteitsindexsensoren van de ruimte (HomeKit 1–5, Europees 1–6, Amerikaanse AQI).",
           "lights": "Dimbare lampen: hun helderheid volgt het moment van de dag zolang ze aan zijn (adaptieve verlichting)."
         }
       },
@@ -324,6 +340,7 @@
         "too_cold": "Te koud",
         "window_open_cold": "Raam open in de kou",
         "co2_high": "Hoge CO₂",
+        "polluted_air": "Vervuilde lucht",
         "humidity_high": "Hoge vochtigheid",
         "noise_high": "Lawaaiige kamer",
         "noisy_outside": "Ramen sluiten (lawaai buiten)",
@@ -377,6 +394,7 @@
           "too_cold": "Te koud",
           "window_open_cold": "Raam open in de kou",
           "co2_high": "Hoge CO₂",
+          "polluted_air": "Vervuilde lucht",
           "humidity_high": "Hoge vochtigheid",
           "noise_high": "Lawaaiige kamer",
           "noisy_outside": "Ramen sluiten (lawaai buiten)",
@@ -479,6 +497,8 @@
     "line_close_windows": "{outdoor} °C buiten, {temperature} °C binnen — sluit {openings}",
     "line_window_open_cold": "open: {openings}, {outdoor} °C buiten",
     "line_co2_high": "CO₂ {value} ppm — lucht de kamer",
+    "line_polluted_air": "{pollutant} {value} µg/m³, boven {threshold} µg/m³",
+    "line_polluted_air_index": "luchtkwaliteit {value}/6, boven {threshold}/6",
     "line_humidity_high": "vochtigheid {value} % — lucht de kamer",
     "line_noise_high": "geluid {value} dB, boven {threshold} dB",
     "line_noisy_outside": "{value} dB buiten — sluit {openings}",

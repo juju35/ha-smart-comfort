@@ -93,18 +93,24 @@
           "max_outdoor": "Temperatura exterior máxima",
           "max_outdoor_noise": "Ruido exterior máximo",
           "max_outdoor_air": "Nivel máximo de calidad del aire exterior",
+          "pm10_threshold": "Umbral de PM10",
+          "pm10_hysteresis": "Histéresis de PM10",
+          "aqi_threshold": "Umbral del índice de calidad del aire",
+          "aqi_hysteresis": "Histéresis del índice de calidad del aire",
           "hysteresis": "Histéresis",
           "delay": "Retardo",
           "severity": "Gravedad",
           "escalation": "Paso de empeoramiento"
         },
         "data_description": {
-          "threshold": "Calor/frío, CO₂, humedad: el valor. Ventilar/cerrar: la diferencia interior/exterior.",
+          "threshold": "Calor/frío, CO₂, humedad: el valor. Ventilar/cerrar: la diferencia interior/exterior. Aire contaminado: PM2.5 (µg/m³).",
           "min_indoor": "Solo sugiere ventilar si la estancia está al menos a esta temperatura.",
           "min_outdoor": "Solo si fuera hace al menos esta temperatura.",
           "max_outdoor": "Solo si fuera hace como máximo esta temperatura.",
           "max_outdoor_noise": "No se sugiere mientras el ruido exterior supere este valor (con sensor de ruido exterior).",
           "max_outdoor_air": "No se sugiere mientras la calidad del aire fuera sea peor que este nivel, de 1 (buena) a 6 (extremadamente mala).",
+          "pm10_threshold": "Aire contaminado: también cuando las PM10 superan este valor (µg/m³).",
+          "aqi_threshold": "Aire contaminado: también cuando el índice de calidad del aire de la estancia es peor que este nivel, de 1 (bueno) a 6 (extremadamente malo). Los índices HomeKit van de 1 a 5; un AQI de EE. UU. cuenta por sus tramos (por encima de 150: nivel 4).",
           "hysteresis": "El problema termina solo cuando el valor vuelve a pasar el umbral en al menos esta cantidad: sin oscilaciones.",
           "delay": "Minutos que la condición debe mantenerse antes de ser un problema.",
           "escalation": "Notifica de nuevo si el valor empeora tanto desde la última notificación. 0: nunca."
@@ -186,6 +192,9 @@
           "co2": "CO₂",
           "humidity": "Humedad",
           "noise": "Ruido",
+          "pm25": "PM2.5",
+          "pm10": "PM10",
+          "air_quality": "Índice de calidad del aire",
           "openings": "Ventanas y puertas",
           "climate": "Aire acondicionado",
           "fans": "Ventiladores",
@@ -213,6 +222,8 @@
           }
         },
         "data_description": {
+          "pm25": "Sensores de partículas finas (µg/m³), también los de los purificadores: una alerta de aire contaminado, y los purificadores reforzados hasta que el aire vuelva a estar limpio.",
+          "air_quality": "Sensores de índice de calidad del aire de la estancia (HomeKit 1–5, europeo 1–6, AQI de EE. UU.).",
           "lights": "Luces regulables: su brillo sigue el momento del día mientras están encendidas (iluminación adaptativa)."
         }
       },
@@ -224,6 +235,9 @@
           "co2": "CO₂",
           "humidity": "Humedad",
           "noise": "Ruido",
+          "pm25": "PM2.5",
+          "pm10": "PM10",
+          "air_quality": "Índice de calidad del aire",
           "openings": "Ventanas y puertas",
           "climate": "Aire acondicionado",
           "fans": "Ventiladores",
@@ -251,6 +265,8 @@
           }
         },
         "data_description": {
+          "pm25": "Sensores de partículas finas (µg/m³), también los de los purificadores: una alerta de aire contaminado, y los purificadores reforzados hasta que el aire vuelva a estar limpio.",
+          "air_quality": "Sensores de índice de calidad del aire de la estancia (HomeKit 1–5, europeo 1–6, AQI de EE. UU.).",
           "lights": "Luces regulables: su brillo sigue el momento del día mientras están encendidas (iluminación adaptativa)."
         }
       },
@@ -324,6 +340,7 @@
         "too_cold": "Demasiado frío",
         "window_open_cold": "Ventana abierta con frío",
         "co2_high": "CO₂ alto",
+        "polluted_air": "Aire contaminado",
         "humidity_high": "Humedad alta",
         "noise_high": "Estancia ruidosa",
         "noisy_outside": "Cerrar las ventanas (ruido fuera)",
@@ -377,6 +394,7 @@
           "too_cold": "Demasiado frío",
           "window_open_cold": "Ventana abierta con frío",
           "co2_high": "CO₂ alto",
+          "polluted_air": "Aire contaminado",
           "humidity_high": "Humedad alta",
           "noise_high": "Estancia ruidosa",
           "noisy_outside": "Cerrar las ventanas (ruido fuera)",
@@ -479,6 +497,8 @@
     "line_close_windows": "{outdoor} °C fuera, {temperature} °C dentro — cierre {openings}",
     "line_window_open_cold": "{openings} abierta(s), {outdoor} °C fuera",
     "line_co2_high": "CO₂ {value} ppm — ventile",
+    "line_polluted_air": "{pollutant} {value} µg/m³, por encima de {threshold} µg/m³",
+    "line_polluted_air_index": "calidad del aire {value}/6, por encima de {threshold}/6",
     "line_humidity_high": "humedad {value} % — ventile",
     "line_noise_high": "ruido {value} dB, por encima de {threshold} dB",
     "line_noisy_outside": "{value} dB fuera — cierre {openings}",

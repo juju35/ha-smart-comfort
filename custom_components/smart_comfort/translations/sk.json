@@ -93,18 +93,24 @@
           "max_outdoor": "Maximálna vonkajšia teplota",
           "max_outdoor_noise": "Maximálny vonkajší hluk",
           "max_outdoor_air": "Max. úroveň kvality vonkajšieho vzduchu",
+          "pm10_threshold": "Prah PM10",
+          "pm10_hysteresis": "Hysterézia PM10",
+          "aqi_threshold": "Prah indexu kvality vzduchu",
+          "aqi_hysteresis": "Hysterézia indexu kvality vzduchu",
           "hysteresis": "Hysterézia",
           "delay": "Oneskorenie",
           "severity": "Závažnosť",
           "escalation": "Krok eskalácie"
         },
         "data_description": {
-          "threshold": "Príliš teplo/chladno, CO₂, vlhkosť: hodnota. Otvoriť/zatvoriť okná: rozdiel medzi vnútrom a vonkajškom.",
+          "threshold": "Príliš teplo/chladno, CO₂, vlhkosť: hodnota. Otvoriť/zatvoriť okná: rozdiel medzi vnútrom a vonkajškom. Znečistený vzduch: PM2,5 (µg/m³).",
           "min_indoor": "Navrhnúť otvorenie, len keď je v miestnosti aspoň takto teplo.",
           "min_outdoor": "Len keď je vonku aspoň takto teplo.",
           "max_outdoor": "Len keď je vonku takto chladno alebo chladnejšie.",
           "max_outdoor_noise": "Nenavrhuje sa, kým je vonkajší hluk nad touto hodnotou (vyžaduje vonkajší senzor hluku).",
           "max_outdoor_air": "Nenavrhuje sa, kým je kvalita vonkajšieho vzduchu horšia než táto úroveň, od 1 (dobrá) po 6 (mimoriadne zlá).",
+          "pm10_threshold": "Znečistený vzduch: aj keď je PM10 nad touto hodnotou (µg/m³).",
+          "aqi_threshold": "Znečistený vzduch: aj keď je index kvality vzduchu v miestnosti horší ako táto úroveň, od 1 (dobrá) po 6 (mimoriadne zlá). Indexy HomeKit idú od 1 do 5; americký AQI sa počíta podľa svojich pásiem (nad 150: úroveň 4).",
           "hysteresis": "Problém skončí, až keď sa hodnota vráti za prah o toľko: žiadne kmitanie.",
           "delay": "Minúty, počas ktorých musí podmienka trvať, kým sa z nej stane problém.",
           "escalation": "Oznámiť znova, keď sa hodnota zhorší o toľko oproti poslednému oznámeniu. 0: nikdy."
@@ -186,6 +192,9 @@
           "co2": "CO₂",
           "humidity": "Vlhkosť",
           "noise": "Hluk",
+          "pm25": "PM2.5",
+          "pm10": "PM10",
+          "air_quality": "Index kvality vzduchu",
           "openings": "Okná a dvere",
           "climate": "Klimatizácia",
           "fans": "Ventilátory",
@@ -213,6 +222,8 @@
           }
         },
         "data_description": {
+          "pm25": "Senzory jemných prachových častíc (µg/m³), aj tie na čističkách: upozornenie na znečistený vzduch a čističky bežia silnejšie, kým vzduch nie je opäť čistý.",
+          "air_quality": "Senzory indexu kvality vzduchu v miestnosti (HomeKit 1–5, európsky 1–6, americký AQI).",
           "lights": "Stmievateľné svetlá: ich jas sleduje dennú dobu, kým svietia (adaptívne osvetlenie)."
         }
       },
@@ -224,6 +235,9 @@
           "co2": "CO₂",
           "humidity": "Vlhkosť",
           "noise": "Hluk",
+          "pm25": "PM2.5",
+          "pm10": "PM10",
+          "air_quality": "Index kvality vzduchu",
           "openings": "Okná a dvere",
           "climate": "Klimatizácia",
           "fans": "Ventilátory",
@@ -251,6 +265,8 @@
           }
         },
         "data_description": {
+          "pm25": "Senzory jemných prachových častíc (µg/m³), aj tie na čističkách: upozornenie na znečistený vzduch a čističky bežia silnejšie, kým vzduch nie je opäť čistý.",
+          "air_quality": "Senzory indexu kvality vzduchu v miestnosti (HomeKit 1–5, európsky 1–6, americký AQI).",
           "lights": "Stmievateľné svetlá: ich jas sleduje dennú dobu, kým svietia (adaptívne osvetlenie)."
         }
       },
@@ -324,6 +340,7 @@
         "too_cold": "Príliš chladno",
         "window_open_cold": "Otvorené okno v chlade",
         "co2_high": "Vysoké CO₂",
+        "polluted_air": "Znečistený vzduch",
         "humidity_high": "Vysoká vlhkosť",
         "noise_high": "Hlučná miestnosť",
         "noisy_outside": "Zatvorte okná (vonku je hluk)",
@@ -377,6 +394,7 @@
           "too_cold": "Príliš chladno",
           "window_open_cold": "Otvorené okno v chlade",
           "co2_high": "Vysoké CO₂",
+          "polluted_air": "Znečistený vzduch",
           "humidity_high": "Vysoká vlhkosť",
           "noise_high": "Hlučná miestnosť",
           "noisy_outside": "Zatvorte okná (vonku je hluk)",
@@ -479,6 +497,8 @@
     "line_close_windows": "{outdoor} °C vonku, {temperature} °C vnútri — zatvorte: {openings}",
     "line_window_open_cold": "otvorené: {openings}, {outdoor} °C vonku",
     "line_co2_high": "CO₂ {value} ppm — vyvetrajte miestnosť",
+    "line_polluted_air": "{pollutant} {value} µg/m³, nad {threshold} µg/m³",
+    "line_polluted_air_index": "kvalita vzduchu {value}/6, nad {threshold}/6",
     "line_humidity_high": "vlhkosť {value} % — vyvetrajte miestnosť",
     "line_noise_high": "hluk {value} dB, nad {threshold} dB",
     "line_noisy_outside": "{value} dB vonku — zatvorte: {openings}",
