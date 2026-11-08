@@ -975,7 +975,7 @@ class SmartComfortMiniCard extends HTMLElement {
     }
     if (!this._activity) {
       // Defined by the module imported above.
-      this._activity = document.createElement("smart-comfort-activity-card");
+      this._activity = document.createElement("smart-comfort-card");
       // Its ha-card blends into this one: no second background, border or shadow.
       for (const [name, value] of [["--ha-card-background", "transparent"], ["--ha-card-box-shadow", "none"], ["--ha-card-border-width", "0"]]) {
         this._activity.style.setProperty(name, value);

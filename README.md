@@ -43,7 +43,7 @@ Comfort automations built with a cooldown keep notifying every couple of hours a
 - **Calendar of the alerts**: every alert is an event of the *Comfort alerts* calendar, from when it started to when it ended, with its room, its kind and its worst value ("29.5 °C, above 26 °C"); kept 90 days, so the calendar view of Home Assistant shows when each room was too hot, too humid or noisy
 - **No re-notification after a restart**: episodes, snoozes and device targets are stored; nothing is sent during the startup grace period
 - **YAML or UI**: configure everything in YAML (imported at startup), in the **Smart Comfort panel** of the sidebar, or in the integration options — rooms, alerts, control
-- **Dashboard cards**, added by the integration: a **mini card** (the alerts of the moment and the switches, with a button that opens the full card: every alert, the rooms, the latest activity) and an **activity card**
+- **Dashboard cards**, added by the integration: a **card** (`custom:smart-comfort-card`: what Smart Comfort did and why, live) and a **mini card** (`custom:smart-comfort-mini-card`: the alerts of the moment and the switches, with a button that opens the full card: every alert, the rooms, the latest activity)
 - Sensors for the active alerts and the comfort of each room, switches to pause the notifications or the device control, buttons, actions and events
 - English, French, German, Spanish, Italian, Dutch, European Portuguese, Polish, Serbian (Cyrillic and Latin), Romanian, Danish, Swedish, Bulgarian, Russian, Ukrainian, Hungarian, Slovak, Czech, Slovenian, Latvian and Greek
 
@@ -410,9 +410,35 @@ A light is turned on only when none of the presence lights is already on, at the
 
 A slot color, like a slot brightness, is kept until the light is turned off (the adaptive lighting leaves it alone).
 
-### Mini card
+### Cards
 
-The integration also adds a mini card (no resource to add), for any user: the alerts of the moment (the ones to deal with first, then the snoozed or handled ones), the outdoor temperature, and the notifications, device control and adaptive lighting switches, which a tap turns on or off. Its button at the top right switches it to the full card — every alert with since when and its state (snoozed, handled by a device, seen), a tile per room with its temperature (else humidity, else CO₂) and its main problem, the latest activity — and back; a click anywhere outside the card brings it back to the compact view too. A tap on an alert or a room opens its comfort sensor.
+The integration adds its cards to the dashboards itself (no resource to add), for any user: the card (`custom:smart-comfort-card`), what Smart Comfort did and why, and the mini card (`custom:smart-comfort-mini-card`), the alerts of the moment and the switches.
+
+#### Card (`custom:smart-comfort-card`)
+
+The latest activity of Smart Comfort, live: devices turned on or off and why, lights adjusted, notifications sent, changes made by hand.
+
+| Light | Dark |
+|---|---|
+| <img src="https://raw.githubusercontent.com/juju35/ha-smart-comfort/main/screenshots/card.png" alt="The card: the latest activity of Smart Comfort" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-smart-comfort/main/screenshots/card-dark.png" alt="The card, dark mode" width="400"> |
+
+```yaml
+type: custom:smart-comfort-card
+title: Smart Comfort        # optional ("" for no header)
+limit: 10                   # entries shown (10 by default)
+kinds: [device, presence]   # optional: device, lighting, presence, display, notified, manual, reset, failed
+room: Living room           # optional: one room only, its name as shown in the panel
+```
+
+In a Sections view the card is at least 6 columns wide (half a section): narrower, its lines would hold a word each. The visual editor lists the kinds by their translated names.
+
+The activity (the last 300 entries) is kept across restarts. It is also available to any user with the WebSocket command `smart_comfort/activity` (`limit`), which sends the latest entries, then each new one.
+
+`custom:smart-comfort-activity-card`, the former name of this card, still works: existing dashboards need no change.
+
+#### Mini card (`custom:smart-comfort-mini-card`)
+
+The alerts of the moment (the ones to deal with first, then the snoozed or handled ones), the outdoor temperature, and the notifications, device control and adaptive lighting switches, which a tap turns on or off. Its button at the top right switches it to the full card — every alert with since when and its state (snoozed, handled by a device, seen), a tile per room with its temperature (else humidity, else CO₂) and its main problem, the latest activity — and back; a click anywhere outside the card brings it back to the compact view too. A tap on an alert or a room opens its comfort sensor.
 
 | Light | Dark |
 |---|---|
@@ -429,22 +455,6 @@ zoom: false                 # optional: no full card button
 ```
 
 In a Sections view the mini card is 6 columns wide (half a section), the full card a whole section. On a narrow card the switches keep their icon only. With `rooms` set to a single room, the activity of the full card is that room's.
-
-### Activity card
-
-The integration also adds a Lovelace card (no resource to add): the latest activity of Smart Comfort, live, for any user.
-
-```yaml
-type: custom:smart-comfort-activity-card
-title: Smart Comfort        # optional ("" for no header)
-limit: 10                   # entries shown (10 by default)
-kinds: [device, presence]   # optional: device, lighting, presence, display, notified, manual, reset, failed
-room: Living room           # optional: one room only, its name as shown in the panel
-```
-
-In a Sections view the card is at least 6 columns wide (half a section): narrower, its lines would hold a word each. The visual editor lists the kinds by their translated names.
-
-The activity (the last 300 entries) is kept across restarts. It is also available to any user with the WebSocket command `smart_comfort/activity` (`limit`), which sends the latest entries, then each new one.
 
 ### Entities
 

@@ -1,8 +1,8 @@
 /**
- * Smart Comfort activity card: what Smart Comfort did and why, live.
- * Also used by the Activity tab of the Smart Comfort panel (with filters and days).
+ * Smart Comfort card: what Smart Comfort did and why, live.
+ * Also used by the Activity tab of the Smart Comfort panel (with filters and days), and in the mini card's full view.
  *
- * type: custom:smart-comfort-activity-card
+ * type: custom:smart-comfort-card   # custom:smart-comfort-activity-card, its former name, still works
  * title: Smart Comfort      # optional
  * limit: 10                 # entries shown
  * kinds: [device, lighting] # optional: only these (device, lighting, presence, display, notified, manual, reset, failed)
@@ -1096,7 +1096,7 @@ function groupOf(entry) {
 /** What keeps the keyboard focus across a render: the same line, or the same filter. */
 const entryKey = (entry) => `${entry.at}|${entry.kind}|${entry.entity_id || ""}|${entry.target || ""}`;
 
-class SmartComfortActivityCard extends HTMLElement {
+class SmartComfortCard extends HTMLElement {
   static getStubConfig() {
     return { limit: 10 };
   }
@@ -1432,13 +1432,19 @@ const STYLE = `
     color: color-mix(in srgb, var(--primary-color) 60%, var(--primary-text-color)); }
 `;
 
-if (!customElements.get("smart-comfort-activity-card")) {
-  customElements.define("smart-comfort-activity-card", SmartComfortActivityCard);
+// Its former name, for the dashboards that use it: the same card, not offered in the card picker.
+class SmartComfortActivityCard extends SmartComfortCard {}
+
+if (!customElements.get("smart-comfort-card")) {
+  customElements.define("smart-comfort-card", SmartComfortCard);
   window.customCards = window.customCards || [];
   window.customCards.push({
-    type: "smart-comfort-activity-card",
-    name: "Smart Comfort activity",
+    type: "smart-comfort-card",
+    name: "Smart Comfort",
     description: "What Smart Comfort did and why, live: devices, lights, notifications, changes by hand.",
     preview: false,
   });
+}
+if (!customElements.get("smart-comfort-activity-card")) {
+  customElements.define("smart-comfort-activity-card", SmartComfortActivityCard);
 }

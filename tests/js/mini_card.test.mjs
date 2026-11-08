@@ -187,7 +187,7 @@ test("zoom: the full card (all alerts with their state, rooms, activity); a clic
   assert.match(text(card, "ameta").join("|"), /Snoozed/);
   assert.deepEqual(text(card, "rname"), ["Living room", "Bathroom"]);
   assert.deepEqual(text(card, "rvalue"), ["27.8 °C", "61 %"]);
-  const activity = walk(card.shadowRoot).find((n) => n.tagName === "smart-comfort-activity-card");
+  const activity = walk(card.shadowRoot).find((n) => n.tagName === "smart-comfort-card");
   assert.ok(activity, "activity card shown");
   assert.equal(activity._config.title, "");
   assert.equal(activity._config.limit, 5);
@@ -199,7 +199,7 @@ test("zoom: the full card (all alerts with their state, rooms, activity); a clic
   for (const fn of documentListeners.click) fn({ composedPath: () => [new FakeNode("div")] });
   assert.ok(!card._zoomed);
   assert.equal(byClass(card, "rooms").length, 0);
-  assert.equal(walk(card.shadowRoot).find((n) => n.tagName === "smart-comfort-activity-card"), undefined);
+  assert.equal(walk(card.shadowRoot).find((n) => n.tagName === "smart-comfort-card"), undefined);
 });
 
 test("zoom: a click in a dialog opened from the card (more-info) does not close it", () => {
@@ -215,7 +215,7 @@ test("zoom: false removes the button; activity: 0 no activity", () => {
   assert.equal(byClass(card, "zoom").length, 0);
   ({ card } = make({ activity: 0 }));
   byClass(card, "zoom")[0].fire("click");
-  assert.equal(walk(card.shadowRoot).find((n) => n.tagName === "smart-comfort-activity-card"), undefined);
+  assert.equal(walk(card.shadowRoot).find((n) => n.tagName === "smart-comfort-card"), undefined);
 });
 
 test("switches: tinted when on, a tap turns them off or on", () => {
@@ -239,7 +239,7 @@ test("rooms option: only those rooms' alerts and tiles, and their activity for o
   assert.deepEqual(text(card, "hsub"), ["1 alert · Outside 18.5 °C"]);
   byClass(card, "zoom")[0].fire("click");
   assert.deepEqual(text(card, "rname"), ["Living room"]);
-  const activity = walk(card.shadowRoot).find((n) => n.tagName === "smart-comfort-activity-card");
+  const activity = walk(card.shadowRoot).find((n) => n.tagName === "smart-comfort-card");
   assert.equal(activity._config.room, "Living room");
 });
 

@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.12.0 - 2026-11-08
+
+### What's new
+- The card is now `custom:smart-comfort-card`, named like the mini card and listed as "Smart Comfort" in the card picker; `custom:smart-comfort-activity-card` still works, so existing dashboards need no change.
+- README: screenshots of the card in light and dark mode, and a Cards section with the card first, then the mini card.
+
 ## 1.11.1 - 2026-11-08
 
 ### Fixes

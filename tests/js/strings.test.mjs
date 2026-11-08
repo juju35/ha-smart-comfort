@@ -34,7 +34,7 @@ await import(FILES.card);
 await import(FILES.mini);
 const ELEMENTS = {
   panel: customElements.get("smart-comfort-panel"),
-  card: customElements.get("smart-comfort-activity-card"),
+  card: customElements.get("smart-comfort-card"),
   mini: customElements.get("smart-comfort-mini-card"),
 };
 

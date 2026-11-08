@@ -4104,10 +4104,10 @@ class SmartComfortPanel extends HTMLElement {
     const card = this._card(this._t("activity"), "mdi:history");
     card.append(this._el("div", "help", this._t("activity_help")));
     // The activity card, loaded on every page of Home Assistant by the integration.
-    const list = document.createElement("smart-comfort-activity-card");
+    const list = document.createElement("smart-comfort-card");
     card.append(list);
     content.append(card);
-    customElements.whenDefined("smart-comfort-activity-card").then(() => {
+    customElements.whenDefined("smart-comfort-card").then(() => {
       if (!list.isConnected) return;
       list.setConfig({ panel: true });
       list.hass = this._hass;

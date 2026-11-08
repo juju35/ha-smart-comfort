@@ -75,7 +75,7 @@ globalThis.customElements = {
 globalThis.document = { createElement: (tag) => new FakeNode(tag), querySelector: () => null };
 
 await import("../../custom_components/smart_comfort/frontend/smart-comfort-activity-card.js");
-const Card = customElements.get("smart-comfort-activity-card");
+const Card = customElements.get("smart-comfort-card");
 
 /** A connection whose subscriptions resolve on demand (`settle`) or right away, and fail when asked. */
 function fakeHass({ fail = false } = {}) {
@@ -418,4 +418,28 @@ test("rendered again when the language or a shown name changes, not on every oth
   assert.deepEqual(texts(card), ["fan.bedroom — Refroidit"]);
   // Still one subscription.
   assert.equal(fake.subs.length, 1);
+});
+
+test("custom:smart-comfort-card is the card; its former name still works, out of the card picker", () => {
+  assert.ok(Card, "smart-comfort-card defined");
+  const Alias = customElements.get("smart-comfort-activity-card");
+  assert.ok(Alias, "smart-comfort-activity-card still defined");
+  assert.notEqual(Alias, Card, "a tag name needs its own class");
+  assert.ok(Alias.prototype instanceof Card, "the same card");
+  assert.deepEqual(
+    window.customCards.map((c) => c.type),
+    ["smart-comfort-card"],
+  );
+  assert.equal(window.customCards[0].name, "Smart Comfort");
+  // Stub config and editor under both names.
+  for (const Element of [Card, Alias]) {
+    assert.deepEqual(Element.getStubConfig(), { limit: 10 });
+    const form = Element.getConfigForm();
+    assert.deepEqual(form.schema.map((s) => s.name), ["title", "limit", "kinds", "room"]);
+    assert.equal(form.computeLabel({ name: "limit" }), Card.getConfigForm().computeLabel({ name: "limit" }));
+  }
+  // A dashboard with the former name renders the same card.
+  const card = new Alias();
+  card.setConfig({ limit: 3 });
+  assert.equal(card.getCardSize(), new Card().getCardSize.call({ _config: { limit: 3 } }));
 });
