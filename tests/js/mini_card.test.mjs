@@ -267,3 +267,42 @@ test("Smart Comfort not loaded: says so", () => {
   assert.deepEqual(text(card, "empty"), ["Smart Comfort is not loaded."]);
   assert.equal(byClass(card, "switch").length, 0);
 });
+
+test("smart-comfort-card: the mini card's full view, standalone, never folded", () => {
+  const Full = customElements.get("smart-comfort-card");
+  assert.ok(Full.prototype instanceof Mini, "the mini card's rendering");
+  const fake = fakeHass({ alerts: ALERTS });
+  const card = new Full();
+  card.setConfig({});
+  card.hass = fake.hass;
+  card.connectedCallback();
+  // The same content as the mini card switched to its full view.
+  const { card: mini } = make({}, { alerts: ALERTS });
+  byClass(mini, "zoom")[0].fire("click");
+  for (const cls of ["hsub", "awhat", "ameta", "rname", "rvalue", "section-title"]) {
+    assert.deepEqual(text(card, cls), text(mini, cls), cls);
+  }
+  assert.ok(walk(card.shadowRoot).find((n) => n.tagName === "smart-comfort-activity-card"), "activity shown");
+  // No button to fold it, and a click outside leaves it as it is.
+  assert.equal(byClass(card, "zoom").length, 0);
+  for (const fn of documentListeners.click) fn({ composedPath: () => [new FakeNode("div")] });
+  assert.ok(card._zoomed);
+  assert.equal(byClass(card, "rooms").length, 1);
+  assert.deepEqual(card.getGridOptions(), { columns: 12, min_columns: 6 });
+  assert.equal(card.getCardSize(), 8);
+  // Editor: the mini card's options but the compact view's.
+  assert.deepEqual(Full.getStubConfig(), {});
+  assert.deepEqual(Full.getConfigForm().schema.map((f) => f.name), ["title", "rooms", "activity"]);
+  assert.deepEqual(Mini.getConfigForm().schema.map((f) => f.name), ["title", "rooms", "alerts", "activity"]);
+  card.disconnectedCallback();
+  mini.disconnectedCallback();
+});
+
+test("card picker: the card, the mini card and the activity card, each once", () => {
+  assert.deepEqual(window.customCards.map((c) => c.type).sort(), [
+    "smart-comfort-activity-card",
+    "smart-comfort-card",
+    "smart-comfort-mini-card",
+  ]);
+  assert.equal(window.customCards.find((c) => c.type === "smart-comfort-card").name, "Smart Comfort");
+});

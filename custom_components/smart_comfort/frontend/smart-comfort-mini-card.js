@@ -760,6 +760,9 @@ function findEntities(hass) {
 const roomName = (state) => state?.attributes?.room_name ?? state?.attributes?.friendly_name ?? state?.entity_id;
 
 class SmartComfortMiniCard extends HTMLElement {
+  // The full card (smart-comfort-card) is this card always switched to its full view.
+  static FULL = false;
+
   static getStubConfig() {
     return {};
   }
@@ -1007,7 +1010,7 @@ class SmartComfortMiniCard extends HTMLElement {
       pill.setAttribute("aria-hidden", "true");
       header.append(pill);
     }
-    if (this._config.zoom !== false) header.append(this._zoomButton());
+    if (!this.constructor.FULL && this._config.zoom !== false) header.append(this._zoomButton());
     return header;
   }
 
@@ -1219,6 +1222,48 @@ const STYLE = `
     .slabel { display: none; }
   }
 `;
+
+/**
+ * The full card: what the mini card shows once switched to its full view — every alert, a tile per room,
+ * the switches, the latest activity — always, with no compact view and no button to fold it.
+ *
+ * type: custom:smart-comfort-card
+ * title: Smart Comfort      # optional
+ * rooms: [Living room]      # optional: only these rooms
+ * activity: 5               # activity entries (5 by default, 0 for none)
+ */
+class SmartComfortCard extends SmartComfortMiniCard {
+  static FULL = true;
+
+  // The options of the mini card but the compact view's (alerts listed, zoom button).
+  static getConfigForm() {
+    const form = SmartComfortMiniCard.getConfigForm();
+    return { ...form, schema: form.schema.filter((field) => field.name !== "alerts") };
+  }
+
+  constructor() {
+    super();
+    this._zoomed = true;
+  }
+
+  getGridOptions() {
+    return { columns: 12, min_columns: 6 };
+  }
+
+  // Never folded (the click outside the card does nothing).
+  _setZoom() {}
+}
+
+if (!customElements.get("smart-comfort-card")) {
+  customElements.define("smart-comfort-card", SmartComfortCard);
+  window.customCards = window.customCards || [];
+  window.customCards.push({
+    type: "smart-comfort-card",
+    name: "Smart Comfort",
+    description: "Every alert of Smart Comfort, a tile per room, its switches and its latest activity.",
+    preview: true,
+  });
+}
 
 if (!customElements.get("smart-comfort-mini-card")) {
   customElements.define("smart-comfort-mini-card", SmartComfortMiniCard);

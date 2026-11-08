@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.12.0 - 2026-11-08
+
+### What's new
+- Card `custom:smart-comfort-card`: the full view of the mini card as a card of its own — every alert, a tile per room, the switches and the latest activity — a whole section wide, with its visual editor; the mini card's button switches it to this same view.
+- README: a Cards section (card, mini card, activity card) with screenshots of the card and of the activity card in light and dark mode.
+
 ## 1.11.1 - 2026-11-08
 
 ### Fixes

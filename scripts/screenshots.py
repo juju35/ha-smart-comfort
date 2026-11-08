@@ -851,7 +851,7 @@ SHOTS = [
 ]
 
 
-# The mini card on a dashboard: a stand-in for <ha-card>, the entities of Smart Comfort built from the status above.
+# The cards on a dashboard: a stand-in for <ha-card>, the entities of Smart Comfort built from the status above.
 CARD_PAGE_STYLE = """
 body { padding: 16px; }
 #root { margin: 0; }
@@ -903,9 +903,9 @@ def card_mock(status):
     }
 
 
-CARD_MOUNT = """async ([data, config, zoom]) => {
-    await customElements.whenDefined("smart-comfort-mini-card");
-    const card = document.createElement("smart-comfort-mini-card");
+CARD_MOUNT = """async ([data, tag, config, zoom]) => {
+    await customElements.whenDefined(tag);
+    const card = document.createElement(tag);
     card.setConfig(config);
     card.hass = {
         states: data.states, entities: data.entities, language: data.language, locale: { language: data.language },
@@ -924,10 +924,18 @@ CARD_MOUNT = """async ([data, config, zoom]) => {
     await new Promise((r) => setTimeout(r, 200));
 }"""
 
-# The mini card, compact (half a section) and switched to the full card (a whole section).
+# The card (a whole section), the mini card compact (half a section) and switched to the full card, the activity card.
 CARD_SHOTS = [
-    {"file": "card-mini", "width": 400, "config": {}, "zoom": False},
-    {"file": "card-mini-full", "width": 640, "config": {"activity": 4}, "zoom": True},
+    {"file": "card", "tag": "smart-comfort-card", "width": 640, "config": {"activity": 4}, "zoom": False},
+    {"file": "card-mini", "tag": "smart-comfort-mini-card", "width": 400, "config": {}, "zoom": False},
+    {"file": "card-mini-full", "tag": "smart-comfort-mini-card", "width": 640, "config": {"activity": 4}, "zoom": True},
+    {
+        "file": "card-activity",
+        "tag": "smart-comfort-activity-card",
+        "width": 500,
+        "config": {"limit": 8},
+        "zoom": False,
+    },
 ]
 
 
@@ -966,7 +974,7 @@ html, body {{ margin: 0; background: var(--primary-background-color); color: var
     page.add_script_tag(
         url="http://homeassistant.local/smart_comfort_static/smart-comfort-mini-card.js?v=1", type="module"
     )
-    page.evaluate(CARD_MOUNT, [card_mock(STATUS), shot["config"], shot["zoom"]])
+    page.evaluate(CARD_MOUNT, [card_mock(STATUS), shot["tag"], shot["config"], shot["zoom"]])
     page.wait_for_timeout(200)
     path = ROOT / "screenshots" / f"{name}.png"
     png = page.locator("#root").screenshot(animations="disabled")

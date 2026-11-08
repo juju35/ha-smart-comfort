@@ -43,7 +43,7 @@ Comfort automations built with a cooldown keep notifying every couple of hours a
 - **Calendar of the alerts**: every alert is an event of the *Comfort alerts* calendar, from when it started to when it ended, with its room, its kind and its worst value ("29.5 °C, above 26 °C"); kept 90 days, so the calendar view of Home Assistant shows when each room was too hot, too humid or noisy
 - **No re-notification after a restart**: episodes, snoozes and device targets are stored; nothing is sent during the startup grace period
 - **YAML or UI**: configure everything in YAML (imported at startup), in the **Smart Comfort panel** of the sidebar, or in the integration options — rooms, alerts, control
-- **Dashboard cards**, added by the integration: a **mini card** (the alerts of the moment and the switches, with a button that opens the full card: every alert, the rooms, the latest activity) and an **activity card**
+- **Dashboard cards**, added by the integration: a **card** (`custom:smart-comfort-card`: every alert, the rooms, the switches, the latest activity), a **mini card** (`custom:smart-comfort-mini-card`: the alerts of the moment and the switches, with a button that opens the full card) and an **activity card** (`custom:smart-comfort-activity-card`: what Smart Comfort did and why, live)
 - Sensors for the active alerts and the comfort of each room, switches to pause the notifications or the device control, buttons, actions and events
 - English, French, German, Spanish, Italian, Dutch, European Portuguese, Polish, Serbian (Cyrillic and Latin), Romanian, Danish, Swedish, Bulgarian, Russian, Ukrainian, Hungarian, Slovak, Czech, Slovenian, Latvian and Greek
 
@@ -410,9 +410,30 @@ A light is turned on only when none of the presence lights is already on, at the
 
 A slot color, like a slot brightness, is kept until the light is turned off (the adaptive lighting leaves it alone).
 
-### Mini card
+### Cards
 
-The integration also adds a mini card (no resource to add), for any user: the alerts of the moment (the ones to deal with first, then the snoozed or handled ones), the outdoor temperature, and the notifications, device control and adaptive lighting switches, which a tap turns on or off. Its button at the top right switches it to the full card — every alert with since when and its state (snoozed, handled by a device, seen), a tile per room with its temperature (else humidity, else CO₂) and its main problem, the latest activity — and back; a click anywhere outside the card brings it back to the compact view too. A tap on an alert or a room opens its comfort sensor.
+The integration adds its cards to the dashboards itself (no resource to add), for any user: the card (`custom:smart-comfort-card`), the mini card (`custom:smart-comfort-mini-card`), its compact version, and the activity card (`custom:smart-comfort-activity-card`).
+
+#### Card (`custom:smart-comfort-card`)
+
+Everything at a glance: every alert with since when and its state (snoozed, handled by a device, seen), a tile per room with its temperature (else humidity, else CO₂) and its main problem, the notifications, device control and adaptive lighting switches (a tap turns them on or off), and the latest activity. It is what the mini card shows once switched to its full view. A tap on an alert or a room opens its comfort sensor.
+
+| Light | Dark |
+|---|---|
+| <img src="https://raw.githubusercontent.com/juju35/ha-smart-comfort/main/screenshots/card.png" alt="The card: alerts, rooms, switches and activity" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-smart-comfort/main/screenshots/card-dark.png" alt="The card, dark mode" width="400"> |
+
+```yaml
+type: custom:smart-comfort-card
+title: Smart Comfort        # optional
+rooms: [Living room]        # optional: only these rooms, their names as shown in the panel
+activity: 5                 # activity entries (5 by default, 0 for none)
+```
+
+In a Sections view the card is a whole section wide (at least 6 columns). With `rooms` set to a single room, its activity is that room's.
+
+#### Mini card (`custom:smart-comfort-mini-card`)
+
+The alerts of the moment (the ones to deal with first, then the snoozed or handled ones), the outdoor temperature, and the notifications, device control and adaptive lighting switches, which a tap turns on or off. Its button at the top right switches it to the full card — every alert with since when and its state (snoozed, handled by a device, seen), a tile per room with its temperature (else humidity, else CO₂) and its main problem, the latest activity — and back; a click anywhere outside the card brings it back to the compact view too. A tap on an alert or a room opens its comfort sensor.
 
 | Light | Dark |
 |---|---|
@@ -430,9 +451,13 @@ zoom: false                 # optional: no full card button
 
 In a Sections view the mini card is 6 columns wide (half a section), the full card a whole section. On a narrow card the switches keep their icon only. With `rooms` set to a single room, the activity of the full card is that room's.
 
-### Activity card
+#### Activity card (`custom:smart-comfort-activity-card`)
 
-The integration also adds a Lovelace card (no resource to add): the latest activity of Smart Comfort, live, for any user.
+The latest activity of Smart Comfort, live: devices turned on or off and why, lights adjusted, notifications sent, changes made by hand.
+
+| Light | Dark |
+|---|---|
+| <img src="https://raw.githubusercontent.com/juju35/ha-smart-comfort/main/screenshots/card-activity.png" alt="The activity card: the latest activity of Smart Comfort" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-smart-comfort/main/screenshots/card-activity-dark.png" alt="The activity card, dark mode" width="400"> |
 
 ```yaml
 type: custom:smart-comfort-activity-card
