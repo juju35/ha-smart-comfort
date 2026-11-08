@@ -726,6 +726,7 @@ const KIND_ICONS = {
   close_windows: "mdi:window-closed-variant",
   window_open_cold: "mdi:snowflake",
   co2_high: "mdi:molecule-co2",
+  polluted_air: "mdi:blur",
   humidity_high: "mdi:water-percent",
   noise_high: "mdi:volume-high",
   noisy_outside: "mdi:ear-hearing",
@@ -896,6 +897,10 @@ class SmartComfortMiniCard extends HTMLElement {
         return `${ext} ${this._temp(alert.outdoor ?? alert.value)}`;
       case "co2_high":
         return `${this._number(alert.value, 0)}${NBSP}ppm`;
+      case "polluted_air":
+        // Fine particles (PM2.5 or PM10), or the air quality index of the room.
+        if (alert.metric === "aqi") return this._t("level", { value: this._number(alert.value, 0) });
+        return `${this._number(alert.value, 0)}${NBSP}µg/m³`;
       case "humidity_high":
         return `${this._number(alert.value, 0)}${NBSP}%`;
       case "noise_high":
@@ -1065,7 +1070,7 @@ class SmartComfortMiniCard extends HTMLElement {
     return list;
   }
 
-  /** The rooms: their temperature (else humidity, else CO₂) and their worst alert. */
+  /** The rooms: their temperature (else humidity, else CO₂, else PM2.5) and their worst alert. */
   _roomGrid(ids) {
     const grid = this._el("div", "rooms");
     for (const id of ids) {
@@ -1079,6 +1084,7 @@ class SmartComfortMiniCard extends HTMLElement {
       const extras = [];
       if (a.humidity !== null && a.humidity !== undefined) extras.push(`${this._number(a.humidity, 0)}${NBSP}%`);
       if (a.co2 !== null && a.co2 !== undefined) extras.push(`${this._number(a.co2, 0)}${NBSP}ppm`);
+      if (a.pm25 !== null && a.pm25 !== undefined) extras.push(`${this._number(a.pm25, 0)}${NBSP}µg/m³`);
       if (!main && extras.length) main = extras.shift();
       tile.append(this._el("div", "rvalue", main ?? "–"));
       const line = this._el("div", "rstate");

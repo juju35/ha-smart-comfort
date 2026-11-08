@@ -45,6 +45,9 @@ CONF_FANS: Final = "fans"
 CONF_PURIFIERS: Final = "purifiers"
 CONF_ENTITY_ID: Final = "entity_id"
 CONF_AIR_QUALITY: Final = "air_quality"
+# Indoor air of a room: fine particles (µg/m³), from an air purifier or a monitor.
+CONF_PM25: Final = "pm25"
+CONF_PM10: Final = "pm10"
 CONF_LIGHTS: Final = "lights"
 
 # Lighting settings.
@@ -93,6 +96,11 @@ CONF_MAX_OUTDOOR: Final = "max_outdoor"
 CONF_MIN_INDOOR: Final = "min_indoor"
 CONF_MAX_NOISE: Final = "max_outdoor_noise"
 CONF_MAX_AIR: Final = "max_outdoor_air"
+# Polluted air: the PM10 and air quality index thresholds (the PM2.5 one is `threshold`).
+CONF_PM10_THRESHOLD: Final = "pm10_threshold"
+CONF_PM10_HYSTERESIS: Final = "pm10_hysteresis"
+CONF_AQI_THRESHOLD: Final = "aqi_threshold"
+CONF_AQI_HYSTERESIS: Final = "aqi_hysteresis"
 
 # Control settings.
 CONF_START: Final = "start"
@@ -144,6 +152,7 @@ KIND_HUMIDITY: Final = "humidity_high"
 KIND_NOISE: Final = "noise_high"
 KIND_NOISY_OUTSIDE: Final = "noisy_outside"
 KIND_BAD_AIR_OUTSIDE: Final = "bad_air_outside"
+KIND_POLLUTED: Final = "polluted_air"
 KINDS: Final = (
     KIND_TOO_HOT,
     KIND_CLOSE_WINDOWS,
@@ -151,6 +160,7 @@ KINDS: Final = (
     KIND_TOO_COLD,
     KIND_WINDOW_OPEN_COLD,
     KIND_CO2,
+    KIND_POLLUTED,
     KIND_HUMIDITY,
     KIND_NOISE,
     KIND_NOISY_OUTSIDE,
@@ -233,6 +243,20 @@ DEFAULT_ALERTS: Final[dict[str, dict]] = {
         CONF_DELAY: 10,
         CONF_SEVERITY: SEVERITY_INFO,
         CONF_ESCALATION: 400.0,
+    },
+    # Polluted indoor air: PM2.5 above the threshold (µg/m³), or PM10 above its own, or the air quality index of
+    # the room worse than its level (1 good … 6 extremely poor; US AQI by its bands).
+    KIND_POLLUTED: {
+        CONF_ENABLED: True,
+        CONF_THRESHOLD: 25.0,
+        CONF_HYSTERESIS: 10.0,
+        CONF_PM10_THRESHOLD: 50.0,
+        CONF_PM10_HYSTERESIS: 20.0,
+        CONF_AQI_THRESHOLD: 3.0,
+        CONF_AQI_HYSTERESIS: 1.0,
+        CONF_DELAY: 10,
+        CONF_SEVERITY: SEVERITY_WARNING,
+        CONF_ESCALATION: 25.0,
     },
     KIND_HUMIDITY: {
         CONF_ENABLED: True,

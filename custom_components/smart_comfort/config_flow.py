@@ -168,13 +168,20 @@ def _general_schema(hass: HomeAssistant, o: dict[str, Any], first: bool = False)
 # Units of the alert values and settings (°C otherwise).
 UNITS = {
     k.KIND_CO2: "ppm",
+    k.KIND_POLLUTED: "µg/m³",
     k.KIND_HUMIDITY: "%",
     k.KIND_NOISE: "dB",
     k.KIND_NOISY_OUTSIDE: "dB",
     k.KIND_BAD_AIR_OUTSIDE: "/6",
     k.CONF_MAX_NOISE: "dB",
     k.CONF_MAX_AIR: "/6",
+    k.CONF_PM10_THRESHOLD: "µg/m³",
+    k.CONF_PM10_HYSTERESIS: "µg/m³",
+    k.CONF_AQI_THRESHOLD: "/6",
+    k.CONF_AQI_HYSTERESIS: "/6",
 }
+# Polluted air: the PM10 and air quality index settings, after the PM2.5 threshold.
+POLLUTED_KEYS = (k.CONF_PM10_THRESHOLD, k.CONF_PM10_HYSTERESIS, k.CONF_AQI_THRESHOLD, k.CONF_AQI_HYSTERESIS)
 
 
 def _alert_schema(kind: str, current: dict[str, Any]) -> vol.Schema:
@@ -186,6 +193,9 @@ def _alert_schema(kind: str, current: dict[str, Any]) -> vol.Schema:
     for key in (k.CONF_MIN_INDOOR, k.CONF_MIN_OUTDOOR, k.CONF_MAX_OUTDOOR, k.CONF_MAX_NOISE, k.CONF_MAX_AIR):
         if key in k.DEFAULT_ALERTS[kind]:
             schema[_opt(key, d[key])] = _number(UNITS.get(key, "°C"))
+    for key in POLLUTED_KEYS:
+        if key in k.DEFAULT_ALERTS[kind]:
+            schema[vol.Required(key, default=d[key])] = _number(UNITS[key], minimum=0)
     schema.update(
         {
             vol.Required(k.CONF_HYSTERESIS, default=d[k.CONF_HYSTERESIS]): _number(unit, minimum=0),
@@ -277,6 +287,9 @@ def _room_schema(room: dict[str, Any]) -> vol.Schema:
             _opt(k.CONF_CO2, room.get(k.CONF_CO2)): _entity("sensor", device_class="carbon_dioxide"),
             _opt(k.CONF_HUMIDITY, room.get(k.CONF_HUMIDITY)): _entity("sensor", device_class="humidity"),
             _opt(k.CONF_NOISE, room.get(k.CONF_NOISE)): _entity("sensor", device_class="sound_pressure"),
+            _opt(k.CONF_PM25, ids(k.CONF_PM25)): _entity("sensor", multiple=True, device_class="pm25"),
+            _opt(k.CONF_PM10, ids(k.CONF_PM10)): _entity("sensor", multiple=True, device_class="pm10"),
+            _opt(k.CONF_AIR_QUALITY, ids(k.CONF_AIR_QUALITY)): _entity("sensor", multiple=True),
             _opt(k.CONF_OPENINGS, list(room.get(k.CONF_OPENINGS) or [])): _entity("binary_sensor", multiple=True),
             _opt(k.CONF_CLIMATE, climate[0] if climate else None): _entity("climate"),
             _opt(k.CONF_FANS, ids(k.CONF_FANS)): _entity("fan", multiple=True),
@@ -326,7 +339,8 @@ def _room_from_form(user_input: dict[str, Any], old: dict[str, Any]) -> dict[str
             room[key] = user_input[key]
         else:
             room.pop(key, None)
-    room[k.CONF_OPENINGS] = list(user_input.get(k.CONF_OPENINGS) or [])
+    for key in (k.CONF_PM25, k.CONF_PM10, k.CONF_AIR_QUALITY, k.CONF_OPENINGS):
+        room[key] = list(user_input.get(key) or [])
     climate = user_input.get(k.CONF_CLIMATE)
     old_climate = old.get(k.CONF_CLIMATE)
     if climate:

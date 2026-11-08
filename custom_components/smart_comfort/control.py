@@ -23,12 +23,15 @@ TARGET_OFF_OPEN = "off_open"
 TARGET_ON = "on"
 TARGET_BOOST = "boost"
 TARGET_NORMAL = "normal"
+# Purifier boosted while the room's air is polluted (its window boost settings).
+TARGET_PURIFY = "purify"
 # Quiet night variants: the device's night settings.
 TARGET_COOL_NIGHT = "cool_night"
 TARGET_ON_NIGHT = "on_night"
 TARGET_NIGHT = "night"
 COOLING = frozenset({TARGET_COOL, TARGET_COOL_NIGHT})
 BLOWING = frozenset({TARGET_ON, TARGET_ON_NIGHT, TARGET_BOOST})
+BOOSTING = frozenset({TARGET_BOOST, TARGET_PURIFY})
 
 
 @dataclass
@@ -53,6 +56,8 @@ class RoomContext:
     closed_since: datetime | None
     open_since: datetime | None
     has_openings: bool
+    # The room's polluted air alert is on: its purifiers are boosted.
+    polluted: bool = False
 
 
 @dataclass
@@ -200,6 +205,14 @@ class Controller:
             if target in COOLING and state.hvac_mode == "cool":
                 return True
             if target in BLOWING and state.on and any(f.entity_id == entity_id for f in room.fans):
+                return True
+        return False
+
+    def purifying(self, room: Room, states: dict[str, DeviceState]) -> bool:
+        """A purifier of the room is boosted on Smart Comfort's command (polluted air or window open)."""
+        for purifier in room.purifiers:
+            state = states.get(purifier.entity_id)
+            if state is not None and state.available and state.on and self.targets.get(purifier.entity_id) in BOOSTING:
                 return True
         return False
 
@@ -355,13 +368,16 @@ class Controller:
 
         return target, commands, satisfied
 
-    # Air purifier: boost (opening open, in the hours) / normal.
+    # Air purifier: boost (opening open, in the hours) / purify (polluted air) / night / normal.
 
     def _purifier(self, dev: PurifierDevice, ctx: RoomContext, boost_hours: bool, night: bool = False) -> Any:
-        if ctx.has_openings and ctx.any_open is None:
+        if ctx.has_openings and ctx.any_open is None and not ctx.polluted:
             return None
         if ctx.any_open and boost_hours:
             target = TARGET_BOOST
+        elif ctx.polluted and not (night and dev.quiet):
+            # Polluted air: at any hour, but quiet at night for a purifier that has night settings.
+            target = TARGET_PURIFY
         elif night and dev.quiet:
             target = TARGET_NIGHT
         else:
@@ -397,7 +413,7 @@ class Controller:
                     cmds.append(Command(dev.entity_id, "fan", "set_preset_mode", {"preset_mode": dev.night_preset}))
                 if dev.night_percentage is not None:
                     cmds.append(Command(dev.entity_id, "fan", "set_percentage", {"percentage": dev.night_percentage}))
-            elif target == TARGET_BOOST:
+            elif target in BOOSTING:
                 if restore is not None and dev.entity_id not in restore:
                     restore[dev.entity_id] = self._snapshot(dev, state)
                 if not state.on:
@@ -457,7 +473,7 @@ class Controller:
                     and (not dev.night_preset or state.preset == dev.night_preset)
                     and (dev.night_percentage is None or state.percentage == dev.night_percentage)
                 )
-            if target == TARGET_BOOST:
+            if target in BOOSTING:
                 return (
                     bool(state.on)
                     and (not (dev.mode_select and dev.open_mode) or state.option == dev.open_mode)

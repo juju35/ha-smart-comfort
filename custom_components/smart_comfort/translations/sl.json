@@ -93,6 +93,10 @@
           "max_outdoor": "Najvišja zunanja temperatura",
           "max_outdoor_noise": "Največji zunanji hrup",
           "max_outdoor_air": "Najvišja raven kakovosti zunanjega zraka",
+          "pm10_threshold": "Prag PM10",
+          "pm10_hysteresis": "Histereza PM10",
+          "aqi_threshold": "Prag indeksa kakovosti zraka",
+          "aqi_hysteresis": "Histereza indeksa kakovosti zraka",
           "hysteresis": "Histereza",
           "delay": "Zamik",
           "severity": "Resnost",
@@ -105,6 +109,8 @@
           "max_outdoor": "Le ko je zunaj tako mrzlo ali bolj.",
           "max_outdoor_noise": "Ne predlaga se, dokler je zunanji hrup nad to vrednostjo (potrebno je zunanje tipalo hrupa).",
           "max_outdoor_air": "Ne predlaga se, dokler je kakovost zunanjega zraka slabša od te ravni, od 1 (dobra) do 6 (izjemno slaba).",
+          "pm10_threshold": "Onesnažen zrak: tudi ko je PM10 nad to vrednostjo (µg/m³); prag zgoraj je za PM2,5.",
+          "aqi_threshold": "Onesnažen zrak: tudi ko je indeks kakovosti zraka v prostoru slabši od te ravni, od 1 (dobra) do 6 (izjemno slaba). Indeksi HomeKit gredo od 1 do 5; ameriški AQI se šteje po svojih razponih (nad 150: raven 4).",
           "hysteresis": "Težava se konča šele, ko se vrednost vrne čez prag za toliko: brez nihanja.",
           "delay": "Minute, ko mora pogoj trajati, preden postane težava.",
           "escalation": "Znova obvesti, ko se vrednost poslabša za toliko glede na zadnje obvestilo. 0: nikoli."
@@ -186,6 +192,9 @@
           "co2": "CO₂",
           "humidity": "Vlažnost",
           "noise": "Hrup",
+          "pm25": "PM2.5",
+          "pm10": "PM10",
+          "air_quality": "Indeks kakovosti zraka",
           "openings": "Okna in vrata",
           "climate": "Klimatska naprava",
           "fans": "Ventilatorji",
@@ -213,6 +222,8 @@
           }
         },
         "data_description": {
+          "pm25": "Senzorji drobnih delcev (µg/m³), tudi tisti na čistilnikih: opozorilo o onesnaženem zraku, čistilniki pa delajo močneje, dokler zrak spet ni čist.",
+          "air_quality": "Senzorji indeksa kakovosti zraka v prostoru (HomeKit 1–5, evropski 1–6, ameriški AQI).",
           "lights": "Zatemnilne luči: njihova svetlost sledi času dneva, dokler so prižgane (prilagodljiva razsvetljava)."
         }
       },
@@ -224,6 +235,9 @@
           "co2": "CO₂",
           "humidity": "Vlažnost",
           "noise": "Hrup",
+          "pm25": "PM2.5",
+          "pm10": "PM10",
+          "air_quality": "Indeks kakovosti zraka",
           "openings": "Okna in vrata",
           "climate": "Klimatska naprava",
           "fans": "Ventilatorji",
@@ -251,6 +265,8 @@
           }
         },
         "data_description": {
+          "pm25": "Senzorji drobnih delcev (µg/m³), tudi tisti na čistilnikih: opozorilo o onesnaženem zraku, čistilniki pa delajo močneje, dokler zrak spet ni čist.",
+          "air_quality": "Senzorji indeksa kakovosti zraka v prostoru (HomeKit 1–5, evropski 1–6, ameriški AQI).",
           "lights": "Zatemnilne luči: njihova svetlost sledi času dneva, dokler so prižgane (prilagodljiva razsvetljava)."
         }
       },
@@ -324,6 +340,7 @@
         "too_cold": "Prehladno",
         "window_open_cold": "Odprto okno v mrazu",
         "co2_high": "Visok CO₂",
+        "polluted_air": "Onesnažen zrak",
         "humidity_high": "Visoka vlažnost",
         "noise_high": "Hrupen prostor",
         "noisy_outside": "Zaprite okna (zunaj je hrupno)",
@@ -377,6 +394,7 @@
           "too_cold": "Prehladno",
           "window_open_cold": "Odprto okno v mrazu",
           "co2_high": "Visok CO₂",
+          "polluted_air": "Onesnažen zrak",
           "humidity_high": "Visoka vlažnost",
           "noise_high": "Hrupen prostor",
           "noisy_outside": "Zaprite okna (zunaj je hrupno)",
@@ -479,6 +497,8 @@
     "line_close_windows": "{outdoor} °C zunaj, {temperature} °C notri — zaprite: {openings}",
     "line_window_open_cold": "odprto: {openings}, {outdoor} °C zunaj",
     "line_co2_high": "CO₂ {value} ppm — prezračite prostor",
+    "line_polluted_air": "{pollutant} {value} µg/m³, nad {threshold} µg/m³",
+    "line_polluted_air_index": "kakovost zraka {value}/6, nad {threshold}/6",
     "line_humidity_high": "vlažnost {value} % — prezračite prostor",
     "line_noise_high": "hrup {value} dB, nad {threshold} dB",
     "line_noisy_outside": "{value} dB zunaj — zaprite: {openings}",

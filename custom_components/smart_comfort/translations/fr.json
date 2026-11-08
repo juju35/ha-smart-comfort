@@ -93,6 +93,10 @@
           "max_outdoor": "Température extérieure maximale",
           "max_outdoor_noise": "Bruit extérieur maximal",
           "max_outdoor_air": "Niveau maximal de qualité de l'air extérieure",
+          "pm10_threshold": "Seuil PM10",
+          "pm10_hysteresis": "Hystérésis PM10",
+          "aqi_threshold": "Seuil de l'indice de qualité de l'air",
+          "aqi_hysteresis": "Hystérésis de l'indice de qualité de l'air",
           "hysteresis": "Hystérésis",
           "delay": "Délai",
           "severity": "Gravité",
@@ -105,6 +109,8 @@
           "max_outdoor": "Seulement s'il fait au plus cette température dehors.",
           "max_outdoor_noise": "Pas de suggestion au-delà de ce bruit extérieur (avec un capteur de bruit extérieur).",
           "max_outdoor_air": "Pas de suggestion quand la qualité de l'air dehors est pire que ce niveau, de 1 (bon) à 6 (extrêmement mauvais).",
+          "pm10_threshold": "Air pollué : aussi quand les PM10 dépassent cette valeur (µg/m³) ; le seuil ci-dessus est celui des PM2.5.",
+          "aqi_threshold": "Air pollué : aussi quand l'indice de qualité de l'air de la pièce est pire que ce niveau, de 1 (bon) à 6 (extrêmement mauvais). Les indices HomeKit vont de 1 à 5 ; un AQI américain compte par ses tranches (au-dessus de 150 : niveau 4).",
           "hysteresis": "Le problème ne se termine qu'une fois la valeur revenue de cet écart sous le seuil : pas de yo-yo.",
           "delay": "Minutes pendant lesquelles la condition doit tenir avant de devenir un problème.",
           "escalation": "Renotifie quand la valeur s'aggrave de cet écart depuis la dernière notification. 0 : jamais."
@@ -186,6 +192,9 @@
           "co2": "CO₂",
           "humidity": "Humidité",
           "noise": "Bruit",
+          "pm25": "PM2.5",
+          "pm10": "PM10",
+          "air_quality": "Indice de qualité de l'air",
           "openings": "Fenêtres et portes",
           "climate": "Climatiseur",
           "fans": "Ventilateurs",
@@ -213,6 +222,8 @@
           }
         },
         "data_description": {
+          "pm25": "Capteurs de particules fines (µg/m³), ceux des purificateurs aussi : une alerte air pollué, et les purificateurs poussés jusqu'à ce que l'air redevienne propre.",
+          "air_quality": "Capteurs d'indice de qualité de l'air de la pièce (HomeKit 1–5, européen 1–6, AQI américain).",
           "lights": "Lumières variables : leur intensité suit le moment de la journée quand elles sont allumées (éclairage adaptatif)."
         }
       },
@@ -224,6 +235,9 @@
           "co2": "CO₂",
           "humidity": "Humidité",
           "noise": "Bruit",
+          "pm25": "PM2.5",
+          "pm10": "PM10",
+          "air_quality": "Indice de qualité de l'air",
           "openings": "Fenêtres et portes",
           "climate": "Climatiseur",
           "fans": "Ventilateurs",
@@ -251,6 +265,8 @@
           }
         },
         "data_description": {
+          "pm25": "Capteurs de particules fines (µg/m³), ceux des purificateurs aussi : une alerte air pollué, et les purificateurs poussés jusqu'à ce que l'air redevienne propre.",
+          "air_quality": "Capteurs d'indice de qualité de l'air de la pièce (HomeKit 1–5, européen 1–6, AQI américain).",
           "lights": "Lumières variables : leur intensité suit le moment de la journée quand elles sont allumées (éclairage adaptatif)."
         }
       },
@@ -324,6 +340,7 @@
         "too_cold": "Trop froid",
         "window_open_cold": "Fenêtre ouverte par temps froid",
         "co2_high": "CO₂ élevé",
+        "polluted_air": "Air pollué",
         "humidity_high": "Humidité élevée",
         "noise_high": "Pièce bruyante",
         "noisy_outside": "Fermer les fenêtres (bruit dehors)",
@@ -377,6 +394,7 @@
           "too_cold": "Trop froid",
           "window_open_cold": "Fenêtre ouverte par temps froid",
           "co2_high": "CO₂ élevé",
+          "polluted_air": "Air pollué",
           "humidity_high": "Humidité élevée",
           "noise_high": "Pièce bruyante",
           "noisy_outside": "Fermer les fenêtres (bruit dehors)",
@@ -479,6 +497,8 @@
     "line_close_windows": "{outdoor} °C dehors, {temperature} °C dedans — fermez {openings}",
     "line_window_open_cold": "{openings} ouvert, {outdoor} °C dehors",
     "line_co2_high": "CO₂ {value} ppm — aérez",
+    "line_polluted_air": "{pollutant} {value} µg/m³, au-dessus de {threshold} µg/m³",
+    "line_polluted_air_index": "qualité de l'air {value}/6, au-dessus de {threshold}/6",
     "line_humidity_high": "humidité {value} % — aérez",
     "line_noise_high": "bruit {value} dB, au-dessus de {threshold} dB",
     "line_noisy_outside": "{value} dB dehors — fermez {openings}",

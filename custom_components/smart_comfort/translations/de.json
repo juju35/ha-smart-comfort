@@ -93,6 +93,10 @@
           "max_outdoor": "Höchst-Außentemperatur",
           "max_outdoor_noise": "Maximaler Außenlärm",
           "max_outdoor_air": "Maximale Außenluftqualitätsstufe",
+          "pm10_threshold": "PM10-Schwellenwert",
+          "pm10_hysteresis": "PM10-Hysterese",
+          "aqi_threshold": "Schwellenwert des Luftqualitätsindex",
+          "aqi_hysteresis": "Hysterese des Luftqualitätsindex",
           "hysteresis": "Hysterese",
           "delay": "Verzögerung",
           "severity": "Schweregrad",
@@ -105,6 +109,8 @@
           "max_outdoor": "Nur wenn es draußen höchstens so warm ist.",
           "max_outdoor_noise": "Kein Vorschlag, solange der Außenlärm darüber liegt (mit Außenlärmsensor).",
           "max_outdoor_air": "Kein Vorschlag, solange die Außenluft schlechter als diese Stufe ist, von 1 (gut) bis 6 (extrem schlecht).",
+          "pm10_threshold": "Verschmutzte Luft: auch wenn PM10 darüber liegt (µg/m³); der Schwellenwert oben ist der für PM2.5.",
+          "aqi_threshold": "Verschmutzte Luft: auch wenn der Luftqualitätsindex des Raums schlechter als diese Stufe ist, von 1 (gut) bis 6 (extrem schlecht). HomeKit-Indizes gehen von 1 bis 5; ein US-AQI zählt nach seinen Stufen (über 150: Stufe 4).",
           "hysteresis": "Das Problem endet erst, wenn der Wert um diesen Betrag über den Schwellenwert zurückgekehrt ist: kein Flattern.",
           "delay": "Minuten, die die Bedingung anhalten muss, bevor sie ein Problem ist.",
           "escalation": "Erneut melden, wenn sich der Wert seit der letzten Meldung um so viel verschlechtert. 0: nie."
@@ -186,6 +192,9 @@
           "co2": "CO₂",
           "humidity": "Luftfeuchtigkeit",
           "noise": "Lärm",
+          "pm25": "PM2.5",
+          "pm10": "PM10",
+          "air_quality": "Luftqualitätsindex",
           "openings": "Fenster und Türen",
           "climate": "Klimaanlage",
           "fans": "Lüfter",
@@ -213,6 +222,8 @@
           }
         },
         "data_description": {
+          "pm25": "Feinstaubsensoren (µg/m³), auch die der Luftreiniger: eine Warnung bei verschmutzter Luft, und die Luftreiniger laufen verstärkt, bis die Luft wieder sauber ist.",
+          "air_quality": "Luftqualitätsindex-Sensoren des Raums (HomeKit 1–5, europäisch 1–6, US-AQI).",
           "lights": "Dimmbare Lichter: ihre Helligkeit folgt der Tageszeit, solange sie an sind (adaptive Beleuchtung)."
         }
       },
@@ -224,6 +235,9 @@
           "co2": "CO₂",
           "humidity": "Luftfeuchtigkeit",
           "noise": "Lärm",
+          "pm25": "PM2.5",
+          "pm10": "PM10",
+          "air_quality": "Luftqualitätsindex",
           "openings": "Fenster und Türen",
           "climate": "Klimaanlage",
           "fans": "Lüfter",
@@ -251,6 +265,8 @@
           }
         },
         "data_description": {
+          "pm25": "Feinstaubsensoren (µg/m³), auch die der Luftreiniger: eine Warnung bei verschmutzter Luft, und die Luftreiniger laufen verstärkt, bis die Luft wieder sauber ist.",
+          "air_quality": "Luftqualitätsindex-Sensoren des Raums (HomeKit 1–5, europäisch 1–6, US-AQI).",
           "lights": "Dimmbare Lichter: ihre Helligkeit folgt der Tageszeit, solange sie an sind (adaptive Beleuchtung)."
         }
       },
@@ -324,6 +340,7 @@
         "too_cold": "Zu kalt",
         "window_open_cold": "Fenster offen bei Kälte",
         "co2_high": "Hoher CO₂-Wert",
+        "polluted_air": "Verschmutzte Luft",
         "humidity_high": "Hohe Luftfeuchtigkeit",
         "noise_high": "Lauter Raum",
         "noisy_outside": "Fenster schließen (draußen laut)",
@@ -377,6 +394,7 @@
           "too_cold": "Zu kalt",
           "window_open_cold": "Fenster offen bei Kälte",
           "co2_high": "Hoher CO₂-Wert",
+          "polluted_air": "Verschmutzte Luft",
           "humidity_high": "Hohe Luftfeuchtigkeit",
           "noise_high": "Lauter Raum",
           "noisy_outside": "Fenster schließen (draußen laut)",
@@ -479,6 +497,8 @@
     "line_close_windows": "{outdoor} °C außen, {temperature} °C innen — schließen: {openings}",
     "line_window_open_cold": "{openings} offen, {outdoor} °C außen",
     "line_co2_high": "CO₂ {value} ppm — lüften",
+    "line_polluted_air": "{pollutant} {value} µg/m³, über {threshold} µg/m³",
+    "line_polluted_air_index": "Luftqualität {value}/6, über {threshold}/6",
     "line_humidity_high": "Luftfeuchtigkeit {value} % — lüften",
     "line_noise_high": "Lärm {value} dB, über {threshold} dB",
     "line_noisy_outside": "{value} dB draußen — schließen: {openings}",

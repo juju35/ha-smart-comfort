@@ -53,6 +53,10 @@ ALERT = vol.Schema(
         vol.Optional(k.CONF_MIN_INDOOR): vol.Any(None, NUMBER),
         vol.Optional(k.CONF_MAX_NOISE): vol.Any(None, NUMBER),
         vol.Optional(k.CONF_MAX_AIR): vol.Any(None, NUMBER),
+        vol.Optional(k.CONF_PM10_THRESHOLD): vol.Any(None, NUMBER),
+        vol.Optional(k.CONF_PM10_HYSTERESIS): vol.All(NUMBER, vol.Range(min=0)),
+        vol.Optional(k.CONF_AQI_THRESHOLD): vol.Any(None, NUMBER),
+        vol.Optional(k.CONF_AQI_HYSTERESIS): vol.All(NUMBER, vol.Range(min=0)),
     }
 )
 ALERTS = vol.Schema({vol.Optional(kind): ALERT for kind in k.KINDS})
@@ -199,6 +203,9 @@ ROOM = vol.Schema(
         vol.Optional(k.CONF_CO2): vol.Any(None, cv.entity_id),
         vol.Optional(k.CONF_HUMIDITY): vol.Any(None, cv.entity_id),
         vol.Optional(k.CONF_NOISE): vol.Any(None, cv.entity_id),
+        vol.Optional(k.CONF_PM25): cv.entity_ids,
+        vol.Optional(k.CONF_PM10): cv.entity_ids,
+        vol.Optional(k.CONF_AIR_QUALITY): cv.entity_ids,
         vol.Optional(k.CONF_OPENINGS): cv.entity_ids,
         vol.Optional(k.CONF_CLIMATE): vol.Any(
             None,

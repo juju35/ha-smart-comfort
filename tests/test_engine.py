@@ -524,3 +524,90 @@ def test_clear_waiting_for_its_retry_does_not_hold_a_new_digest():
     assert any(isinstance(r, Digest) for r in results)
     assert not any(isinstance(r, Clear) for r in results)
     assert e.clear_after is None and e.clear_failures == 0
+
+
+def polluted_settings(**alert):
+    return build_settings(
+        {
+            "alerts": {"polluted_air": alert},
+            "rooms": [
+                {
+                    "name": "Séjour",
+                    "pm25": ["sensor.purifier_pm25", "sensor.monitor_pm25"],
+                    "pm10": "sensor.purifier_pm10",
+                    "air_quality": ["sensor.purifier_air_quality"],
+                }
+            ],
+        }
+    )
+
+
+def test_polluted_air_defaults_thresholds_and_hysteresis():
+    s = polluted_settings()
+    room = s.rooms[0]
+    assert room.pm25 == ("sensor.purifier_pm25", "sensor.monitor_pm25")
+    assert room.pm10 == ("sensor.purifier_pm10",)
+    assert "sensor.purifier_air_quality" in room.sensors
+    a = room.alerts["polluted_air"]
+    assert (a.threshold, a.hysteresis, a.pm10_threshold, a.pm10_hysteresis) == (25, 10, 50, 20)
+    assert (a.aqi_threshold, a.aqi_hysteresis, a.delay, a.severity) == (3, 1, 10, "warning")
+    e = Engine(s)
+
+    def air(pm25=None, pm10=None, aqi=None):
+        return {"sejour": RoomReading(pm25=pm25, pm10=pm10, aqi=aqi)}
+
+    run(e, 0, air(pm25=20, pm10=30, aqi=2))
+    assert not e.episodes
+    # 47 µg/m³ of PM2.5 (the living room with its purifier in manual): pending, active after 10 minutes.
+    run(e, 1, air(pm25=47, pm10=30))
+    ep = e.episodes["sejour|polluted_air"]
+    assert not ep.active and ep.value == 47 and ep.details["metric"] == "pm25"
+    _, result = run(e, 11, air(pm25=47, pm10=30))
+    assert ep.active
+    _, result = run(e, 16, air(pm25=47, pm10=30))
+    assert isinstance(result, Digest)
+    _title, message, icon = render(result, {}, T0)
+    assert message == "PM2.5 47 µg/m³, above 25 µg/m³" and icon == "🌫️"
+    # Hysteresis: still polluted above 15 µg/m³, clean below.
+    run(e, 20, air(pm25=18))
+    assert "sejour|polluted_air" in e.episodes
+    run(e, 21, air(pm25=14))
+    assert "sejour|polluted_air" not in e.episodes
+    # PM10 alone, then the air quality index alone (level 4 of 6; HomeKit "inferior").
+    run(e, 22, air(pm25=10, pm10=60))
+    assert e.episodes["sejour|polluted_air"].details["metric"] == "pm10"
+    run(e, 23, air(pm25=10, pm10=25))
+    assert not e.episodes
+    run(e, 24, air(aqi=4))
+    ep = e.episodes["sejour|polluted_air"]
+    assert ep.details["metric"] == "aqi"
+    assert render(Digest([Item(ep, "Séjour", "warning", "new")], "warning"), {}, T0)[1] == "air quality 4/6, above 3/6"
+    # Level 3 holds (hysteresis of one level), 2 is clean; no reading at all: unknown, the episode holds.
+    run(e, 25, air(aqi=3))
+    assert e.episodes
+    run(e, 26, air())
+    assert e.episodes
+    run(e, 27, air(aqi=2))
+    assert not e.episodes
+
+
+def test_polluted_air_handled_by_a_purifier_and_overrides():
+    s = polluted_settings(delay=0, threshold=35)
+    e = Engine(s)
+    _, result = run(e, 0, {"sejour": RoomReading(pm25=40)}, handled={"sejour|polluted_air"})
+    assert result is None and e.episodes["sejour|polluted_air"].active
+    # Not handled by the AC/fan of the room (that one is for too hot).
+    run(e, 10, {"sejour": RoomReading(pm25=40)}, handled={"sejour"})
+    _, result = run(e, 15, {"sejour": RoomReading(pm25=40)}, handled={"sejour"})
+    assert isinstance(result, Digest)
+    # The global threshold (35) with its hysteresis: 30 is still polluted.
+    run(e, 16, {"sejour": RoomReading(pm25=30)})
+    assert e.episodes
+    # A room's own threshold.
+    options = {"name": "Bureau", "pm25": "sensor.p", "alerts": {"polluted_air": {"threshold": 60}}}
+    room = build_settings({"rooms": [options]}).rooms[0]
+    assert room.alerts["polluted_air"].threshold == 60
+    assert room.alerts["polluted_air"].pm10_threshold == 50
+    # A room without any air sensor: its polluted air episodes go away.
+    e.update_settings(settings())
+    assert not e.episodes

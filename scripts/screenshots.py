@@ -125,6 +125,9 @@ ICONS = {
     "bell-check-outline": "M17.75 21.16L15 18.16L16.16 17L17.75 18.59L21.34 15L22.5 16.41L17.75 21.16M10 21H12.8C13.04 21.41 13.33 21.79 13.65 22.13C13.29 22.66 12.69 23 12 23C10.9 23 10 22.11 10 21M3 20V19L5 17V11C5 7.9 7.03 5.18 10 4.29V4C10 2.9 10.9 2 12 2C13.11 2 14 2.9 14 4V4.29C16.97 5.18 19 7.9 19 11V12.08L18 12L17 12.08V11C17 8.24 14.76 6 12 6C9.24 6 7 8.24 7 11V18H12C12 18.7 12.12 19.37 12.34 20H3Z",
     "led-off": "M12,6A4,4 0 0,0 8,10V16H6V18H9V23H11V18H13V23H15V18H18V16H16V10A4,4 0 0,0 12,6Z",
     "led-on": "M11,0V4H13V0H11M18.3,2.29L15.24,5.29L16.64,6.71L19.7,3.71L18.3,2.29M5.71,2.29L4.29,3.71L7.29,6.71L8.71,5.29L5.71,2.29M12,6A4,4 0 0,0 8,10V16H6V18H9V23H11V18H13V23H15V18H18V16H16V10A4,4 0 0,0 12,6M2,9V11H6V9H2M18,9V11H22V9H18Z",
+    "blur": "M14,8.5A1.5,1.5 0 0,0 12.5,10A1.5,1.5 0 0,0 14,11.5A1.5,1.5 0 0,0 15.5,10A1.5,1.5 0 0,0 14,8.5M14,12.5A1.5,1.5 0 0,0 12.5,14A1.5,1.5 0 0,0 14,15.5A1.5,1.5 0 0,0 15.5,14A1.5,1.5 0 0,0 14,12.5M10,17A1,1 0 0,0 9,18A1,1 0 0,0 10,19A1,1 0 0,0 11,18A1,1 0 0,0 10,17M10,8.5A1.5,1.5 0 0,0 8.5,10A1.5,1.5 0 0,0 10,11.5A1.5,1.5 0 0,0 11.5,10A1.5,1.5 0 0,0 10,8.5M14,20.5A0.5,0.5 0 0,0 13.5,21A0.5,0.5 0 0,0 14,21.5A0.5,0.5 0 0,0 14.5,21A0.5,0.5 0 0,0 14,20.5M14,17A1,1 0 0,0 13,18A1,1 0 0,0 14,19A1,1 0 0,0 15,18A1,1 0 0,0 14,17M21,13.5A0.5,0.5 0 0,0 20.5,14A0.5,0.5 0 0,0 21,14.5A0.5,0.5 0 0,0 21.5,14A0.5,0.5 0 0,0 21,13.5M18,5A1,1 0 0,0 17,6A1,1 0 0,0 18,7A1,1 0 0,0 19,6A1,1 0 0,0 18,5M18,9A1,1 0 0,0 17,10A1,1 0 0,0 18,11A1,1 0 0,0 19,10A1,1 0 0,0 18,9M18,17A1,1 0 0,0 17,18A1,1 0 0,0 18,19A1,1 0 0,0 19,18A1,1 0 0,0 18,17M18,13A1,1 0 0,0 17,14A1,1 0 0,0 18,15A1,1 0 0,0 19,14A1,1 0 0,0 18,13M10,12.5A1.5,1.5 0 0,0 8.5,14A1.5,1.5 0 0,0 10,15.5A1.5,1.5 0 0,0 11.5,14A1.5,1.5 0 0,0 10,12.5M10,7A1,1 0 0,0 11,6A1,1 0 0,0 10,5A1,1 0 0,0 9,6A1,1 0 0,0 10,7M10,3.5A0.5,0.5 0 0,0 10.5,3A0.5,0.5 0 0,0 10,2.5A0.5,0.5 0 0,0 9.5,3A0.5,0.5 0 0,0 10,3.5M10,20.5A0.5,0.5 0 0,0 9.5,21A0.5,0.5 0 0,0 10,21.5A0.5,0.5 0 0,0 10.5,21A0.5,0.5 0 0,0 10,20.5M3,13.5A0.5,0.5 0 0,0 2.5,14A0.5,0.5 0 0,0 3,14.5A0.5,0.5 0 0,0 3.5,14A0.5,0.5 0 0,0 3,13.5M14,3.5A0.5,0.5 0 0,0 14.5,3A0.5,0.5 0 0,0 14,2.5A0.5,0.5 0 0,0 13.5,3A0.5,0.5 0 0,0 14,3.5M14,7A1,1 0 0,0 15,6A1,1 0 0,0 14,5A1,1 0 0,0 13,6A1,1 0 0,0 14,7M21,10.5A0.5,0.5 0 0,0 21.5,10A0.5,0.5 0 0,0 21,9.5A0.5,0.5 0 0,0 20.5,10A0.5,0.5 0 0,0 21,10.5M6,5A1,1 0 0,0 5,6A1,1 0 0,0 6,7A1,1 0 0,0 7,6A1,1 0 0,0 6,5M3,9.5A0.5,0.5 0 0,0 2.5,10A0.5,0.5 0 0,0 3,10.5A0.5,0.5 0 0,0 3.5,10A0.5,0.5 0 0,0 3,9.5M6,9A1,1 0 0,0 5,10A1,1 0 0,0 6,11A1,1 0 0,0 7,10A1,1 0 0,0 6,9M6,17A1,1 0 0,0 5,18A1,1 0 0,0 6,19A1,1 0 0,0 7,18A1,1 0 0,0 6,17M6,13A1,1 0 0,0 5,14A1,1 0 0,0 6,15A1,1 0 0,0 7,14A1,1 0 0,0 6,13Z",
+    "blur-radial": "M14,13A1,1 0 0,0 13,14A1,1 0 0,0 14,15A1,1 0 0,0 15,14A1,1 0 0,0 14,13M14,16.5A0.5,0.5 0 0,0 13.5,17A0.5,0.5 0 0,0 14,17.5A0.5,0.5 0 0,0 14.5,17A0.5,0.5 0 0,0 14,16.5M12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M17,9.5A0.5,0.5 0 0,0 16.5,10A0.5,0.5 0 0,0 17,10.5A0.5,0.5 0 0,0 17.5,10A0.5,0.5 0 0,0 17,9.5M17,13.5A0.5,0.5 0 0,0 16.5,14A0.5,0.5 0 0,0 17,14.5A0.5,0.5 0 0,0 17.5,14A0.5,0.5 0 0,0 17,13.5M14,7.5A0.5,0.5 0 0,0 14.5,7A0.5,0.5 0 0,0 14,6.5A0.5,0.5 0 0,0 13.5,7A0.5,0.5 0 0,0 14,7.5M14,9A1,1 0 0,0 13,10A1,1 0 0,0 14,11A1,1 0 0,0 15,10A1,1 0 0,0 14,9M10,7.5A0.5,0.5 0 0,0 10.5,7A0.5,0.5 0 0,0 10,6.5A0.5,0.5 0 0,0 9.5,7A0.5,0.5 0 0,0 10,7.5M7,13.5A0.5,0.5 0 0,0 6.5,14A0.5,0.5 0 0,0 7,14.5A0.5,0.5 0 0,0 7.5,14A0.5,0.5 0 0,0 7,13.5M10,16.5A0.5,0.5 0 0,0 9.5,17A0.5,0.5 0 0,0 10,17.5A0.5,0.5 0 0,0 10.5,17A0.5,0.5 0 0,0 10,16.5M7,9.5A0.5,0.5 0 0,0 6.5,10A0.5,0.5 0 0,0 7,10.5A0.5,0.5 0 0,0 7.5,10A0.5,0.5 0 0,0 7,9.5M10,13A1,1 0 0,0 9,14A1,1 0 0,0 10,15A1,1 0 0,0 11,14A1,1 0 0,0 10,13M10,9A1,1 0 0,0 9,10A1,1 0 0,0 10,11A1,1 0 0,0 11,10A1,1 0 0,0 10,9Z",
+    "tune": "M3,17V19H9V17H3M3,5V7H13V5H3M13,21V19H21V17H13V15H11V21H13M7,9V11H3V13H7V15H9V9H7M21,13V11H11V13H21M15,9H17V7H21V5H17V3H15V9Z",
     "window-open-variant": "M21 20V2H3V20H1V23H23V20M19 4V11H17V4M5 4H7V11H5M5 20V13H7V20M9 20V4H15V20M17 20V13H19V20Z",
     "thermometer-low": "M15 13V5A3 3 0 0 0 9 5V13A5 5 0 1 0 15 13M12 4A1 1 0 0 1 13 5V12H11V5A1 1 0 0 1 12 4Z",
     "snowflake-alert": "M16.46,9.41L13,7.38V5.12L14.71,3.41L13.29,2L12,3.29L10.71,2L9.29,3.41L11,5.12V7.38L8.5,8.82L6.5,7.69L5.92,5.36L4,5.88L4.47,7.65L2.7,8.12L3.22,10.05L5.55,9.43L7.55,10.56V13.45L5.55,14.58L3.22,13.96L2.7,15.89L4.47,16.36L4,18.12L5.93,18.64L6.55,16.31L8.55,15.18L11,16.62V18.88L9.29,20.59L10.71,22L12,20.71L13.29,22L14.7,20.59L13,18.88V16.62L16.46,14.61M9.5,10.56L12,9.11L14.5,10.56V13.44L12,14.89L9.5,13.44M19,13V7H21V13H19M19,17V15H21V17H19Z",
@@ -378,10 +381,13 @@ main {{ margin-left: 256px; }}
 # Mock Home Assistant: the entities of the rooms (friendly name, icon, area), the switches of the integration.
 ENTITIES = {
     "sensor.living_room_temperature": ("Living room temperature", "mdi:thermometer", "living_room", "27.8"),
-    "sensor.living_room_co2": ("Living room CO2", "mdi:molecule-co2", "living_room", "1380"),
+    "sensor.living_room_co2": ("Living room CO2", "mdi:molecule-co2", "living_room", "950"),
+    "sensor.living_room_purifier_pm2_5": ("Living room purifier PM2.5", "mdi:blur", "living_room", "47"),
     "binary_sensor.living_room_window": ("Living room window", "mdi:window-closed", "living_room", "off"),
     "climate.living_room_ac": ("Living room AC", "mdi:air-conditioner", "living_room", "cool"),
     "fan.living_room_fan": ("Living room fan", "mdi:fan", "living_room", "on"),
+    "fan.living_room_purifier": ("Living room purifier", "mdi:air-purifier", "living_room", "on"),
+    "select.living_room_purifier_mode": ("Living room purifier mode", "mdi:tune", "living_room", "manual"),
     "light.living_room": ("Living room ceiling", "mdi:ceiling-light", "living_room", "on"),
     "light.sofa": ("Sofa lamp", "mdi:floor-lamp", "living_room", "on"),
     "sensor.bedroom_temperature": ("Bedroom temperature", "mdi:thermometer", "bedroom", "21.3"),
@@ -414,9 +420,18 @@ ROOMS = {
     "Living Room": {
         "temperature": "sensor.living_room_temperature",
         "co2": "sensor.living_room_co2",
+        "pm25": ["sensor.living_room_purifier_pm2_5"],
         "openings": ["binary_sensor.living_room_window"],
         "climate": "climate.living_room_ac",
         "fans": ["fan.living_room_fan"],
+        "purifiers": [
+            {
+                "entity_id": "fan.living_room_purifier",
+                "mode_select": "select.living_room_purifier_mode",
+                "open_mode": "manual",
+                "closed_mode": "automatic",
+            }
+        ],
         "lights": ["light.living_room", "light.sofa"],
     },
     "Bedroom": {
@@ -485,8 +500,9 @@ REPORT = {
 }
 
 
-def alert(room, name, kind, value, *, temperature=None, handled=False):
+def alert(room, name, kind, value, *, temperature=None, handled=False, **details):
     return {
+        **details,
         "room": room,
         "room_name": name,
         "kind": kind,
@@ -503,6 +519,7 @@ def alert(room, name, kind, value, *, temperature=None, handled=False):
 
 def room_status(name, alerts, devices=None, lights=None, **values):
     reading = {"temperature": None, "co2": None, "humidity": None, "noise": None, "open": []}
+    reading.update(pm25=None, pm10=None, air_quality=None)
     return {
         "name": name,
         **reading,
@@ -518,7 +535,7 @@ STATUS = {
     "alerts": [
         alert("bedroom", "Bedroom", "bad_air_outside", 4),
         alert("living_room", "Living Room", "too_hot", 27.8, handled=True),
-        alert("living_room", "Living Room", "co2_high", 1380),
+        alert("living_room", "Living Room", "polluted_air", 47, handled=True, metric="pm25", threshold=25, pm25=47),
         alert("office", "Office", "too_cold", 16.2),
     ],
     "snoozes": {},
@@ -529,11 +546,16 @@ STATUS = {
     "rooms": [
         room_status(
             "Living Room",
-            ["too_hot", "co2_high"],
-            {"climate.living_room_ac": {"target": "cool"}, "fan.living_room_fan": {"target": "on"}},
+            ["too_hot", "polluted_air"],
+            {
+                "climate.living_room_ac": {"target": "cool"},
+                "fan.living_room_fan": {"target": "on"},
+                "fan.living_room_purifier": {"target": "purify"},
+            },
             {"light.living_room": {"target": "100 % · 4000 K"}, "light.sofa": {"target": "100 %"}},
             temperature=27.8,
-            co2=1380,
+            co2=950,
+            pm25=47,
         ),
         room_status(
             "Bedroom",
@@ -621,6 +643,14 @@ def config(options):
 
 # The activity of the morning, most recent first (NOW is 11:45).
 ACTIVITY = [
+    {
+        "at": "2026-10-24T11:43:00+00:00",
+        "kind": "device",
+        "entity_id": "fan.living_room_purifier",
+        "room": "Living Room",
+        "target": "purify",
+        "data": {"option": "manual", "percentage": 100},
+    },
     {
         "at": "2026-10-24T11:41:00+00:00",
         "kind": "device",
@@ -825,7 +855,7 @@ SHOTS = [
         "options": SAVED,
         "status": STATUS,
         "tab": "alerts",
-        "clicks": [(".section-head", "Too hot")],
+        "clicks": [(".section-head", "Polluted air")],
         "height": 1100,
     },
     {

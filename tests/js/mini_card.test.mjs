@@ -306,3 +306,14 @@ test("card picker: the card, the mini card and the activity card, each once", ()
   ]);
   assert.equal(window.customCards.find((c) => c.type === "smart-comfort-card").name, "Smart Comfort");
 });
+
+test("polluted air: fine particles in µg/m³, or the air quality index", () => {
+  const alerts = [
+    { room_name: "Living room", kind: "polluted_air", value: 47, metric: "pm25", since: "2026-10-24T11:00:00Z", handled: true },
+    { room_name: "Bedroom", kind: "polluted_air", value: 4, metric: "aqi", since: "2026-10-24T11:10:00Z" },
+  ];
+  const { card } = make({ alerts: 2 }, { alerts });
+  // The one a purifier handles comes after the other.
+  assert.deepEqual(text(card, "avalue"), ["index 4", "47\u00a0µg/m³"]);
+  assert.ok(byClass(card, "alert").every((a) => walk(a).some((n) => n.icon === "mdi:blur")));
+});

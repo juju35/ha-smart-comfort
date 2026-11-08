@@ -93,6 +93,10 @@
           "max_outdoor": "Högsta utomhustemperatur",
           "max_outdoor_noise": "Högsta buller utomhus",
           "max_outdoor_air": "Högsta nivå för luftkvalitet utomhus",
+          "pm10_threshold": "Gränsvärde för PM10",
+          "pm10_hysteresis": "Hysteres för PM10",
+          "aqi_threshold": "Gränsvärde för luftkvalitetsindex",
+          "aqi_hysteresis": "Hysteres för luftkvalitetsindex",
           "hysteresis": "Hysteres",
           "delay": "Fördröjning",
           "severity": "Allvarlighetsgrad",
@@ -105,6 +109,8 @@
           "max_outdoor": "Bara när det är så kallt eller kallare ute.",
           "max_outdoor_noise": "Föreslås inte medan bullret utomhus är över detta (kräver en bullersensor utomhus).",
           "max_outdoor_air": "Föreslås inte medan luftkvaliteten utomhus är sämre än denna nivå, från 1 (bra) till 6 (extremt dålig).",
+          "pm10_threshold": "Förorenad luft: även när PM10 är över detta (µg/m³); gränsvärdet ovan är det för PM2.5.",
+          "aqi_threshold": "Förorenad luft: även när rummets luftkvalitetsindex är sämre än denna nivå, från 1 (bra) till 6 (extremt dålig). HomeKit-index går från 1 till 5; ett amerikanskt AQI räknas efter sina intervall (över 150: nivå 4).",
           "hysteresis": "Problemet upphör först när värdet har gått tillbaka förbi gränsvärdet med så mycket: inget fladder.",
           "delay": "Minuter villkoret måste hålla i sig innan det är ett problem.",
           "escalation": "Avisera igen när värdet blir så mycket sämre än vid senaste aviseringen. 0: aldrig."
@@ -186,6 +192,9 @@
           "co2": "CO₂",
           "humidity": "Luftfuktighet",
           "noise": "Buller",
+          "pm25": "PM2.5",
+          "pm10": "PM10",
+          "air_quality": "Luftkvalitetsindex",
           "openings": "Fönster och dörrar",
           "climate": "Luftkonditionering",
           "fans": "Fläktar",
@@ -213,6 +222,8 @@
           }
         },
         "data_description": {
+          "pm25": "Sensorer för fina partiklar (µg/m³), även luftrenarnas: en varning för förorenad luft, och luftrenarna går hårdare tills luften är ren igen.",
+          "air_quality": "Rummets sensorer för luftkvalitetsindex (HomeKit 1–5, europeiskt 1–6, amerikanskt AQI).",
           "lights": "Dimbara lampor: deras ljusstyrka följer tiden på dygnet medan de är tända (adaptiv belysning)."
         }
       },
@@ -224,6 +235,9 @@
           "co2": "CO₂",
           "humidity": "Luftfuktighet",
           "noise": "Buller",
+          "pm25": "PM2.5",
+          "pm10": "PM10",
+          "air_quality": "Luftkvalitetsindex",
           "openings": "Fönster och dörrar",
           "climate": "Luftkonditionering",
           "fans": "Fläktar",
@@ -251,6 +265,8 @@
           }
         },
         "data_description": {
+          "pm25": "Sensorer för fina partiklar (µg/m³), även luftrenarnas: en varning för förorenad luft, och luftrenarna går hårdare tills luften är ren igen.",
+          "air_quality": "Rummets sensorer för luftkvalitetsindex (HomeKit 1–5, europeiskt 1–6, amerikanskt AQI).",
           "lights": "Dimbara lampor: deras ljusstyrka följer tiden på dygnet medan de är tända (adaptiv belysning)."
         }
       },
@@ -324,6 +340,7 @@
         "too_cold": "För kallt",
         "window_open_cold": "Fönster öppet i kylan",
         "co2_high": "Hög CO₂-halt",
+        "polluted_air": "Förorenad luft",
         "humidity_high": "Hög luftfuktighet",
         "noise_high": "Bullrigt rum",
         "noisy_outside": "Stäng fönstren (buller ute)",
@@ -377,6 +394,7 @@
           "too_cold": "För kallt",
           "window_open_cold": "Fönster öppet i kylan",
           "co2_high": "Hög CO₂-halt",
+          "polluted_air": "Förorenad luft",
           "humidity_high": "Hög luftfuktighet",
           "noise_high": "Bullrigt rum",
           "noisy_outside": "Stäng fönstren (buller ute)",
@@ -479,6 +497,8 @@
     "line_close_windows": "{outdoor} °C ute, {temperature} °C inne — stäng {openings}",
     "line_window_open_cold": "{openings} öppen, {outdoor} °C ute",
     "line_co2_high": "CO₂ {value} ppm — vädra rummet",
+    "line_polluted_air": "{pollutant} {value} µg/m³, över {threshold} µg/m³",
+    "line_polluted_air_index": "luftkvalitet {value}/6, över {threshold}/6",
     "line_humidity_high": "luftfuktighet {value} % — vädra rummet",
     "line_noise_high": "buller {value} dB, över {threshold} dB",
     "line_noisy_outside": "{value} dB ute — stäng {openings}",

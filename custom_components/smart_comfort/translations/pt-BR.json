@@ -93,6 +93,10 @@
           "max_outdoor": "Temperatura exterior máxima",
           "max_outdoor_noise": "Ruído exterior máximo",
           "max_outdoor_air": "Nível máximo de qualidade do ar exterior",
+          "pm10_threshold": "Limiar de PM10",
+          "pm10_hysteresis": "Histerese de PM10",
+          "aqi_threshold": "Limiar do índice de qualidade do ar",
+          "aqi_hysteresis": "Histerese do índice de qualidade do ar",
           "hysteresis": "Histerese",
           "delay": "Atraso",
           "severity": "Gravidade",
@@ -105,6 +109,8 @@
           "max_outdoor": "Só quando está este frio ou mais lá fora.",
           "max_outdoor_noise": "Não sugerido enquanto o ruído exterior estiver acima disto (requer um sensor de ruído exterior).",
           "max_outdoor_air": "Não sugerido enquanto a qualidade do ar exterior for pior do que este nível, de 1 (boa) a 6 (extremamente má).",
+          "pm10_threshold": "Ar poluído: também quando as PM10 ultrapassam este valor (µg/m³); o limiar acima é o das PM2.5.",
+          "aqi_threshold": "Ar poluído: também quando o índice de qualidade do ar da divisão é pior do que este nível, de 1 (bom) a 6 (extremamente mau). Os índices HomeKit vão de 1 a 5; um AQI dos EUA conta pelas suas faixas (acima de 150: nível 4).",
           "hysteresis": "O problema só termina quando o valor voltar a passar o limiar desta quantidade: sem oscilações.",
           "delay": "Minutos durante os quais a condição tem de se manter antes de ser um problema.",
           "escalation": "Notificar de novo quando o valor piorar esta quantidade em relação à última notificação. 0: nunca."
@@ -186,6 +192,9 @@
           "co2": "CO₂",
           "humidity": "Humidade",
           "noise": "Ruído",
+          "pm25": "PM2.5",
+          "pm10": "PM10",
+          "air_quality": "Índice de qualidade do ar",
           "openings": "Janelas e portas",
           "climate": "Ar condicionado",
           "fans": "Ventoinhas",
@@ -213,6 +222,8 @@
           }
         },
         "data_description": {
+          "pm25": "Sensores de partículas finas (µg/m³), também os dos purificadores: um alerta de ar poluído, e os purificadores reforçados até o ar voltar a estar limpo.",
+          "air_quality": "Sensores de índice de qualidade do ar da divisão (HomeKit 1–5, europeu 1–6, AQI dos EUA).",
           "lights": "Luzes reguláveis: o seu brilho segue o momento do dia enquanto estão ligadas (iluminação adaptativa)."
         }
       },
@@ -224,6 +235,9 @@
           "co2": "CO₂",
           "humidity": "Humidade",
           "noise": "Ruído",
+          "pm25": "PM2.5",
+          "pm10": "PM10",
+          "air_quality": "Índice de qualidade do ar",
           "openings": "Janelas e portas",
           "climate": "Ar condicionado",
           "fans": "Ventoinhas",
@@ -251,6 +265,8 @@
           }
         },
         "data_description": {
+          "pm25": "Sensores de partículas finas (µg/m³), também os dos purificadores: um alerta de ar poluído, e os purificadores reforçados até o ar voltar a estar limpo.",
+          "air_quality": "Sensores de índice de qualidade do ar da divisão (HomeKit 1–5, europeu 1–6, AQI dos EUA).",
           "lights": "Luzes reguláveis: o seu brilho segue o momento do dia enquanto estão ligadas (iluminação adaptativa)."
         }
       },
@@ -324,6 +340,7 @@
         "too_cold": "Demasiado frio",
         "window_open_cold": "Janela aberta com frio",
         "co2_high": "CO₂ elevado",
+        "polluted_air": "Ar poluído",
         "humidity_high": "Humidade elevada",
         "noise_high": "Divisão ruidosa",
         "noisy_outside": "Fechar as janelas (ruído lá fora)",
@@ -377,6 +394,7 @@
           "too_cold": "Demasiado frio",
           "window_open_cold": "Janela aberta com frio",
           "co2_high": "CO₂ elevado",
+          "polluted_air": "Ar poluído",
           "humidity_high": "Humidade elevada",
           "noise_high": "Divisão ruidosa",
           "noisy_outside": "Fechar as janelas (ruído lá fora)",
@@ -479,6 +497,8 @@
     "line_close_windows": "{outdoor} °C fora, {temperature} °C dentro — feche {openings}",
     "line_window_open_cold": "aberto: {openings}, {outdoor} °C fora",
     "line_co2_high": "CO₂ {value} ppm — areje a divisão",
+    "line_polluted_air": "{pollutant} {value} µg/m³, acima de {threshold} µg/m³",
+    "line_polluted_air_index": "qualidade do ar {value}/6, acima de {threshold}/6",
     "line_humidity_high": "humidade {value} % — areje a divisão",
     "line_noise_high": "ruído {value} dB, acima de {threshold} dB",
     "line_noisy_outside": "{value} dB fora — feche {openings}",

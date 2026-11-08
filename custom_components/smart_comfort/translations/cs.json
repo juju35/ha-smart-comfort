@@ -93,6 +93,10 @@
           "max_outdoor": "Maximální venkovní teplota",
           "max_outdoor_noise": "Maximální venkovní hluk",
           "max_outdoor_air": "Max. úroveň kvality venkovního vzduchu",
+          "pm10_threshold": "Práh PM10",
+          "pm10_hysteresis": "Hystereze PM10",
+          "aqi_threshold": "Práh indexu kvality vzduchu",
+          "aqi_hysteresis": "Hystereze indexu kvality vzduchu",
           "hysteresis": "Hystereze",
           "delay": "Zpoždění",
           "severity": "Závažnost",
@@ -105,6 +109,8 @@
           "max_outdoor": "Jen když je venku takhle chladno nebo chladněji.",
           "max_outdoor_noise": "Nenavrhuje se, dokud je venkovní hluk nad touto hodnotou (vyžaduje venkovní senzor hluku).",
           "max_outdoor_air": "Nenavrhuje se, dokud je kvalita venkovního vzduchu horší než tato úroveň, od 1 (dobrá) po 6 (mimořádně špatná).",
+          "pm10_threshold": "Znečištěný vzduch: i když je PM10 nad touto hodnotou (µg/m³); práh výše je pro PM2,5.",
+          "aqi_threshold": "Znečištěný vzduch: i když je index kvality vzduchu v místnosti horší než tato úroveň, od 1 (dobrá) do 6 (mimořádně špatná). Indexy HomeKit jdou od 1 do 5; americký AQI se počítá podle svých pásem (nad 150: úroveň 4).",
           "hysteresis": "Problém skončí, až se hodnota vrátí za práh o tolik: žádné kmitání.",
           "delay": "Minuty, po které musí podmínka trvat, než se z ní stane problém.",
           "escalation": "Oznámit znovu, když se hodnota zhorší o tolik oproti poslednímu oznámení. 0: nikdy."
@@ -186,6 +192,9 @@
           "co2": "CO₂",
           "humidity": "Vlhkost",
           "noise": "Hluk",
+          "pm25": "PM2.5",
+          "pm10": "PM10",
+          "air_quality": "Index kvality vzduchu",
           "openings": "Okna a dveře",
           "climate": "Klimatizace",
           "fans": "Ventilátory",
@@ -213,6 +222,8 @@
           }
         },
         "data_description": {
+          "pm25": "Senzory jemných prachových částic (µg/m³), i ty na čističkách: upozornění na znečištěný vzduch a čističky běží silněji, dokud vzduch není opět čistý.",
+          "air_quality": "Senzory indexu kvality vzduchu v místnosti (HomeKit 1–5, evropský 1–6, americký AQI).",
           "lights": "Stmívatelná světla: jejich jas sleduje denní dobu, dokud svítí (adaptivní osvětlení)."
         }
       },
@@ -224,6 +235,9 @@
           "co2": "CO₂",
           "humidity": "Vlhkost",
           "noise": "Hluk",
+          "pm25": "PM2.5",
+          "pm10": "PM10",
+          "air_quality": "Index kvality vzduchu",
           "openings": "Okna a dveře",
           "climate": "Klimatizace",
           "fans": "Ventilátory",
@@ -251,6 +265,8 @@
           }
         },
         "data_description": {
+          "pm25": "Senzory jemných prachových částic (µg/m³), i ty na čističkách: upozornění na znečištěný vzduch a čističky běží silněji, dokud vzduch není opět čistý.",
+          "air_quality": "Senzory indexu kvality vzduchu v místnosti (HomeKit 1–5, evropský 1–6, americký AQI).",
           "lights": "Stmívatelná světla: jejich jas sleduje denní dobu, dokud svítí (adaptivní osvětlení)."
         }
       },
@@ -324,6 +340,7 @@
         "too_cold": "Příliš chladno",
         "window_open_cold": "Otevřené okno v chladu",
         "co2_high": "Vysoké CO₂",
+        "polluted_air": "Znečištěný vzduch",
         "humidity_high": "Vysoká vlhkost",
         "noise_high": "Hlučná místnost",
         "noisy_outside": "Zavřete okna (venku je hluk)",
@@ -377,6 +394,7 @@
           "too_cold": "Příliš chladno",
           "window_open_cold": "Otevřené okno v chladu",
           "co2_high": "Vysoké CO₂",
+          "polluted_air": "Znečištěný vzduch",
           "humidity_high": "Vysoká vlhkost",
           "noise_high": "Hlučná místnost",
           "noisy_outside": "Zavřete okna (venku je hluk)",
@@ -479,6 +497,8 @@
     "line_close_windows": "{outdoor} °C venku, {temperature} °C uvnitř — zavřete: {openings}",
     "line_window_open_cold": "otevřeno: {openings}, {outdoor} °C venku",
     "line_co2_high": "CO₂ {value} ppm — vyvětrejte místnost",
+    "line_polluted_air": "{pollutant} {value} µg/m³, nad {threshold} µg/m³",
+    "line_polluted_air_index": "kvalita vzduchu {value}/6, nad {threshold}/6",
     "line_humidity_high": "vlhkost {value} % — vyvětrejte místnost",
     "line_noise_high": "hluk {value} dB, nad {threshold} dB",
     "line_noisy_outside": "{value} dB venku — zavřete: {openings}",

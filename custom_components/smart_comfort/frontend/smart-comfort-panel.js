@@ -16,6 +16,7 @@ const KIND_ICONS = {
   too_cold: "mdi:thermometer-low",
   window_open_cold: "mdi:snowflake-alert",
   co2_high: "mdi:molecule-co2",
+  polluted_air: "mdi:blur",
   humidity_high: "mdi:water-percent-alert",
   noise_high: "mdi:volume-high",
   noisy_outside: "mdi:volume-off",
@@ -39,7 +40,16 @@ const ROOM_ICONS = [
   [["jardin", "garden", "garten", "yard"], "mdi:flower"],
 ];
 
-const UNITS = { co2_high: "ppm", humidity_high: "%", noise_high: "dB", noisy_outside: "dB", bad_air_outside: "/6" };
+const UNITS = {
+  co2_high: "ppm",
+  polluted_air: "µg/m³",
+  humidity_high: "%",
+  noise_high: "dB",
+  noisy_outside: "dB",
+  bad_air_outside: "/6",
+};
+// Polluted air: by the reading over its threshold, fine particles or the air quality index.
+const unitOf = (alert) => (alert.kind === "polluted_air" && alert.metric === "aqi" ? "/6" : UNITS[alert.kind] || "°C");
 
 // Strings of the panel itself; field labels come from the integration translations.
 const STRINGS = {
@@ -3684,6 +3694,9 @@ function toYaml(value, indent = "") {
   return lines.join("\n");
 }
 const isEmpty = (v) => v === undefined || v === null || v === "" || (Array.isArray(v) && v.length === 0);
+const asList = (v) => (Array.isArray(v) ? v : v ? [v] : []);
+// Sensors of a room, in the order of its form.
+const SENSOR_KEYS = ["temperature", "co2", "humidity", "noise", "pm25", "pm10", "air_quality"];
 
 /** Drop empty values, recursively; empty objects go too. */
 function prune(value) {
@@ -4258,9 +4271,9 @@ class SmartComfortPanel extends HTMLElement {
       i.className = `kind ${a.kind}`;
       const body = this._el("div", "alert-body");
       body.append(this._el("div", "alert-title", `${a.room_name} · ${this._kindName(a.kind)}`));
-      const unit = UNITS[a.kind] || "°C";
+      const unit = unitOf(a);
       const value = a.kind === "ventilate" || a.kind === "close_windows" ? a.temperature : a.value;
-      const digits = ["co2_high", "bad_air_outside"].includes(a.kind) ? 0 : 1;
+      const digits = ["co2_high", "polluted_air", "bad_air_outside"].includes(a.kind) ? 0 : 1;
       const parts = [`${this._format(value, digits)}${unit === "/6" ? "" : " "}${unit}`];
       parts.push(`${this._t("since")} ${this._time(a.since)}`);
       parts.push(a.notified_at ? `${this._t("notified")} ${this._time(a.notified_at)}` : this._t("pending"));
@@ -4299,6 +4312,9 @@ class SmartComfortPanel extends HTMLElement {
         this._chips([
           ["mdi:thermometer", room.temperature, (v) => `${this._format(v)} °C`],
           ["mdi:molecule-co2", room.co2, (v) => `${this._format(v, 0)} ppm`],
+          ["mdi:blur", room.pm25, (v) => `PM2.5 ${this._format(v, 0)} µg/m³`],
+          ["mdi:blur-radial", room.pm10, (v) => `PM10 ${this._format(v, 0)} µg/m³`],
+          ["mdi:air-filter", room.air_quality, (v) => `${this._format(v, 0)}/6`],
           ["mdi:water-percent", room.humidity, (v) => `${this._format(v, 0)} %`],
           ["mdi:volume-medium", room.noise, (v) => `${this._format(v, 0)} dB`],
           ["mdi:window-open-variant", room.open?.length || null, (n) => `${this._t("open")} (${n})`],
@@ -4569,10 +4585,24 @@ class SmartComfortPanel extends HTMLElement {
     }
     if ("max_outdoor_noise" in defaults) fields.push({ name: "max_outdoor_noise", selector: num("dB", { min: 0 }) });
     if ("max_outdoor_air" in defaults) fields.push({ name: "max_outdoor_air", selector: num("/6", { min: 1, max: 6 }) });
+    // Polluted air: PM10 and the air quality index besides PM2.5 (the threshold).
+    const polluted = "pm10_threshold" in defaults;
+    if (polluted) {
+      fields.push(
+        { name: "pm10_threshold", selector: num("µg/m³", { min: 0 }) },
+        { name: "aqi_threshold", selector: num("/6", { min: 1, max: 6 }) }
+      );
+    }
     fields.push(
       { name: "severity", selector: choice(this._options("severity", this._config.severities)) },
       this._advanced([
         { name: "hysteresis", selector: num(unit, { min: 0 }) },
+        ...(polluted
+          ? [
+              { name: "pm10_hysteresis", selector: num("µg/m³", { min: 0 }) },
+              { name: "aqi_hysteresis", selector: num("/6", { min: 0 }) },
+            ]
+          : []),
         { name: "delay", selector: minutes() },
         { name: "escalation", selector: num(unit, { min: 0 }) },
       ])
@@ -5090,7 +5120,7 @@ class SmartComfortPanel extends HTMLElement {
   }
 
   _sensorsSummary(room) {
-    const names = ["temperature", "co2", "humidity", "noise"].filter((k) => room[k]).map((k) => this._label("room", k));
+    const names = SENSOR_KEYS.filter((k) => !isEmpty(room[k])).map((k) => this._label("room", k));
     return names.length ? names.join(", ") : this._t("none");
   }
 
@@ -5129,12 +5159,19 @@ class SmartComfortPanel extends HTMLElement {
       ["co2", "carbon_dioxide"],
       ["humidity", "humidity"],
       ["noise", "sound_pressure"],
+      // Indoor air: lists (the worst counts), the purifiers' sensors too.
+      ["pm25", "pm25", true],
+      ["pm10", "pm10", true],
+      ["air_quality", null, true],
     ];
-    const shown = all.filter(([key]) => room[key] || this._shown.has(`${index}:${key}`));
+    const shown = all.filter(([key]) => !isEmpty(room[key]) || this._shown.has(`${index}:${key}`));
     if (shown.length) {
       body.append(
         this._form(
-          shown.map(([key, deviceClass]) => ({ name: key, selector: entity("sensor", { device_class: deviceClass }) })),
+          shown.map(([key, deviceClass, multiple]) => ({
+            name: key,
+            selector: entity("sensor", { ...(deviceClass ? { device_class: deviceClass } : {}), ...(multiple ? { multiple } : {}) }),
+          })),
           Object.fromEntries(shown.map(([key]) => [key, room[key]])),
           (value) => {
             for (const [key] of shown) {
@@ -5494,6 +5531,7 @@ class SmartComfortPanel extends HTMLElement {
       [
         ["mdi:thermometer", room.temperature],
         ["mdi:molecule-co2", room.co2],
+        ["mdi:blur", [...asList(room.pm25), ...asList(room.pm10), ...asList(room.air_quality)]],
         ["mdi:water-percent", room.humidity],
         ["mdi:volume-medium", room.noise],
         ["mdi:window-closed-variant", room.openings],

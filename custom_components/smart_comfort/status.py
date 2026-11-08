@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING, Any
 from homeassistant.util import dt as dt_util
 
 from .config import Room
-from .engine import HANDLED_KINDS, Episode
+from .engine import Episode, is_handled
 from .lighting import phase
 
 if TYPE_CHECKING:
@@ -26,8 +26,8 @@ def episode_info(manager: SmartComfort, ep: Episode, now: datetime) -> dict[str,
         "notified_at": ep.notified_at.isoformat() if ep.notified_at else None,
         "snoozed": manager.engine.snoozed(ep, now),
         "acknowledged": ep.acknowledged,
-        # Suppressed because a running device takes care of it (too_hot only).
-        "handled": ep.room in manager.handled and ep.kind in HANDLED_KINDS,
+        # Suppressed because a running device takes care of it (too hot: AC or fan; polluted air: a purifier).
+        "handled": is_handled(ep, manager.handled),
         **{k: v for k, v in ep.details.items() if k != "openings"},
         "openings": ep.details.get("openings", []),
     }
@@ -42,10 +42,13 @@ def room_info(manager: SmartComfort, room: Room, now: datetime) -> dict[str, Any
         "co2": reading.co2,
         "humidity": reading.humidity,
         "noise": reading.noise,
+        "pm25": reading.pm25,
+        "pm10": reading.pm10,
+        "air_quality": reading.aqi,
         "open": reading.open,
         "ignored_openings": manager.ignored_openings(room, now),
         "alerts": [e.kind for e in manager.engine.active() if e.room == room.id],
-        "handled": room.id in manager.handled,
+        "handled": room.id in manager.handled or any(k.startswith(f"{room.id}|") for k in manager.handled),
         "devices": {
             d: {
                 "target": controller.targets.get(d),

@@ -11,6 +11,7 @@ from typing import Any
 
 from homeassistant.const import ATTR_UNIT_OF_MEASUREMENT, STATE_UNAVAILABLE, STATE_UNKNOWN, UnitOfTemperature
 from homeassistant.core import CALLBACK_TYPE, Context, CoreState, Event, HomeAssistant, State, callback
+from homeassistant.helpers import entity_registry as er
 from homeassistant.helpers.dispatcher import async_dispatcher_send
 from homeassistant.helpers.event import async_call_later, async_track_state_change_event, async_track_time_interval
 from homeassistant.helpers.json import json_bytes
@@ -30,6 +31,7 @@ from .const import (
     EVALUATE_INTERVAL,
     EVENT_CONTROL,
     EVENT_NOTIFIED,
+    KIND_POLLUTED,
     NOTIFY_TIMEOUT,
     OPENING_UNAVAILABLE,
     SERVICE_TIMEOUT,
@@ -129,6 +131,29 @@ def air_level(state: State | None) -> float | None:
     if state.attributes.get("device_class") == "aqi" or value > 6:
         return float(next((i + 1 for i, top in enumerate(AQI_LEVELS) if value <= top), 6))
     return value
+
+
+# Integrations whose air quality index is HomeKit's: 1 excellent, 2 good, 3 fair, 4 inferior, 5 poor.
+HOMEKIT_PLATFORMS = ("homekit_controller",)
+
+
+def indoor_air_level(state: State | None, homekit: bool = False) -> float | None:
+    """Air quality level of a room's index sensor, 1 (good) to 6 (extremely poor), like `air_level`.
+
+    A HomeKit index (1 excellent … 5 poor, 0 unknown) is taken as is, although its device class is aqi.
+    """
+    if homekit and state is not None and state.state not in BAD_STATES:
+        try:
+            value = float(state.state)
+        except ValueError:
+            return air_level(state)
+        return value if 1 <= value <= 5 else None
+    return air_level(state)
+
+
+def _worst(values: list[float | None]) -> float | None:
+    known = [v for v in values if v is not None]
+    return max(known) if known else None
 
 
 def _number(value: Any) -> float | None:
@@ -512,6 +537,8 @@ class SmartComfort:
             ("noise", room.noise),
         )
         missing = {n for n, entity_id in sources if entity_id and settled and self.hass.states.get(entity_id) is None}
+        if settled and room.indoor_air and all(self.hass.states.get(e) is None for e in room.indoor_air):
+            missing.add("indoor_air")
         if self._outdoor_gone(settled):
             missing.add("outdoor")
         for name, outdoor_sensors in (
@@ -525,6 +552,9 @@ class SmartComfort:
             co2=_float(self.hass.states.get(room.co2)) if room.co2 else None,
             humidity=_float(self.hass.states.get(room.humidity)) if room.humidity else None,
             noise=_float(self.hass.states.get(room.noise)) if room.noise else None,
+            pm25=_worst([_float(self.hass.states.get(e)) for e in room.pm25]),
+            pm10=_worst([_float(self.hass.states.get(e)) for e in room.pm10]),
+            aqi=_worst([indoor_air_level(self.hass.states.get(e), self._homekit(e)) for e in room.air_quality]),
             outdoor_noise=self.outdoor_noise(),
             outdoor_air=self.outdoor_air(),
             open=opened,
@@ -539,6 +569,11 @@ class SmartComfort:
             has_openings=bool(room.openings),
         )
         return reading, ctx
+
+    def _homekit(self, entity_id: str) -> bool:
+        """A HomeKit air quality index (1 to 5), told by its integration."""
+        entry = er.async_get(self.hass).async_get(entity_id)
+        return entry is not None and entry.platform in HOMEKIT_PLATFORMS
 
     def device_states(self, room: Room) -> dict[str, DeviceState]:
         out: dict[str, DeviceState] = {}
@@ -607,6 +642,11 @@ class SmartComfort:
                 for entity_id in reset:
                     self._log(now, RESET, entity_id)
             occupied = {r.id for r in self.settings.rooms if r.presence and self.room_present(r)}
+            # The alerts first: the purifiers of a room whose air is polluted are boosted in the same evaluation.
+            contexts: dict[str, RoomContext] = {}
+            for room in self.settings.rooms:
+                readings[room.id], contexts[room.id] = self.reading(room, now)
+            self.engine.evaluate(now, readings, self.outdoor())
             for room in self.settings.rooms:
                 if lighting and room.lights:
                     commands += self.lights.evaluate(
@@ -626,7 +666,8 @@ class SmartComfort:
                         adaptive=lighting,
                         kept=self.presence.kept(room, occupied),
                     )
-                reading, ctx = self.reading(room, now)
+                ctx = contexts[room.id]
+                ctx.polluted = self.engine.alerting(room.id, KIND_POLLUTED)
                 states = self.device_states(room)
                 if self.control_enabled:
                     commands += self.controller.evaluate(now, local, room, ctx, states)
@@ -634,9 +675,9 @@ class SmartComfort:
                         commands += self.displays.evaluate(dt_util.as_local(now), room, self.display_states(room))
                 if self.controller.handled(room, states):
                     handled.add(room.id)
-                reading.handled = room.id in handled
-                readings[room.id] = reading
-            self.engine.evaluate(now, readings, self.outdoor())
+                if ctx.polluted and self.controller.purifying(room, states):
+                    handled.add(f"{room.id}|{KIND_POLLUTED}")
+                readings[room.id].handled = room.id in handled
             self.handled = handled
             sent = await self._run(commands, now)
             failed = {c.device for c, ok in sent if not ok}

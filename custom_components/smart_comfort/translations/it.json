@@ -93,6 +93,10 @@
           "max_outdoor": "Temperatura esterna massima",
           "max_outdoor_noise": "Rumore esterno massimo",
           "max_outdoor_air": "Livello massimo di qualità dell'aria esterna",
+          "pm10_threshold": "Soglia PM10",
+          "pm10_hysteresis": "Isteresi PM10",
+          "aqi_threshold": "Soglia dell'indice di qualità dell'aria",
+          "aqi_hysteresis": "Isteresi dell'indice di qualità dell'aria",
           "hysteresis": "Isteresi",
           "delay": "Ritardo",
           "severity": "Gravità",
@@ -105,6 +109,8 @@
           "max_outdoor": "Solo quando fuori fa questo freddo o di più.",
           "max_outdoor_noise": "Non suggerito quando il rumore esterno supera questo valore (serve un sensore di rumore esterno).",
           "max_outdoor_air": "Non suggerito quando la qualità dell'aria esterna è peggiore di questo livello, da 1 (buona) a 6 (estremamente scadente).",
+          "pm10_threshold": "Aria inquinata: anche quando il PM10 supera questo valore (µg/m³); la soglia sopra è quella del PM2.5.",
+          "aqi_threshold": "Aria inquinata: anche quando l'indice di qualità dell'aria della stanza è peggiore di questo livello, da 1 (buono) a 6 (estremamente scadente). Gli indici HomeKit vanno da 1 a 5; un AQI statunitense conta per le sue fasce (sopra 150: livello 4).",
           "hysteresis": "Il problema finisce solo quando il valore è tornato oltre la soglia di questa quantità: niente oscillazioni.",
           "delay": "Minuti in cui la condizione deve persistere prima di diventare un problema.",
           "escalation": "Notifica di nuovo quando il valore peggiora di questa quantità rispetto all'ultima notifica. 0: mai."
@@ -186,6 +192,9 @@
           "co2": "CO₂",
           "humidity": "Umidità",
           "noise": "Rumore",
+          "pm25": "PM2.5",
+          "pm10": "PM10",
+          "air_quality": "Indice di qualità dell'aria",
           "openings": "Finestre e porte",
           "climate": "Condizionatore",
           "fans": "Ventilatori",
@@ -213,6 +222,8 @@
           }
         },
         "data_description": {
+          "pm25": "Sensori di particolato fine (µg/m³), anche quelli dei purificatori: un avviso di aria inquinata, e i purificatori potenziati finché l'aria non torna pulita.",
+          "air_quality": "Sensori dell'indice di qualità dell'aria della stanza (HomeKit 1–5, europeo 1–6, AQI statunitense).",
           "lights": "Luci dimmerabili: la loro luminosità segue il momento della giornata mentre sono accese (illuminazione adattiva)."
         }
       },
@@ -224,6 +235,9 @@
           "co2": "CO₂",
           "humidity": "Umidità",
           "noise": "Rumore",
+          "pm25": "PM2.5",
+          "pm10": "PM10",
+          "air_quality": "Indice di qualità dell'aria",
           "openings": "Finestre e porte",
           "climate": "Condizionatore",
           "fans": "Ventilatori",
@@ -251,6 +265,8 @@
           }
         },
         "data_description": {
+          "pm25": "Sensori di particolato fine (µg/m³), anche quelli dei purificatori: un avviso di aria inquinata, e i purificatori potenziati finché l'aria non torna pulita.",
+          "air_quality": "Sensori dell'indice di qualità dell'aria della stanza (HomeKit 1–5, europeo 1–6, AQI statunitense).",
           "lights": "Luci dimmerabili: la loro luminosità segue il momento della giornata mentre sono accese (illuminazione adattiva)."
         }
       },
@@ -324,6 +340,7 @@
         "too_cold": "Troppo freddo",
         "window_open_cold": "Finestra aperta al freddo",
         "co2_high": "CO₂ elevata",
+        "polluted_air": "Aria inquinata",
         "humidity_high": "Umidità elevata",
         "noise_high": "Stanza rumorosa",
         "noisy_outside": "Chiudi le finestre (rumore fuori)",
@@ -377,6 +394,7 @@
           "too_cold": "Troppo freddo",
           "window_open_cold": "Finestra aperta al freddo",
           "co2_high": "CO₂ elevata",
+          "polluted_air": "Aria inquinata",
           "humidity_high": "Umidità elevata",
           "noise_high": "Stanza rumorosa",
           "noisy_outside": "Chiudi le finestre (rumore fuori)",
@@ -479,6 +497,8 @@
     "line_close_windows": "{outdoor} °C fuori, {temperature} °C dentro — chiudi {openings}",
     "line_window_open_cold": "aperto: {openings}, {outdoor} °C fuori",
     "line_co2_high": "CO₂ {value} ppm — arieggia la stanza",
+    "line_polluted_air": "{pollutant} {value} µg/m³, sopra {threshold} µg/m³",
+    "line_polluted_air_index": "qualità dell'aria {value}/6, sopra {threshold}/6",
     "line_humidity_high": "umidità {value} % — arieggia la stanza",
     "line_noise_high": "rumore {value} dB, sopra {threshold} dB",
     "line_noisy_outside": "{value} dB fuori — chiudi {openings}",

@@ -5,7 +5,8 @@ purifier or a dimmable light) becomes a room, with what it has: sensors, opening
 indicators of devices nor the floodlights of cameras; night lights set at night only). The others (a hallway
 with only its door, a room with nothing) are left out, and so are the outdoor areas without a sensor.
 Sensors and openings that belong to an air conditioner, fan or purifier are left out (internal
-temperatures, filter states…), and so are the heating thermostats (a climate without cooling).
+temperatures, filter states…), except the air sensors (PM2.5, PM10, air quality index), which measure the
+room's air; the heating thermostats (a climate without cooling) are left out too.
 The outdoor areas become outdoor places, with their temperature, air quality and noise sensors. Outdoor
 sensors in no area (a module named outdoor, a city air quality index like Atmo France) go to the top-level
 outdoor options; without any outdoor temperature, the weather entity gives it.
@@ -115,11 +116,16 @@ TRACKED = (
     k.CONF_CO2,
     k.CONF_HUMIDITY,
     k.CONF_NOISE,
+    k.CONF_PM25,
+    k.CONF_PM10,
+    k.CONF_AIR_QUALITY,
     k.CONF_CLIMATE,
     k.CONF_FANS,
     k.CONF_PURIFIERS,
     k.CONF_LIGHTS,
 )
+# Indoor air sensors of a room by device class (every one found: the worst counts), a purifier's too.
+INDOOR_AIR = ((k.CONF_PM25, "pm25"), (k.CONF_PM10, "pm10"))
 # Indicator lights and displays of the devices (slug form).
 DISPLAY_WORDS = (
     "indicator",
@@ -627,6 +633,20 @@ def discover_rooms(hass: HomeAssistant) -> Found:
             candidates = [e for e in pool if e.device_class == device_class and not _has(e.name, OUTDOOR_WORDS)]
             if (best := _best(candidates, by_device)) is not None:
                 room[key] = best
+        # The air sensors of the purifiers (and air conditioners) are the room's air: kept, unlike their others.
+        air = [
+            e
+            for e in area.entities
+            if e.domain == "sensor"
+            and not _equipment(e)
+            and not _has(e.name, OUTDOOR_WORDS)
+            and not _has(e.entity_id, OUTDOOR_WORDS)
+        ]
+        for key, device_class in INDOOR_AIR:
+            if found_air := sorted(e.entity_id for e in air if e.device_class == device_class):
+                room[key] = found_air
+        if found_index := sorted(e.entity_id for e in air if e.device_class not in ("pm25", "pm10") and _is_air(e)):
+            room[k.CONF_AIR_QUALITY] = found_index
         openings = sorted(
             e.entity_id
             for e in area.entities
@@ -710,7 +730,15 @@ def merge(options: dict[str, Any], found: Found) -> tuple[dict[str, Any], Report
         if match.get(k.CONF_CLIMATE) and _item_id(match[k.CONF_CLIMATE]) == _item_id(new.get(k.CONF_CLIMATE, "")):
             match[k.CONF_CLIMATE], completed = _complete(match[k.CONF_CLIMATE], new[k.CONF_CLIMATE])
             changed = changed or completed
-        for key in (k.CONF_OPENINGS, k.CONF_FANS, k.CONF_PURIFIERS, k.CONF_LIGHTS):
+        for key in (
+            k.CONF_PM25,
+            k.CONF_PM10,
+            k.CONF_AIR_QUALITY,
+            k.CONF_OPENINGS,
+            k.CONF_FANS,
+            k.CONF_PURIFIERS,
+            k.CONF_LIGHTS,
+        ):
             current = _list(match.get(key))
             found_items = {_item_id(i): i for i in new.get(key, [])}
             completed_items = []

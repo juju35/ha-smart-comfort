@@ -154,8 +154,11 @@ async def test_discover_rooms(hass: HomeAssistant) -> None:
             "display": "select.living_purifier_brightness",
         }
     ]
+    # The PM2.5 of the purifier is the room's air (its other sensors are not the room's).
+    assert living["pm25"] == ["sensor.purifier_pm25"]
     bedroom = by_name["Bedroom"]
     assert bedroom["temperature"] == "sensor.bedroom_temperature"
+    assert "pm25" not in bedroom and "air_quality" not in bedroom
     assert "climate" not in bedroom
     assert bedroom["openings"] == ["binary_sensor.bedroom_door"]
     assert bedroom["purifiers"] == [
@@ -526,3 +529,36 @@ async def test_word_collisions(hass: HomeAssistant, name: str, outdoor: bool, be
 def test_slug_transliterates(text: str, slug: str) -> None:
     """A German ß is "ss" (not dropped: "Außen" is not "auen"), Serbian Cyrillic is written in Latin."""
     assert _slug(text) == slug
+
+
+async def test_discover_indoor_air(hass: HomeAssistant) -> None:
+    """The air sensors of the purifiers go to their room: PM2.5, PM10, a HomeKit air quality index."""
+    h = House(hass)
+    living, office = h.area("Living room"), h.area("Office")
+    homekit = h.device("Smartmi Air Purifier", living)
+    h.entity("fan", "smartmi_purifier", "on", homekit, preset_modes=["Auto", "Manual"])
+    h.entity("sensor", "smartmi_pm2_5_density", "47", homekit, platform="homekit_controller", device_class="pm25")
+    h.entity("sensor", "smartmi_pm10_density", "60", homekit, platform="homekit_controller", device_class="pm10")
+    h.entity("sensor", "smartmi_air_quality", "3", homekit, platform="homekit_controller", device_class="aqi")
+    h.entity("sensor", "smartmi_temperature", "22", homekit, device_class="temperature")
+    # Xiaomi Home: a purifier with its PM2.5 only, in a room with nothing else.
+    zhimi = h.device("Xiaomi Air Purifier 4", office, model="zhimi.airp.mb5")
+    h.entity("fan", "zhimi_purifier", "on", zhimi)
+    h.entity("sensor", "zhimi_pm25", "8", zhimi, platform="xiaomi_home", device_class="pm25")
+    # An outdoor one in the room's area is not the room's.
+    h.entity("sensor", "outdoor_pm25", "30", area=living, device_class="pm25")
+    rooms = {r["name"]: r for r in discover_rooms(hass).rooms}
+    assert rooms["Living room"]["pm25"] == ["sensor.smartmi_pm2_5_density"]
+    assert rooms["Living room"]["pm10"] == ["sensor.smartmi_pm10_density"]
+    assert rooms["Living room"]["air_quality"] == ["sensor.smartmi_air_quality"]
+    assert "temperature" not in rooms["Living room"]
+    assert rooms["Living room"]["purifiers"] == [
+        {"entity_id": "fan.smartmi_purifier", "open_preset": "Manual", "closed_preset": "Auto"}
+    ]
+    assert rooms["Office"]["pm25"] == ["sensor.zhimi_pm25"]
+    # Merged into a room that has its own: kept, the others added.
+    found = discover_rooms(hass)
+    merged, report = merge({"rooms": [{"name": "Living room", "pm25": ["sensor.mine"]}]}, found)
+    assert merged["rooms"][0]["pm25"] == ["sensor.mine", "sensor.smartmi_pm2_5_density"]
+    assert merged["rooms"][0]["air_quality"] == ["sensor.smartmi_air_quality"]
+    assert report.updated == ["Living room"]

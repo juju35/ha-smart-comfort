@@ -93,6 +93,10 @@
           "max_outdoor": "Temperatură exterioară maximă",
           "max_outdoor_noise": "Zgomot exterior maxim",
           "max_outdoor_air": "Nivel maxim al calității aerului exterior",
+          "pm10_threshold": "Prag PM10",
+          "pm10_hysteresis": "Histerezis PM10",
+          "aqi_threshold": "Pragul indicelui de calitate a aerului",
+          "aqi_hysteresis": "Histerezisul indicelui de calitate a aerului",
           "hysteresis": "Histerezis",
           "delay": "Întârziere",
           "severity": "Gravitate",
@@ -105,6 +109,8 @@
           "max_outdoor": "Doar când afară e atât de frig sau mai frig.",
           "max_outdoor_noise": "Nu se sugerează cât timp zgomotul exterior depășește această valoare (necesită un senzor de zgomot exterior).",
           "max_outdoor_air": "Nu se sugerează cât timp calitatea aerului exterior e mai proastă decât acest nivel, de la 1 (bună) la 6 (extrem de proastă).",
+          "pm10_threshold": "Aer poluat: și când PM10 depășește această valoare (µg/m³); pragul de mai sus este cel pentru PM2.5.",
+          "aqi_threshold": "Aer poluat: și când indicele de calitate a aerului din cameră este mai rău decât acest nivel, de la 1 (bun) la 6 (extrem de rău). Indicii HomeKit merg de la 1 la 5; un AQI american contează după intervalele sale (peste 150: nivelul 4).",
           "hysteresis": "Problema se încheie doar când valoarea a revenit dincolo de prag cu atât: fără oscilații.",
           "delay": "Minute în care condiția trebuie să persiste înainte de a deveni o problemă.",
           "escalation": "Notifică din nou când valoarea se înrăutățește cu atât față de ultima notificare. 0: niciodată."
@@ -186,6 +192,9 @@
           "co2": "CO₂",
           "humidity": "Umiditate",
           "noise": "Zgomot",
+          "pm25": "PM2.5",
+          "pm10": "PM10",
+          "air_quality": "Indice de calitate a aerului",
           "openings": "Ferestre și uși",
           "climate": "Aer condiționat",
           "fans": "Ventilatoare",
@@ -213,6 +222,8 @@
           }
         },
         "data_description": {
+          "pm25": "Senzori de particule fine (µg/m³), și cei ai purificatoarelor: o alertă de aer poluat, iar purificatoarele merg mai tare până când aerul redevine curat.",
+          "air_quality": "Senzori ai indicelui de calitate a aerului din cameră (HomeKit 1–5, european 1–6, AQI american).",
           "lights": "Lumini reglabile: luminozitatea lor urmează momentul zilei cât timp sunt aprinse (iluminare adaptivă)."
         }
       },
@@ -224,6 +235,9 @@
           "co2": "CO₂",
           "humidity": "Umiditate",
           "noise": "Zgomot",
+          "pm25": "PM2.5",
+          "pm10": "PM10",
+          "air_quality": "Indice de calitate a aerului",
           "openings": "Ferestre și uși",
           "climate": "Aer condiționat",
           "fans": "Ventilatoare",
@@ -251,6 +265,8 @@
           }
         },
         "data_description": {
+          "pm25": "Senzori de particule fine (µg/m³), și cei ai purificatoarelor: o alertă de aer poluat, iar purificatoarele merg mai tare până când aerul redevine curat.",
+          "air_quality": "Senzori ai indicelui de calitate a aerului din cameră (HomeKit 1–5, european 1–6, AQI american).",
           "lights": "Lumini reglabile: luminozitatea lor urmează momentul zilei cât timp sunt aprinse (iluminare adaptivă)."
         }
       },
@@ -324,6 +340,7 @@
         "too_cold": "Prea frig",
         "window_open_cold": "Fereastră deschisă în frig",
         "co2_high": "CO₂ ridicat",
+        "polluted_air": "Aer poluat",
         "humidity_high": "Umiditate ridicată",
         "noise_high": "Cameră zgomotoasă",
         "noisy_outside": "Închideți ferestrele (zgomot afară)",
@@ -377,6 +394,7 @@
           "too_cold": "Prea frig",
           "window_open_cold": "Fereastră deschisă în frig",
           "co2_high": "CO₂ ridicat",
+          "polluted_air": "Aer poluat",
           "humidity_high": "Umiditate ridicată",
           "noise_high": "Cameră zgomotoasă",
           "noisy_outside": "Închideți ferestrele (zgomot afară)",
@@ -479,6 +497,8 @@
     "line_close_windows": "{outdoor} °C afară, {temperature} °C înăuntru — închideți: {openings}",
     "line_window_open_cold": "deschis: {openings}, {outdoor} °C afară",
     "line_co2_high": "CO₂ {value} ppm — aerisiți camera",
+    "line_polluted_air": "{pollutant} {value} µg/m³, peste {threshold} µg/m³",
+    "line_polluted_air_index": "calitatea aerului {value}/6, peste {threshold}/6",
     "line_humidity_high": "umiditate {value} % — aerisiți camera",
     "line_noise_high": "zgomot {value} dB, peste {threshold} dB",
     "line_noisy_outside": "{value} dB afară — închideți: {openings}",

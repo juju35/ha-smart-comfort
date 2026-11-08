@@ -93,6 +93,10 @@
           "max_outdoor": "Maksimalna spoljašnja temperatura",
           "max_outdoor_noise": "Maksimalna spoljašnja buka",
           "max_outdoor_air": "Maksimalni nivo spoljašnjeg kvaliteta vazduha",
+          "pm10_threshold": "Prag za PM10",
+          "pm10_hysteresis": "Histerezis za PM10",
+          "aqi_threshold": "Prag indeksa kvaliteta vazduha",
+          "aqi_hysteresis": "Histerezis indeksa kvaliteta vazduha",
           "hysteresis": "Histerezis",
           "delay": "Kašnjenje",
           "severity": "Ozbiljnost",
@@ -105,6 +109,8 @@
           "max_outdoor": "Samo kada je napolju ovoliko hladno ili hladnije.",
           "max_outdoor_noise": "Ne predlaže se dok je spoljašnja buka iznad ovoga (zahteva spoljašnji senzor buke).",
           "max_outdoor_air": "Ne predlaže se dok je spoljašnji kvalitet vazduha lošiji od ovog nivoa, od 1 (dobar) do 6 (izuzetno loš).",
+          "pm10_threshold": "Zagađen vazduh: i kada PM10 pređe ovu vrednost (µg/m³); prag iznad je onaj za PM2,5.",
+          "aqi_threshold": "Zagađen vazduh: i kada je indeks kvaliteta vazduha u prostoriji lošiji od ovog nivoa, od 1 (dobar) do 6 (izuzetno loš). Indeksi sistema HomeKit idu od 1 do 5; američki AQI se računa po svojim opsezima (iznad 150: nivo 4).",
           "hysteresis": "Problem se završava tek kada se vrednost vrati preko praga za ovoliko: sprečava nestabilnost (flapping).",
           "delay": "Minuti tokom kojih uslov mora biti ispunjen pre nego što se proglasi problem.",
           "escalation": "Ponovo obavesti kada se vrednost pogorša za ovoliko u odnosu na poslednje obaveštenje. 0: nikada."
@@ -186,6 +192,9 @@
           "co2": "CO₂",
           "humidity": "Vlažnost vazduha",
           "noise": "Buka",
+          "pm25": "PM2.5",
+          "pm10": "PM10",
+          "air_quality": "Indeks kvaliteta vazduha",
           "openings": "Prozori i vrata",
           "climate": "Klima uređaj",
           "fans": "Ventilatori",
@@ -213,6 +222,8 @@
           }
         },
         "data_description": {
+          "pm25": "Senzori finih čestica (µg/m³), i oni na prečistačima: upozorenje o zagađenom vazduhu, a prečistači rade jače dok vazduh ponovo ne bude čist.",
+          "air_quality": "Senzori indeksa kvaliteta vazduha u prostoriji (HomeKit 1–5, evropski 1–6, američki AQI).",
           "lights": "Svetla sa podesivom jačinom: njihova jačina prati doba dana dok su uključena (prilagodljivo osvetljenje)."
         }
       },
@@ -224,6 +235,9 @@
           "co2": "CO₂",
           "humidity": "Vlažnost vazduha",
           "noise": "Buka",
+          "pm25": "PM2.5",
+          "pm10": "PM10",
+          "air_quality": "Indeks kvaliteta vazduha",
           "openings": "Prozori i vrata",
           "climate": "Klima uređaj",
           "fans": "Ventilatori",
@@ -251,6 +265,8 @@
           }
         },
         "data_description": {
+          "pm25": "Senzori finih čestica (µg/m³), i oni na prečistačima: upozorenje o zagađenom vazduhu, a prečistači rade jače dok vazduh ponovo ne bude čist.",
+          "air_quality": "Senzori indeksa kvaliteta vazduha u prostoriji (HomeKit 1–5, evropski 1–6, američki AQI).",
           "lights": "Svetla sa podesivom jačinom: njihova jačina prati doba dana dok su uključena (prilagodljivo osvetljenje)."
         }
       },
@@ -324,6 +340,7 @@
         "too_cold": "Prehladno",
         "window_open_cold": "Prozor otvoren na hladnoći",
         "co2_high": "Visok nivo CO₂",
+        "polluted_air": "Zagađen vazduh",
         "humidity_high": "Visoka vlažnost vazduha",
         "noise_high": "Bučna soba",
         "noisy_outside": "Zatvorite prozore (bučno je napolju)",
@@ -377,6 +394,7 @@
           "too_cold": "Prehladno",
           "window_open_cold": "Prozor otvoren na hladnoći",
           "co2_high": "Visok nivo CO₂",
+          "polluted_air": "Zagađen vazduh",
           "humidity_high": "Visoka vlažnost vazduha",
           "noise_high": "Bučna soba",
           "noisy_outside": "Zatvorite prozore (bučno je napolju)",
@@ -479,6 +497,8 @@
     "line_close_windows": "{outdoor} °C napolju, {temperature} °C unutra — zatvorite {openings}",
     "line_window_open_cold": "{openings} otvoreno, {outdoor} °C napolju",
     "line_co2_high": "CO₂ {value} ppm — provetrite sobu",
+    "line_polluted_air": "{pollutant} {value} µg/m³, iznad {threshold} µg/m³",
+    "line_polluted_air_index": "kvalitet vazduha {value}/6, iznad {threshold}/6",
     "line_humidity_high": "vlažnost {value} % — provetrite sobu",
     "line_noise_high": "buka {value} dB, iznad {threshold} dB",
     "line_noisy_outside": "{value} dB napolju — zatvorite {openings}",

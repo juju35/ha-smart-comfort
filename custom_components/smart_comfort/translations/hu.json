@@ -93,6 +93,10 @@
           "max_outdoor": "Maximális kültéri hőmérséklet",
           "max_outdoor_noise": "Maximális kültéri zaj",
           "max_outdoor_air": "Kültéri levegőminőség maximális szintje",
+          "pm10_threshold": "PM10-küszöb",
+          "pm10_hysteresis": "PM10-hiszterézis",
+          "aqi_threshold": "Levegőminőségi index küszöbe",
+          "aqi_hysteresis": "Levegőminőségi index hiszterézise",
           "hysteresis": "Hiszterézis",
           "delay": "Késleltetés",
           "severity": "Súlyosság",
@@ -105,6 +109,8 @@
           "max_outdoor": "Csak ha kint ilyen hideg vagy hidegebb van.",
           "max_outdoor_noise": "Nem javasolja, amíg a kültéri zaj ennél nagyobb (kültéri zajérzékelő kell hozzá).",
           "max_outdoor_air": "Nem javasolja, amíg a kültéri levegőminőség rosszabb ennél a szintnél, 1-től (jó) 6-ig (rendkívül rossz).",
+          "pm10_threshold": "Szennyezett levegő: akkor is, ha a PM10 e fölött van (µg/m³); a fenti küszöb a PM2.5-é.",
+          "aqi_threshold": "Szennyezett levegő: akkor is, ha a helyiség levegőminőségi indexe rosszabb ennél a szintnél, 1-től (jó) 6-ig (rendkívül rossz). A HomeKit-indexek 1-től 5-ig mennek; az amerikai AQI a sávjai szerint számít (150 felett: 4. szint).",
           "hysteresis": "A probléma csak akkor ér véget, ha az érték ennyivel visszatért a küszöbön túlra: nincs ide-oda ugrálás.",
           "delay": "Ennyi percig kell fennállnia a feltételnek, hogy probléma legyen.",
           "escalation": "Újra értesít, ha az érték ennyivel rosszabb lesz, mint a legutóbbi értesítéskor. 0: soha."
@@ -186,6 +192,9 @@
           "co2": "CO₂",
           "humidity": "Páratartalom",
           "noise": "Zaj",
+          "pm25": "PM2.5",
+          "pm10": "PM10",
+          "air_quality": "Levegőminőségi index",
           "openings": "Ablakok és ajtók",
           "climate": "Klíma",
           "fans": "Ventilátorok",
@@ -213,6 +222,8 @@
           }
         },
         "data_description": {
+          "pm25": "Szálló por érzékelők (µg/m³), a légtisztítóké is: riasztás szennyezett levegőnél, és a légtisztítók erősebben mennek, amíg a levegő újra tiszta nem lesz.",
+          "air_quality": "A helyiség levegőminőségi index érzékelői (HomeKit 1–5, európai 1–6, amerikai AQI).",
           "lights": "Szabályozható fényerejű lámpák: fényerejük a napszakot követi, amíg be vannak kapcsolva (adaptív világítás)."
         }
       },
@@ -224,6 +235,9 @@
           "co2": "CO₂",
           "humidity": "Páratartalom",
           "noise": "Zaj",
+          "pm25": "PM2.5",
+          "pm10": "PM10",
+          "air_quality": "Levegőminőségi index",
           "openings": "Ablakok és ajtók",
           "climate": "Klíma",
           "fans": "Ventilátorok",
@@ -251,6 +265,8 @@
           }
         },
         "data_description": {
+          "pm25": "Szálló por érzékelők (µg/m³), a légtisztítóké is: riasztás szennyezett levegőnél, és a légtisztítók erősebben mennek, amíg a levegő újra tiszta nem lesz.",
+          "air_quality": "A helyiség levegőminőségi index érzékelői (HomeKit 1–5, európai 1–6, amerikai AQI).",
           "lights": "Szabályozható fényerejű lámpák: fényerejük a napszakot követi, amíg be vannak kapcsolva (adaptív világítás)."
         }
       },
@@ -324,6 +340,7 @@
         "too_cold": "Túl hideg",
         "window_open_cold": "Nyitott ablak hidegben",
         "co2_high": "Magas CO₂",
+        "polluted_air": "Szennyezett levegő",
         "humidity_high": "Magas páratartalom",
         "noise_high": "Zajos helyiség",
         "noisy_outside": "Zárja be az ablakokat (kint zaj van)",
@@ -377,6 +394,7 @@
           "too_cold": "Túl hideg",
           "window_open_cold": "Nyitott ablak hidegben",
           "co2_high": "Magas CO₂",
+          "polluted_air": "Szennyezett levegő",
           "humidity_high": "Magas páratartalom",
           "noise_high": "Zajos helyiség",
           "noisy_outside": "Zárja be az ablakokat (kint zaj van)",
@@ -479,6 +497,8 @@
     "line_close_windows": "kint {outdoor} °C, bent {temperature} °C — csukja be: {openings}",
     "line_window_open_cold": "nyitva: {openings}, kint {outdoor} °C",
     "line_co2_high": "CO₂ {value} ppm — szellőztessen",
+    "line_polluted_air": "{pollutant} {value} µg/m³, {threshold} µg/m³ felett",
+    "line_polluted_air_index": "levegőminőség {value}/6, {threshold}/6 felett",
     "line_humidity_high": "páratartalom {value} % — szellőztessen",
     "line_noise_high": "zaj {value} dB, {threshold} dB felett",
     "line_noisy_outside": "kint {value} dB — csukja be: {openings}",
