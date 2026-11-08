@@ -187,7 +187,7 @@ test("zoom: the full card (all alerts with their state, rooms, activity); a clic
   assert.match(text(card, "ameta").join("|"), /Snoozed/);
   assert.deepEqual(text(card, "rname"), ["Living room", "Bathroom"]);
   assert.deepEqual(text(card, "rvalue"), ["27.8 °C", "61 %"]);
-  const activity = walk(card.shadowRoot).find((n) => n.tagName === "smart-comfort-card");
+  const activity = walk(card.shadowRoot).find((n) => n.tagName === "smart-comfort-activity-card");
   assert.ok(activity, "activity card shown");
   assert.equal(activity._config.title, "");
   assert.equal(activity._config.limit, 5);
@@ -199,7 +199,7 @@ test("zoom: the full card (all alerts with their state, rooms, activity); a clic
   for (const fn of documentListeners.click) fn({ composedPath: () => [new FakeNode("div")] });
   assert.ok(!card._zoomed);
   assert.equal(byClass(card, "rooms").length, 0);
-  assert.equal(walk(card.shadowRoot).find((n) => n.tagName === "smart-comfort-card"), undefined);
+  assert.equal(walk(card.shadowRoot).find((n) => n.tagName === "smart-comfort-activity-card"), undefined);
 });
 
 test("zoom: a click in a dialog opened from the card (more-info) does not close it", () => {
@@ -215,7 +215,7 @@ test("zoom: false removes the button; activity: 0 no activity", () => {
   assert.equal(byClass(card, "zoom").length, 0);
   ({ card } = make({ activity: 0 }));
   byClass(card, "zoom")[0].fire("click");
-  assert.equal(walk(card.shadowRoot).find((n) => n.tagName === "smart-comfort-card"), undefined);
+  assert.equal(walk(card.shadowRoot).find((n) => n.tagName === "smart-comfort-activity-card"), undefined);
 });
 
 test("switches: tinted when on, a tap turns them off or on", () => {
@@ -239,7 +239,7 @@ test("rooms option: only those rooms' alerts and tiles, and their activity for o
   assert.deepEqual(text(card, "hsub"), ["1 alert · Outside 18.5 °C"]);
   byClass(card, "zoom")[0].fire("click");
   assert.deepEqual(text(card, "rname"), ["Living room"]);
-  const activity = walk(card.shadowRoot).find((n) => n.tagName === "smart-comfort-card");
+  const activity = walk(card.shadowRoot).find((n) => n.tagName === "smart-comfort-activity-card");
   assert.equal(activity._config.room, "Living room");
 });
 
@@ -266,4 +266,43 @@ test("Smart Comfort not loaded: says so", () => {
   const { card } = make({}, { loaded: false });
   assert.deepEqual(text(card, "empty"), ["Smart Comfort is not loaded."]);
   assert.equal(byClass(card, "switch").length, 0);
+});
+
+test("smart-comfort-card: the mini card's full view, standalone, never folded", () => {
+  const Full = customElements.get("smart-comfort-card");
+  assert.ok(Full.prototype instanceof Mini, "the mini card's rendering");
+  const fake = fakeHass({ alerts: ALERTS });
+  const card = new Full();
+  card.setConfig({});
+  card.hass = fake.hass;
+  card.connectedCallback();
+  // The same content as the mini card switched to its full view.
+  const { card: mini } = make({}, { alerts: ALERTS });
+  byClass(mini, "zoom")[0].fire("click");
+  for (const cls of ["hsub", "awhat", "ameta", "rname", "rvalue", "section-title"]) {
+    assert.deepEqual(text(card, cls), text(mini, cls), cls);
+  }
+  assert.ok(walk(card.shadowRoot).find((n) => n.tagName === "smart-comfort-activity-card"), "activity shown");
+  // No button to fold it, and a click outside leaves it as it is.
+  assert.equal(byClass(card, "zoom").length, 0);
+  for (const fn of documentListeners.click) fn({ composedPath: () => [new FakeNode("div")] });
+  assert.ok(card._zoomed);
+  assert.equal(byClass(card, "rooms").length, 1);
+  assert.deepEqual(card.getGridOptions(), { columns: 12, min_columns: 6 });
+  assert.equal(card.getCardSize(), 8);
+  // Editor: the mini card's options but the compact view's.
+  assert.deepEqual(Full.getStubConfig(), {});
+  assert.deepEqual(Full.getConfigForm().schema.map((f) => f.name), ["title", "rooms", "activity"]);
+  assert.deepEqual(Mini.getConfigForm().schema.map((f) => f.name), ["title", "rooms", "alerts", "activity"]);
+  card.disconnectedCallback();
+  mini.disconnectedCallback();
+});
+
+test("card picker: the card, the mini card and the activity card, each once", () => {
+  assert.deepEqual(window.customCards.map((c) => c.type).sort(), [
+    "smart-comfort-activity-card",
+    "smart-comfort-card",
+    "smart-comfort-mini-card",
+  ]);
+  assert.equal(window.customCards.find((c) => c.type === "smart-comfort-card").name, "Smart Comfort");
 });

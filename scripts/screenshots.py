@@ -924,11 +924,18 @@ CARD_MOUNT = """async ([data, tag, config, zoom]) => {
     await new Promise((r) => setTimeout(r, 200));
 }"""
 
-# The card (its latest activity), the mini card compact (half a section) and switched to the full card (a whole section).
+# The card (a whole section), the mini card compact (half a section) and switched to the full card, the activity card.
 CARD_SHOTS = [
-    {"file": "card", "tag": "smart-comfort-card", "width": 500, "config": {"limit": 8}, "zoom": False},
+    {"file": "card", "tag": "smart-comfort-card", "width": 640, "config": {"activity": 4}, "zoom": False},
     {"file": "card-mini", "tag": "smart-comfort-mini-card", "width": 400, "config": {}, "zoom": False},
     {"file": "card-mini-full", "tag": "smart-comfort-mini-card", "width": 640, "config": {"activity": 4}, "zoom": True},
+    {
+        "file": "card-activity",
+        "tag": "smart-comfort-activity-card",
+        "width": 500,
+        "config": {"limit": 8},
+        "zoom": False,
+    },
 ]
 
 
