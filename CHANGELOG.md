@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.11.1 - 2026-11-08
+
+### Fixes
+- A notification clear that no phone received, or that was waiting while the integration stopped, is now sent again at the next evaluation instead of being lost.
+- Less work in the background: the state is written to storage only when it changed, and the calendar no longer reads its whole history again at every update.
+
 ## 1.11.0 - 2026-11-07
 
 ### What's new

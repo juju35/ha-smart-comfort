@@ -13,6 +13,7 @@ from homeassistant.const import ATTR_UNIT_OF_MEASUREMENT, STATE_UNAVAILABLE, STA
 from homeassistant.core import CALLBACK_TYPE, Context, CoreState, Event, HomeAssistant, State, callback
 from homeassistant.helpers.dispatcher import async_dispatcher_send
 from homeassistant.helpers.event import async_call_later, async_track_state_change_event, async_track_time_interval
+from homeassistant.helpers.json import json_bytes
 from homeassistant.helpers.storage import Store
 from homeassistant.helpers.translation import async_get_translations
 from homeassistant.util import dt as dt_util
@@ -186,6 +187,8 @@ class SmartComfort:
         self._contexts: deque[str] = deque(maxlen=200)
         self._commanded: dict[str, datetime] = {}
         self._stopped = False
+        # Hash of the state last handed to the Store: an evaluation that changed nothing writes nothing.
+        self._saved: int | None = None
 
     # Lifecycle.
 
@@ -203,6 +206,7 @@ class SmartComfort:
         self.notifications_enabled = bool(data.get("notifications_enabled", True))
         self.control_enabled = bool(data.get("control_enabled", True))
         self.lighting_enabled = bool(data.get("lighting_enabled", True))
+        self._saved = self._hash()
         await self._load_texts()
         # The startup grace period counts from now when Home Assistant is starting, not on a reload.
         self.started_at = dt_util.utcnow() if starting else None
@@ -274,8 +278,16 @@ class SmartComfort:
 
     @callback
     def save(self) -> None:
-        if not self._stopped:
-            self.store.async_delay_save(self._data, 5)
+        """Write the state (delayed), only when it changed since the last write."""
+        if self._stopped:
+            return
+        if (saved := self._hash()) == self._saved:
+            return
+        self._saved = saved
+        self.store.async_delay_save(self._data, 5)
+
+    def _hash(self) -> int:
+        return hash(json_bytes(self._data()))
 
     def _data(self) -> dict[str, Any]:
         return {
@@ -753,11 +765,14 @@ class SmartComfort:
         """Send a digest or clear the notification, out of the evaluation lock (counted in `_deliveries`)."""
         try:
             async with self._notify_lock:
+                if isinstance(result, Clear):
+                    if self._stopped or not await self._clear():
+                        # Still on the phones: cleared again at the next evaluation (of this or the next instance).
+                        self.engine.shown = True
+                        return False
+                    return True
                 if self._stopped:
                     return False  # Not marked sent: the next instance sends it.
-                if isinstance(result, Clear):
-                    await self._clear()
-                    return True
                 sent = await self._send(result, now)
                 self.save()
                 return sent
@@ -787,11 +802,16 @@ class SmartComfort:
         self._log(now, NOTIFIED, title=title, message=message, severity=digest.severity)
         return True
 
-    async def _clear(self) -> None:
+    async def _clear(self) -> bool:
+        """Clear the notification; False when no Companion app notifier could do it."""
         # Only the Companion app understands it: other notifiers would show the text "clear_notification".
-        if mobile := [s for s in self.settings.notify if self._companion(s)]:
-            await self._notify({"message": "clear_notification", "data": {"tag": self.settings.tag}}, mobile)
+        mobile = [s for s in self.settings.notify if self._companion(s)]
+        payload = {"message": "clear_notification", "data": {"tag": self.settings.tag}}
+        if mobile and not await self._notify(payload, mobile):
+            _LOGGER.warning("Could not clear the notification, trying again at the next evaluation")
+            return False
         self._log(dt_util.utcnow(), CLEARED)
+        return True
 
     def _companion(self, service: str) -> bool:
         """A Companion app notifier, or a notify group (usually of phones, which forwards to them)."""
