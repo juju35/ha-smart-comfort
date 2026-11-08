@@ -31,6 +31,9 @@ class AlertsCalendar(SmartComfortEntity, CalendarEntity):
     def __init__(self, manager: Any, entry_id: str) -> None:
         super().__init__(manager, entry_id, "alerts_calendar")
         self._kinds: dict[str, str] = {}
+        # The events of the finished alerts, parsed again only when the history changes.
+        self._finished: list[CalendarEvent] = []
+        self._finished_key: tuple[int, int, int] | None = None
 
     async def async_added_to_hass(self) -> None:
         await super().async_added_to_hass()
@@ -41,6 +44,7 @@ class AlertsCalendar(SmartComfortEntity, CalendarEntity):
         except Exception:  # noqa: BLE001 - the kind keys stand in for the names
             raw = {}
         self._kinds = {k.removeprefix(prefix): v for k, v in raw.items() if k.startswith(prefix)}
+        self._finished_key = None
 
     def _event(self, record: dict[str, Any]) -> CalendarEvent | None:
         start = dt_util.parse_datetime(record.get("start") or "")
@@ -69,14 +73,21 @@ class AlertsCalendar(SmartComfortEntity, CalendarEntity):
             uid=f"{record.get('room')}|{kind}|{record.get('start')}",
         )
 
+    def _history(self) -> list[CalendarEvent]:
+        """The events of the finished alerts, cached until the history changes (appended or pruned)."""
+        history = self.manager.engine.history
+        key = (len(history), id(history[0]), id(history[-1])) if history else (0, 0, 0)
+        if key != self._finished_key:
+            self._finished = [e for r in history if (e := self._event(r)) is not None]
+            self._finished_key = key
+        return self._finished
+
     def _events(self, now: datetime) -> list[CalendarEvent]:
-        records = list(self.manager.engine.history)
         # The alerts going on: from when they started, up to now.
         # Their end is a minute ahead, so that the calendar is on while they last (it is off at an event's end).
         ahead = now + timedelta(minutes=1)
-        records += [ep.finished(ahead) for ep in self.manager.engine.active()]
-        events = [e for r in records if (e := self._event(r)) is not None]
-        return sorted(events, key=lambda e: e.start)
+        ongoing = [e for ep in self.manager.engine.active() if (e := self._event(ep.finished(ahead))) is not None]
+        return sorted([*self._history(), *ongoing], key=lambda e: e.start)
 
     @property
     def event(self) -> CalendarEvent | None:

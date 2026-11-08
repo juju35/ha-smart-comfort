@@ -805,3 +805,113 @@ async def test_stop_waits_for_the_notification(hass: HomeAssistant, fan_calls) -
     # The state handed to the next instance knows the notification went out.
     episodes = hass.data[DOMAIN]["state"]["engine"]["episodes"]
     assert [e["notified_at"] is not None for e in episodes if e["room"] == "chambre"] == [True]
+
+
+async def test_failed_clear_is_tried_again(hass: HomeAssistant, notify, fan_calls, freezer, caplog) -> None:
+    """A clear no phone got is tried again later (not at every evaluation), reported once."""
+    calls: list = []
+    fail = False
+
+    async def mobile(call) -> None:
+        calls.append(call)
+        if fail:
+            raise RuntimeError("phone unreachable")
+
+    hass.services.async_register("notify", "mobile_app_phone", mobile)
+    _states(hass, chambre=28.0)
+    entry = await _setup(hass, {**OPTIONS, "notify": ["notify.mobile_app_phone"]})
+    m = entry.runtime_data
+    await _evaluate(hass, entry)
+    assert m.engine.shown
+    fail = True
+    _states(hass)
+    await _evaluate(hass, entry)
+    assert calls[-1].data["message"] == "clear_notification"
+    assert m.engine.shown
+    tried = len(calls)
+    # Not at the next evaluation: after a minute.
+    await _evaluate(hass, entry)
+    assert len(calls) == tried
+    freezer.tick(timedelta(minutes=1))
+    await _evaluate(hass, entry)
+    assert len(calls) == tried + 1
+    warnings = [r.getMessage() for r in caplog.records if r.levelname == "WARNING"]
+    assert sum("Could not clear the notification" in w for w in warnings) == 1
+    assert sum("Notification with notify.mobile_app_phone failed" in w for w in warnings) == 1
+    fail = False
+    freezer.tick(timedelta(minutes=2))
+    await _evaluate(hass, entry)
+    assert calls[-1].data["message"] == "clear_notification"
+    assert not m.engine.shown
+    assert m.engine.clear_failures == 0
+    sent = len(calls)
+    await _evaluate(hass, entry)
+    assert len(calls) == sent
+
+
+async def test_clear_not_lost_on_stop(hass: HomeAssistant, fan_calls) -> None:
+    """A clear still waiting when the integration stops is handed to the next instance."""
+    mobile = async_mock_service(hass, "notify", "mobile_app_phone")
+    _states(hass, chambre=28.0)
+    entry = await _setup(hass, {**OPTIONS, "notify": ["notify.mobile_app_phone"]})
+    m = entry.runtime_data
+    await _evaluate(hass, entry)
+    assert m.engine.shown
+    _states(hass)
+    await m._notify_lock.acquire()  # A notification on its way: the clear waits for it.
+    evaluation = hass.async_create_task(m.async_evaluate())
+    await asyncio.sleep(0.01)
+    assert m._deliveries == 1
+    stop = hass.async_create_task(m.async_stop())
+    await asyncio.sleep(0)
+    m._notify_lock.release()
+    await evaluation
+    await stop
+    assert len(mobile) == 1
+    assert hass.data[DOMAIN]["state"]["engine"]["shown"] is True
+
+
+async def test_state_written_only_when_changed(hass: HomeAssistant, notify, fan_calls) -> None:
+    _states(hass, chambre=28.0)
+    entry = await _setup(hass)
+    m = entry.runtime_data
+    writes: list = []
+    original = m.store.async_delay_save
+    m.store.async_delay_save = lambda data, delay: (writes.append(delay), original(data, delay))
+    # Nothing changed since the evaluation at setup: nothing written.
+    await _evaluate(hass, entry)
+    await _evaluate(hass, entry)
+    assert writes == []
+    _states(hass, chambre=29.0)
+    await _evaluate(hass, entry)
+    assert writes
+
+
+async def test_calendar_parses_the_history_once(hass: HomeAssistant, notify, fan_calls, freezer) -> None:
+    _states(hass, chambre=28.0)
+    entry = await _setup(hass)
+    await _evaluate(hass, entry)
+    freezer.tick(timedelta(minutes=20))
+    _states(hass)
+    await _evaluate(hass, entry)
+    freezer.tick(timedelta(minutes=5))
+    calendar = hass.data["entity_components"]["calendar"].get_entity(
+        next(s.entity_id for s in hass.states.async_all("calendar"))
+    )
+    parsed: list = []
+    original = calendar._event
+    calendar._event = lambda record: (parsed.append(record), original(record))[1]
+    # Already parsed when the state was written: nothing parsed again.
+    assert calendar.event is None
+    assert calendar.event is None
+    assert parsed == []
+    # A new finished alert: the history is parsed again, once.
+    _states(hass, sejour=28.0)
+    await _evaluate(hass, entry)
+    freezer.tick(timedelta(minutes=20))
+    _states(hass)
+    await _evaluate(hass, entry)
+    await _evaluate(hass, entry)
+    history = entry.runtime_data.engine.history
+    assert len(history) == 2
+    assert sum(any(r is h for h in history) for r in parsed) == 2

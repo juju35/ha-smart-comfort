@@ -490,3 +490,37 @@ def test_outdoor_places_settings():
     assert s.outdoor_noise == ("sensor.street", "sensor.garden_noise")
     assert s.outdoor_air == ("sensor.aqi",)
     assert [o.name for o in s.outdoors] == ["Terrasse", "Jardin"]
+
+
+def test_failed_clear_backoff_then_given_up_and_no_digest_held_back():
+    e = Engine(settings())
+    for m in (0, 15, 20):
+        run(e, m, hot())
+    now, result = run(e, 31, hot(26.4))
+    assert isinstance(result, Clear)
+    # Tried again after 1, 2, 4, 8, 16, 32 minutes, then given up.
+    for delay in (1, 2, 4, 8, 16, 32):
+        assert e.clear_failed(now)
+        assert e.shown
+        assert e.step(now + timedelta(minutes=delay) - timedelta(seconds=1), OPEN, set()) is None
+        now += timedelta(minutes=delay)
+        assert isinstance(e.step(now, OPEN, set()), Clear)
+    assert not e.clear_failed(now)
+    assert e.clear_after is None and e.clear_failures == 0
+    assert e.step(now + timedelta(hours=2), OPEN, set()) is None
+
+
+def test_clear_waiting_for_its_retry_does_not_hold_a_new_digest():
+    e = Engine(settings())
+    for m in (0, 15, 20):
+        run(e, m, hot())
+    now, result = run(e, 31, hot(26.4))
+    assert isinstance(result, Clear)
+    for _ in range(6):
+        assert e.clear_failed(now)  # Next try in 32 minutes.
+    # A new problem while the clear waits: its digest goes out (it replaces the notification).
+    rooms = {**hot(21.0), "chambre_lea": RoomReading(temperature=28.0)}
+    results = [run(e, 32 + m, rooms)[1] for m in range(25)]
+    assert any(isinstance(r, Digest) for r in results)
+    assert not any(isinstance(r, Clear) for r in results)
+    assert e.clear_after is None and e.clear_failures == 0

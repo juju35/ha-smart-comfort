@@ -364,6 +364,9 @@ OPENING_UNAVAILABLE: Final = 10
 # Minutes before a failed device command is tried again, doubled at each new failure up to the maximum.
 COMMAND_RETRY: Final = 5
 COMMAND_RETRY_MAX: Final = 60
+# Minutes before a clear that no phone got is tried again, doubled at each new failure; given up after CLEAR_RETRIES.
+CLEAR_RETRY: Final = 1
+CLEAR_RETRIES: Final = 6
 
 STORAGE_VERSION: Final = 1
 STORAGE_KEY: Final = DOMAIN
