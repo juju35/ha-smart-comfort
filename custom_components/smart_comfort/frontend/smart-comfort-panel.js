@@ -3803,7 +3803,11 @@ function loadHaForm() {
         if (card?.constructor?.getConfigElement) await card.constructor.getConfigElement();
       }
       await customElements.whenDefined("ha-form");
-    })();
+    })().catch((err) => {
+      // Tried again next time rather than failing for good.
+      haFormLoading = null;
+      throw err;
+    });
   }
   return haFormLoading;
 }
@@ -3857,13 +3861,50 @@ class SmartComfortPanel extends HTMLElement {
 
   connectedCallback() {
     if (this._hass && !this._unsub) this._subscribe();
+    this._watchConnection(true);
+    // Back on the panel after a failed load: try again now.
+    if (this._hass && this._failed) this._reload();
   }
 
   disconnectedCallback() {
+    this._watchConnection(false);
+    clearTimeout(this._retryTimer);
     if (this._unsub) {
       this._unsub.then((unsub) => unsub()).catch(() => {});
       this._unsub = null;
     }
+  }
+
+  // The connection back (Home Assistant restarted, the app resumed): load again, the data may have changed meanwhile.
+  _watchConnection(on) {
+    const connection = this._hass?.connection;
+    if (!connection?.addEventListener) return;
+    // Unsaved edits are kept: only a failed load is redone then.
+    this._onReady ||= () => {
+      if (this._failed || !this._dirty) this._reload();
+    };
+    connection.removeEventListener("ready", this._onReady);
+    if (on) connection.addEventListener("ready", this._onReady);
+  }
+
+  // A load that failed (Home Assistant still starting, the connection dropped) is tried again after 2 s, 5 s, 15 s,
+  // then every 30 s while the panel is shown, instead of leaving it empty.
+  _retry(failed) {
+    clearTimeout(this._retryTimer);
+    this._failed = failed;
+    if (!failed) {
+      this._retries = 0;
+      return;
+    }
+    const delay = [2000, 5000, 15000, 30000][Math.min(this._retries || 0, 3)];
+    this._retries = (this._retries || 0) + 1;
+    this._retryTimer = setTimeout(() => {
+      if (this.isConnected) this._reload();
+    }, delay);
+  }
+
+  _reload() {
+    this._load().then(() => this._subscribe());
   }
 
   // Strings.
@@ -3906,13 +3947,24 @@ class SmartComfortPanel extends HTMLElement {
   // Data.
 
   async _init() {
+    // The toolbar and tabs right away, whatever answers next.
+    this._render();
+    this._watchConnection(this.isConnected);
     const language = this._hass.language || "en";
     const get = (category) =>
       this._hass
         .callWS({ type: "frontend/get_translations", language, category, integration: [DOMAIN] })
         .then((r) => r.resources)
         .catch(() => ({}));
-    const [labels, selector] = await Promise.all([get("options"), get("selector"), loadHaForm()]);
+    // ha-form (lazy-loaded by Home Assistant) only draws the settings forms: no waiting for it, they are drawn
+    // again once it is there. Waiting held the whole panel empty until another page had loaded it.
+    if (!customElements.get("ha-form")) {
+      loadHaForm().catch(() => {});
+      customElements.whenDefined("ha-form").then(() => {
+        if (this._config) this._renderTab();
+      });
+    }
+    const [labels, selector] = await Promise.all([get("options"), get("selector")]);
     this._labels = labels;
     this._selector = selector;
     await this._load();
@@ -3924,9 +3976,12 @@ class SmartComfortPanel extends HTMLElement {
       this._config = await this._hass.callWS({ type: `${DOMAIN}/config` });
       this._draft = clone(this._config.options);
       this._error = null;
+      this._retry(false);
     } catch (err) {
       this._config = null;
       this._error = err.code === "not_found" ? this._t("not_setup") : err.message;
+      // Not set up stays so; anything else (still starting, connection lost) is tried again.
+      this._retry(err.code !== "not_found");
     }
     this._render();
   }
