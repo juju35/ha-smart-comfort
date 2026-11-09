@@ -401,6 +401,9 @@
           "bad_air_outside": "Fechar as janelas (ar poluído lá fora)"
         }
       },
+      "comfort": {
+        "name": "Pontuação de conforto {room}"
+      },
       "last_notification": {
         "name": "Última notificação"
       }

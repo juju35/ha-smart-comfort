@@ -401,6 +401,9 @@
           "bad_air_outside": "Zamknij okna (złe powietrze na zewnątrz)"
         }
       },
+      "comfort": {
+        "name": "Wskaźnik komfortu {room}"
+      },
       "last_notification": {
         "name": "Ostatnie powiadomienie"
       }

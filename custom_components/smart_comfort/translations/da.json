@@ -401,6 +401,9 @@
           "bad_air_outside": "Luk vinduerne (dårlig luft udenfor)"
         }
       },
+      "comfort": {
+        "name": "Komfortscore {room}"
+      },
       "last_notification": {
         "name": "Seneste notifikation"
       }

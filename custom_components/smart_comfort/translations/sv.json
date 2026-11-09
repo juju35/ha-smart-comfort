@@ -401,6 +401,9 @@
           "bad_air_outside": "Stäng fönstren (dålig luft ute)"
         }
       },
+      "comfort": {
+        "name": "Komfortpoäng {room}"
+      },
       "last_notification": {
         "name": "Senaste avisering"
       }

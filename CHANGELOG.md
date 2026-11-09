@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.15.0 - 2026-11-09
+
+### Features
+- **Comfort score** per room (`sensor.smart_comfort_<room>_comfort_score`, 0 to 100 %): 100 with nothing wrong, minus 10, 25 or 50 for each problem under way by the severity set for its alert. A measurement with long-term statistics: a statistics card or graph gives the comfort of the day, the week or the month.
+
 ## 1.14.0 - 2026-11-09
 
 ### Performance

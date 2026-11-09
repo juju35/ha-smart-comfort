@@ -401,6 +401,9 @@
           "bad_air_outside": "Fermer les fenêtres (air pollué dehors)"
         }
       },
+      "comfort": {
+        "name": "Score de confort {room}"
+      },
       "last_notification": {
         "name": "Dernière notification"
       }

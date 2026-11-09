@@ -401,6 +401,9 @@
           "bad_air_outside": "Închideți ferestrele (aer poluat afară)"
         }
       },
+      "comfort": {
+        "name": "Scor de confort {room}"
+      },
       "last_notification": {
         "name": "Ultima notificare"
       }

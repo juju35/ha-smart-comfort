@@ -137,6 +137,19 @@ async def test_notifications_switch(hass: HomeAssistant, notify, fan_calls) -> N
     assert hass.states.get("sensor.smart_comfort_chambre_comfort").state == "too_hot"
 
 
+async def test_comfort_score(hass: HomeAssistant, notify, fan_calls) -> None:
+    """100 with nothing wrong, less for each problem under way by its severity (too hot: a warning)."""
+    _states(hass)
+    entry = await _setup(hass)
+    state = hass.states.get("sensor.smart_comfort_chambre_comfort_score")
+    assert state.state == "100"
+    assert state.attributes["unit_of_measurement"] == "%"
+    assert state.attributes["state_class"] == "measurement"
+    _states(hass, chambre=28.0)
+    await _evaluate(hass, entry)
+    assert hass.states.get("sensor.smart_comfort_chambre_comfort_score").state == "75"
+
+
 async def test_state_survives_reload(hass: HomeAssistant, notify, fan_calls) -> None:
     _states(hass, chambre=28.0)
     entry = await _setup(hass)
@@ -500,6 +513,8 @@ async def test_renamed_room_keeps_its_sensor(hass: HomeAssistant) -> None:
     await hass.async_block_till_done()
     sensors = [e for e in er.async_entries_for_config_entry(registry, entry.entry_id) if "_room_" in e.unique_id]
     assert sensors == []
+    scores = [e for e in er.async_entries_for_config_entry(registry, entry.entry_id) if "_comfort_" in e.unique_id]
+    assert scores == []
 
 
 PURIFIER_OPTIONS = {
