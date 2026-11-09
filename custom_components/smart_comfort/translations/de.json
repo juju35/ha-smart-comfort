@@ -401,6 +401,9 @@
           "bad_air_outside": "Fenster schließen (schlechte Luft draußen)"
         }
       },
+      "comfort": {
+        "name": "Komfortwert {room}"
+      },
       "last_notification": {
         "name": "Letzte Benachrichtigung"
       }

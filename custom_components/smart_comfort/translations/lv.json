@@ -401,6 +401,9 @@
           "bad_air_outside": "Aizveriet logus (ārā ir slikts gaiss)"
         }
       },
+      "comfort": {
+        "name": "{room} komforta vērtējums"
+      },
       "last_notification": {
         "name": "Pēdējais paziņojums"
       }

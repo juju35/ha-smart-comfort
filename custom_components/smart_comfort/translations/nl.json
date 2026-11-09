@@ -401,6 +401,9 @@
           "bad_air_outside": "Ramen sluiten (slechte lucht buiten)"
         }
       },
+      "comfort": {
+        "name": "Comfortscore {room}"
+      },
       "last_notification": {
         "name": "Laatste melding"
       }

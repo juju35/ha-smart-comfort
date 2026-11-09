@@ -3,9 +3,10 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import Any, ClassVar
+from typing import Any, ClassVar, Final
 
 from homeassistant.components.sensor import SensorDeviceClass, SensorEntity, SensorStateClass
+from homeassistant.const import PERCENTAGE
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers import entity_registry as er
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
@@ -13,7 +14,7 @@ from homeassistant.util import dt as dt_util
 
 from . import SmartComfortConfigEntry
 from .config import Room
-from .const import KINDS
+from .const import KINDS, SEVERITY_CRITICAL, SEVERITY_INFO, SEVERITY_WARNING
 from .entity import SmartComfortEntity
 from .status import episode_info, room_info
 
@@ -31,14 +32,15 @@ async def async_setup_entry(
         LastNotificationSensor(m, entry.entry_id, "last_notification"),
     ]
     rooms = [RoomSensor(m, entry.entry_id, room) for room in m.settings.rooms]
+    scores = [ComfortScoreSensor(m, entry.entry_id, room) for room in m.settings.rooms]
     # Sensors of removed rooms are removed from the registry instead of staying orphaned.
-    current = {sensor.unique_id for sensor in rooms}
-    prefix = f"{entry.entry_id}_room_"
+    current = {sensor.unique_id for sensor in [*rooms, *scores]}
+    prefixes = (f"{entry.entry_id}_room_", f"{entry.entry_id}_comfort_")
     registry = er.async_get(hass)
     for reg in er.async_entries_for_config_entry(registry, entry.entry_id):
-        if reg.domain == "sensor" and reg.unique_id.startswith(prefix) and reg.unique_id not in current:
+        if reg.domain == "sensor" and reg.unique_id.startswith(prefixes) and reg.unique_id not in current:
             registry.async_remove(reg.entity_id)
-    async_add_entities([*entities, *rooms])
+    async_add_entities([*entities, *rooms, *scores])
 
 
 class ActiveAlertsSensor(SmartComfortEntity, SensorEntity):
@@ -105,6 +107,37 @@ class RoomSensor(SmartComfortEntity, SensorEntity):
     def extra_state_attributes(self) -> dict[str, Any]:
         # The room's name as set in Smart Comfort, for the mini card (the entity name is translated around it).
         return {"room_name": self.room.name, **room_info(self.manager, self.room, dt_util.utcnow())}
+
+
+# Points a problem under way takes off a room's comfort score, by its severity.
+SCORE_PENALTY: Final = {SEVERITY_INFO: 10, SEVERITY_WARNING: 25, SEVERITY_CRITICAL: 50}
+
+
+def comfort_score(manager: Any, room: Room) -> int:
+    """100 when nothing is wrong in the room, less for each problem under way (by its severity), never below 0."""
+    penalty = 0
+    for episode in manager.engine.active():
+        if episode.room != room.id:
+            continue
+        settings = room.alerts.get(episode.kind)
+        penalty += SCORE_PENALTY.get(settings.severity if settings else SEVERITY_INFO, SCORE_PENALTY[SEVERITY_INFO])
+    return max(0, 100 - penalty)
+
+
+class ComfortScoreSensor(SmartComfortEntity, SensorEntity):
+    """How comfortable a room is right now, 0 to 100: its long-term statistics give the day's or the week's."""
+
+    _attr_state_class = SensorStateClass.MEASUREMENT
+    _attr_native_unit_of_measurement = PERCENTAGE
+
+    def __init__(self, manager: Any, entry_id: str, room: Room) -> None:
+        super().__init__(manager, entry_id, "comfort", f"comfort_{room.id}")
+        self.room = room
+        self._attr_translation_placeholders = {"room": room.name}
+
+    @property
+    def native_value(self) -> int:
+        return comfort_score(self.manager, self.room)
 
 
 class LastNotificationSensor(SmartComfortEntity, SensorEntity):

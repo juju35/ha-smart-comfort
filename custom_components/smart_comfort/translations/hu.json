@@ -401,6 +401,9 @@
           "bad_air_outside": "Zárja be az ablakokat (rossz a levegő)"
         }
       },
+      "comfort": {
+        "name": "{room} komfortpontszám"
+      },
       "last_notification": {
         "name": "Utolsó értesítés"
       }

@@ -19,6 +19,7 @@ Comfort automations built with a cooldown keep notifying every couple of hours a
 ## Features
 
 - **Eleven alerts per room**: too hot, too cold, open the windows (warmer inside than outside), close the windows (hotter outside), window open in the cold, high CO₂, polluted air (PM2.5, PM10 or air quality index), high humidity, noisy room, close the windows (noisy outside), close the windows (poor air outside) — each with its threshold, hysteresis, delay, severity and escalation step, globally and per room
+- **Comfort score** per room, 0 to 100 %, lowered by each problem under way according to its severity; its statistics give the comfort of the day or the week
 - **Episodes, not cooldowns**: one notification when a problem starts, none while it lasts; again when it gets worse by the escalation step, or after the reminder delay (off by default)
 - **Hysteresis and delay**: a problem starts once its condition has held for the delay, and ends only once the value is back past the threshold by the hysteresis — no flapping. An unavailable sensor changes nothing
 - **Digest**: what comes up within the digest window (5 minutes by default) goes out in **one** notification listing every current problem, replacing the previous one on the phone (notification `tag`) instead of piling up
@@ -484,6 +485,7 @@ The activity (the last 300 entries) is kept across restarts. It is also availabl
 |---|---|
 | `sensor.smart_comfort_active_alerts` | Number of current problems. Attributes: `alerts` (room, kind, value, since, notified_at, snoozed, acknowledged, handled…), `snoozes`, `outdoor_temperature`, `outdoor_noise`, `outdoor_air_quality` |
 | `sensor.smart_comfort_<room>_comfort` | `ok` or the main problem of the room. Attributes: `room_name`, readings, open and ignored openings, alerts, device targets and manual overrides |
+| `sensor.smart_comfort_<room>_comfort_score` | How comfortable the room is now, 0 to 100 %: 100 with nothing wrong, minus 10 per *info* problem under way, 25 per *warning*, 50 per *critical* (the severity set for each alert). Its long-term statistics give the day's, the week's or the month's comfort in a statistics card or graph |
 | `sensor.smart_comfort_last_notification` | Time of the last notification. Attributes: `title`, `message`, `severity`, `alerts` |
 | `calendar.smart_comfort_comfort_alerts` | The alerts as events: one per alert, from its start to its end (the ones going on end a minute ahead, so the calendar is `on` while they last). Summary `🌡️ Bedroom: Too hot`, location the room, description its worst value. Finished alerts are kept 90 days (at most 1000) |
 | `switch.smart_comfort_notifications` | Send notifications (problems are still tracked when off) |

@@ -401,6 +401,9 @@
           "bad_air_outside": "Close the windows (poor air outside)"
         }
       },
+      "comfort": {
+        "name": "{room} comfort score"
+      },
       "last_notification": {
         "name": "Last notification"
       }

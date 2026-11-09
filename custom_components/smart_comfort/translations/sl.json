@@ -401,6 +401,9 @@
           "bad_air_outside": "Zaprite okna (zunaj je slab zrak)"
         }
       },
+      "comfort": {
+        "name": "Ocena udobja {room}"
+      },
       "last_notification": {
         "name": "Zadnje obvestilo"
       }

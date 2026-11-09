@@ -401,6 +401,9 @@
           "bad_air_outside": "Zavřete okna (venku je špatný vzduch)"
         }
       },
+      "comfort": {
+        "name": "Skóre komfortu {room}"
+      },
       "last_notification": {
         "name": "Poslední oznámení"
       }

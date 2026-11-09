@@ -401,6 +401,9 @@
           "bad_air_outside": "Chiudi le finestre (aria scadente fuori)"
         }
       },
+      "comfort": {
+        "name": "Punteggio di comfort {room}"
+      },
       "last_notification": {
         "name": "Ultima notifica"
       }

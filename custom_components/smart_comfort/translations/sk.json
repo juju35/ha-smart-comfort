@@ -401,6 +401,9 @@
           "bad_air_outside": "Zatvorte okná (vonku je zlý vzduch)"
         }
       },
+      "comfort": {
+        "name": "Skóre komfortu {room}"
+      },
       "last_notification": {
         "name": "Posledné oznámenie"
       }

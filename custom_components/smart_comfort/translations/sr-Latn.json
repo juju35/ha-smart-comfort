@@ -401,6 +401,9 @@
           "bad_air_outside": "Zatvorite prozore (loš vazduh napolju)"
         }
       },
+      "comfort": {
+        "name": "{room} ocena komfora"
+      },
       "last_notification": {
         "name": "Poslednje obaveštenje"
       }

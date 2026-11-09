@@ -22,6 +22,7 @@
           "bad_air_outside": "mdi:weather-hazy"
         }
       },
+      "comfort": { "default": "mdi:home-heart" },
       "last_notification": { "default": "mdi:bell-ring-outline" }
     },
     "switch": {

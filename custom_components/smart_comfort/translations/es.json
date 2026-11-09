@@ -401,6 +401,9 @@
           "bad_air_outside": "Cerrar las ventanas (aire contaminado fuera)"
         }
       },
+      "comfort": {
+        "name": "Puntuación de confort {room}"
+      },
       "last_notification": {
         "name": "Última notificación"
       }
