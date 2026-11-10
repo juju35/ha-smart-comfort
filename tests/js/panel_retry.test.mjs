@@ -119,3 +119,30 @@ test("Retry string in every language", () => {
   for (const [lang, t] of Object.entries(strings)) assert.ok(t.retry, lang);
   assert.equal(strings.fr.retry, "Réessayer");
 });
+
+test("hass, route and narrow set before the element was defined go through the setters once it is", () => {
+  // In the release the element is defined once the page's language file is in: Home Assistant has already set
+  // these on the element, as plain properties that hide the setters.
+  const p = Object.create(SmartComfortPanel.prototype);
+  let started = 0;
+  p._init = () => started++;
+  p._watchConnection = () => {};
+  p._subscribe = () => {};
+  p._forms = [];
+  p._tab = "overview";
+  p._config = null;
+  const hass = { language: "fr" };
+  for (const [name, value] of Object.entries({ narrow: true, route: { path: "/alerts" }, hass })) {
+    Object.defineProperty(p, name, { value, writable: true, enumerable: true, configurable: true });
+  }
+  p.connectedCallback();
+  assert.equal(started, 1, "the panel starts");
+  assert.equal(p._hass, hass);
+  assert.equal(p._narrow, true);
+  assert.equal(p._tab, "alerts", "the tab of the address");
+  for (const name of ["narrow", "route", "hass"]) assert.ok(!Object.hasOwn(p, name), name);
+  const next = { language: "fr" };
+  p.hass = next;
+  assert.equal(p._hass, next, "later updates reach the setter");
+  assert.equal(started, 1);
+});

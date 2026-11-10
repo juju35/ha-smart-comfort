@@ -3882,10 +3882,24 @@ class SmartComfortPanel extends HTMLElement {
   }
 
   connectedCallback() {
+    this._upgradeProperties();
     if (this._hass && !this._unsub) this._subscribe();
     this._watchConnection(true);
     // Back on the panel after a failed load: try again now.
     if (this._hass && this._failed) this._reload();
+  }
+
+  // Home Assistant creates the panel as soon as its file has run and sets narrow, route and hass right away. In the
+  // release, the element is only defined once the page's language file is in (scripts/i18n-split.mjs): the values
+  // set before land as plain properties on the not-yet-defined element and hide the setters, so the panel stayed
+  // empty on its first opening. They are passed through the setters now (narrow and route before hass, which draws).
+  _upgradeProperties() {
+    for (const name of ["narrow", "route", "hass"]) {
+      if (!Object.hasOwn(this, name)) continue;
+      const value = this[name];
+      delete this[name];
+      this[name] = value;
+    }
   }
 
   disconnectedCallback() {
