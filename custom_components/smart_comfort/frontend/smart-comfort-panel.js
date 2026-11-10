@@ -81,6 +81,7 @@ const STRINGS = {
     yaml: "This configuration comes from YAML. Changes saved here stay until the YAML changes: then the YAML replaces them at the next restart.",
     not_loaded: "Smart Comfort is not loaded. Check the logs.",
     not_setup: "Smart Comfort is not set up yet: add it in Settings → Devices & services.",
+    retry: "Retry",
     active_alerts: "Active alerts",
     no_alerts: "Everything is fine.",
     outdoor: "Outdoor",
@@ -244,6 +245,7 @@ const STRINGS = {
     yaml: "Cette configuration vient du YAML. Ce qui est enregistré ici reste jusqu'à ce que le YAML change : il le remplace alors au prochain redémarrage.",
     not_loaded: "Smart Comfort n'est pas chargé. Consultez les journaux.",
     not_setup: "Smart Comfort n'est pas encore configuré : ajoutez-le dans Paramètres → Appareils et services.",
+    retry: "Réessayer",
     active_alerts: "Alertes actives",
     no_alerts: "Tout va bien.",
     outdoor: "Extérieur",
@@ -407,6 +409,7 @@ const STRINGS = {
     yaml: "Diese Konfiguration stammt aus YAML. Hier gespeicherte Änderungen bleiben, bis sich das YAML ändert: dann ersetzt es sie beim nächsten Neustart.",
     not_loaded: "Smart Comfort ist nicht geladen. Prüfen Sie die Protokolle.",
     not_setup: "Smart Comfort ist noch nicht eingerichtet: unter Einstellungen → Geräte & Dienste hinzufügen.",
+    retry: "Erneut versuchen",
     active_alerts: "Aktive Meldungen",
     no_alerts: "Alles in Ordnung.",
     outdoor: "Außen",
@@ -570,6 +573,7 @@ const STRINGS = {
     yaml: "Esta configuración viene de YAML. Lo guardado aquí se mantiene hasta que cambie el YAML: entonces lo sustituye en el próximo reinicio.",
     not_loaded: "Smart Comfort no está cargado. Revise los registros.",
     not_setup: "Smart Comfort aún no está configurado: añádalo en Ajustes → Dispositivos y servicios.",
+    retry: "Reintentar",
     active_alerts: "Alertas activas",
     no_alerts: "Todo va bien.",
     outdoor: "Exterior",
@@ -733,6 +737,7 @@ const STRINGS = {
     yaml: "Ова конфигурација долази из YAML-а. Измене сачуване овде остају док се YAML не промени: тада их YAML замењује при следећем поновном покретању.",
     not_loaded: "Smart Comfort није учитан. Проверите дневнике логова.",
     not_setup: "Smart Comfort још увек није подешен: додајте га у Подешавања → Уређаји и услуге.",
+    retry: "Покушај поново",
     active_alerts: "Активна упозорења",
     no_alerts: "Све је у реду.",
     outdoor: "Спољашња средина",
@@ -896,6 +901,7 @@ const STRINGS = {
     yaml: "Ova konfiguracija dolazi iz YAML-a. Izmene sačuvane ovde ostaju dok se YAML ne promeni: tada ih YAML zamenjuje pri sledećem ponovnom pokretanju.",
     not_loaded: "Smart Comfort nije učitan. Proverite dnevnike logova.",
     not_setup: "Smart Comfort još uvek nije podešen: dodajte ga u Podešavanja → Uređaji i usluge.",
+    retry: "Pokušaj ponovo",
     active_alerts: "Aktivna upozorenja",
     no_alerts: "Sve je u redu.",
     outdoor: "Spoljašnja sredina",
@@ -1059,6 +1065,7 @@ const STRINGS = {
     yaml: "Questa configurazione proviene dal YAML. Le modifiche salvate qui restano finché il YAML non cambia: allora il YAML le sostituisce al riavvio successivo.",
     not_loaded: "Smart Comfort non è caricato. Controlla i log.",
     not_setup: "Smart Comfort non è ancora configurato: aggiungilo in Impostazioni → Dispositivi e servizi.",
+    retry: "Riprova",
     active_alerts: "Avvisi attivi",
     no_alerts: "Va tutto bene.",
     outdoor: "Esterno",
@@ -1222,6 +1229,7 @@ const STRINGS = {
     yaml: "Deze configuratie komt uit YAML. Wijzigingen die hier worden opgeslagen, blijven tot de YAML verandert: dan vervangt de YAML ze bij de volgende herstart.",
     not_loaded: "Smart Comfort is niet geladen. Controleer de logboeken.",
     not_setup: "Smart Comfort is nog niet ingesteld: voeg het toe via Instellingen → Apparaten & diensten.",
+    retry: "Opnieuw proberen",
     active_alerts: "Actieve waarschuwingen",
     no_alerts: "Alles is in orde.",
     outdoor: "Buiten",
@@ -1385,6 +1393,7 @@ const STRINGS = {
     yaml: "Esta configuração vem do YAML. As alterações guardadas aqui mantêm-se até o YAML mudar: nessa altura o YAML substitui-as no próximo reinício.",
     not_loaded: "O Smart Comfort não está carregado. Consulte os registos.",
     not_setup: "O Smart Comfort ainda não está configurado: adicione-o em Definições → Dispositivos e serviços.",
+    retry: "Tentar novamente",
     active_alerts: "Alertas ativos",
     no_alerts: "Está tudo bem.",
     outdoor: "Exterior",
@@ -1548,6 +1557,7 @@ const STRINGS = {
     yaml: "Ta konfiguracja pochodzi z YAML. Zmiany zapisane tutaj obowiązują do czasu zmiany YAML: wtedy YAML zastępuje je przy następnym ponownym uruchomieniu.",
     not_loaded: "Smart Comfort nie jest załadowany. Sprawdź logi.",
     not_setup: "Smart Comfort nie jest jeszcze skonfigurowany: dodaj go w Ustawienia → Urządzenia oraz usługi.",
+    retry: "Spróbuj ponownie",
     active_alerts: "Aktywne alerty",
     no_alerts: "Wszystko w porządku.",
     outdoor: "Na zewnątrz",
@@ -1711,6 +1721,7 @@ const STRINGS = {
     yaml: "Această configurație provine din YAML. Modificările salvate aici rămân până se schimbă YAML-ul: atunci YAML-ul le înlocuiește la următoarea repornire.",
     not_loaded: "Smart Comfort nu este încărcat. Verificați jurnalele.",
     not_setup: "Smart Comfort nu este încă configurat: adăugați-l din Setări → Dispozitive și servicii.",
+    retry: "Reîncearcă",
     active_alerts: "Alerte active",
     no_alerts: "Totul este în regulă.",
     outdoor: "Exterior",
@@ -1874,6 +1885,7 @@ const STRINGS = {
     yaml: "Denne konfiguration kommer fra YAML. Ændringer gemt her bliver, indtil YAML ændres: så erstatter YAML dem ved næste genstart.",
     not_loaded: "Smart Comfort er ikke indlæst. Tjek logfilerne.",
     not_setup: "Smart Comfort er ikke sat op endnu: tilføj det under Indstillinger → Enheder og tjenester.",
+    retry: "Prøv igen",
     active_alerts: "Aktive advarsler",
     no_alerts: "Alt er i orden.",
     outdoor: "Udendørs",
@@ -2037,6 +2049,7 @@ const STRINGS = {
     yaml: "Denna konfiguration kommer från YAML. Ändringar som sparas här gäller tills YAML ändras: då ersätter YAML dem vid nästa omstart.",
     not_loaded: "Smart Comfort är inte inläst. Kontrollera loggarna.",
     not_setup: "Smart Comfort är inte konfigurerat än: lägg till det under Inställningar → Enheter och tjänster.",
+    retry: "Försök igen",
     active_alerts: "Aktiva varningar",
     no_alerts: "Allt är i sin ordning.",
     outdoor: "Ute",
@@ -2200,6 +2213,7 @@ const STRINGS = {
     yaml: "Тази конфигурация идва от YAML. Промените, запазени тук, остават, докато YAML не се промени: тогава YAML ги замества при следващото рестартиране.",
     not_loaded: "Smart Comfort не е зареден. Проверете журналите.",
     not_setup: "Smart Comfort все още не е настроен: добавете го от Настройки → Устройства и услуги.",
+    retry: "Опитай отново",
     active_alerts: "Активни сигнали",
     no_alerts: "Всичко е наред.",
     outdoor: "Навън",
@@ -2363,6 +2377,7 @@ const STRINGS = {
     yaml: "Эта конфигурация взята из YAML. Изменения, сохранённые здесь, действуют, пока не изменится YAML: тогда YAML заменит их при следующем перезапуске.",
     not_loaded: "Smart Comfort не загружен. Проверьте журналы.",
     not_setup: "Smart Comfort ещё не настроен: добавьте его в Настройки → Устройства и службы.",
+    retry: "Повторить",
     active_alerts: "Активные оповещения",
     no_alerts: "Всё в порядке.",
     outdoor: "Улица",
@@ -2526,6 +2541,7 @@ const STRINGS = {
     yaml: "Ця конфігурація походить з YAML. Зміни, збережені тут, діють, доки не зміниться YAML: тоді YAML замінить їх під час наступного перезапуску.",
     not_loaded: "Smart Comfort не завантажено. Перевірте журнали.",
     not_setup: "Smart Comfort ще не налаштовано: додайте його в Налаштування → Пристрої та служби.",
+    retry: "Повторити",
     active_alerts: "Активні попередження",
     no_alerts: "Усе гаразд.",
     outdoor: "Надворі",
@@ -2689,6 +2705,7 @@ const STRINGS = {
     yaml: "Ez a konfiguráció YAML-ből származik. Az itt mentett módosítások addig maradnak, amíg a YAML nem változik: akkor a YAML a következő újraindításkor felülírja őket.",
     not_loaded: "A Smart Comfort nincs betöltve. Nézze meg a naplókat.",
     not_setup: "A Smart Comfort még nincs beállítva: adja hozzá a Beállítások → Eszközök és szolgáltatások menüben.",
+    retry: "Újra",
     active_alerts: "Aktív riasztások",
     no_alerts: "Minden rendben.",
     outdoor: "Kint",
@@ -2852,6 +2869,7 @@ const STRINGS = {
     yaml: "Táto konfigurácia pochádza z YAML. Zmeny uložené tu platia, kým sa YAML nezmení: potom ich YAML pri ďalšom reštarte nahradí.",
     not_loaded: "Smart Comfort nie je načítaný. Skontrolujte záznamy.",
     not_setup: "Smart Comfort ešte nie je nastavený: pridajte ho v Nastavenia → Zariadenia a služby.",
+    retry: "Skúsiť znova",
     active_alerts: "Aktívne upozornenia",
     no_alerts: "Všetko je v poriadku.",
     outdoor: "Vonku",
@@ -3015,6 +3033,7 @@ const STRINGS = {
     yaml: "Tato konfigurace pochází z YAML. Změny uložené zde platí, dokud se YAML nezmění: pak je YAML při příštím restartu nahradí.",
     not_loaded: "Smart Comfort není načten. Zkontrolujte protokoly.",
     not_setup: "Smart Comfort zatím není nastaven: přidejte ho v Nastavení → Zařízení a služby.",
+    retry: "Zkusit znovu",
     active_alerts: "Aktivní upozornění",
     no_alerts: "Vše je v pořádku.",
     outdoor: "Venku",
@@ -3178,6 +3197,7 @@ const STRINGS = {
     yaml: "Ta konfiguracija prihaja iz YAML. Spremembe, shranjene tukaj, veljajo, dokler se YAML ne spremeni: takrat jih YAML ob naslednjem ponovnem zagonu nadomesti.",
     not_loaded: "Smart Comfort ni naložen. Preverite dnevnike.",
     not_setup: "Smart Comfort še ni nastavljen: dodajte ga v Nastavitve → Naprave in storitve.",
+    retry: "Poskusi znova",
     active_alerts: "Aktivna opozorila",
     no_alerts: "Vse je v redu.",
     outdoor: "Zunaj",
@@ -3341,6 +3361,7 @@ const STRINGS = {
     yaml: "Šī konfigurācija nāk no YAML. Šeit saglabātās izmaiņas paliek spēkā, līdz mainās YAML: tad YAML tās aizstāj nākamajā restartēšanā.",
     not_loaded: "Smart Comfort nav ielādēts. Pārbaudiet žurnālus.",
     not_setup: "Smart Comfort vēl nav iestatīts: pievienojiet to sadaļā Iestatījumi → Ierīces un pakalpojumi.",
+    retry: "Mēģināt vēlreiz",
     active_alerts: "Aktīvie brīdinājumi",
     no_alerts: "Viss kārtībā.",
     outdoor: "Ārā",
@@ -3504,6 +3525,7 @@ const STRINGS = {
     yaml: "Αυτή η διαμόρφωση προέρχεται από YAML. Οι αλλαγές που αποθηκεύονται εδώ ισχύουν μέχρι να αλλάξει το YAML: τότε το YAML τις αντικαθιστά στην επόμενη επανεκκίνηση.",
     not_loaded: "Το Smart Comfort δεν έχει φορτωθεί. Ελέγξτε τα αρχεία καταγραφής.",
     not_setup: "Το Smart Comfort δεν έχει ρυθμιστεί ακόμα: προσθέστε το στις Ρυθμίσεις → Συσκευές και υπηρεσίες.",
+    retry: "Δοκιμή ξανά",
     active_alerts: "Ενεργές προειδοποιήσεις",
     no_alerts: "Όλα είναι εντάξει.",
     outdoor: "Έξω",
@@ -4148,7 +4170,14 @@ class SmartComfortPanel extends HTMLElement {
       content.append(this._el("div", `banner ${this._message.type}`, this._message.text));
     }
     if (!this._config) {
-      content.append(this._el("div", "banner error", this._error || "…"));
+      // Loading: a quiet "…"; a failed load (not "not set up"): its error and Retry, tried again on its own meanwhile.
+      const banner = this._el("div", this._error ? "banner error" : "banner", this._error || "…");
+      if (this._error && this._failed) {
+        const retry = this._el("button", "retry", this._t("retry"));
+        retry.addEventListener("click", () => this._reload());
+        banner.append(" ", retry);
+      }
+      content.append(banner);
       return;
     }
     if (this._config.yaml && this._tab !== "overview") {
@@ -5841,6 +5870,7 @@ const STYLE = `
   .banner.info { background: rgba(var(--rgb-info-color, 3, 155, 229), 0.12); }
   .banner.error { background: rgba(var(--rgb-error-color, 219, 68, 55), 0.14); color: var(--error-color); }
   .banner.success { background: rgba(var(--rgb-success-color, 67, 160, 71), 0.14); }
+  .banner .retry { margin-left: 8px; font: inherit; font-weight: 500; color: var(--primary-color); background: none; border: 1px solid currentColor; border-radius: 16px; padding: 2px 12px; cursor: pointer; }
   .summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; }
   .tile {
     font: inherit;

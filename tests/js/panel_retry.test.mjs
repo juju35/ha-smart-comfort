@@ -81,3 +81,9 @@ test("the connection back loads again, unless settings are being edited", async 
   p._watchConnection(false);
   assert.equal(listeners.size, 0);
 });
+
+test("Retry string in every language", () => {
+  const strings = vm.runInContext("STRINGS", context);
+  for (const [lang, t] of Object.entries(strings)) assert.ok(t.retry, lang);
+  assert.equal(strings.fr.retry, "Réessayer");
+});
