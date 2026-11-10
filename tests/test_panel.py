@@ -130,6 +130,8 @@ async def test_panel_registered(hass: HomeAssistant) -> None:
     assert all("?v=" in c.args[0] for c in extra.add.call_args_list)
     paths = hass.http.async_register_static_paths.call_args.args[0]
     assert paths[0].url_path == "/smart_comfort_static"
+    # Cache headers on: every URL served from there carries ?v=<version>.
+    assert paths[0].cache_headers is True
     panels = hass.data["frontend_panels"]
     assert PANEL_URL in panels
     panel = panels[PANEL_URL]

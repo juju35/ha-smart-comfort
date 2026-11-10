@@ -44,6 +44,38 @@ test("the panel draws at once and loads its settings without waiting for ha-form
   assert.equal(p._failed, false);
 });
 
+test("the settings are requested without waiting for the translations, which redraw the panel when they arrive", async () => {
+  const sent = [];
+  let translated;
+  const pending = new Promise((r) => (translated = r));
+  const p = panel(async (msg) => {
+    sent.push(msg.type === "frontend/get_translations" ? msg.category : msg.type);
+    return msg.type === "smart_comfort/config" ? { options: {} } : pending;
+  });
+  p._labels = {};
+  p._selector = {};
+  const started = p._init();
+  assert.deepEqual(sent, ["options", "selector", "smart_comfort/config"], "config sent before any translation answer");
+  await new Promise((r) => setImmediate(r));
+  assert.deepEqual(p._config, { options: {} }, "settings loaded while the translations are pending");
+  assert.equal(p._label("general", "notify"), "notify", "field name until the translations are in");
+  assert.equal(p._kindName("too_hot"), "too_hot");
+  const renders = p._renders;
+  translated({ resources: { "component.smart_comfort.options.step.general.data.notify": "Notifiers" } });
+  await started;
+  assert.equal(p._label("general", "notify"), "Notifiers");
+  assert.ok(p._renders > renders, "drawn again with the labels");
+});
+
+test("labels tolerate missing translations", () => {
+  const p = Object.create(SmartComfortPanel.prototype);
+  assert.equal(p._label("general", "notify", "s"), "notify");
+  assert.equal(p._helper("general", "notify"), undefined);
+  assert.equal(p._sectionTitle("general", "s"), "s");
+  assert.equal(p._kindName("too_hot"), "too_hot");
+  assert.equal(JSON.stringify(p._options("severity", ["info"])), JSON.stringify([{ value: "info", label: "info" }]));
+});
+
 test("a failed load is tried again after 2 s, 5 s, 15 s then every 30 s; not set up is not", async () => {
   timers.length = 0;
   let error = { code: "unknown_command", message: "Unknown command." };

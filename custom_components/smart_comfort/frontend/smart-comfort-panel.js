@@ -3939,7 +3939,7 @@ class SmartComfortPanel extends HTMLElement {
 
   _label(step, name, section) {
     const base = `component.${DOMAIN}.options.step.${step}`;
-    const r = this._labels;
+    const r = this._labels || {};
     return (
       (section && r[`${base}.sections.${section}.data.${name}`]) || r[`${base}.data.${name}`] || name
     );
@@ -3947,22 +3947,22 @@ class SmartComfortPanel extends HTMLElement {
 
   _helper(step, name, section) {
     const base = `component.${DOMAIN}.options.step.${step}`;
-    const r = this._labels;
+    const r = this._labels || {};
     return (section && r[`${base}.sections.${section}.data_description.${name}`]) || r[`${base}.data_description.${name}`];
   }
 
   _sectionTitle(step, section) {
-    return this._labels[`component.${DOMAIN}.options.step.${step}.sections.${section}.name`] || section;
+    return this._labels?.[`component.${DOMAIN}.options.step.${step}.sections.${section}.name`] || section;
   }
 
   _kindName(kind) {
-    return this._selector[`component.${DOMAIN}.selector.kind.options.${kind}`] || kind;
+    return this._selector?.[`component.${DOMAIN}.selector.kind.options.${kind}`] || kind;
   }
 
   _options(selector, values) {
     return values.map((value) => ({
       value,
-      label: this._selector[`component.${DOMAIN}.selector.${selector}.options.${value}`] || value,
+      label: this._selector?.[`component.${DOMAIN}.selector.${selector}.options.${value}`] || value,
     }));
   }
 
@@ -3976,7 +3976,7 @@ class SmartComfortPanel extends HTMLElement {
     const get = (category) =>
       this._hass
         .callWS({ type: "frontend/get_translations", language, category, integration: [DOMAIN] })
-        .then((r) => r.resources)
+        .then((r) => r?.resources || {})
         .catch(() => ({}));
     // ha-form (lazy-loaded by Home Assistant) only draws the settings forms: no waiting for it, they are drawn
     // again once it is there. Waiting held the whole panel empty until another page had loaded it.
@@ -3986,11 +3986,14 @@ class SmartComfortPanel extends HTMLElement {
         if (this._config) this._renderTab();
       });
     }
-    const [labels, selector] = await Promise.all([get("options"), get("selector")]);
-    this._labels = labels;
-    this._selector = selector;
-    await this._load();
-    this._subscribe();
+    // The settings are requested alongside the translations, not after them: labels fall back to the field
+    // names until the translations are in, then the panel is drawn again.
+    const translations = Promise.all([get("options"), get("selector")]).then(([labels, selector]) => {
+      this._labels = labels;
+      this._selector = selector;
+      if (this._config) this._render();
+    });
+    await Promise.all([this._load().then(() => this._subscribe()), translations]);
   }
 
   async _load() {
