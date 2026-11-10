@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.16.0 - 2026-11-10
+
+### Improvements
+- Panel, **Activity** tab: drawn by the panel itself instead of embedding the activity card, so it shows at the first opening. The lines by day with their time on the right, the filters on one line (all, devices, lights, notifications, by hand) and a new room filter.
+- Panel shown at once: the release keeps its languages in the panel file instead of a separate file to wait for.
+
 ## 1.15.5 - 2026-11-10
 
 ### Fixes

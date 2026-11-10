@@ -216,6 +216,38 @@ const STRINGS = {
     slot_brightness: "Brightness",
     slot_off_after: "Off after nobody for",
     slot_color: "Color",
+    a_empty: "Nothing yet.",
+    a_not_loaded: "Smart Comfort is not loaded.",
+    a_all: "All",
+    a_group_devices: "Devices",
+    a_group_lights: "Lights",
+    a_group_notifications: "Notifications",
+    a_group_manual: "By hand",
+    a_today: "Today",
+    a_yesterday: "Yesterday",
+    a_t_cool: "Cooling",
+    a_t_cool_night: "Cooling, quiet night",
+    a_t_off: "Off",
+    a_t_off_open: "Off: a window stays open",
+    a_t_on: "On: warm",
+    a_t_on_night: "On, quiet night",
+    a_t_boost: "Window boost",
+    a_t_purify: "Boost: polluted air",
+    a_t_normal: "Back to normal",
+    a_t_night: "Night mode",
+    a_t_keep_on: "Turned back on",
+    a_lighting: "Brightness of the moment",
+    a_presence_on: "On: someone came in",
+    a_presence_off: "Off: nobody left",
+    a_display_off: "Indicator off",
+    a_display_on: "Indicator back on",
+    a_notified: "Notification",
+    a_cleared: "Notification cleared: everything is back to normal",
+    a_manual: "Changed by hand: left alone",
+    a_manual_until: "Changed by hand: left alone until {time}",
+    a_reset: "Back to normal (set time)",
+    a_failed: "Could not be sent",
+    a_all_rooms: "All rooms",
   },
   fr: {
     outdoor_noise: "Bruit extérieur",
@@ -380,6 +412,38 @@ const STRINGS = {
     slot_brightness: "Intensité",
     slot_off_after: "Extinction après personne pendant",
     slot_color: "Couleur",
+    a_empty: "Rien pour l'instant.",
+    a_not_loaded: "Smart Comfort n'est pas chargé.",
+    a_all: "Tout",
+    a_group_devices: "Appareils",
+    a_group_lights: "Lumières",
+    a_group_notifications: "Notifications",
+    a_group_manual: "À la main",
+    a_today: "Aujourd'hui",
+    a_yesterday: "Hier",
+    a_t_cool: "Refroidit",
+    a_t_cool_night: "Refroidit, nuit calme",
+    a_t_off: "Éteint",
+    a_t_off_open: "Éteint : une fenêtre reste ouverte",
+    a_t_on: "Allumé : il fait chaud",
+    a_t_on_night: "Allumé, nuit calme",
+    a_t_boost: "Boost fenêtre",
+    a_t_purify: "Boost : air pollué",
+    a_t_normal: "Retour à la normale",
+    a_t_night: "Mode nuit",
+    a_t_keep_on: "Rallumé",
+    a_lighting: "Intensité du moment",
+    a_presence_on: "Allumée : quelqu'un est entré",
+    a_presence_off: "Éteinte : plus personne",
+    a_display_off: "Voyant éteint",
+    a_display_on: "Voyant rallumé",
+    a_notified: "Notification",
+    a_cleared: "Notification effacée : tout est revenu à la normale",
+    a_manual: "Changé à la main : laissé tel quel",
+    a_manual_until: "Changé à la main : laissé tel quel jusqu'à {time}",
+    a_reset: "Retour à la normale (heure fixe)",
+    a_failed: "Commande non envoyée",
+    a_all_rooms: "Toutes les pièces",
   },
   de: {
     outdoor_noise: "Außenlärm",
@@ -544,6 +608,38 @@ const STRINGS = {
     slot_brightness: "Helligkeit",
     slot_off_after: "Aus nach niemand seit",
     slot_color: "Farbe",
+    a_empty: "Noch nichts.",
+    a_not_loaded: "Smart Comfort ist nicht geladen.",
+    a_all: "Alle",
+    a_group_devices: "Geräte",
+    a_group_lights: "Lichter",
+    a_group_notifications: "Benachrichtigungen",
+    a_group_manual: "Von Hand",
+    a_today: "Heute",
+    a_yesterday: "Gestern",
+    a_t_cool: "Kühlt",
+    a_t_cool_night: "Kühlt, Nachtruhe",
+    a_t_off: "Aus",
+    a_t_off_open: "Aus: ein Fenster bleibt offen",
+    a_t_on: "An: warm",
+    a_t_on_night: "An, Nachtruhe",
+    a_t_boost: "Fenster-Boost",
+    a_t_purify: "Boost: verschmutzte Luft",
+    a_t_normal: "Zurück zum Normalzustand",
+    a_t_night: "Nachtmodus",
+    a_t_keep_on: "Wieder eingeschaltet",
+    a_lighting: "Helligkeit des Moments",
+    a_presence_on: "An: jemand ist gekommen",
+    a_presence_off: "Aus: niemand mehr da",
+    a_display_off: "Anzeige aus",
+    a_display_on: "Anzeige wieder an",
+    a_notified: "Benachrichtigung",
+    a_cleared: "Benachrichtigung gelöscht: alles wieder normal",
+    a_manual: "Von Hand geändert: in Ruhe gelassen",
+    a_manual_until: "Von Hand geändert: in Ruhe gelassen bis {time}",
+    a_reset: "Zurück zum Normalzustand (feste Uhrzeit)",
+    a_failed: "Konnte nicht gesendet werden",
+    a_all_rooms: "Alle Räume",
   },
   es: {
     outdoor_noise: "Ruido exterior",
@@ -708,6 +804,38 @@ const STRINGS = {
     slot_brightness: "Brillo",
     slot_off_after: "Apagado tras nadie durante",
     slot_color: "Color",
+    a_empty: "Nada por ahora.",
+    a_not_loaded: "Smart Comfort no está cargado.",
+    a_all: "Todo",
+    a_group_devices: "Aparatos",
+    a_group_lights: "Luces",
+    a_group_notifications: "Notificaciones",
+    a_group_manual: "A mano",
+    a_today: "Hoy",
+    a_yesterday: "Ayer",
+    a_t_cool: "Enfriando",
+    a_t_cool_night: "Enfriando, noche tranquila",
+    a_t_off: "Apagado",
+    a_t_off_open: "Apagado: una ventana sigue abierta",
+    a_t_on: "Encendido: hace calor",
+    a_t_on_night: "Encendido, noche tranquila",
+    a_t_boost: "Refuerzo por ventana",
+    a_t_purify: "Refuerzo: aire contaminado",
+    a_t_normal: "Vuelta a lo normal",
+    a_t_night: "Modo noche",
+    a_t_keep_on: "Encendido de nuevo",
+    a_lighting: "Brillo del momento",
+    a_presence_on: "Encendida: alguien ha entrado",
+    a_presence_off: "Apagada: ya no hay nadie",
+    a_display_off: "Indicador apagado",
+    a_display_on: "Indicador encendido",
+    a_notified: "Notificación",
+    a_cleared: "Notificación borrada: todo ha vuelto a la normalidad",
+    a_manual: "Cambiado a mano: se deja así",
+    a_manual_until: "Cambiado a mano: se deja así hasta las {time}",
+    a_reset: "Vuelta a lo normal (hora fija)",
+    a_failed: "No se pudo enviar",
+    a_all_rooms: "Todas las habitaciones",
   },
   sr: {
     outdoor_noise: "Спољашња бука",
@@ -872,6 +1000,38 @@ const STRINGS = {
     slot_brightness: "Јачина светла",
     slot_off_after: "Искључи кад нема никога током",
     slot_color: "Боја",
+    a_empty: "Још ништа.",
+    a_not_loaded: "Smart Comfort није учитан.",
+    a_all: "Све",
+    a_group_devices: "Уређаји",
+    a_group_lights: "Светла",
+    a_group_notifications: "Обавештења",
+    a_group_manual: "Ручно",
+    a_today: "Данас",
+    a_yesterday: "Јуче",
+    a_t_cool: "Хлађење",
+    a_t_cool_night: "Хлађење, мирна ноћ",
+    a_t_off: "Искључено",
+    a_t_off_open: "Искључено: прозор остаје отворен",
+    a_t_on: "Укључено: топло је",
+    a_t_on_night: "Укључено, мирна ноћ",
+    a_t_boost: "Појачање због прозора",
+    a_t_purify: "Појачање: загађен ваздух",
+    a_t_normal: "Повратак на нормално",
+    a_t_night: "Ноћни режим",
+    a_t_keep_on: "Поново укључено",
+    a_lighting: "Јачина светла за ово доба дана",
+    a_presence_on: "Укључено: неко је ушао",
+    a_presence_off: "Искључено: нема никога",
+    a_display_off: "Индикатор искључен",
+    a_display_on: "Индикатор поново укључен",
+    a_notified: "Обавештење",
+    a_cleared: "Обавештење уклоњено: све је поново у реду",
+    a_manual: "Ручно промењено: не дира се",
+    a_manual_until: "Ручно промењено: не дира се до {time}",
+    a_reset: "Повратак на нормално (задато време)",
+    a_failed: "Није могло да се пошаље",
+    a_all_rooms: "Све просторије",
   },
   "sr-Latn": {
     outdoor_noise: "Spoljašnja buka",
@@ -1036,6 +1196,38 @@ const STRINGS = {
     slot_brightness: "Jačina svetla",
     slot_off_after: "Isključi kad nema nikoga tokom",
     slot_color: "Boja",
+    a_empty: "Još ništa.",
+    a_not_loaded: "Smart Comfort nije učitan.",
+    a_all: "Sve",
+    a_group_devices: "Uređaji",
+    a_group_lights: "Svetla",
+    a_group_notifications: "Obaveštenja",
+    a_group_manual: "Ručno",
+    a_today: "Danas",
+    a_yesterday: "Juče",
+    a_t_cool: "Hlađenje",
+    a_t_cool_night: "Hlađenje, mirna noć",
+    a_t_off: "Isključeno",
+    a_t_off_open: "Isključeno: prozor ostaje otvoren",
+    a_t_on: "Uključeno: toplo je",
+    a_t_on_night: "Uključeno, mirna noć",
+    a_t_boost: "Pojačanje zbog prozora",
+    a_t_purify: "Pojačanje: zagađen vazduh",
+    a_t_normal: "Povratak na normalno",
+    a_t_night: "Noćni režim",
+    a_t_keep_on: "Ponovo uključeno",
+    a_lighting: "Jačina svetla za ovo doba dana",
+    a_presence_on: "Uključeno: neko je ušao",
+    a_presence_off: "Isključeno: nema nikoga",
+    a_display_off: "Indikator isključen",
+    a_display_on: "Indikator ponovo uključen",
+    a_notified: "Obaveštenje",
+    a_cleared: "Obaveštenje uklonjeno: sve je ponovo u redu",
+    a_manual: "Ručno promenjeno: ne dira se",
+    a_manual_until: "Ručno promenjeno: ne dira se do {time}",
+    a_reset: "Povratak na normalno (zadato vreme)",
+    a_failed: "Nije moglo da se pošalje",
+    a_all_rooms: "Sve prostorije",
   },
   it: {
     outdoor_noise: "Rumore esterno",
@@ -1200,6 +1392,38 @@ const STRINGS = {
     slot_brightness: "Luminosità",
     slot_off_after: "Spegnimento dopo nessuno per",
     slot_color: "Colore",
+    a_empty: "Ancora niente.",
+    a_not_loaded: "Smart Comfort non è caricato.",
+    a_all: "Tutto",
+    a_group_devices: "Dispositivi",
+    a_group_lights: "Luci",
+    a_group_notifications: "Notifiche",
+    a_group_manual: "A mano",
+    a_today: "Oggi",
+    a_yesterday: "Ieri",
+    a_t_cool: "Raffreddamento",
+    a_t_cool_night: "Raffreddamento, notte silenziosa",
+    a_t_off: "Spento",
+    a_t_off_open: "Spento: una finestra resta aperta",
+    a_t_on: "Acceso: fa caldo",
+    a_t_on_night: "Acceso, notte silenziosa",
+    a_t_boost: "Boost finestra",
+    a_t_purify: "Boost: aria inquinata",
+    a_t_normal: "Ritorno alla normalità",
+    a_t_night: "Modalità notte",
+    a_t_keep_on: "Riacceso",
+    a_lighting: "Luminosità del momento",
+    a_presence_on: "Accesa: è entrato qualcuno",
+    a_presence_off: "Spenta: non c'è più nessuno",
+    a_display_off: "Spia spenta",
+    a_display_on: "Spia riaccesa",
+    a_notified: "Notifica",
+    a_cleared: "Notifica cancellata: è tutto tornato alla normalità",
+    a_manual: "Cambiato a mano: lasciato così",
+    a_manual_until: "Cambiato a mano: lasciato così fino alle {time}",
+    a_reset: "Ritorno alla normalità (orario fisso)",
+    a_failed: "Impossibile inviare",
+    a_all_rooms: "Tutte le stanze",
   },
   nl: {
     outdoor_noise: "Buitengeluid",
@@ -1364,6 +1588,38 @@ const STRINGS = {
     slot_brightness: "Helderheid",
     slot_off_after: "Uit na niemand gedurende",
     slot_color: "Kleur",
+    a_empty: "Nog niets.",
+    a_not_loaded: "Smart Comfort is niet geladen.",
+    a_all: "Alles",
+    a_group_devices: "Apparaten",
+    a_group_lights: "Lampen",
+    a_group_notifications: "Meldingen",
+    a_group_manual: "Handmatig",
+    a_today: "Vandaag",
+    a_yesterday: "Gisteren",
+    a_t_cool: "Koelen",
+    a_t_cool_night: "Koelen, stille nacht",
+    a_t_off: "Uit",
+    a_t_off_open: "Uit: een raam blijft open",
+    a_t_on: "Aan: het is warm",
+    a_t_on_night: "Aan, stille nacht",
+    a_t_boost: "Raamboost",
+    a_t_purify: "Boost: vervuilde lucht",
+    a_t_normal: "Terug naar normaal",
+    a_t_night: "Nachtmodus",
+    a_t_keep_on: "Weer aangezet",
+    a_lighting: "Helderheid van het moment",
+    a_presence_on: "Aan: er kwam iemand binnen",
+    a_presence_off: "Uit: niemand meer",
+    a_display_off: "Indicatielampje uit",
+    a_display_on: "Indicatielampje weer aan",
+    a_notified: "Melding",
+    a_cleared: "Melding gewist: alles is weer normaal",
+    a_manual: "Handmatig gewijzigd: met rust gelaten",
+    a_manual_until: "Handmatig gewijzigd: met rust gelaten tot {time}",
+    a_reset: "Terug naar normaal (vaste tijd)",
+    a_failed: "Kon niet worden verzonden",
+    a_all_rooms: "Alle ruimtes",
   },
   pt: {
     outdoor_noise: "Ruído exterior",
@@ -1528,6 +1784,38 @@ const STRINGS = {
     slot_brightness: "Brilho",
     slot_off_after: "Desligar após ninguém durante",
     slot_color: "Cor",
+    a_empty: "Ainda nada.",
+    a_not_loaded: "O Smart Comfort não está carregado.",
+    a_all: "Tudo",
+    a_group_devices: "Dispositivos",
+    a_group_lights: "Luzes",
+    a_group_notifications: "Notificações",
+    a_group_manual: "À mão",
+    a_today: "Hoje",
+    a_yesterday: "Ontem",
+    a_t_cool: "A arrefecer",
+    a_t_cool_night: "A arrefecer, noite silenciosa",
+    a_t_off: "Desligado",
+    a_t_off_open: "Desligado: uma janela continua aberta",
+    a_t_on: "Ligado: está calor",
+    a_t_on_night: "Ligado, noite silenciosa",
+    a_t_boost: "Reforço de janela",
+    a_t_purify: "Reforço: ar poluído",
+    a_t_normal: "De volta ao normal",
+    a_t_night: "Modo noturno",
+    a_t_keep_on: "Ligado de novo",
+    a_lighting: "Brilho do momento",
+    a_presence_on: "Ligada: alguém entrou",
+    a_presence_off: "Desligada: já não está ninguém",
+    a_display_off: "Indicador desligado",
+    a_display_on: "Indicador ligado de novo",
+    a_notified: "Notificação",
+    a_cleared: "Notificação apagada: tudo voltou ao normal",
+    a_manual: "Alterado à mão: deixado como está",
+    a_manual_until: "Alterado à mão: deixado como está até às {time}",
+    a_reset: "De volta ao normal (hora fixa)",
+    a_failed: "Não foi possível enviar",
+    a_all_rooms: "Todas as divisões",
   },
   pl: {
     outdoor_noise: "Hałas na zewnątrz",
@@ -1692,6 +1980,38 @@ const STRINGS = {
     slot_brightness: "Jasność",
     slot_off_after: "Wyłącz po braku obecności przez",
     slot_color: "Kolor",
+    a_empty: "Jeszcze nic.",
+    a_not_loaded: "Smart Comfort nie jest załadowany.",
+    a_all: "Wszystko",
+    a_group_devices: "Urządzenia",
+    a_group_lights: "Światła",
+    a_group_notifications: "Powiadomienia",
+    a_group_manual: "Ręcznie",
+    a_today: "Dzisiaj",
+    a_yesterday: "Wczoraj",
+    a_t_cool: "Chłodzenie",
+    a_t_cool_night: "Chłodzenie, cicha noc",
+    a_t_off: "Wyłączone",
+    a_t_off_open: "Wyłączone: okno pozostaje otwarte",
+    a_t_on: "Włączone: jest ciepło",
+    a_t_on_night: "Włączone, cicha noc",
+    a_t_boost: "Wzmocnienie przy oknie",
+    a_t_purify: "Wzmocnienie: zanieczyszczone powietrze",
+    a_t_normal: "Powrót do normy",
+    a_t_night: "Tryb nocny",
+    a_t_keep_on: "Ponownie włączone",
+    a_lighting: "Jasność dla pory dnia",
+    a_presence_on: "Włączone: ktoś wszedł",
+    a_presence_off: "Wyłączone: nikogo nie ma",
+    a_display_off: "Kontrolka wyłączona",
+    a_display_on: "Kontrolka ponownie włączona",
+    a_notified: "Powiadomienie",
+    a_cleared: "Powiadomienie usunięte: wszystko wróciło do normy",
+    a_manual: "Zmienione ręcznie: pozostawione bez zmian",
+    a_manual_until: "Zmienione ręcznie: pozostawione bez zmian do {time}",
+    a_reset: "Powrót do normy (stała godzina)",
+    a_failed: "Nie udało się wysłać",
+    a_all_rooms: "Wszystkie pomieszczenia",
   },
   ro: {
     outdoor_noise: "Zgomot exterior",
@@ -1856,6 +2176,38 @@ const STRINGS = {
     slot_brightness: "Luminozitate",
     slot_off_after: "Stinse după o absență de",
     slot_color: "Culoare",
+    a_empty: "Încă nimic.",
+    a_not_loaded: "Smart Comfort nu este încărcat.",
+    a_all: "Toate",
+    a_group_devices: "Aparate",
+    a_group_lights: "Lumini",
+    a_group_notifications: "Notificări",
+    a_group_manual: "Manual",
+    a_today: "Azi",
+    a_yesterday: "Ieri",
+    a_t_cool: "Răcire",
+    a_t_cool_night: "Răcire, noapte liniștită",
+    a_t_off: "Oprit",
+    a_t_off_open: "Oprit: o fereastră rămâne deschisă",
+    a_t_on: "Pornit: e cald",
+    a_t_on_night: "Pornit, noapte liniștită",
+    a_t_boost: "Impuls la fereastră",
+    a_t_purify: "Impuls: aer poluat",
+    a_t_normal: "Revenire la normal",
+    a_t_night: "Mod noapte",
+    a_t_keep_on: "Repornit",
+    a_lighting: "Luminozitatea momentului",
+    a_presence_on: "Aprinsă: a intrat cineva",
+    a_presence_off: "Stinsă: nu mai e nimeni",
+    a_display_off: "Indicator stins",
+    a_display_on: "Indicator reaprins",
+    a_notified: "Notificare",
+    a_cleared: "Notificare ștearsă: totul a revenit la normal",
+    a_manual: "Modificat manual: lăsat în pace",
+    a_manual_until: "Modificat manual: lăsat în pace până la {time}",
+    a_reset: "Revenire la normal (oră fixă)",
+    a_failed: "Nu a putut fi trimisă",
+    a_all_rooms: "Toate camerele",
   },
   da: {
     outdoor_noise: "Udendørs støj",
@@ -2020,6 +2372,38 @@ const STRINGS = {
     slot_brightness: "Lysstyrke",
     slot_off_after: "Sluk efter ingen i",
     slot_color: "Farve",
+    a_empty: "Intet endnu.",
+    a_not_loaded: "Smart Comfort er ikke indlæst.",
+    a_all: "Alle",
+    a_group_devices: "Enheder",
+    a_group_lights: "Lys",
+    a_group_notifications: "Notifikationer",
+    a_group_manual: "Manuelt",
+    a_today: "I dag",
+    a_yesterday: "I går",
+    a_t_cool: "Køler",
+    a_t_cool_night: "Køler, stille nat",
+    a_t_off: "Slukket",
+    a_t_off_open: "Slukket: et vindue står åbent",
+    a_t_on: "Tændt: det er varmt",
+    a_t_on_night: "Tændt, stille nat",
+    a_t_boost: "Vinduesboost",
+    a_t_purify: "Boost: forurenet luft",
+    a_t_normal: "Tilbage til normal",
+    a_t_night: "Nattilstand",
+    a_t_keep_on: "Tændt igen",
+    a_lighting: "Øjeblikkets lysstyrke",
+    a_presence_on: "Tændt: nogen kom ind",
+    a_presence_off: "Slukket: ingen tilbage",
+    a_display_off: "Indikator slukket",
+    a_display_on: "Indikator tændt igen",
+    a_notified: "Notifikation",
+    a_cleared: "Notifikation ryddet: alt er normalt igen",
+    a_manual: "Ændret manuelt: ladet i fred",
+    a_manual_until: "Ændret manuelt: ladet i fred indtil {time}",
+    a_reset: "Tilbage til normal (fast tidspunkt)",
+    a_failed: "Kunne ikke sendes",
+    a_all_rooms: "Alle rum",
   },
   sv: {
     outdoor_noise: "Buller utomhus",
@@ -2184,6 +2568,38 @@ const STRINGS = {
     slot_brightness: "Ljusstyrka",
     slot_off_after: "Av efter ingen i",
     slot_color: "Färg",
+    a_empty: "Inget än.",
+    a_not_loaded: "Smart Comfort är inte inläst.",
+    a_all: "Alla",
+    a_group_devices: "Enheter",
+    a_group_lights: "Lampor",
+    a_group_notifications: "Aviseringar",
+    a_group_manual: "Manuellt",
+    a_today: "Idag",
+    a_yesterday: "Igår",
+    a_t_cool: "Kyler",
+    a_t_cool_night: "Kyler, tyst natt",
+    a_t_off: "Av",
+    a_t_off_open: "Av: ett fönster står öppet",
+    a_t_on: "På: det är varmt",
+    a_t_on_night: "På, tyst natt",
+    a_t_boost: "Fönsterboost",
+    a_t_purify: "Boost: förorenad luft",
+    a_t_normal: "Tillbaka till normalt",
+    a_t_night: "Nattläge",
+    a_t_keep_on: "Påslagen igen",
+    a_lighting: "Stundens ljusstyrka",
+    a_presence_on: "Tänd: någon kom in",
+    a_presence_off: "Släckt: ingen kvar",
+    a_display_off: "Indikator av",
+    a_display_on: "Indikator på igen",
+    a_notified: "Avisering",
+    a_cleared: "Avisering rensad: allt är normalt igen",
+    a_manual: "Ändrad manuellt: lämnad ifred",
+    a_manual_until: "Ändrad manuellt: lämnad ifred till {time}",
+    a_reset: "Tillbaka till normalt (fast tid)",
+    a_failed: "Kunde inte skickas",
+    a_all_rooms: "Alla rum",
   },
   bg: {
     outdoor_noise: "Външен шум",
@@ -2348,6 +2764,38 @@ const STRINGS = {
     slot_brightness: "Яркост",
     slot_off_after: "Изкл. след отсъствие от",
     slot_color: "Цвят",
+    a_empty: "Все още нищо.",
+    a_not_loaded: "Smart Comfort не е зареден.",
+    a_all: "Всички",
+    a_group_devices: "Устройства",
+    a_group_lights: "Осветление",
+    a_group_notifications: "Известия",
+    a_group_manual: "Ръчно",
+    a_today: "Днес",
+    a_yesterday: "Вчера",
+    a_t_cool: "Охлаждане",
+    a_t_cool_night: "Охлаждане, тиха нощ",
+    a_t_off: "Изключено",
+    a_t_off_open: "Изключено: прозорец остава отворен",
+    a_t_on: "Включено: топло е",
+    a_t_on_night: "Включено, тиха нощ",
+    a_t_boost: "Усилване при прозорец",
+    a_t_purify: "Усилване: замърсен въздух",
+    a_t_normal: "Връщане към нормалното",
+    a_t_night: "Нощен режим",
+    a_t_keep_on: "Включено отново",
+    a_lighting: "Яркост за момента",
+    a_presence_on: "Включено: някой влезе",
+    a_presence_off: "Изключено: няма никой",
+    a_display_off: "Индикаторът е изключен",
+    a_display_on: "Индикаторът е включен отново",
+    a_notified: "Известие",
+    a_cleared: "Известието е изчистено: всичко е нормално отново",
+    a_manual: "Променено ръчно: оставено на мира",
+    a_manual_until: "Променено ръчно: оставено на мира до {time}",
+    a_reset: "Връщане към нормалното (фиксиран час)",
+    a_failed: "Не можа да бъде изпратено",
+    a_all_rooms: "Всички стаи",
   },
   ru: {
     outdoor_noise: "Шум на улице",
@@ -2512,6 +2960,38 @@ const STRINGS = {
     slot_brightness: "Яркость",
     slot_off_after: "Выкл. после отсутствия",
     slot_color: "Цвет",
+    a_empty: "Пока ничего.",
+    a_not_loaded: "Smart Comfort не загружен.",
+    a_all: "Всё",
+    a_group_devices: "Устройства",
+    a_group_lights: "Освещение",
+    a_group_notifications: "Уведомления",
+    a_group_manual: "Вручную",
+    a_today: "Сегодня",
+    a_yesterday: "Вчера",
+    a_t_cool: "Охлаждение",
+    a_t_cool_night: "Охлаждение, тихая ночь",
+    a_t_off: "Выключено",
+    a_t_off_open: "Выключено: окно остаётся открытым",
+    a_t_on: "Включено: жарко",
+    a_t_on_night: "Включено, тихая ночь",
+    a_t_boost: "Усиление при открытом окне",
+    a_t_purify: "Усиление: загрязнённый воздух",
+    a_t_normal: "Возврат к обычному",
+    a_t_night: "Ночной режим",
+    a_t_keep_on: "Снова включено",
+    a_lighting: "Яркость для текущего времени",
+    a_presence_on: "Включено: кто-то вошёл",
+    a_presence_off: "Выключено: никого не осталось",
+    a_display_off: "Индикатор выключен",
+    a_display_on: "Индикатор снова включён",
+    a_notified: "Уведомление",
+    a_cleared: "Уведомление удалено: всё снова в норме",
+    a_manual: "Изменено вручную: не трогаем",
+    a_manual_until: "Изменено вручную: не трогаем до {time}",
+    a_reset: "Возврат к обычному (заданное время)",
+    a_failed: "Не удалось отправить",
+    a_all_rooms: "Все комнаты",
   },
   uk: {
     outdoor_noise: "Шум надворі",
@@ -2676,6 +3156,38 @@ const STRINGS = {
     slot_brightness: "Яскравість",
     slot_off_after: "Вимк. після відсутності",
     slot_color: "Колір",
+    a_empty: "Поки нічого.",
+    a_not_loaded: "Smart Comfort не завантажено.",
+    a_all: "Усе",
+    a_group_devices: "Пристрої",
+    a_group_lights: "Освітлення",
+    a_group_notifications: "Сповіщення",
+    a_group_manual: "Вручну",
+    a_today: "Сьогодні",
+    a_yesterday: "Учора",
+    a_t_cool: "Охолодження",
+    a_t_cool_night: "Охолодження, тиха ніч",
+    a_t_off: "Вимкнено",
+    a_t_off_open: "Вимкнено: вікно лишається відчиненим",
+    a_t_on: "Увімкнено: спекотно",
+    a_t_on_night: "Увімкнено, тиха ніч",
+    a_t_boost: "Посилення при відчиненому вікні",
+    a_t_purify: "Посилення: забруднене повітря",
+    a_t_normal: "Повернення до звичайного",
+    a_t_night: "Нічний режим",
+    a_t_keep_on: "Знову увімкнено",
+    a_lighting: "Яскравість для поточного часу",
+    a_presence_on: "Увімкнено: хтось зайшов",
+    a_presence_off: "Вимкнено: нікого не лишилося",
+    a_display_off: "Індикатор вимкнено",
+    a_display_on: "Індикатор знову увімкнено",
+    a_notified: "Сповіщення",
+    a_cleared: "Сповіщення прибрано: усе знову гаразд",
+    a_manual: "Змінено вручну: не чіпаємо",
+    a_manual_until: "Змінено вручну: не чіпаємо до {time}",
+    a_reset: "Повернення до звичайного (заданий час)",
+    a_failed: "Не вдалося надіслати",
+    a_all_rooms: "Усі кімнати",
   },
   hu: {
     outdoor_noise: "Kültéri zaj",
@@ -2840,6 +3352,38 @@ const STRINGS = {
     slot_brightness: "Fényerő",
     slot_off_after: "Kikapcsolás távollét után",
     slot_color: "Szín",
+    a_empty: "Még semmi.",
+    a_not_loaded: "A Smart Comfort nincs betöltve.",
+    a_all: "Mind",
+    a_group_devices: "Eszközök",
+    a_group_lights: "Lámpák",
+    a_group_notifications: "Értesítések",
+    a_group_manual: "Kézzel",
+    a_today: "Ma",
+    a_yesterday: "Tegnap",
+    a_t_cool: "Hűtés",
+    a_t_cool_night: "Hűtés, csendes éjszaka",
+    a_t_off: "Ki",
+    a_t_off_open: "Ki: egy ablak nyitva marad",
+    a_t_on: "Be: meleg van",
+    a_t_on_night: "Be, csendes éjszaka",
+    a_t_boost: "Ablakos rásegítés",
+    a_t_purify: "Rásegítés: szennyezett levegő",
+    a_t_normal: "Vissza a normálra",
+    a_t_night: "Éjszakai mód",
+    a_t_keep_on: "Újra bekapcsolva",
+    a_lighting: "A pillanatnyi fényerő",
+    a_presence_on: "Be: valaki belépett",
+    a_presence_off: "Ki: senki sincs bent",
+    a_display_off: "Jelzőfény ki",
+    a_display_on: "Jelzőfény újra be",
+    a_notified: "Értesítés",
+    a_cleared: "Értesítés törölve: minden újra rendben",
+    a_manual: "Kézzel módosítva: békén hagyva",
+    a_manual_until: "Kézzel módosítva: békén hagyva eddig: {time}",
+    a_reset: "Vissza a normálra (rögzített idő)",
+    a_failed: "Nem sikerült elküldeni",
+    a_all_rooms: "Minden helyiség",
   },
   sk: {
     outdoor_noise: "Vonkajší hluk",
@@ -3004,6 +3548,38 @@ const STRINGS = {
     slot_brightness: "Jas",
     slot_off_after: "Zhasnúť po neprítomnosti",
     slot_color: "Farba",
+    a_empty: "Zatiaľ nič.",
+    a_not_loaded: "Smart Comfort nie je načítaný.",
+    a_all: "Všetko",
+    a_group_devices: "Zariadenia",
+    a_group_lights: "Svetlá",
+    a_group_notifications: "Oznámenia",
+    a_group_manual: "Ručne",
+    a_today: "Dnes",
+    a_yesterday: "Včera",
+    a_t_cool: "Chladenie",
+    a_t_cool_night: "Chladenie, tichá noc",
+    a_t_off: "Vypnuté",
+    a_t_off_open: "Vypnuté: okno zostáva otvorené",
+    a_t_on: "Zapnuté: je teplo",
+    a_t_on_night: "Zapnuté, tichá noc",
+    a_t_boost: "Posilnenie pri okne",
+    a_t_purify: "Posilnenie: znečistený vzduch",
+    a_t_normal: "Návrat do normálu",
+    a_t_night: "Nočný režim",
+    a_t_keep_on: "Znova zapnuté",
+    a_lighting: "Jas pre danú chvíľu",
+    a_presence_on: "Rozsvietené: niekto vošiel",
+    a_presence_off: "Zhasnuté: nikto nezostal",
+    a_display_off: "Kontrolka vypnutá",
+    a_display_on: "Kontrolka znova zapnutá",
+    a_notified: "Oznámenie",
+    a_cleared: "Oznámenie vymazané: všetko je opäť v norme",
+    a_manual: "Zmenené ručne: ponechané tak",
+    a_manual_until: "Zmenené ručne: ponechané tak do {time}",
+    a_reset: "Návrat do normálu (pevný čas)",
+    a_failed: "Nepodarilo sa odoslať",
+    a_all_rooms: "Všetky miestnosti",
   },
   cs: {
     outdoor_noise: "Venkovní hluk",
@@ -3168,6 +3744,38 @@ const STRINGS = {
     slot_brightness: "Jas",
     slot_off_after: "Zhasnout po nepřítomnosti",
     slot_color: "Barva",
+    a_empty: "Zatím nic.",
+    a_not_loaded: "Smart Comfort není načten.",
+    a_all: "Vše",
+    a_group_devices: "Zařízení",
+    a_group_lights: "Světla",
+    a_group_notifications: "Oznámení",
+    a_group_manual: "Ručně",
+    a_today: "Dnes",
+    a_yesterday: "Včera",
+    a_t_cool: "Chlazení",
+    a_t_cool_night: "Chlazení, tichá noc",
+    a_t_off: "Vypnuto",
+    a_t_off_open: "Vypnuto: okno zůstává otevřené",
+    a_t_on: "Zapnuto: je teplo",
+    a_t_on_night: "Zapnuto, tichá noc",
+    a_t_boost: "Posílení u okna",
+    a_t_purify: "Posílení: znečištěný vzduch",
+    a_t_normal: "Návrat do normálu",
+    a_t_night: "Noční režim",
+    a_t_keep_on: "Znovu zapnuto",
+    a_lighting: "Jas pro danou chvíli",
+    a_presence_on: "Rozsvíceno: někdo vešel",
+    a_presence_off: "Zhasnuto: nikdo nezůstal",
+    a_display_off: "Kontrolka vypnuta",
+    a_display_on: "Kontrolka znovu zapnuta",
+    a_notified: "Oznámení",
+    a_cleared: "Oznámení smazáno: vše je opět v normálu",
+    a_manual: "Změněno ručně: ponecháno být",
+    a_manual_until: "Změněno ručně: ponecháno být do {time}",
+    a_reset: "Návrat do normálu (pevný čas)",
+    a_failed: "Nepodařilo se odeslat",
+    a_all_rooms: "Všechny místnosti",
   },
   sl: {
     outdoor_noise: "Zunanji hrup",
@@ -3332,6 +3940,38 @@ const STRINGS = {
     slot_brightness: "Svetlost",
     slot_off_after: "Ugasni po odsotnosti",
     slot_color: "Barva",
+    a_empty: "Še nič.",
+    a_not_loaded: "Smart Comfort ni naložen.",
+    a_all: "Vse",
+    a_group_devices: "Naprave",
+    a_group_lights: "Luči",
+    a_group_notifications: "Obvestila",
+    a_group_manual: "Ročno",
+    a_today: "Danes",
+    a_yesterday: "Včeraj",
+    a_t_cool: "Hlajenje",
+    a_t_cool_night: "Hlajenje, tiha noč",
+    a_t_off: "Izklopljeno",
+    a_t_off_open: "Izklopljeno: okno ostaja odprto",
+    a_t_on: "Vklopljeno: toplo je",
+    a_t_on_night: "Vklopljeno, tiha noč",
+    a_t_boost: "Okenska okrepitev",
+    a_t_purify: "Okrepitev: onesnažen zrak",
+    a_t_normal: "Nazaj na običajno",
+    a_t_night: "Nočni način",
+    a_t_keep_on: "Znova vklopljeno",
+    a_lighting: "Svetlost trenutka",
+    a_presence_on: "Prižgano: nekdo je vstopil",
+    a_presence_off: "Ugasnjeno: nikogar ni več",
+    a_display_off: "Indikator izklopljen",
+    a_display_on: "Indikator znova vklopljen",
+    a_notified: "Obvestilo",
+    a_cleared: "Obvestilo počiščeno: vse je spet normalno",
+    a_manual: "Ročno spremenjeno: puščeno pri miru",
+    a_manual_until: "Ročno spremenjeno: puščeno pri miru do {time}",
+    a_reset: "Nazaj na običajno (določena ura)",
+    a_failed: "Ni bilo mogoče poslati",
+    a_all_rooms: "Vsi prostori",
   },
   lv: {
     outdoor_noise: "Āra troksnis",
@@ -3496,6 +4136,38 @@ const STRINGS = {
     slot_brightness: "Spilgtums",
     slot_off_after: "Izslēgt pēc prombūtnes",
     slot_color: "Krāsa",
+    a_empty: "Vēl nekā.",
+    a_not_loaded: "Smart Comfort nav ielādēts.",
+    a_all: "Visi",
+    a_group_devices: "Ierīces",
+    a_group_lights: "Gaismas",
+    a_group_notifications: "Paziņojumi",
+    a_group_manual: "Manuāli",
+    a_today: "Šodien",
+    a_yesterday: "Vakar",
+    a_t_cool: "Dzesē",
+    a_t_cool_night: "Dzesē, klusā nakts",
+    a_t_off: "Izslēgts",
+    a_t_off_open: "Izslēgts: logs paliek atvērts",
+    a_t_on: "Ieslēgts: ir silts",
+    a_t_on_night: "Ieslēgts, klusā nakts",
+    a_t_boost: "Loga pastiprinājums",
+    a_t_purify: "Pastiprinājums: piesārņots gaiss",
+    a_t_normal: "Atpakaļ uz normālu",
+    a_t_night: "Nakts režīms",
+    a_t_keep_on: "Atkal ieslēgts",
+    a_lighting: "Brīža spilgtums",
+    a_presence_on: "Ieslēgts: kāds ienāca",
+    a_presence_off: "Izslēgts: neviena vairs nav",
+    a_display_off: "Indikators izslēgts",
+    a_display_on: "Indikators atkal ieslēgts",
+    a_notified: "Paziņojums",
+    a_cleared: "Paziņojums notīrīts: viss atkal ir normāli",
+    a_manual: "Mainīts manuāli: atstāts mierā",
+    a_manual_until: "Mainīts manuāli: atstāts mierā līdz {time}",
+    a_reset: "Atpakaļ uz normālu (noteikts laiks)",
+    a_failed: "Nevarēja nosūtīt",
+    a_all_rooms: "Visas telpas",
   },
   el: {
     outdoor_noise: "Εξωτερικός θόρυβος",
@@ -3660,6 +4332,38 @@ const STRINGS = {
     slot_brightness: "Φωτεινότητα",
     slot_off_after: "Σβήσιμο μετά από απουσία",
     slot_color: "Χρώμα",
+    a_empty: "Τίποτα ακόμα.",
+    a_not_loaded: "Το Smart Comfort δεν έχει φορτωθεί.",
+    a_all: "Όλα",
+    a_group_devices: "Συσκευές",
+    a_group_lights: "Φώτα",
+    a_group_notifications: "Ειδοποιήσεις",
+    a_group_manual: "Χειροκίνητα",
+    a_today: "Σήμερα",
+    a_yesterday: "Χθες",
+    a_t_cool: "Ψύξη",
+    a_t_cool_night: "Ψύξη, ήσυχη νύχτα",
+    a_t_off: "Σβηστό",
+    a_t_off_open: "Σβηστό: ένα παράθυρο μένει ανοιχτό",
+    a_t_on: "Αναμμένο: κάνει ζέστη",
+    a_t_on_night: "Αναμμένο, ήσυχη νύχτα",
+    a_t_boost: "Ενίσχυση παραθύρου",
+    a_t_purify: "Ενίσχυση: μολυσμένος αέρας",
+    a_t_normal: "Επιστροφή στο κανονικό",
+    a_t_night: "Νυχτερινή λειτουργία",
+    a_t_keep_on: "Άναψε ξανά",
+    a_lighting: "Φωτεινότητα της στιγμής",
+    a_presence_on: "Αναμμένο: μπήκε κάποιος",
+    a_presence_off: "Σβηστό: δεν έμεινε κανείς",
+    a_display_off: "Ενδεικτική λυχνία σβηστή",
+    a_display_on: "Ενδεικτική λυχνία αναμμένη ξανά",
+    a_notified: "Ειδοποίηση",
+    a_cleared: "Η ειδοποίηση διαγράφηκε: όλα επανήλθαν στο κανονικό",
+    a_manual: "Άλλαξε χειροκίνητα: μένει ανέγγιχτο",
+    a_manual_until: "Άλλαξε χειροκίνητα: μένει ανέγγιχτο έως τις {time}",
+    a_reset: "Επιστροφή στο κανονικό (ορισμένη ώρα)",
+    a_failed: "Δεν ήταν δυνατή η αποστολή",
+    a_all_rooms: "Όλοι οι χώροι",
   },
 };
 
@@ -3682,6 +4386,35 @@ const intlLocale = (hass) => {
 };
 
 const TABS = ["overview", "activity", "rooms", "outdoors", "alerts", "schedule", "settings", "yaml_tab"];
+// Activity tab: its filters (a failed command goes with what it was sent to), the icons of its lines, the lines kept.
+const ACTIVITY_GROUPS = {
+  devices: new Set(["device", "display", "reset"]),
+  lights: new Set(["lighting", "presence_on", "presence_off"]),
+  notifications: new Set(["notified", "cleared"]),
+  manual: new Set(["manual"]),
+};
+const ACTIVITY_ICONS = {
+  device: "mdi:fan",
+  lighting: "mdi:lightbulb-auto-outline",
+  presence_on: "mdi:motion-sensor",
+  presence_off: "mdi:motion-sensor-off",
+  display: "mdi:led-off",
+  notified: "mdi:bell-ring-outline",
+  cleared: "mdi:bell-check-outline",
+  manual: "mdi:hand-back-right-outline",
+  reset: "mdi:clock-check-outline",
+  failed: "mdi:alert-circle-outline",
+};
+const ACTIVITY_MAX = 300;
+
+/** The filter of an activity line. A failed command counts as what it was sent to: a light's with the lights. */
+const activityGroup = (entry) => {
+  if (entry.kind === "failed") {
+    if (String(entry.target || "").startsWith("display_")) return "devices";
+    return String(entry.action || entry.entity_id || "").startsWith("light.") ? "lights" : "devices";
+  }
+  return Object.entries(ACTIVITY_GROUPS).find(([, kinds]) => kinds.has(entry.kind))?.[0];
+};
 // Addresses of the tabs of earlier versions.
 const OLD_TABS = { notifications: "settings", control: "settings" };
 
@@ -3858,7 +4591,6 @@ class SmartComfortPanel extends HTMLElement {
     const first = !this._hass;
     this._hass = hass;
     for (const form of this._forms) form.hass = hass;
-    if (this._activity) this._activity.hass = hass;
     if (first) this._init();
   }
 
@@ -3905,6 +4637,7 @@ class SmartComfortPanel extends HTMLElement {
   disconnectedCallback() {
     this._watchConnection(false);
     clearTimeout(this._retryTimer);
+    this._stopActivity();
     if (this._unsub) {
       this._unsub.then((unsub) => unsub()).catch(() => {});
       this._unsub = null;
@@ -4182,7 +4915,7 @@ class SmartComfortPanel extends HTMLElement {
     if (!content) return;
     content.innerHTML = "";
     this._forms = [];
-    this._activity = null;
+    this._activityList = null;
     if (this._message) {
       content.append(this._el("div", `banner ${this._message.type}`, this._message.text));
     }
@@ -4213,20 +4946,186 @@ class SmartComfortPanel extends HTMLElement {
     render();
   }
 
-  /** Everything Smart Comfort did and why, live, by day, with filters. */
+  /** Everything Smart Comfort did and why, live, by day, with filters: drawn by the panel, not by a card. */
   _renderActivity(content) {
     const card = this._card(this._t("activity"), "mdi:history");
+    card.classList.add("activity");
     card.append(this._el("div", "help", this._t("activity_help")));
-    // The activity card, loaded on every page of Home Assistant by the integration.
-    const list = document.createElement("smart-comfort-activity-card");
-    card.append(list);
-    content.append(card);
-    customElements.whenDefined("smart-comfort-activity-card").then(() => {
-      if (!list.isConnected) return;
-      list.setConfig({ panel: true });
-      list.hass = this._hass;
-      this._activity = list;
+    const tools = this._el("div", "act-tools");
+    const chips = this._el("div", "seg");
+    chips.setAttribute("role", "radiogroup");
+    for (const group of ["all", ...Object.keys(ACTIVITY_GROUPS)]) {
+      const chip = this._el("button", "", this._t(group === "all" ? "a_all" : `a_group_${group}`));
+      chip.type = "button";
+      chip.setAttribute("role", "radio");
+      chip.setAttribute("aria-checked", String(group === (this._activityGroup || "all")));
+      chip.addEventListener("click", () => {
+        this._activityGroup = group;
+        chips.querySelectorAll("button").forEach((b) => {
+          b.setAttribute("aria-checked", String(b === chip));
+        });
+        this._drawActivity();
+      });
+      chips.append(chip);
+    }
+    const rooms = [...new Set((this._config?.options?.rooms || []).map((r) => r.name).filter(Boolean))];
+    const select = this._el("select", "act-room");
+    select.setAttribute("aria-label", this._t("rooms"));
+    for (const [value, label] of [["", this._t("a_all_rooms")], ...rooms.map((r) => [r, r])]) {
+      const option = this._el("option", "", label);
+      option.value = value;
+      option.selected = value === (this._activityRoom || "");
+      select.append(option);
+    }
+    select.addEventListener("change", () => {
+      this._activityRoom = select.value;
+      this._drawActivity();
     });
+    tools.append(chips, select);
+    const list = this._el("div", "act-list");
+    list.addEventListener("click", (ev) => {
+      const row = ev.target.closest?.("[data-entity]");
+      if (row) this._moreInfo(row.dataset.entity);
+    });
+    list.addEventListener("keydown", (ev) => {
+      const row = ev.target.closest?.("[data-entity]");
+      if (!row || (ev.key !== "Enter" && ev.key !== " ")) return;
+      ev.preventDefault();
+      this._moreInfo(row.dataset.entity);
+    });
+    card.append(tools, list);
+    content.append(card);
+    this._activityList = list;
+    this._drawActivity();
+    this._startActivity();
+  }
+
+  _moreInfo(entityId) {
+    this.dispatchEvent(new CustomEvent("hass-more-info", { detail: { entityId }, bubbles: true, composed: true }));
+  }
+
+  /** The live activity, from its first opening while the panel is shown: the last lines, then each new one. */
+  async _startActivity() {
+    if (this._activitySub || !this._hass?.connection) return;
+    const sub = {};
+    this._activitySub = sub;
+    try {
+      const unsub = await this._hass.connection.subscribeMessage(
+        (msg) => {
+          if (this._activitySub !== sub) return;
+          if (msg.entries) this._activityEntries = msg.entries;
+          if (msg.added) this._activityEntries = [...[...msg.added].reverse(), ...(this._activityEntries || [])].slice(0, ACTIVITY_MAX);
+          this._drawActivity();
+        },
+        { type: "smart_comfort/activity", limit: ACTIVITY_MAX }
+      );
+      if (this._activitySub === sub) sub.unsub = unsub;
+      else unsub();
+    } catch (_err) {
+      if (this._activitySub !== sub) return;
+      this._activitySub = null;
+      this._activityEntries = null;
+      this._activityFailed = true;
+      this._drawActivity();
+    }
+  }
+
+  _stopActivity() {
+    this._activitySub?.unsub?.();
+    this._activitySub = null;
+  }
+
+  /** "Today", "Yesterday", else the date. */
+  _activityDay(date) {
+    const today = new Date();
+    const yesterday = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1);
+    if (date.toDateString() === today.toDateString()) return this._t("a_today");
+    if (date.toDateString() === yesterday.toDateString()) return this._t("a_yesterday");
+    return date.toLocaleDateString(intlLocale(this._hass), { weekday: "long", day: "numeric", month: "long" });
+  }
+
+  /** What happened, in a few words, with its icon and the notification text. */
+  _activityText(entry) {
+    const data = entry.data || {};
+    const pct = data.brightness_pct ?? data.value;
+    const target = (t) => {
+      if (this._t(`a_t_${t}`) !== `a_t_${t}`) return this._t(`a_t_${t}`);
+      if (t === "presence") return this._t("a_presence_on");
+      if (t === "display_off" || t === "display_on") return this._t(`a_${t}`);
+      return `${this._t("a_lighting")} · ${t}`;
+    };
+    let icon = ACTIVITY_ICONS[entry.kind] || "mdi:information-outline";
+    let text;
+    if (entry.kind === "device") {
+      text = target(entry.target);
+      icon = { climate: "mdi:air-conditioner", fan: "mdi:fan" }[String(entry.entity_id).split(".")[0]] || icon;
+      const setting = data.preset_mode ?? data.option ?? data.fan_mode;
+      if (setting) text += ` · ${setting}`;
+    } else if (entry.kind === "lighting" || entry.kind === "presence_on") {
+      text = this._t(`a_${entry.kind}`) + (pct === undefined ? "" : ` · ${pct} %`);
+    } else if (entry.kind === "display") {
+      text = this._t(entry.target === "display_on" ? "a_display_on" : "a_display_off");
+      if (entry.target === "display_on") icon = "mdi:led-on";
+    } else if (entry.kind === "notified") {
+      return { icon, text: entry.title || this._t("a_notified"), detail: entry.message };
+    } else if (entry.kind === "manual") {
+      const until = entry.until && new Date(entry.until).toLocaleTimeString(intlLocale(this._hass), { hour: "2-digit", minute: "2-digit" });
+      text = until ? this._t("a_manual_until", { time: until }) : this._t("a_manual");
+    } else if (entry.kind === "failed") {
+      text = this._t("a_failed") + (entry.target ? ` · ${target(entry.target)}` : "");
+    } else {
+      text = this._t(`a_${entry.kind}`);
+    }
+    return { icon, text };
+  }
+
+  _drawActivity() {
+    const list = this._activityList;
+    if (!list) return;
+    list.innerHTML = "";
+    if (!this._activityEntries) {
+      list.append(this._el("div", "act-empty", this._activityFailed ? this._t("a_not_loaded") : "…"));
+      return;
+    }
+    const group = this._activityGroup || "all";
+    const entries = this._activityEntries.filter(
+      (e) => (group === "all" || activityGroup(e) === group) && (!this._activityRoom || e.room === this._activityRoom)
+    );
+    if (!entries.length) {
+      list.append(this._el("div", "act-empty", this._t("a_empty")));
+      return;
+    }
+    let day = null;
+    let block = null;
+    for (const entry of entries) {
+      const date = new Date(entry.at);
+      const thisDay = this._activityDay(date);
+      if (thisDay !== day) {
+        day = thisDay;
+        block = this._el("div", "act-day");
+        block.append(this._el("div", "act-date", thisDay));
+        list.append(block);
+      }
+      const { icon, text, detail } = this._activityText(entry);
+      const row = this._el("div", `act-row ${entry.kind}${entry.severity ? ` ${entry.severity}` : ""}`);
+      const badge = this._el("span", "act-icon");
+      const i = document.createElement("ha-icon");
+      i.icon = icon;
+      badge.append(i);
+      const main = this._el("div", "act-main");
+      const who = entry.entity_id ? this._hass?.states?.[entry.entity_id]?.attributes?.friendly_name || entry.entity_id : "";
+      main.append(this._el("div", "act-what", who ? `${who} — ${text}` : text));
+      if (detail) main.append(this._el("div", "act-detail", detail));
+      if (entry.room) main.append(this._el("div", "act-room-name", entry.room));
+      const time = this._el("time", "act-time", date.toLocaleTimeString(intlLocale(this._hass), { hour: "2-digit", minute: "2-digit" }));
+      row.append(badge, main, time);
+      if (entry.entity_id) {
+        row.dataset.entity = entry.entity_id;
+        row.tabIndex = 0;
+        row.setAttribute("role", "button");
+      }
+      block.append(row);
+    }
   }
 
   // YAML: the configuration of the integration, as it goes under `smart_comfort:` in configuration.yaml.
@@ -5855,6 +6754,34 @@ const STYLE = `
   }
   .card-header { display: flex; align-items: center; gap: 10px; font-size: 18px; margin-bottom: 12px; }
   .card-header > ha-icon { color: var(--primary-color); }
+  /* Activity tab: the filters, then the lines by day, a time column on the right */
+  .act-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin: 12px 0 4px; }
+  .seg { display: inline-flex; max-width: 100%; overflow-x: auto; scrollbar-width: none; padding: 3px; gap: 2px; border-radius: 10px; background: var(--secondary-background-color, rgba(127,127,127,.12)); }
+  .seg button { border: 0; background: none; color: var(--secondary-text-color); font: inherit; font-size: 13px; padding: 6px 12px;
+                border-radius: 8px; cursor: pointer; white-space: nowrap; }
+  .seg button[aria-checked="true"] { background: var(--card-background-color, #fff); color: var(--primary-text-color); font-weight: 500;
+                                     box-shadow: 0 1px 2px rgba(0,0,0,.15); }
+  .seg button:focus-visible { outline: 2px solid var(--primary-color); outline-offset: 1px; }
+  .act-room { font: inherit; font-size: 13px; color: inherit; padding: 6px 10px; border-radius: 8px; max-width: 100%;
+              border: 1px solid var(--divider-color, rgba(127,127,127,.3)); background: var(--secondary-background-color, transparent); }
+  .act-room option { color: initial; }
+  .act-day { margin-top: 12px; }
+  .act-date { padding: 6px 0; font-size: 12px; font-weight: 500; color: var(--secondary-text-color);
+              border-bottom: 1px solid var(--divider-color, rgba(127,127,127,.2)); margin-bottom: 4px; }
+  .act-row { display: flex; align-items: flex-start; gap: 12px; padding: 8px 6px; border-radius: 8px; }
+  .act-row[data-entity] { cursor: pointer; }
+  .act-row[data-entity]:hover { background: var(--secondary-background-color, rgba(127,127,127,.08)); }
+  .act-row:focus-visible { outline: 2px solid var(--primary-color); outline-offset: -2px; }
+  .act-icon { flex: none; width: 32px; height: 32px; overflow: hidden; border-radius: 50%; display: grid; place-items: center; --mdc-icon-size: 18px;
+              color: var(--primary-color); background: color-mix(in srgb, var(--primary-color) 12%, transparent); }
+  .act-row.failed .act-icon, .act-row.critical .act-icon { color: var(--error-color, #db4437); background: color-mix(in srgb, var(--error-color, #db4437) 12%, transparent); }
+  .act-row.warning .act-icon { color: var(--warning-color, #ffa600); background: color-mix(in srgb, var(--warning-color, #ffa600) 14%, transparent); }
+  .act-main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+  .act-what { font-size: 14px; overflow-wrap: anywhere; }
+  .act-detail { font-size: 13px; color: var(--secondary-text-color); white-space: pre-line; overflow-wrap: anywhere; }
+  .act-room-name { font-size: 12px; color: var(--secondary-text-color); }
+  .act-time { flex: none; font-size: 12px; color: var(--secondary-text-color); font-variant-numeric: tabular-nums; padding-top: 2px; }
+  .act-empty { padding: 20px 4px; color: var(--secondary-text-color); }
   .card-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--divider-color); }
   .btn {
     font: inherit;
