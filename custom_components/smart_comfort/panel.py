@@ -38,7 +38,9 @@ async def async_register_panel(hass: HomeAssistant) -> None:
     if not data.get("static_registered"):
         from homeassistant.components.http import StaticPathConfig
 
-        await hass.http.async_register_static_paths([StaticPathConfig(STATIC_URL, str(FRONTEND_DIR), False)])
+        # Cached by the browser: every URL is versioned (?v=: panel, cards, their split language files), so a new
+        # release is fetched again; uncached, the panel and its languages were downloaded at each opening.
+        await hass.http.async_register_static_paths([StaticPathConfig(STATIC_URL, str(FRONTEND_DIR), True)])
         data["static_registered"] = True
     version = await hass.async_add_executor_job(_version)
     await _async_register_cards(hass, data, [f"{url}?v={version}" for url in CARD_URLS])

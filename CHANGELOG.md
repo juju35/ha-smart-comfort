@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.15.4 - 2026-11-10
+
+### Performance
+- Panel opens faster: its files are cached by the browser (every URL is versioned, so a new release is still fetched), and the settings load alongside the translations instead of after them.
+
 ## 1.15.3 - 2026-11-09
 
 ### Improvements
