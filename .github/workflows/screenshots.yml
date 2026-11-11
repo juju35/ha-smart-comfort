@@ -9,6 +9,7 @@ on:
       - "custom_components/smart_comfort/translations/en.json"
       - "custom_components/smart_comfort/const.py"
       - "scripts/**"
+      - ".github/workflows/screenshots.yml"
 
 # Protected main is never pushed to: the job commits the refreshed screenshots
 # back onto the pull request's own branch, so they land through the normal merge.
