@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.16.1 - 2026-11-11
+
+### Fixes
+- **Discover**: no more deprecation warning `accesses ChildDeviceEntry.model` in the log (it would stop discovery from Home Assistant 2027.9) when a device is a sub-device: its model is read from its parent device (#58, #59, thanks @FredM67).
+
 ## 1.16.0 - 2026-11-10
 
 ### Improvements
