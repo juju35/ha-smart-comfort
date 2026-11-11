@@ -562,3 +562,27 @@ async def test_discover_indoor_air(hass: HomeAssistant) -> None:
     assert merged["rooms"][0]["pm25"] == ["sensor.mine", "sensor.smartmi_pm2_5_density"]
     assert merged["rooms"][0]["air_quality"] == ["sensor.smartmi_air_quality"]
     assert report.updated == ["Living room"]
+
+
+@pytest.mark.skipif(
+    not hasattr(dr.DeviceRegistry, "async_get_or_create_child"), reason="no sub-devices in this Home Assistant version"
+)
+async def test_sub_device(hass: HomeAssistant, caplog: pytest.LogCaptureFixture) -> None:
+    """A sensor of a sub-device is found, its parent's model read without the ChildDeviceEntry.model warning."""
+    h = House(hass)
+    living = h.area("Living room")
+    hub = h.device("Weather hub", living, model="Smart Home Weather station")
+    sensor = h.devices.async_get_or_create_child(
+        config_entry_id=h.entry.entry_id,
+        identifiers={("test", "living_sensor")},
+        name="Living sensor",
+        parent_device_id=hub,
+    )
+    h.devices.async_update_child_device(sensor.id, area_id=living)
+    h.entity(
+        "sensor", "living_sensor_temperature", "21", sensor.id, device_class="temperature", state_class="measurement"
+    )
+    found = discover_rooms(hass)
+    assert [r["name"] for r in found.rooms] == ["Living room"]
+    assert found.rooms[0]["temperature"] == "sensor.living_sensor_temperature"
+    assert "ChildDeviceEntry" not in caplog.text
