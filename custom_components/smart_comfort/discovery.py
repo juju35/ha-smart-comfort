@@ -346,6 +346,14 @@ CYRILLIC = str.maketrans(
 )
 
 
+def _device_model(devices: dr.DeviceRegistry, device: dr.DeviceEntry | dr.ChildDeviceEntry) -> str | None:
+    """The model of a device; a sub-device has none, its parent's stands for it."""
+    if isinstance(device, dr.DeviceEntry):
+        return device.model
+    parent = devices.async_get(device.parent_device_id)
+    return parent.model if isinstance(parent, dr.DeviceEntry) else None
+
+
 def _slug(text: str) -> str:
     """The slug of a name, Serbian Cyrillic included ("Спаваћа соба" -> "spavaca_soba")."""
     ascii_text = unicodedata.normalize("NFKD", text.lower().translate(CYRILLIC)).encode("ascii", "ignore").decode()
@@ -450,7 +458,7 @@ def _collect(
         attributes = dict(state.attributes) if state else {}
         name = (state.name if state else None) or entry.name or entry.original_name or entry.entity_id
         if device is not None:
-            name = f"{name} {device.name_by_user or device.name or ''} {device.model or ''}"
+            name = f"{name} {device.name_by_user or device.name or ''} {_device_model(devices, device) or ''}"
         ent = _Entity(
             entry.entity_id,
             entry.domain,
