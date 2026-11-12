@@ -44,6 +44,7 @@ const STRINGS = {
     reset: "Back to normal (set time)",
     failed: "Could not be sent",
     f_title: "Title",
+    f_show_title: "Show title",
     f_limit: "Entries",
     f_kinds: "Only",
     f_room: "Room",
@@ -91,6 +92,7 @@ const STRINGS = {
     reset: "Retour à la normale (heure fixe)",
     failed: "Commande non envoyée",
     f_title: "Titre",
+    f_show_title: "Afficher le titre",
     f_limit: "Entrées",
     f_kinds: "Seulement",
     f_room: "Pièce",
@@ -138,6 +140,7 @@ const STRINGS = {
     reset: "Zurück zum Normalzustand (feste Uhrzeit)",
     failed: "Konnte nicht gesendet werden",
     f_title: "Titel",
+    f_show_title: "Titel anzeigen",
     f_limit: "Einträge",
     f_kinds: "Nur",
     f_room: "Raum",
@@ -185,6 +188,7 @@ const STRINGS = {
     reset: "Vuelta a lo normal (hora fija)",
     failed: "No se pudo enviar",
     f_title: "Título",
+    f_show_title: "Mostrar el título",
     f_limit: "Entradas",
     f_kinds: "Solo",
     f_room: "Habitación",
@@ -232,6 +236,7 @@ const STRINGS = {
     reset: "Повратак на нормално (задато време)",
     failed: "Није могло да се пошаље",
     f_title: "Наслов",
+    f_show_title: "Прикажи наслов",
     f_limit: "Ставке",
     f_kinds: "Само",
     f_room: "Соба",
@@ -279,6 +284,7 @@ const STRINGS = {
     reset: "Povratak na normalno (zadato vreme)",
     failed: "Nije moglo da se pošalje",
     f_title: "Naslov",
+    f_show_title: "Prikaži naslov",
     f_limit: "Stavke",
     f_kinds: "Samo",
     f_room: "Soba",
@@ -326,6 +332,7 @@ const STRINGS = {
     reset: "Ritorno alla normalità (orario fisso)",
     failed: "Impossibile inviare",
     f_title: "Titolo",
+    f_show_title: "Mostra il titolo",
     f_limit: "Voci",
     f_kinds: "Solo",
     f_room: "Stanza",
@@ -373,6 +380,7 @@ const STRINGS = {
     reset: "Terug naar normaal (vaste tijd)",
     failed: "Kon niet worden verzonden",
     f_title: "Titel",
+    f_show_title: "Titel tonen",
     f_limit: "Items",
     f_kinds: "Alleen",
     f_room: "Kamer",
@@ -420,6 +428,7 @@ const STRINGS = {
     reset: "De volta ao normal (hora fixa)",
     failed: "Não foi possível enviar",
     f_title: "Título",
+    f_show_title: "Mostrar o título",
     f_limit: "Entradas",
     f_kinds: "Apenas",
     f_room: "Divisão",
@@ -467,6 +476,7 @@ const STRINGS = {
     reset: "Powrót do normy (stała godzina)",
     failed: "Nie udało się wysłać",
     f_title: "Tytuł",
+    f_show_title: "Pokaż tytuł",
     f_limit: "Wpisy",
     f_kinds: "Tylko",
     f_room: "Pomieszczenie",
@@ -514,6 +524,7 @@ const STRINGS = {
     reset: "Revenire la normal (oră fixă)",
     failed: "Nu a putut fi trimisă",
     f_title: "Titlu",
+    f_show_title: "Afișează titlul",
     f_limit: "Intrări",
     f_kinds: "Doar",
     f_room: "Cameră",
@@ -561,6 +572,7 @@ const STRINGS = {
     reset: "Tilbage til normal (fast tidspunkt)",
     failed: "Kunne ikke sendes",
     f_title: "Titel",
+    f_show_title: "Vis titel",
     f_limit: "Poster",
     f_kinds: "Kun",
     f_room: "Rum",
@@ -608,6 +620,7 @@ const STRINGS = {
     reset: "Tillbaka till normalt (fast tid)",
     failed: "Kunde inte skickas",
     f_title: "Titel",
+    f_show_title: "Visa rubrik",
     f_limit: "Poster",
     f_kinds: "Bara",
     f_room: "Rum",
@@ -655,6 +668,7 @@ const STRINGS = {
     reset: "Връщане към нормалното (фиксиран час)",
     failed: "Не можа да бъде изпратено",
     f_title: "Заглавие",
+    f_show_title: "Показване на заглавието",
     f_limit: "Записи",
     f_kinds: "Само",
     f_room: "Стая",
@@ -702,6 +716,7 @@ const STRINGS = {
     reset: "Возврат к обычному (заданное время)",
     failed: "Не удалось отправить",
     f_title: "Заголовок",
+    f_show_title: "Показывать заголовок",
     f_limit: "Записи",
     f_kinds: "Только",
     f_room: "Комната",
@@ -749,6 +764,7 @@ const STRINGS = {
     reset: "Повернення до звичайного (заданий час)",
     failed: "Не вдалося надіслати",
     f_title: "Заголовок",
+    f_show_title: "Показувати заголовок",
     f_limit: "Записи",
     f_kinds: "Лише",
     f_room: "Кімната",
@@ -796,6 +812,7 @@ const STRINGS = {
     reset: "Vissza a normálra (rögzített idő)",
     failed: "Nem sikerült elküldeni",
     f_title: "Cím",
+    f_show_title: "Cím megjelenítése",
     f_limit: "Bejegyzések",
     f_kinds: "Csak",
     f_room: "Helyiség",
@@ -843,6 +860,7 @@ const STRINGS = {
     reset: "Návrat do normálu (pevný čas)",
     failed: "Nepodarilo sa odoslať",
     f_title: "Názov",
+    f_show_title: "Zobraziť názov",
     f_limit: "Záznamy",
     f_kinds: "Len",
     f_room: "Miestnosť",
@@ -890,6 +908,7 @@ const STRINGS = {
     reset: "Návrat do normálu (pevný čas)",
     failed: "Nepodařilo se odeslat",
     f_title: "Název",
+    f_show_title: "Zobrazit název",
     f_limit: "Záznamy",
     f_kinds: "Jen",
     f_room: "Místnost",
@@ -937,6 +956,7 @@ const STRINGS = {
     reset: "Nazaj na običajno (določena ura)",
     failed: "Ni bilo mogoče poslati",
     f_title: "Naslov",
+    f_show_title: "Prikaži naslov",
     f_limit: "Vnosi",
     f_kinds: "Le",
     f_room: "Prostor",
@@ -984,6 +1004,7 @@ const STRINGS = {
     reset: "Atpakaļ uz normālu (noteikts laiks)",
     failed: "Nevarēja nosūtīt",
     f_title: "Virsraksts",
+    f_show_title: "Rādīt virsrakstu",
     f_limit: "Ieraksti",
     f_kinds: "Tikai",
     f_room: "Telpa",
@@ -1031,6 +1052,7 @@ const STRINGS = {
     reset: "Επιστροφή στο κανονικό (ορισμένη ώρα)",
     failed: "Δεν ήταν δυνατή η αποστολή",
     f_title: "Τίτλος",
+    f_show_title: "Εμφάνιση τίτλου",
     f_limit: "Εγγραφές",
     f_kinds: "Μόνο",
     f_room: "Δωμάτιο",
@@ -1129,6 +1151,7 @@ class SmartComfortActivityCard extends HTMLElement {
     return {
       schema: [
         { name: "title", selector: { text: {} } },
+        { name: "show_title", default: true, selector: { boolean: {} } },
         { name: "limit", selector: { number: { min: 1, max: 100, mode: "box" } } },
         {
           name: "kinds",
@@ -1156,6 +1179,8 @@ class SmartComfortActivityCard extends HTMLElement {
 
   setConfig(config) {
     this._config = { limit: 10, ...config };
+    // show_title: the header's title, hidden by the stylesheet
+    this.toggleAttribute?.("hide-title", config.show_title === false);
     this._render();
   }
 
@@ -1418,6 +1443,7 @@ export const HEADER_STYLE = `
   .titles { flex: 1 1 0; min-width: 4ch; }
   .hname { min-width: 4ch; font-size: 16px; font-weight: 500; line-height: 1.25; color: var(--primary-text-color);
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  :host([hide-title]) .titles > .hname { display: none; }
 `;
 
 const STYLE = `

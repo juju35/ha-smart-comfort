@@ -433,6 +433,8 @@ Everything at a glance: every alert with since when and its state (snoozed, hand
 ```yaml
 type: custom:smart-comfort-card
 title: Smart Comfort        # optional
+show_title: false           # optional: no title (shown by default)
+show_subtitle: false        # optional: no subtitle (shown by default)
 rooms: [Living room]        # optional: only these rooms, their names as shown in the panel
 activity: 5                 # activity entries (5 by default, 0 for none)
 ```
@@ -451,6 +453,8 @@ The alerts of the moment (the ones to deal with first, then the snoozed or handl
 ```yaml
 type: custom:smart-comfort-mini-card
 title: Smart Comfort        # optional
+show_title: false           # optional: no title (shown by default)
+show_subtitle: false        # optional: no subtitle (shown by default)
 rooms: [Living room]        # optional: only these rooms, their names as shown in the panel
 alerts: 3                   # alerts listed in the compact view (3 by default)
 activity: 5                 # activity entries in the full card (5 by default, 0 for none)
@@ -470,6 +474,7 @@ The latest activity of Smart Comfort, live: devices turned on or off and why, li
 ```yaml
 type: custom:smart-comfort-activity-card
 title: Smart Comfort        # optional ("" for no header)
+show_title: false           # optional: no title (shown by default)
 limit: 10                   # entries shown (10 by default)
 kinds: [device, presence]   # optional: device, lighting, presence, display, notified, manual, reset, failed
 room: Living room           # optional: one room only, its name as shown in the panel

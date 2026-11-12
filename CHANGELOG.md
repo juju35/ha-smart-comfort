@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.17.0 - 2026-11-12
+
+### Features
+- `show_title` and `show_subtitle` options (also in the visual editor) hide the header's title and its subtitle separately on the card and mini card (the activity card gets `show_title`), for a card placed under a section heading of its own (asked in juju35/ha-vehicle-card#72).
+
 ## 1.16.1 - 2026-11-11
 
 ### Fixes
