@@ -334,3 +334,20 @@ test("zoom: a press in the card released outside does not close it; leaving the 
   assert.equal(byClass(card, "room").length, 0, "the compact view, with no rooms list");
   card.disconnectedCallback();
 });
+
+test("no rewrite under a press: drawn after its release, and at once by its click", async () => {
+  const { card } = make({}, { alerts: ALERTS });
+  card._pressing = true;
+  card._zoomed = true;
+  card._render();
+  assert.equal(byClass(card, "room").length, 0, "no rewrite under the pointer");
+  card._onPressEnd();
+  await new Promise((r) => setTimeout(r, 0));
+  assert.ok(byClass(card, "room").length > 0, "drawn right after the release");
+  card._pressing = true;
+  card._pressClick({ detail: 1 });
+  byClass(card, "zoom")[0].fire("click");
+  assert.equal(byClass(card, "room").length, 0, "the click draws at once");
+  card.disconnectedCallback();
+  assert.equal(card._pressing, false);
+});

@@ -826,6 +826,52 @@ const watchOutside = (card, handler) => {
   };
 };
 
+// No rewrite of the card between a press and its click: Home Assistant updates the card several times a second, and a
+// rewrite under the pointer replaces the element pressed, so that the click lands on the card itself and does nothing
+// (a button or a row that does not react). While a press is in progress (`_pressing`), a render is left pending
+// (`_dirty`): it is done at the click, or right after the release when no click follows (a drag, a scroll).
+// `_byPointer` tells a mouse or touch use from the keyboard: after a rewrite, the focus is put back only for the
+// keyboard (no focus ring after a click), and always in a text field.
+const holdUnderPress = (card, render) => {
+  const root = card.shadowRoot;
+  card._onPressEnd = () => {
+    window.removeEventListener?.("pointerup", card._onPressEnd, true);
+    window.removeEventListener?.("pointercancel", card._onPressEnd, true);
+    setTimeout(() => card._endPress(), 0);
+  };
+  card._endPress = () => {
+    card._pressing = false;
+    if (!card._dirty) return;
+    card._dirty = false;
+    render();
+  };
+  // Left in the middle of a press (see disconnectedCallback).
+  card._dropPress = () => {
+    card._pressing = false;
+    card._dirty = false;
+    window.removeEventListener?.("pointerup", card._onPressEnd, true);
+    window.removeEventListener?.("pointercancel", card._onPressEnd, true);
+  };
+  root.addEventListener?.("pointerdown", () => {
+    card._byPointer = true;
+    card._pressing = true;
+    window.addEventListener?.("pointerup", card._onPressEnd, true);
+    window.addEventListener?.("pointercancel", card._onPressEnd, true);
+  });
+  root.addEventListener?.("keydown", () => {
+    card._byPointer = false;
+  });
+  // At the click (capture: before the card acts on it) the press is over, and what the click changes is drawn at once.
+  card._pressClick = (ev) => {
+    card._pressing = false;
+    if (ev.detail === 0) card._byPointer = false;
+  };
+  root.addEventListener?.("click", card._pressClick, true);
+};
+
+// Whether the focus goes back to `el` after a rewrite (see holdUnderPress).
+const keepsFocus = (card, el) => !card._byPointer || typeof el?.selectionStart === "number";
+
 /** The entities of Smart Comfort in the entity registry: the alerts sensor, the room sensors, the switches. */
 function findEntities(hass) {
   const found = { alerts: null, rooms: [], switches: {} };
@@ -873,6 +919,7 @@ class SmartComfortMiniCard extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: "open" });
+    holdUnderPress(this, () => this._render());
     this._zoomed = false;
     // A tap or click outside the card, and not in a dialog opened from it, brings it back to the compact view.
     this._outside = watchOutside(this, () => {
@@ -906,6 +953,7 @@ class SmartComfortMiniCard extends HTMLElement {
 
   disconnectedCallback() {
     this._outside.off();
+    this._dropPress();
     // Left (another dashboard view, a conditional card hidden): back to the compact view on return.
     this._zoomed = false;
   }
@@ -1030,10 +1078,17 @@ class SmartComfortMiniCard extends HTMLElement {
 
   _render() {
     if (!this._config) return;
+    // Held under a press (see holdUnderPress), drawn after its click.
+    if (this._pressing) {
+      this._dirty = true;
+      return;
+    }
+    this._dirty = false;
     this._shown = this._signature();
     const root = this.shadowRoot;
-    const focusZoom = root.activeElement?.classList?.contains("zoom");
-    const focusSwitch = root.activeElement?.dataset?.key;
+    const kept = keepsFocus(this, root.activeElement);
+    const focusZoom = kept && root.activeElement?.classList?.contains("zoom");
+    const focusSwitch = kept && root.activeElement?.dataset?.key;
     if (!this._card) {
       root.innerHTML = `<style>${STYLE}</style>`;
       this._card = document.createElement("ha-card");
