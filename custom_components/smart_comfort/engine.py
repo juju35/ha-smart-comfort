@@ -50,6 +50,10 @@ NOISE_OUTDOOR_KINDS = frozenset({KIND_NOISY_OUTSIDE})
 AIR_OUTDOOR_KINDS = frozenset({KIND_BAD_AIR_OUTSIDE})
 # Kinds about an open opening.
 OPENING_KINDS = frozenset({KIND_CLOSE_WINDOWS, KIND_WINDOW_OPEN_COLD, KIND_NOISY_OUTSIDE, KIND_BAD_AIR_OUTSIDE})
+# Comfort problems an open window works on: while the room has one (pending or active), an opening open in the
+# cold is no alert. window_open_cold is evaluated after them.
+AIRING_KINDS = frozenset({KIND_TOO_HOT, KIND_CO2, KIND_POLLUTED, KIND_HUMIDITY})
+EVALUATION_ORDER = (*(k for k in KINDS if k != KIND_WINDOW_OPEN_COLD), KIND_WINDOW_OPEN_COLD)
 # Readings each kind is computed from (RoomReading field names, "outdoor" for the outdoor temperature,
 # "outdoor_noise" and "outdoor_air" for the outdoor noise and air quality).
 SOURCES: dict[str, tuple[str, ...]] = {
@@ -414,13 +418,16 @@ class Engine:
             reading = readings.get(room.id)
             if reading is None:
                 continue
-            for kind in KINDS:
+            for kind in EVALUATION_ORDER:
                 s = room.alerts[kind]
                 key = f"{room.id}|{kind}"
                 ep = self.episodes.get(key)
                 if not s.enabled:
                     continue
                 result = check(kind, s, reading, outdoor, ep is not None)
+                if kind == KIND_WINDOW_OPEN_COLD and result.state and self._airing(room.id):
+                    # Open for a reason: the delay starts again once that problem is over.
+                    result = Check(False)
                 if result.state is None:
                     # Unknown: the episode holds, unless its sensor is gone for good.
                     if ep is not None and reading.missing.intersection(SOURCES[kind]):
@@ -441,6 +448,10 @@ class Engine:
         oldest = (now - timedelta(days=HISTORY_DAYS)).isoformat()
         if self.history and self.history[0]["end"] < oldest:
             self.history = [h for h in self.history if h["end"] >= oldest]
+
+    def _airing(self, room_id: str) -> bool:
+        """The room has a problem an open window works on (CO₂, polluted air, humidity, too hot)."""
+        return any(f"{room_id}|{kind}" in self.episodes for kind in AIRING_KINDS)
 
     def _finish(self, ep: Episode, now: datetime) -> None:
         """Keep an episode that was an alert (active) in the history; a pending one that never became one is dropped."""

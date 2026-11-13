@@ -261,7 +261,7 @@ Set under `alerts:` for every room, and under `rooms[].alerts:` for one room.
 | `too_cold` | temperature < `threshold` | 17 °C, warning |
 | `ventilate` | openings closed, temperature ≥ `min_indoor` and ≥ outdoor + `threshold` | 24 °C, +2 °C, info |
 | `close_windows` | an opening open, outdoor ≥ `min_outdoor` and ≥ temperature + `threshold` | 25 °C, +0.5 °C, warning |
-| `window_open_cold` | an opening open for the delay, outdoor ≤ `max_outdoor` | 12 °C, 20 min, **disabled** |
+| `window_open_cold` | an opening open for the delay, outdoor ≤ `max_outdoor`, and the room has no `too_hot`, `co2_high`, `polluted_air` or `humidity_high` problem | 12 °C, 20 min, **disabled** |
 | `co2_high` | CO₂ > `threshold` | 1200 ppm, info |
 | `polluted_air` | PM2.5 > `threshold`, or PM10 > `pm10_threshold`, or the air quality level > `aqi_threshold` (room `pm25`, `pm10`, `air_quality` sensors) | 25 µg/m³, 50 µg/m³, 3, warning |
 | `humidity_high` | humidity > `threshold` | 70 %, info |
@@ -270,6 +270,8 @@ Set under `alerts:` for every room, and under `rooms[].alerts:` for one room.
 | `bad_air_outside` | an opening open, outdoor air quality level > `threshold` (outdoor air quality sensors) | 3 (degraded), info |
 
 `polluted_air` ends at or below `threshold` − `hysteresis` (25 − 10 = 15 µg/m³ of PM2.5), `pm10_threshold` − `pm10_hysteresis` (50 − 20 = 30 µg/m³) and `aqi_threshold` − `aqi_hysteresis` (3 − 1: level 2), after 10 minutes by default; its value is the first reading over its threshold, PM2.5 first, with its unit (`metric` attribute: `pm25`, `pm10` or `aqi`). The room sensors are lists (`pm25`, `pm10`, `air_quality`): the worst one counts. The air quality index is read like the outdoor one (see below), except a HomeKit one (`homekit_controller`, 1 excellent … 5 poor), taken as is: level 4 (inferior) and 5 (poor) are polluted by default, a US AQI from 151. While the alert is on, the purifiers of the room are boosted with their window boost settings (`open_mode` / `open_preset` / `open_percentage`), at any hour but not at night for a purifier with night settings, and go back to the state they had before (or their closed preset / mode) once it ends; a purifier changed by hand is left alone for the manual override. With `suppress_when_handled`, the alert isn't notified while a purifier is boosted.
+
+`window_open_cold` stays quiet while the room airs out: as long as it is too hot, or its CO₂, polluted air or humidity is above its threshold (pending or alerting, hysteresis included), an open window is no alert, and one already on ends. Its delay starts again once that problem is over.
 
 `ventilate` also takes `max_outdoor_noise` (65 dB) and `max_outdoor_air` (3): no suggestion to open while the outdoor noise or air quality level is above them. Without an outdoor noise or air quality sensor (or while it is unavailable) it doesn't hold anything back.
 
