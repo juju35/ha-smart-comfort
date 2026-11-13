@@ -60,6 +60,10 @@ class FakeShadowRoot extends FakeNode {
 }
 
 const documentListeners = {};
+// A tap: the press and the release (iOS sends no click for a tap on something that is not clickable).
+const tap = (ev) => {
+  for (const type of ["pointerdown", "pointerup"]) for (const fn of documentListeners[type] || []) fn(ev);
+};
 globalThis.window = globalThis;
 globalThis.HTMLElement = class {
   attachShadow() {
@@ -194,9 +198,9 @@ test("zoom: the full card (all alerts with their state, rooms, activity); a clic
   assert.deepEqual(card.getGridOptions(), { columns: 12, min_columns: 6 });
   // A click inside the card keeps it open, a click outside closes it.
   const inside = { composedPath: () => [byClass(card, "room")[0], card] };
-  for (const fn of documentListeners.click) fn(inside);
+  tap(inside);
   assert.ok(card._zoomed);
-  for (const fn of documentListeners.click) fn({ composedPath: () => [new FakeNode("div")] });
+  tap({ composedPath: () => [new FakeNode("div")] });
   assert.ok(!card._zoomed);
   assert.equal(byClass(card, "rooms").length, 0);
   assert.equal(walk(card.shadowRoot).find((n) => n.tagName === "smart-comfort-activity-card"), undefined);
@@ -205,7 +209,7 @@ test("zoom: the full card (all alerts with their state, rooms, activity); a clic
 test("zoom: a click in a dialog opened from the card (more-info) does not close it", () => {
   const { card } = make({}, { alerts: ALERTS });
   byClass(card, "zoom")[0].fire("click");
-  for (const fn of documentListeners.click) fn({ composedPath: () => [new FakeNode("ha-more-info-dialog")] });
+  tap({ composedPath: () => [new FakeNode("ha-more-info-dialog")] });
   assert.ok(card._zoomed);
   card.disconnectedCallback();
 });
@@ -285,7 +289,7 @@ test("smart-comfort-card: the mini card's full view, standalone, never folded", 
   assert.ok(walk(card.shadowRoot).find((n) => n.tagName === "smart-comfort-activity-card"), "activity shown");
   // No button to fold it, and a click outside leaves it as it is.
   assert.equal(byClass(card, "zoom").length, 0);
-  for (const fn of documentListeners.click) fn({ composedPath: () => [new FakeNode("div")] });
+  tap({ composedPath: () => [new FakeNode("div")] });
   assert.ok(card._zoomed);
   assert.equal(byClass(card, "rooms").length, 1);
   assert.deepEqual(card.getGridOptions(), { columns: 12, min_columns: 6 });
@@ -316,4 +320,34 @@ test("polluted air: fine particles in µg/m³, or the air quality index", () => 
   // The one a purifier handles comes after the other.
   assert.deepEqual(text(card, "avalue"), ["index 4", "47\u00a0µg/m³"]);
   assert.ok(byClass(card, "alert").every((a) => walk(a).some((n) => n.icon === "mdi:blur")));
+});
+
+test("zoom: a press in the card released outside does not close it; leaving the page brings the compact view back", () => {
+  const { card } = make({}, { alerts: ALERTS });
+  byClass(card, "zoom")[0].fire("click");
+  tap({ composedPath: () => [card] });
+  assert.ok(card._zoomed);
+  card.disconnectedCallback();
+  assert.ok(!card._zoomed);
+  card.connectedCallback();
+  assert.ok(!card._zoomed);
+  assert.equal(byClass(card, "room").length, 0, "the compact view, with no rooms list");
+  card.disconnectedCallback();
+});
+
+test("no rewrite under a press: drawn after its release, and at once by its click", async () => {
+  const { card } = make({}, { alerts: ALERTS });
+  card._pressing = true;
+  card._zoomed = true;
+  card._render();
+  assert.equal(byClass(card, "room").length, 0, "no rewrite under the pointer");
+  card._onPressEnd();
+  await new Promise((r) => setTimeout(r, 0));
+  assert.ok(byClass(card, "room").length > 0, "drawn right after the release");
+  card._pressing = true;
+  card._pressClick({ detail: 1 });
+  byClass(card, "zoom")[0].fire("click");
+  assert.equal(byClass(card, "room").length, 0, "the click draws at once");
+  card.disconnectedCallback();
+  assert.equal(card._pressing, false);
 });
