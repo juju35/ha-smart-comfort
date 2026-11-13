@@ -297,7 +297,7 @@ test("smart-comfort-card: the mini card's full view, standalone, never folded", 
   // Editor: the mini card's options but the compact view's.
   assert.deepEqual(Full.getStubConfig(), {});
   assert.deepEqual(Full.getConfigForm().schema.map((f) => f.name), ["title", "show_title", "show_subtitle", "rooms", "activity"]);
-  assert.deepEqual(Mini.getConfigForm().schema.map((f) => f.name), ["title", "show_title", "show_subtitle", "rooms", "alerts", "activity"]);
+  assert.deepEqual(Mini.getConfigForm().schema.map((f) => f.name), ["title", "show_title", "show_subtitle", "rooms", "alerts", "activity", "zoom"]);
   card.disconnectedCallback();
   mini.disconnectedCallback();
 });

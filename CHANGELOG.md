@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.18.2 - 2026-11-14
+
+### Fixes
+- Mini card visual editor: the `zoom` option (button to the full card) was missing; it is now offered, with its label and helper in every language. The full card's editor leaves it out, as it has no such button.
+
 ## 1.18.1 - 2026-11-13
 
 ### Fixes

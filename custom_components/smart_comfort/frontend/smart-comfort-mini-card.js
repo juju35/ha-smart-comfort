@@ -45,6 +45,8 @@ const STRINGS = {
     f_activity: "Activity entries in the full card",
     h_rooms: "Only these rooms, by their name in the panel (empty: all rooms)",
     h_activity: "0: no activity",
+    f_zoom: "Full card button",
+    h_zoom: "Switches the card to the full card and back",
   },
   fr: {
     title: "Smart Comfort",
@@ -78,6 +80,8 @@ const STRINGS = {
     f_activity: "Entrées d'activité dans la carte complète",
     h_rooms: "Seulement ces pièces, par leur nom dans le panneau (vide : toutes les pièces)",
     h_activity: "0 : pas d'activité",
+    f_zoom: "Bouton carte complète",
+    h_zoom: "Passe de la carte compacte à la carte complète, et retour",
   },
   de: {
     title: "Smart Comfort",
@@ -111,6 +115,8 @@ const STRINGS = {
     f_activity: "Aktivitätseinträge in der vollständigen Karte",
     h_rooms: "Nur diese Räume, mit ihrem Namen im Panel (leer: alle Räume)",
     h_activity: "0: keine Aktivität",
+    f_zoom: "Schaltfläche für die vollständige Karte",
+    h_zoom: "Wechselt zur vollständigen Karte und zurück",
   },
   es: {
     title: "Smart Comfort",
@@ -144,6 +150,8 @@ const STRINGS = {
     f_activity: "Entradas de actividad en la tarjeta completa",
     h_rooms: "Solo estas habitaciones, por su nombre en el panel (vacío: todas)",
     h_activity: "0: sin actividad",
+    f_zoom: "Botón de tarjeta completa",
+    h_zoom: "Cambia a la tarjeta completa y vuelve",
   },
   sr: {
     title: "Smart Comfort",
@@ -178,6 +186,8 @@ const STRINGS = {
     f_activity: "Ставке активности у пуној картици",
     h_rooms: "Само ове собе, по називу у панелу (празно: све собе)",
     h_activity: "0: без активности",
+    f_zoom: "Дугме пуне картице",
+    h_zoom: "Пребацује на пуну картицу и назад",
   },
   "sr-Latn": {
     title: "Smart Comfort",
@@ -212,6 +222,8 @@ const STRINGS = {
     f_activity: "Stavke aktivnosti u punoj kartici",
     h_rooms: "Samo ove sobe, po nazivu u panelu (prazno: sve sobe)",
     h_activity: "0: bez aktivnosti",
+    f_zoom: "Dugme pune kartice",
+    h_zoom: "Prebacuje na punu karticu i nazad",
   },
   it: {
     title: "Smart Comfort",
@@ -245,6 +257,8 @@ const STRINGS = {
     f_activity: "Voci di attività nella scheda completa",
     h_rooms: "Solo queste stanze, con il loro nome nel pannello (vuoto: tutte le stanze)",
     h_activity: "0: nessuna attività",
+    f_zoom: "Pulsante scheda completa",
+    h_zoom: "Passa alla scheda completa e ritorno",
   },
   nl: {
     title: "Smart Comfort",
@@ -278,6 +292,8 @@ const STRINGS = {
     f_activity: "Activiteitsitems in de volledige kaart",
     h_rooms: "Alleen deze kamers, met hun naam in het paneel (leeg: alle kamers)",
     h_activity: "0: geen activiteit",
+    f_zoom: "Knop volledige kaart",
+    h_zoom: "Schakelt naar de volledige kaart en terug",
   },
   pt: {
     title: "Smart Comfort",
@@ -311,6 +327,8 @@ const STRINGS = {
     f_activity: "Entradas de atividade no cartão completo",
     h_rooms: "Apenas estas divisões, pelo nome no painel (vazio: todas as divisões)",
     h_activity: "0: sem atividade",
+    f_zoom: "Botão do cartão completo",
+    h_zoom: "Muda para o cartão completo e volta",
   },
   pl: {
     title: "Smart Comfort",
@@ -346,6 +364,8 @@ const STRINGS = {
     f_activity: "Wpisy aktywności w pełnej karcie",
     h_rooms: "Tylko te pomieszczenia, według nazwy w panelu (puste: wszystkie)",
     h_activity: "0: bez aktywności",
+    f_zoom: "Przycisk pełnej karty",
+    h_zoom: "Przełącza na pełną kartę i z powrotem",
   },
   ro: {
     title: "Smart Comfort",
@@ -380,6 +400,8 @@ const STRINGS = {
     f_activity: "Intrări de activitate în cardul complet",
     h_rooms: "Doar aceste camere, după numele lor din panou (gol: toate camerele)",
     h_activity: "0: fără activitate",
+    f_zoom: "Buton card complet",
+    h_zoom: "Comută la cardul complet și înapoi",
   },
   da: {
     title: "Smart Comfort",
@@ -413,6 +435,8 @@ const STRINGS = {
     f_activity: "Aktivitetsposter i det fulde kort",
     h_rooms: "Kun disse rum, efter deres navn i panelet (tomt: alle rum)",
     h_activity: "0: ingen aktivitet",
+    f_zoom: "Knap til fuldt kort",
+    h_zoom: "Skifter til det fulde kort og tilbage",
   },
   sv: {
     title: "Smart Comfort",
@@ -446,6 +470,8 @@ const STRINGS = {
     f_activity: "Aktivitetsposter i det fullständiga kortet",
     h_rooms: "Bara dessa rum, efter sitt namn i panelen (tomt: alla rum)",
     h_activity: "0: ingen aktivitet",
+    f_zoom: "Knapp för fullständigt kort",
+    h_zoom: "Växlar till det fullständiga kortet och tillbaka",
   },
   bg: {
     title: "Smart Comfort",
@@ -479,6 +505,8 @@ const STRINGS = {
     f_activity: "Записи за дейност в пълната карта",
     h_rooms: "Само тези стаи, по името им в панела (празно: всички стаи)",
     h_activity: "0: без дейност",
+    f_zoom: "Бутон за пълна карта",
+    h_zoom: "Превключва към пълната карта и обратно",
   },
   ru: {
     title: "Smart Comfort",
@@ -514,6 +542,8 @@ const STRINGS = {
     f_activity: "Записи активности в полной карточке",
     h_rooms: "Только эти комнаты, по их названию на панели (пусто: все комнаты)",
     h_activity: "0: без активности",
+    f_zoom: "Кнопка полной карточки",
+    h_zoom: "Переключает на полную карточку и обратно",
   },
   uk: {
     title: "Smart Comfort",
@@ -549,6 +579,8 @@ const STRINGS = {
     f_activity: "Записи активності в повній картці",
     h_rooms: "Лише ці кімнати, за їхньою назвою на панелі (порожньо: усі кімнати)",
     h_activity: "0: без активності",
+    f_zoom: "Кнопка повної картки",
+    h_zoom: "Перемикає на повну картку й назад",
   },
   hu: {
     title: "Smart Comfort",
@@ -582,6 +614,8 @@ const STRINGS = {
     f_activity: "Tevékenység-bejegyzések a teljes kártyán",
     h_rooms: "Csak ezek a helyiségek, a panelen látható nevük szerint (üres: minden helyiség)",
     h_activity: "0: nincs tevékenység",
+    f_zoom: "Teljes kártya gomb",
+    h_zoom: "Átvált a teljes kártyára és vissza",
   },
   sk: {
     title: "Smart Comfort",
@@ -617,6 +651,8 @@ const STRINGS = {
     f_activity: "Záznamy aktivity v celej karte",
     h_rooms: "Len tieto miestnosti, podľa názvu na paneli (prázdne: všetky miestnosti)",
     h_activity: "0: bez aktivity",
+    f_zoom: "Tlačidlo celej karty",
+    h_zoom: "Prepne na celú kartu a späť",
   },
   cs: {
     title: "Smart Comfort",
@@ -650,6 +686,8 @@ const STRINGS = {
     f_activity: "Záznamy aktivity v celé kartě",
     h_rooms: "Jen tyto místnosti, podle názvu na panelu (prázdné: všechny místnosti)",
     h_activity: "0: bez aktivity",
+    f_zoom: "Tlačítko celé karty",
+    h_zoom: "Přepne na celou kartu a zpět",
   },
   sl: {
     title: "Smart Comfort",
@@ -685,6 +723,8 @@ const STRINGS = {
     f_activity: "Vnosi dejavnosti v polni kartici",
     h_rooms: "Le ti prostori, po imenu na plošči (prazno: vsi prostori)",
     h_activity: "0: brez dejavnosti",
+    f_zoom: "Gumb za polno kartico",
+    h_zoom: "Preklopi na polno kartico in nazaj",
   },
   lv: {
     title: "Smart Comfort",
@@ -719,6 +759,8 @@ const STRINGS = {
     f_activity: "Aktivitātes ieraksti pilnajā kartītē",
     h_rooms: "Tikai šīs telpas, pēc to nosaukuma panelī (tukšs: visas telpas)",
     h_activity: "0: bez aktivitātes",
+    f_zoom: "Pilnās kartītes poga",
+    h_zoom: "Pārslēdz uz pilno kartīti un atpakaļ",
   },
   el: {
     title: "Smart Comfort",
@@ -752,6 +794,8 @@ const STRINGS = {
     f_activity: "Εγγραφές δραστηριότητας στην πλήρη κάρτα",
     h_rooms: "Μόνο αυτά τα δωμάτια, με το όνομά τους στον πίνακα (κενό: όλα τα δωμάτια)",
     h_activity: "0: χωρίς δραστηριότητα",
+    f_zoom: "Κουμπί πλήρους κάρτας",
+    h_zoom: "Εναλλάσσει στην πλήρη κάρτα και πίσω",
   },
 };
 
@@ -910,6 +954,7 @@ class SmartComfortMiniCard extends HTMLElement {
         { name: "rooms", selector: { select: { multiple: true, custom_value: true, options: rooms } } },
         { name: "alerts", selector: { number: { min: 0, max: 10, mode: "box" } } },
         { name: "activity", selector: { number: { min: 0, max: 20, mode: "box" } } },
+        { name: "zoom", default: true, selector: { boolean: {} } },
       ],
       computeLabel: (schema) => t(`f_${schema.name}`) || schema.name,
       computeHelper: (schema) => t(`h_${schema.name}`),
@@ -1392,7 +1437,7 @@ class SmartComfortCard extends SmartComfortMiniCard {
   // The options of the mini card but the compact view's (alerts listed, zoom button).
   static getConfigForm() {
     const form = SmartComfortMiniCard.getConfigForm();
-    return { ...form, schema: form.schema.filter((field) => field.name !== "alerts") };
+    return { ...form, schema: form.schema.filter((field) => field.name !== "alerts" && field.name !== "zoom") };
   }
 
   constructor() {

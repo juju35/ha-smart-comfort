@@ -182,6 +182,7 @@ test("mini card editor labels: same language resolution", () => {
   for (const [language, expected] of Object.entries(CASES)) {
     haLanguage = language;
     assert.equal(label({ name: "rooms" }), all[expected].f_rooms, language);
+    assert.equal(label({ name: "zoom" }), all[expected].f_zoom, language);
   }
   haLanguage = undefined;
 });
