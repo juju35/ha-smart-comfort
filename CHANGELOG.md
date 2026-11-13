@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.18.0 - 2026-11-13
+
+### Improvements
+- **Window open in the cold** (`window_open_cold`): no alert while the room airs out, that is while it has a too hot, high CO₂, polluted air or high humidity problem (pending or alerting). An alert already on ends, and the delay starts again once that problem is over.
+
 ## 1.17.0 - 2026-11-12
 
 ### Features

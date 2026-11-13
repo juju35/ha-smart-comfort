@@ -228,6 +228,60 @@ def test_window_open_cold_disabled_by_default_and_enabled():
     assert isinstance(run(e, 5, opened, outdoor=5.0)[1], Digest)
 
 
+def test_window_open_cold_held_while_the_room_airs_out():
+    e = Engine(
+        build_settings(
+            {
+                "rooms": [
+                    {
+                        "name": "Séjour",
+                        "temperature": "sensor.t1",
+                        "co2": "sensor.c1",
+                        "humidity": "sensor.h1",
+                        "openings": ["binary_sensor.w1"],
+                    }
+                ],
+                "alerts": {"window_open_cold": {"enabled": True, "delay": 10}},
+            }
+        )
+    )
+
+    def reading(co2=600.0, humidity=50.0):
+        return {
+            "sejour": RoomReading(
+                temperature=20.0, co2=co2, humidity=humidity, has_openings=True, open=["binary_sensor.w1"]
+            )
+        }
+
+    # CO₂ high (pending or active): the open window is no alert.
+    for m in (0, 10, 20):
+        run(e, m, reading(co2=1500.0), outdoor=5.0)
+        assert "sejour|window_open_cold" not in e.episodes
+    # CO₂ still above threshold − hysteresis: still held.
+    run(e, 25, reading(co2=1100.0), outdoor=5.0)
+    assert "sejour|window_open_cold" not in e.episodes
+    # CO₂ back to normal: the delay starts from there.
+    run(e, 30, reading(), outdoor=5.0)
+    assert not e.alerting("sejour", "window_open_cold")
+    run(e, 40, reading(), outdoor=5.0)
+    assert e.alerting("sejour", "window_open_cold")
+    # Humidity high: an active window alert ends.
+    run(e, 45, reading(humidity=80.0), outdoor=5.0)
+    assert "sejour|window_open_cold" not in e.episodes
+    # Too cold is no reason to keep the window open.
+    run(e, 50, reading(), outdoor=5.0)
+    e.evaluate(
+        T0 + timedelta(minutes=80),
+        {
+            "sejour": RoomReading(
+                temperature=15.0, co2=600.0, humidity=50.0, has_openings=True, open=["binary_sensor.w1"]
+            )
+        },
+        5.0,
+    )
+    assert e.alerting("sejour", "window_open_cold")
+
+
 def test_room_override_and_disabled_kind():
     s = build_settings(
         {
