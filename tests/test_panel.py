@@ -147,7 +147,7 @@ async def test_panel_registered(hass: HomeAssistant) -> None:
     await hass.async_block_till_done()
     assert PANEL_URL in hass.data["frontend_panels"]
     assert hass.http.async_register_static_paths.call_count == 1
-    assert extra.add.call_count == 3
+    assert extra.add.call_count == 4
     # Removing the integration removes the panel.
     assert await hass.config_entries.async_remove(entry.entry_id)
     await hass.async_block_till_done()
