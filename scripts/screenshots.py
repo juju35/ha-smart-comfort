@@ -344,7 +344,10 @@ SIDEBAR_BOTTOM = [("cog", "Settings"), ("bell", "Notifications")]
 def sidebar_html():
     def item(icon, label):
         selected = " selected" if label == "Smart Comfort" else ""
-        return f'<div class="item{selected}"><ha-icon icon="mdi:{icon}"></ha-icon><span>{label}</span></div>'
+        # The sidebar badge the integration draws on its own item: the number of active alerts, in the worst
+        # severity's colour (amber here). Three active alerts, matching the mock status.
+        badge = '<span class="badge warn">3</span>' if label == "Smart Comfort" else ""
+        return f'<div class="item{selected}"><ha-icon icon="mdi:{icon}"></ha-icon><span>{label}</span>{badge}</div>'
 
     return (
         '<aside class="sidebar"><div class="brand"><ha-icon icon="mdi:menu-open"></ha-icon>Home Assistant</div>'
@@ -371,6 +374,11 @@ html, body {{ margin: 0; background: var(--primary-background-color); color: var
 .item ha-icon {{ color: var(--sidebar-icon-color); }}
 .item.selected {{ background: rgba(var(--rgb-primary-color), 0.12); color: var(--primary-color); }}
 .item.selected ha-icon {{ color: var(--primary-color); }}
+.item .badge {{ margin-left: auto; min-width: 18px; height: 18px; box-sizing: border-box; padding: 0 5px;
+        display: inline-flex; align-items: center; justify-content: center; border-radius: 9px; font-size: 11px;
+        font-weight: 500; line-height: 1; color: #fff; background: var(--error-color); }}
+.item .badge.warn {{ color: rgba(0,0,0,.87); background: var(--warning-color); }}
+.item .badge.info {{ color: #fff; background: var(--info-color); }}
 .spacer {{ flex: 1; }}
 .avatar {{ width: 40px; height: 40px; margin-left: -8px; margin-right: -8px; border-radius: 50%; display: flex; align-items: center;
           justify-content: center; background: rgba(var(--rgb-primary-color), 0.3); font-size: 14px; font-weight: 400; }}

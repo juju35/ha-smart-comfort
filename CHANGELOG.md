@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.20.2 - 2026-11-15
+
+### Maintenance
+- The panel screenshots now show the sidebar badge (the active-alerts count) on the Smart Comfort item, so the README reflects it.
+
 ## 1.20.1 - 2026-11-15
 
 ### Fixes
