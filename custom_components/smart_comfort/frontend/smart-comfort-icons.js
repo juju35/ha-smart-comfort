@@ -1,43 +1,19 @@
-// Smart Comfort's sidebar icon, loaded on every page: the integration's emblem (a house with a thermometer and a
-// bell) as a custom icon set, so the panel's sidebar icon is `smart-comfort:comfort` instead of a generic mdi one.
-// A single monochrome path (it follows the sidebar's own colour); the active-alerts badge (smart-comfort-badge.js)
-// carries the state. The icon is redrawn once at load for any element shown before this set was known (blank until
-// its icon changes), as Home Assistant keeps the last one so the sidebar shows it at once.
-var SC_ICON_PATH =
-  'M87.727,225.972 L247.727,93.972 Q256,87.147 264.273,93.972 L424.273,225.972 Q428.427,229.399 428.941,234.759 Q429.455,240.119 426.028,244.273 Q422.601,248.427 417.241,248.941 Q411.881,249.455 407.727,246.028 L256,120.853 L104.273,246.028 Q100.119,249.455 94.759,248.941 Q89.399,248.427 85.972,244.273 Q82.545,240.119 83.059,234.759 Q83.573,229.399 87.727,225.972 Z M151,214 L151,388 Q151,389.736 151.281,390.719 Q152.264,391 154,391 L358,391 Q359.736,391 360.719,390.719 Q361,389.736 361,388 L361,214 Q361,208.615 364.808,204.808 Q368.615,201 374,201 Q379.385,201 383.192,204.808 Q387,208.615 387,214 L387,388 Q387,401.385 379.192,409.192 Q371.385,417 358,417 L154,417 Q140.615,417 132.808,409.192 Q125,401.385 125,388 L125,214 Q125,208.615 128.808,204.808 Q132.615,201 138,201 Q143.385,201 147.192,204.808 Q151,208.615 151,214 Z M256,202 Q266.77,202 274.385,209.615 Q282,217.23 282,228 L282,336 Q282,346.77 274.385,354.385 Q266.77,362 256,362 Q245.23,362 237.615,354.385 Q230,346.77 230,336 L230,228 Q230,217.23 237.615,209.615 Q245.23,202 256,202 Z M256,222 Q253.515,222 251.757,223.757 Q250,225.515 250,228 L250,336 Q250,338.485 251.757,340.243 Q253.515,342 256,342 Q258.485,342 260.243,340.243 Q262,338.485 262,336 L262,228 Q262,225.515 260.243,223.757 Q258.485,222 256,222 Z M256,250 L256,250 A8 8 0 0 1 264,258 L264,350 A8 8 0 0 1 256,358 L256,358 A8 8 0 0 1 248,350 L248,258 A8 8 0 0 1 256,250 Z M286,356 A30 30 0 1 1 226,356 A30 30 0 1 1 286,356 Z M398,72 L398.1,72 C429.018,72.028 454.064,97.107 454.05,128.025 C454.036,158.943 428.968,184 398.05,184 C367.132,184 342.064,158.943 342.05,128.025 C342.036,97.107 367.082,72.028 398,72 Z M398,106 C386,106 380,115 380,126 L380,134 L374,142 L422,142 L416,134 L416,126 C416,115 410,106 398,106 Z M392,146 C392,149.314 394.686,152 398,152 C401.314,152 404,149.314 404,146 Z';
-var SC_ICON_VIEWBOX = '68 44 400 400';
-
-window.customIcons = window.customIcons || {};
-window.customIcons['smart-comfort'] = {
-  getIcon: async () => ({ path: SC_ICON_PATH, viewBox: SC_ICON_VIEWBOX }),
-  getIconList: async () => [{ name: 'comfort' }],
-};
-
-// Icons drawn before this set was known (shown blank until their icon changes): drawn again, here only.
-function scIconRedraw(root, depth = 0) {
-  if (!root || depth > 8) return 0;
-  var found = 0;
-  for (var el of root.querySelectorAll('*')) {
-    if (el.localName === 'ha-icon' && String(el.icon || '').startsWith('smart-comfort:')) {
-      var icon = el.icon;
-      el.icon = '';
-      requestAnimationFrame(() => {
-        el.icon = icon;
-      });
-      found += 1;
-    }
-    if (el.shadowRoot) found += scIconRedraw(el.shadowRoot, depth + 1);
-  }
-  return found;
-}
-
-// At once, then until the sidebar has drawn the icon (it may come after this module): every 250 ms for 5 seconds
-function scIconRedrawSoon(tries = 20) {
-  if (scIconRedraw(document.querySelector('home-assistant')?.shadowRoot) || tries <= 1) return;
-  setTimeout(() => scIconRedrawSoon(tries - 1), 250);
-}
-
-if (!window.__smartComfortIcons_init) {
-  window.__smartComfortIcons_init = true;
-  scIconRedrawSoon();
-}
+// Icon set "smart-comfort": the integration's emblem (a house with a thermometer and a bell), for the panel's sidebar
+// entry (smart-comfort:comfort) and anywhere an icon name is accepted. A single monochrome path on the 24 grid, so it
+// needs no view box. Registered in both the current and the older frontend icon APIs, like the sidebar's own icons,
+// so it resolves whenever Home Assistant rebuilds the sidebar (no redraw needed). Loaded on every page, since the
+// sidebar shows before any dashboard. The active-alerts badge (smart-comfort-badge.js) carries the state.
+(() => {
+  const COMFORT =
+    'M1.184,10.918 L10.784,2.998 Q11.28,2.589 11.776,2.998 L21.376,10.918 Q21.626,11.124 21.656,11.446 Q21.687,11.767 21.482,12.016 Q21.276,12.266 20.954,12.296 Q20.633,12.327 20.384,12.122 L11.28,4.611 L2.176,12.122 Q1.927,12.327 1.606,12.296 Q1.284,12.266 1.078,12.016 Q0.873,11.767 0.904,11.446 Q0.934,11.124 1.184,10.918 Z M4.98,10.2 L4.98,20.64 Q4.98,20.744 4.997,20.803 Q5.056,20.82 5.16,20.82 L17.4,20.82 Q17.504,20.82 17.563,20.803 Q17.58,20.744 17.58,20.64 L17.58,10.2 Q17.58,9.877 17.808,9.648 Q18.037,9.42 18.36,9.42 Q18.683,9.42 18.912,9.648 Q19.14,9.877 19.14,10.2 L19.14,20.64 Q19.14,21.443 18.672,21.912 Q18.203,22.38 17.4,22.38 L5.16,22.38 Q4.357,22.38 3.888,21.912 Q3.42,21.443 3.42,20.64 L3.42,10.2 Q3.42,9.877 3.648,9.648 Q3.877,9.42 4.2,9.42 Q4.523,9.42 4.752,9.648 Q4.98,9.877 4.98,10.2 Z M11.28,9.48 Q11.926,9.48 12.383,9.937 Q12.84,10.394 12.84,11.04 L12.84,17.52 Q12.84,18.166 12.383,18.623 Q11.926,19.08 11.28,19.08 Q10.634,19.08 10.177,18.623 Q9.72,18.166 9.72,17.52 L9.72,11.04 Q9.72,10.394 10.177,9.937 Q10.634,9.48 11.28,9.48 Z M11.28,10.68 Q11.131,10.68 11.025,10.785 Q10.92,10.891 10.92,11.04 L10.92,17.52 Q10.92,17.669 11.025,17.775 Q11.131,17.88 11.28,17.88 Q11.429,17.88 11.535,17.775 Q11.64,17.669 11.64,17.52 L11.64,11.04 Q11.64,10.891 11.535,10.785 Q11.429,10.68 11.28,10.68 Z M11.28,12.36 L11.28,12.36 C11.545,12.36 11.76,12.575 11.76,12.84 L11.76,18.36 C11.76,18.625 11.545,18.84 11.28,18.84 L11.28,18.84 C11.015,18.84 10.8,18.625 10.8,18.36 L10.8,12.84 C10.8,12.575 11.015,12.36 11.28,12.36 Z M13.08,18.72 C13.08,19.714 12.274,20.52 11.28,20.52 C10.286,20.52 9.48,19.714 9.48,18.72 C9.48,17.726 10.286,16.92 11.28,16.92 C12.274,16.92 13.08,17.726 13.08,18.72 Z M19.8,1.68 L19.806,1.68 C21.661,1.682 23.164,3.186 23.163,5.041 C23.162,6.897 21.658,8.4 19.803,8.4 C17.948,8.4 16.444,6.897 16.443,5.041 C16.442,3.186 17.945,1.682 19.8,1.68 Z M19.8,3.72 C19.08,3.72 18.72,4.26 18.72,4.92 L18.72,5.4 L18.36,5.88 L21.24,5.88 L20.88,5.4 L20.88,4.92 C20.88,4.26 20.52,3.72 19.8,3.72 Z M19.44,6.12 C19.44,6.319 19.601,6.48 19.8,6.48 C19.999,6.48 20.16,6.319 20.16,6.12 Z';
+  const icons = { comfort: COMFORT };
+  // Current frontend: window.customIcons[prefix] = { getIcon, getIconList }.
+  window.customIcons = window.customIcons || {};
+  window.customIcons['smart-comfort'] = {
+    getIcon: async (name) => ({ path: icons[name] || COMFORT }),
+    getIconList: async () => Object.keys(icons).map((name) => ({ name })),
+  };
+  // Older frontends: window.customIconsets[prefix] = async (name) => ({ path }).
+  window.customIconsets = window.customIconsets || {};
+  window.customIconsets['smart-comfort'] = async (name) => ({ path: icons[name] || COMFORT });
+})();

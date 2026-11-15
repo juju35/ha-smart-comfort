@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.20.1 - 2026-11-15
+
+### Fixes
+- The sidebar icon no longer flickers and disappears when Home Assistant rebuilds the sidebar. The emblem is now a single path on the 24 grid, registered in both the current and the older frontend icon APIs (as the other integrations' sidebar icons are), so it resolves on every rebuild without a redraw loop.
+
 ## 1.20.0 - 2026-11-15
 
 ### Features
