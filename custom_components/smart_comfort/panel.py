@@ -15,6 +15,8 @@ from .const import DOMAIN, PANEL_ICON, PANEL_URL, TITLE
 STATIC_URL = f"/{DOMAIN}_static"
 FRONTEND_DIR = Path(__file__).parent / "frontend"
 MODULE = "smart-comfort-panel.js"
+# Loaded on every page (not only dashboards): the sidebar badge, the number of active alerts on the panel item.
+BADGE_MODULE = "smart-comfort-badge.js"
 # The cards, loaded on every dashboard: the activity card and the mini card.
 CARDS = ("smart-comfort-activity-card.js", "smart-comfort-mini-card.js")
 ELEMENT = "smart-comfort-panel"
@@ -43,6 +45,10 @@ async def async_register_panel(hass: HomeAssistant) -> None:
         await hass.http.async_register_static_paths([StaticPathConfig(STATIC_URL, str(FRONTEND_DIR), True)])
         data["static_registered"] = True
     version = await hass.async_add_executor_job(_version)
+    # The sidebar badge module, loaded on every page (once per run), versioned so a new release is fetched again.
+    if not data.get("badge_registered"):
+        frontend.add_extra_js_url(hass, f"{STATIC_URL}/{BADGE_MODULE}?v={version}")
+        data["badge_registered"] = True
     await _async_register_cards(hass, data, [f"{url}?v={version}" for url in CARD_URLS])
     if PANEL_URL in hass.data.get(frontend.DATA_PANELS, {}):
         return

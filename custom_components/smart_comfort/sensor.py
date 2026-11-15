@@ -15,6 +15,7 @@ from homeassistant.util import dt as dt_util
 from . import SmartComfortConfigEntry
 from .config import Room
 from .const import KINDS, SEVERITY_CRITICAL, SEVERITY_INFO, SEVERITY_WARNING
+from .engine import _severity_rank
 from .entity import SmartComfortEntity
 from .status import episode_info, room_info
 
@@ -59,13 +60,27 @@ class ActiveAlertsSensor(SmartComfortEntity, SensorEntity):
     def extra_state_attributes(self) -> dict[str, Any]:
         now = dt_util.utcnow()
         engine = self.manager.engine
+        active = list(engine.active())
         return {
-            "alerts": [episode_info(self.manager, ep, now) for ep in engine.active()],
+            "alerts": [episode_info(self.manager, ep, now) for ep in active],
+            "severity": self._worst_severity(active),
             "snoozes": {k: v.isoformat() for k, v in engine.snoozes.items() if v > now},
             "outdoor_temperature": self.manager.outdoor(),
             "outdoor_noise": self.manager.outdoor_noise(),
             "outdoor_air_quality": self.manager.outdoor_air(),
         }
+
+    def _worst_severity(self, active: list[Any]) -> str | None:
+        """The most serious severity among the active alerts (critical over warning over info), None when none."""
+        worst: str | None = None
+        for ep in active:
+            room = self.manager.settings.room(ep.room)
+            settings = room.alerts.get(ep.kind) if room else None
+            if settings is None:
+                continue
+            if worst is None or _severity_rank(settings.severity) > _severity_rank(worst):
+                worst = settings.severity
+        return worst
 
 
 class RoomSensor(SmartComfortEntity, SensorEntity):

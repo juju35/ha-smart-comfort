@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.19.0 - 2026-11-15
+
+### Features
+- **A count of the active alerts on the sidebar.** The Smart Comfort item in the sidebar now carries a badge with the number of active alerts, like the notifications count, coloured by the most serious one (red for a critical alert, amber for a warning, blue for an info one); it disappears when nothing is active. It is read from the Active alerts sensor for every administrator and kept up to date even with the panel closed. The sensor also gains a `severity` attribute (the most serious active alert).
+
 ## 1.18.3 - 2026-11-15
 
 ### Fixes

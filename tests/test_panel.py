@@ -121,9 +121,11 @@ async def test_panel_registered(hass: HomeAssistant) -> None:
     hass.http = Mock(async_register_static_paths=AsyncMock())
     hass.data["frontend_extra_module_url"] = extra = Mock()
     await _setup(hass)
-    # The activity card and the mini card, on every dashboard (once each, across reloads).
+    # The sidebar badge on every page, then the activity card and the mini card on every dashboard (once each, across
+    # reloads).
     added = [c.args[0].split("?")[0] for c in extra.add.call_args_list]
     assert added == [
+        "/smart_comfort_static/smart-comfort-badge.js",
         "/smart_comfort_static/smart-comfort-activity-card.js",
         "/smart_comfort_static/smart-comfort-mini-card.js",
     ]
@@ -144,7 +146,7 @@ async def test_panel_registered(hass: HomeAssistant) -> None:
     await hass.async_block_till_done()
     assert PANEL_URL in hass.data["frontend_panels"]
     assert hass.http.async_register_static_paths.call_count == 1
-    assert extra.add.call_count == 2
+    assert extra.add.call_count == 3
     # Removing the integration removes the panel.
     assert await hass.config_entries.async_remove(entry.entry_id)
     await hass.async_block_till_done()
@@ -195,7 +197,9 @@ async def test_card_dashboard_resource(hass: HomeAssistant) -> None:
     assert urls[0].startswith(f"{card}?v=") and urls[0] != f"{card}?v=0"
     assert urls[1] == other["url"]
     assert urls[2].startswith(f"{mini}?v=")
-    extra.add.assert_not_called()
+    # The cards are dashboard resources here, but the sidebar badge is always an extra module (every page).
+    badge_added = [c.args[0].split("?")[0] for c in extra.add.call_args_list]
+    assert badge_added == ["/smart_comfort_static/smart-comfort-badge.js"]
     # Removing the integration drops its resources, not the others.
     assert await hass.config_entries.async_remove(entry.entry_id)
     await hass.async_block_till_done()
