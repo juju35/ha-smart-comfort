@@ -331,6 +331,101 @@ EQUIPMENT_WORDS = frozenset(
 BUSY_DOMAINS = {"climate", "fan", "humidifier", "water_heater", "vacuum", "camera"}
 OPENING_CLASSES = {"window", "door", "opening"}
 
+# Integrations of kitchen and laundry appliances: their doors, lights and fans (a hood's extractor) are the
+# appliance's, not the room's openings, lamps and fans.
+APPLIANCE_PLATFORMS = frozenset(
+    {
+        "home_connect",
+        "homeconnect_local",
+        "homeconnect_ws",
+        "miele",
+        "smartthinq_sensors",
+        "lg_thinq",
+        "samsungce",
+    }
+)
+# Whole words (of the entity id, the device name or its model) of an appliance.
+APPLIANCE_WORDS = frozenset(
+    {
+        # en
+        "fridge",
+        "refrigerator",
+        "freezer",
+        "dishwasher",
+        "oven",
+        "hood",
+        "range",
+        "rangehood",
+        "cooktop",
+        "stove",
+        "washer",
+        "washing",
+        "dryer",
+        "microwave",
+        "cooker",
+        # fr
+        "refrigerateur",
+        "frigo",
+        "congelateur",
+        "vaisselle",
+        "lave",
+        "four",
+        "hotte",
+        "linge",
+        "seche",
+        "cuisiniere",
+        # de
+        "kuhlschrank",
+        "gefrierschrank",
+        "gefrier",
+        "geschirrspuler",
+        "geschirr",
+        "backofen",
+        "dunstabzug",
+        "dunstabzugshaube",
+        "waschmaschine",
+        "wasche",
+        "trockner",
+        "herd",
+        "kochfeld",
+        # es
+        "nevera",
+        "frigorifico",
+        "congelador",
+        "lavavajillas",
+        "horno",
+        "campana",
+        "lavadora",
+        "secadora",
+        "vitroceramica",
+        # it
+        "frigorifero",
+        "congelatore",
+        "lavastoviglie",
+        "forno",
+        "cappa",
+        "lavatrice",
+        "asciugatrice",
+        # nl
+        "koelkast",
+        "vriezer",
+        "diepvries",
+        "vaatwasser",
+        "afzuigkap",
+        "wasmachine",
+        "droger",
+        "kookplaat",
+        "fornuis",
+        # pt
+        "exaustor",
+        "maquina",
+        "loica",
+    }
+)
+# Substrings of the program / operation-state entity an appliance exposes: a device with one is an appliance,
+# whatever its integration (platform-independent signal, as the issue suggests).
+PROGRAM_WORDS = ("program", "operation_state", "programme")
+
 
 # Serbian Cyrillic in Latin (đ has no ASCII decomposition: written dj), and the German ß written ss.
 CYRILLIC = str.maketrans(
@@ -366,6 +461,28 @@ def _equipment(e: _Entity) -> bool:
         return True
     tokens = set(_slug(f"{e.entity_id} {e.name}").split("_"))
     return bool(tokens & EQUIPMENT_WORDS)
+
+
+def _is_appliance_entity(e: _Entity) -> bool:
+    """This entity itself names an appliance (its id, device name or model), or comes from an appliance integration."""
+    if e.platform in APPLIANCE_PLATFORMS:
+        return True
+    tokens = set(_slug(f"{e.entity_id} {e.name}").split("_"))
+    return bool(tokens & APPLIANCE_WORDS)
+
+
+def _appliance(e: _Entity, by_device: dict[str, list[_Entity]]) -> bool:
+    """An appliance's own door, light or fan: an appliance integration, an appliance name, or a device that
+    also exposes a program / operation-state entity (so Home Connect, Miele, LG… are caught by platform and
+    anything with a program is caught whatever its integration)."""
+    if _is_appliance_entity(e):
+        return True
+    for sibling in by_device.get(e.device_id or "", []):
+        if _is_appliance_entity(sibling):
+            return True
+        if _has(sibling.entity_id, PROGRAM_WORDS) or _has(sibling.name, PROGRAM_WORDS):
+            return True
+    return False
 
 
 def _has(text: str, words: tuple[str, ...]) -> bool:
@@ -658,7 +775,10 @@ def discover_rooms(hass: HomeAssistant) -> Found:
         openings = sorted(
             e.entity_id
             for e in area.entities
-            if e.domain == "binary_sensor" and e.device_class in OPENING_CLASSES and not busy(e)
+            if e.domain == "binary_sensor"
+            and e.device_class in OPENING_CLASSES
+            and not busy(e)
+            and not _appliance(e, by_device)
         )
         if openings:
             room[k.CONF_OPENINGS] = openings
@@ -672,6 +792,8 @@ def discover_rooms(hass: HomeAssistant) -> Found:
         for e in sorted((e for e in area.entities if e.domain == "fan"), key=lambda e: e.entity_id):
             if "climate" in device_domains.get(e.device_id or "", set()):
                 continue  # The fan of an air conditioner.
+            if _appliance(e, by_device):
+                continue  # The extractor of a range hood, not a comfort fan.
             if _is_purifier(e, by_device):
                 purifiers.append(_with_display(_purifier(e, by_device), e, by_device))
             else:
@@ -680,7 +802,11 @@ def discover_rooms(hass: HomeAssistant) -> Found:
             room[k.CONF_FANS] = fans
         if purifiers:
             room[k.CONF_PURIFIERS] = purifiers
-        lights = [e for e in area.entities if e.domain == "light" and not busy(e) and _is_lamp(e, device_domains)]
+        lights = [
+            e
+            for e in area.entities
+            if e.domain == "light" and not busy(e) and _is_lamp(e, device_domains) and not _appliance(e, by_device)
+        ]
         # A light group in the room stands for its members.
         members = {m for e in lights for m in (e.attributes.get("entity_id") or [])}
         if found_lights := [_light(e) for e in sorted(lights, key=lambda e: e.entity_id) if e.entity_id not in members]:

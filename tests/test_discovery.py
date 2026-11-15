@@ -586,3 +586,36 @@ async def test_sub_device(hass: HomeAssistant, caplog: pytest.LogCaptureFixture)
     assert [r["name"] for r in found.rooms] == ["Living room"]
     assert found.rooms[0]["temperature"] == "sensor.living_sensor_temperature"
     assert "ChildDeviceEntry" not in caplog.text
+
+
+async def test_appliances_left_out(hass: HomeAssistant) -> None:
+    """Appliance doors, lights and fans are not the room's openings, lamps and fans (issue #68)."""
+    h = House(hass)
+    kitchen = h.area("Kitchen")
+    h.entity("sensor", "kitchen_temperature", "21", area=kitchen, device_class="temperature", state_class="measurement")
+    # A real window and a real ceiling lamp of the room: kept.
+    h.entity("binary_sensor", "kitchen_window", "off", area=kitchen, device_class="window")
+    h.entity("light", "kitchen_ceiling", "on", area=kitchen, supported_color_modes=["brightness"])
+    # A real comfort fan: kept.
+    h.entity("fan", "kitchen_fan", "on", h.device("Tower fan", kitchen))
+    # Home Connect fridge (by platform): its door and interior light are left out.
+    fridge = h.device("Fridge", kitchen)
+    h.entity("binary_sensor", "fridge_door", "off", fridge, device_class="door", platform="home_connect")
+    h.entity(
+        "light", "fridge_interior_light", "on", fridge, platform="home_connect", supported_color_modes=["brightness"]
+    )
+    # A dishwasher caught by its program / operation-state entity, with a neutral device name (platform-independent).
+    dishwasher = h.device("Bosch", kitchen)
+    h.entity("binary_sensor", "bosch_door", "off", dishwasher, device_class="door")
+    h.entity("sensor", "bosch_operation_state", "Run", dishwasher)
+    # A range hood (by name): its extractor and light are left out.
+    hood = h.device("Hotte", kitchen)
+    h.entity("fan", "hotte_extractor", "off", hood)
+    h.entity("light", "hotte_light", "on", hood, supported_color_modes=["brightness"])
+
+    room = {r["name"]: r for r in discover_rooms(hass).rooms}["Kitchen"]
+    assert room["openings"] == ["binary_sensor.kitchen_window"]
+    light_ids = [x if isinstance(x, str) else x["entity_id"] for x in room.get("lights", [])]
+    assert light_ids == ["light.kitchen_ceiling"]
+    fan_ids = [x if isinstance(x, str) else x["entity_id"] for x in room.get("fans", [])]
+    assert fan_ids == ["fan.kitchen_fan"]

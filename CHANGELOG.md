@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.18.3 - 2026-11-15
+
+### Fixes
+- Discovery no longer takes an appliance's own door, light or fan as a room's opening, lamp or fan. Fridge, freezer, dishwasher, oven, range-hood, washer and dryer parts are left out — by integration (Home Connect, Home Connect Local, Miele, LG ThinQ, SmartThings…), by name, or because the device also exposes a program / operation-state entity. This stops, for example, adaptive lighting dimming a fridge's interior light, an open fridge or dishwasher door counting as an open window, and a range hood being driven as a comfort fan ([#68](https://github.com/juju35/ha-smart-comfort/issues/68), reported by @FredM67). Appliances already added by hand stay; remove them once on this version.
+
 ## 1.18.2 - 2026-11-14
 
 ### Fixes
