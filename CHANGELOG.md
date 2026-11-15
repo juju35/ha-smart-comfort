@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.20.0 - 2026-11-15
+
+### Features
+- **The integration's own emblem as the sidebar icon.** The Smart Comfort panel now uses a custom icon — a house with a thermometer and a bell, the integration's emblem — instead of a generic Material Design icon. It is a single monochrome shape that follows the sidebar's colour, and the active-alerts badge still sits over it.
+- **A status header on the Overview.** The Overview now opens with a header, like System Hub's Status: a comfort score ring, the emblem tinted by the state (green, amber or red), and a title with a pill for each kind of active alert and the number of rooms that are fine. The score is 100 minus a fixed penalty per active alert. The header is hidden until something is set up.
+
 ## 1.19.1 - 2026-11-15
 
 ### Fixes
