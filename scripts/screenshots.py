@@ -345,8 +345,9 @@ def sidebar_html():
     def item(icon, label):
         selected = " selected" if label == "Smart Comfort" else ""
         # The sidebar badge the integration draws on its own item: the number of active alerts, in the worst
-        # severity's colour (amber here). Three active alerts, matching the mock status.
-        badge = '<span class="badge warn">3</span>' if label == "Smart Comfort" else ""
+        # severity's colour. The mock status has four active alerts, the worst a warning, so four in amber --
+        # matching the overview hero, which takes 12 points off its comfort score per alert (52 for four).
+        badge = '<span class="badge warn">4</span>' if label == "Smart Comfort" else ""
         return f'<div class="item{selected}"><ha-icon icon="mdi:{icon}"></ha-icon><span>{label}</span>{badge}</div>'
 
     return (
