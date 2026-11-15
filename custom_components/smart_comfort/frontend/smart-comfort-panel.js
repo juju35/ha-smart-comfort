@@ -69,6 +69,11 @@ const STRINGS = {
     fan: "Fan",
     purifier: "Air purifier",
     overview: "Overview",
+    sc_score: "comfort",
+    sc_all_good: "Everything is comfortable",
+    sc_point: "{n} point to watch",
+    sc_points: "{n} points to watch",
+    n_rooms_ok: "{n} rooms OK",
     rooms: "Rooms",
     alerts: "Alerts",
     notifications: "Notifications",
@@ -265,6 +270,11 @@ const STRINGS = {
     fan: "Ventilateur",
     purifier: "Purificateur",
     overview: "Vue d'ensemble",
+    sc_score: "confort",
+    sc_all_good: "Tout est confortable",
+    sc_point: "{n} point à surveiller",
+    sc_points: "{n} points à surveiller",
+    n_rooms_ok: "{n} pièces OK",
     rooms: "Pièces",
     alerts: "Alertes",
     notifications: "Notifications",
@@ -5193,6 +5203,20 @@ class SmartComfortPanel extends HTMLElement {
     content.append(card);
   }
 
+  /** The comfort score shown in the overview hero: 100 minus a fixed penalty per active alert, the tone from it, the
+   *  active alerts grouped by kind, and how many rooms have nothing active. */
+  _comfort(s) {
+    const alerts = s.alerts || [];
+    const rooms = s.rooms || [];
+    const points = alerts.length;
+    const score = Math.max(0, 100 - 12 * points);
+    const tone = !points ? "good" : score >= 60 ? "warn" : "bad";
+    const byKind = {};
+    for (const a of alerts) byKind[a.kind] = (byKind[a.kind] || 0) + 1;
+    const okRooms = rooms.filter((r) => !(r.alerts || []).length).length;
+    return { score, tone, points, byKind, okRooms };
+  }
+
   _renderOverview(content) {
     this._renderStart(content);
     const s = this._status;
@@ -5204,6 +5228,42 @@ class SmartComfortPanel extends HTMLElement {
       content.append(this._el("div", "banner error", this._t("not_loaded")));
       return;
     }
+
+    const configured = this._config.options.rooms?.length || this._config.options.outdoors?.length;
+    if (configured) {
+    const c = this._comfort(s);
+    const hero = this._el("div", `sc-hero ${c.tone}`);
+    const ring = this._el("div", "sc-ring");
+    const off = (326.726 * (1 - c.score / 100)).toFixed(1);
+    ring.innerHTML = `<svg viewBox="0 0 120 120" role="img" aria-label="${c.score} / 100"><circle class="sc-trk" cx="60" cy="60" r="52"></circle><circle class="sc-arc" cx="60" cy="60" r="52" stroke-dasharray="326.726" stroke-dashoffset="${off}" transform="rotate(-90 60 60)"></circle></svg>`;
+    const num = this._el("div", "sc-num");
+    num.append(this._el("b", "", String(c.score)), this._el("span", "", this._t("sc_score")));
+    ring.append(num);
+    const emb = this._el("div", "sc-emb");
+    const embIcon = document.createElement("ha-icon");
+    embIcon.icon = "smart-comfort:comfort";
+    emb.append(embIcon);
+    const who = this._el("div", "sc-who");
+    who.append(
+      this._el(
+        "div",
+        "sc-title",
+        c.points ? this._t(c.points === 1 ? "sc_point" : "sc_points", { n: c.points }) : this._t("sc_all_good")
+      )
+    );
+    const meta = [`${this._t("outdoor")} ${this._format(s.outdoor_temperature)} °C`];
+    if (s.night) meta.push(this._t("quiet_night"));
+    who.append(this._el("div", "sc-sub", meta.join(" · ")));
+    const pills = this._el("div", "sc-pills");
+    for (const [kind, n] of Object.entries(c.byKind)) {
+      pills.append(this._el("span", "sc-pill", n > 1 ? `${this._kindName(kind)} ×${n}` : this._kindName(kind)));
+    }
+    if (c.okRooms) pills.append(this._el("span", "sc-pill ok", this._t("n_rooms_ok", { n: c.okRooms })));
+    who.append(pills);
+    hero.append(ring, emb, who);
+    content.append(hero);
+    }
+
     const summary = this._el("div", "summary");
     const tile = (icon, label, value, onClick, active) => {
       const t = this._el(onClick ? "button" : "div", `tile${active === false ? " off" : ""}`);
@@ -6815,6 +6875,26 @@ const STYLE = `
   .banner.error { background: rgba(var(--rgb-error-color, 219, 68, 55), 0.14); color: var(--error-color); }
   .banner.success { background: rgba(var(--rgb-success-color, 67, 160, 71), 0.14); }
   .banner .retry { margin-left: 8px; font: inherit; font-weight: 500; color: var(--primary-color); background: none; border: 1px solid currentColor; border-radius: 16px; padding: 2px 12px; cursor: pointer; }
+  .sc-hero { display: flex; align-items: center; gap: 20px; padding: 16px 20px; margin-bottom: 12px; flex-wrap: wrap; border-radius: 12px; border: 1px solid var(--divider-color); background-color: var(--ha-card-background, var(--card-background-color, #fff)); background-image: linear-gradient(135deg, color-mix(in srgb, var(--sc-tone) 10%, transparent), transparent); }
+  .sc-hero.good { --sc-tone: var(--success-color, #43a047); }
+  .sc-hero.warn { --sc-tone: var(--warning-color, #ffa600); }
+  .sc-hero.bad { --sc-tone: var(--error-color, #db4437); }
+  .sc-ring { position: relative; width: 112px; height: 112px; flex: none; }
+  .sc-ring svg { width: 100%; height: 100%; }
+  .sc-trk { fill: none; stroke: var(--divider-color); stroke-width: 10; }
+  .sc-arc { fill: none; stroke: var(--sc-tone); stroke-width: 10; stroke-linecap: round; transition: stroke-dashoffset .8s ease; }
+  .sc-num { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .sc-num b { font-size: 32px; font-weight: 300; line-height: 1; }
+  .sc-num span { font-size: 11px; color: var(--secondary-text-color); margin-top: 2px; }
+  .sc-emb { width: 76px; height: 76px; border-radius: 50%; flex: none; display: flex; align-items: center; justify-content: center; color: var(--sc-tone); background: color-mix(in srgb, var(--sc-tone) 16%, transparent); }
+  .sc-emb ha-icon { --mdc-icon-size: 46px; }
+  .sc-who { flex: 1; min-width: 190px; }
+  .sc-title { font-size: 20px; font-weight: 500; }
+  .sc-sub { font-size: 13px; color: var(--secondary-text-color); margin: 4px 0 10px; }
+  .sc-pills { display: flex; flex-wrap: wrap; gap: 6px; }
+  .sc-pill { font-size: 11px; font-weight: 500; padding: 2px 10px; border-radius: 12px; white-space: nowrap; color: color-mix(in srgb, var(--sc-tone) 55%, var(--primary-text-color)); background: color-mix(in srgb, var(--sc-tone) 16%, transparent); }
+  .sc-pill.ok { --sc-tone: var(--success-color, #43a047); }
+  @media (max-width: 600px) { .sc-hero { gap: 14px; padding: 14px; } .sc-ring { width: 92px; height: 92px; } .sc-num b { font-size: 26px; } .sc-emb { width: 60px; height: 60px; } .sc-emb ha-icon { --mdc-icon-size: 36px; } }
   .summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; }
   .tile {
     font: inherit;

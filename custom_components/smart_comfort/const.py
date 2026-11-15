@@ -408,7 +408,7 @@ EVENT_NOTIFIED: Final = f"{DOMAIN}_notified"
 EVENT_CONTROL: Final = f"{DOMAIN}_control"
 
 PANEL_URL: Final = "smart-comfort"
-PANEL_ICON: Final = "mdi:home-thermometer"
+PANEL_ICON: Final = "smart-comfort:comfort"
 # Dispatched after every evaluation and setup/unload of the entry (configuration panel status).
 SIGNAL_UPDATE: Final = f"{DOMAIN}_update"
 # New activity entries (a list), for the panel and the activity card.
