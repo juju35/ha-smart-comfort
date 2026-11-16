@@ -119,16 +119,19 @@ test("follow reads the count and colours by the worst severity", () => {
   }
 });
 
-test("severity maps to a tone; none falls back to amber; zero clears the badge", () => {
+test("only a critical alert is red; warning, info and unknown are amber; zero clears the badge", () => {
   const context = load();
   const item = makeEl("a");
   withSidebar(context, item);
   context.setBadge(1, "bad");
   assert.match(item.children[0].style.cssText, /--error-color/);
   assert.match(item.children[0].style.cssText, /position:absolute/);
-  context.setBadge(5, "info");
-  assert.match(item.children[0].style.cssText, /--info-color/);
-  // An unknown tone falls back to warning (amber)
+  // Like the overview ring: only a critical alert is red, a warning is amber
+  context.setBadge(5, "warn");
+  assert.match(item.children[0].style.cssText, /--warning-color/);
+  // info no longer has its own tone, and any unknown tone also falls back to amber
+  context.setBadge(3, "info");
+  assert.match(item.children[0].style.cssText, /--warning-color/);
   context.setBadge(2, "nope");
   assert.match(item.children[0].style.cssText, /--warning-color/);
   // Over 99 is capped; zero takes the badge away
