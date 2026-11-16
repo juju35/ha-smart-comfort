@@ -5,16 +5,15 @@
 var SC_COUNT_KEY = 'smart-comfort-count';
 var SC_TONE_KEY = 'smart-comfort-badge-tone';
 var SC_EVERY_MS = 15000;
-// The badge's colour follows the most serious active alert: critical, warning or info.
+// The badge's colour follows the overview ring: red when a critical alert is active, amber otherwise.
 var SC_BADGE_COLORS = {
   bad: 'var(--error-color, #db4437)',
   warn: 'var(--warning-color, #ffa600)',
-  info: 'var(--info-color, #039be5)',
 };
 // Dark text reads on the amber badge, white on the others.
 var SC_BADGE_TEXT = { warn: 'rgba(0,0,0,.87)' };
-// A severity to a tone; an active alert with no known severity falls back to warning.
-var SC_SEVERITY_TONE = { critical: 'bad', warning: 'warn', info: 'info' };
+// A severity to a tone, like the overview ring: only a critical alert turns the badge red; warning and info stay amber.
+var SC_SEVERITY_TONE = { critical: 'bad', warning: 'warn', info: 'warn' };
 
 function scBadgeSaved() {
   try {

@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.20.3 - 2026-11-16
+
+### Fixes
+- The Overview comfort score now weights each active alert by its severity (info 10, warning 25, critical 50), like the per-room comfort sensors, instead of a flat penalty per alert — so the ring agrees with the room scores. The ring and the sidebar badge turn red only when a critical alert is active and amber otherwise.
+
 ## 1.20.2 - 2026-11-15
 
 ### Maintenance

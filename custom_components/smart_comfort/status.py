@@ -8,6 +8,7 @@ from typing import TYPE_CHECKING, Any
 from homeassistant.util import dt as dt_util
 
 from .config import Room
+from .const import SEVERITY_INFO
 from .engine import Episode, is_handled
 from .lighting import phase
 
@@ -17,10 +18,12 @@ if TYPE_CHECKING:
 
 def episode_info(manager: SmartComfort, ep: Episode, now: datetime) -> dict[str, Any]:
     room = manager.settings.room(ep.room)
+    settings = room.alerts.get(ep.kind) if room else None
     return {
         "room": ep.room,
         "room_name": room.name if room else ep.room,
         "kind": ep.kind,
+        "severity": settings.severity if settings else SEVERITY_INFO,
         "value": ep.value,
         "since": ep.since.isoformat(),
         "notified_at": ep.notified_at.isoformat() if ep.notified_at else None,
