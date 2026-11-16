@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.21.2 - 2026-11-16
+
+### Fixes
+- Discovery: an appliance's temperature or humidity sensor is no longer taken as the room's — an air fryer, oven, dishwasher or other appliance (by its integration, a program / operation-state entity, or an appliance word in the id, device name or model) is left out of the room's temperature, humidity, CO₂ and noise, like its doors, lights and fans already were (#68). A countertop air fryer, kettle or coffee machine is recognised by name, so a VeSync humidifier of the same integration still provides the room's reading (#85).
+
 ## 1.21.1 - 2026-11-16
 
 ### Fixes
