@@ -1,6 +1,11 @@
 # Changelog
 
-## 1.21.0 - 2026-11-16
+## 1.21.1 - 2026-11-16
+
+### Fixes
+- Discovery: a purifier that also humidifies (a fan + humidifier + PM2.5 on one device, e.g. a Dyson Purifier Humidify+Cool) is kept as a purifier again — only a (de)humidifier's blower that is not a purifier is dropped from the room fans (#82).
+- Discovery: a humidifier's or air conditioner's internal readings are now left out of the ambient fallback in every language, not only English — a French *température de l'eau* no longer becomes the room temperature (#82).
+- Discovery: a room set back to living space in the form keeps that choice instead of being turned into an annex on the next discovery, and bedrooms or offices are no longer mistaken for annexes ("Chambre sous les combles", Spanish "Oficina") (#83).
 
 ### Features
 - Room types: every room is now a **living space** (the default) or an **annex** — cellar, garage, workshop, laundry, attic. Annexes have their own alert defaults (frost at 5 °C and mould at 80 % only; too hot, ventilation, window, CO₂ and noise alerts off; polluted air kept on), so a cold, humid cellar no longer alerts all the time. Pick the type in each room's form; the annex defaults sit in the Alerts tab next to the living-space ones and can be tuned once for every annex, and any room can still override them. Discovery suggests the annex type from the area name (cellar, cave, garage, atelier, grenier, Keller, Werkstatt…). Annex rooms stay out of the home's Overview comfort score, so an unlived space never pulls it down.
