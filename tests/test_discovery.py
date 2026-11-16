@@ -347,6 +347,39 @@ async def test_machines_only(hass: HomeAssistant) -> None:
     assert discover_rooms(hass).rooms == []
 
 
+async def test_dehumidifier_ambient_and_blower(hass: HomeAssistant) -> None:
+    """A (de)humidifier's own air sensors are the room's when it is the only sensor, and its fan is not a room fan."""
+    h = House(hass)
+    workshop = h.area("Atelier")
+    dehum = h.device("WDH-930EEW", workshop)
+    h.entity("humidifier", "wdh_930eew", "on", dehum, device_class="dehumidifier")
+    h.entity("fan", "wdh_930eew", "on", dehum)
+    h.entity("sensor", "wdh_930eew_temperature", "17", dehum, device_class="temperature")
+    h.entity("sensor", "wdh_930eew_humidite", "78", dehum, device_class="humidity")
+    rooms = {r["name"]: r for r in discover_rooms(hass).rooms}
+    workshop_room = rooms["Atelier"]
+    assert workshop_room["temperature"] == "sensor.wdh_930eew_temperature"
+    assert workshop_room["humidity"] == "sensor.wdh_930eew_humidite"
+    # Its fan is the dehumidifier's own blower, not a comfort fan.
+    assert "fans" not in workshop_room
+
+
+async def test_ambient_fallback_yields_to_standalone(hass: HomeAssistant) -> None:
+    """A standalone sensor still wins over a (de)humidifier's ambient reading, and internal readings are left out."""
+    h = House(hass)
+    room = h.area("Bureau")
+    h.entity("sensor", "bureau_temperature", "21", area=room, device_class="temperature")
+    hum = h.device("Humidifier", room)
+    h.entity("humidifier", "humidifier", "on", hum)
+    h.entity("sensor", "humidifier_temperature", "25", hum, device_class="temperature")
+    h.entity("sensor", "humidifier_humidity", "40", hum, device_class="humidity")
+    h.entity("sensor", "humidifier_water_temperature", "30", hum, device_class="temperature")
+    bureau = {r["name"]: r for r in discover_rooms(hass).rooms}["Bureau"]
+    # The standalone sensor wins for temperature; the humidifier fills the missing humidity.
+    assert bureau["temperature"] == "sensor.bureau_temperature"
+    assert bureau["humidity"] == "sensor.humidifier_humidity"
+
+
 async def test_discover_lights(hass: HomeAssistant) -> None:
     """Dimmable lamps only: not a device's indicator, a camera's floodlight, an on/off light; night lights flagged."""
     h = House(hass)
@@ -551,7 +584,8 @@ async def test_discover_indoor_air(hass: HomeAssistant) -> None:
     assert rooms["Living room"]["pm25"] == ["sensor.smartmi_pm2_5_density"]
     assert rooms["Living room"]["pm10"] == ["sensor.smartmi_pm10_density"]
     assert rooms["Living room"]["air_quality"] == ["sensor.smartmi_air_quality"]
-    assert "temperature" not in rooms["Living room"]
+    # No standalone sensor: the purifier's own temperature is the room's (its ambient reading).
+    assert rooms["Living room"]["temperature"] == "sensor.smartmi_temperature"
     assert rooms["Living room"]["purifiers"] == [
         {"entity_id": "fan.smartmi_purifier", "open_preset": "Manual", "closed_preset": "Auto"}
     ]

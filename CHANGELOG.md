@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.20.4 - 2026-11-16
+
+### Fixes
+- Discovery now reads a room's air from its (de)humidifier or purifier when that device is the area's only sensor: their ambient temperature and humidity are used as a fallback (a standalone sensor still wins, and internal readings such as coil, tank or water are left out).
+- A (de)humidifier's own `fan` entity (its blower) is no longer added as a room fan, so fan control can't switch the (de)humidifier by temperature — like the fans of air conditioners and appliances, it is skipped.
+
 ## 1.20.3 - 2026-11-16
 
 ### Fixes

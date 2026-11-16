@@ -330,6 +330,8 @@ EQUIPMENT_WORDS = frozenset(
 # Domains of the devices whose own sensors are not the room's (a camera's temperature is the camera's).
 BUSY_DOMAINS = {"climate", "fan", "humidifier", "water_heater", "vacuum", "camera"}
 OPENING_CLASSES = {"window", "door", "opening"}
+# An air device's internal readings (its coil, its tank…), not the room's air: left out of the ambient fallback.
+NOT_AMBIENT_WORDS = ("internal", "coil", "outlet", "inlet", "water", "tank", "evaporator", "condenser")
 
 # Integrations of kitchen and laundry appliances: their doors, lights and fans (a hood's extractor) are the
 # appliance's, not the room's openings, lamps and fans.
@@ -612,6 +614,39 @@ def _best(candidates: list[_Entity], by_device: dict[str, list[_Entity]]) -> str
     return best.entity_id
 
 
+def _ambient(
+    area: _Area, device_class: str, device_domains: dict[str, set[str]], by_device: dict[str, list[_Entity]]
+) -> str | None:
+    """Fallback room sensor from a (de)humidifier or purifier (then, last, an air conditioner) when the area has
+    no standalone one: these do measure the room's air. Their internal readings (coil, tank…) are left out."""
+
+    def rank(e: _Entity) -> int | None:
+        domains = device_domains.get(e.device_id or "", set())
+        if "humidifier" in domains:
+            return 0
+        siblings = by_device.get(e.device_id or "", [])
+        is_purifier = any(s.device_class in ("pm25", "pm10", "aqi") for s in siblings) or _has(
+            f"{e.entity_id} {e.name}", PURIFIER_WORDS
+        )
+        if "fan" in domains and is_purifier:
+            return 1
+        if "climate" in domains:
+            return 2
+        return None
+
+    candidates = []
+    for e in area.entities:
+        if e.domain != "sensor" or e.device_class != device_class or _equipment(e):
+            continue
+        if _has(e.name, OUTDOOR_WORDS) or _has(e.entity_id, OUTDOOR_WORDS):
+            continue
+        if _has(e.name, NOT_AMBIENT_WORDS) or _has(e.entity_id, NOT_AMBIENT_WORDS):
+            continue
+        if (priority := rank(e)) is not None:
+            candidates.append((priority, e.entity_id))
+    return min(candidates)[1] if candidates else None
+
+
 def _display(entity: _Entity, by_device: dict[str, list[_Entity]], used: set[str]) -> str | None:
     """The indicator light or display of a device: an on/off light, a switch, a brightness or a select."""
     for sibling in sorted(by_device.get(entity.device_id or "", []), key=lambda e: e.entity_id):
@@ -756,7 +791,11 @@ def discover_rooms(hass: HomeAssistant) -> Found:
             (k.CONF_NOISE, "sound_pressure", sensors),
         ):
             candidates = [e for e in pool if e.device_class == device_class and not _has(e.name, OUTDOOR_WORDS)]
-            if (best := _best(candidates, by_device)) is not None:
+            best = _best(candidates, by_device)
+            # No standalone sensor: fall back to a (de)humidifier's or purifier's ambient reading.
+            if best is None and device_class in ("temperature", "humidity"):
+                best = _ambient(area, device_class, device_domains, by_device)
+            if best is not None:
                 room[key] = best
         # The air sensors of the purifiers (and air conditioners) are the room's air: kept, unlike their others.
         air = [
@@ -792,6 +831,8 @@ def discover_rooms(hass: HomeAssistant) -> Found:
         for e in sorted((e for e in area.entities if e.domain == "fan"), key=lambda e: e.entity_id):
             if "climate" in device_domains.get(e.device_id or "", set()):
                 continue  # The fan of an air conditioner.
+            if "humidifier" in device_domains.get(e.device_id or "", set()):
+                continue  # The blower of a (de)humidifier, not a comfort fan.
             if _appliance(e, by_device):
                 continue  # The extractor of a range hood, not a comfort fan.
             if _is_purifier(e, by_device):
