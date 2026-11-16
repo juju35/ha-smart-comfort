@@ -397,6 +397,28 @@ async def test_machines_only(hass: HomeAssistant) -> None:
     assert discover_rooms(hass).rooms == []
 
 
+async def test_appliance_sensors_left_out(hass: HomeAssistant) -> None:
+    """An appliance's temperature is not the room's: an air fryer by its name, an appliance by its integration or
+    its operation state; a humidifier of the same integration still gives its ambient reading."""
+    h = House(hass)
+    kitchen, office = h.area("Cuisine"), h.area("Bureau")
+    h.entity("sensor", "cuisine_humidity", "55", area=kitchen, device_class="humidity")
+    fryer = h.device("Dual Blaze TwinFry 10-Litre Air Fryer", kitchen, model="CAF-TF101S")
+    h.entity("sensor", "dual_blaze_temperature_actuelle", "200", fryer, platform="vesync", device_class="temperature")
+    oven = h.device("Neff", kitchen)
+    h.entity("sensor", "neff_temperature", "60", oven, platform="homeconnect_ws", device_class="temperature")
+    dishwasher = h.device("Bosch", kitchen)
+    h.entity("sensor", "bosch_operation_state", "Run", dishwasher)
+    h.entity("sensor", "bosch_temperature", "45", dishwasher, device_class="temperature")
+    humidifier = h.device("Levoit OasisMist", office)
+    h.entity("humidifier", "oasismist", "on", humidifier, platform="vesync")
+    h.entity("sensor", "oasismist_temperature", "20", humidifier, platform="vesync", device_class="temperature")
+    rooms = {r["name"]: r for r in discover_rooms(hass).rooms}
+    assert rooms["Cuisine"]["humidity"] == "sensor.cuisine_humidity"
+    assert "temperature" not in rooms["Cuisine"]
+    assert rooms["Bureau"]["temperature"] == "sensor.oasismist_temperature"
+
+
 async def test_dehumidifier_ambient_and_blower(hass: HomeAssistant) -> None:
     """A (de)humidifier's own air sensors are the room's when it is the only sensor, and its fan is not a room fan."""
     h = House(hass)

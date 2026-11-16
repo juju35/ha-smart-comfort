@@ -362,6 +362,29 @@ EQUIPMENT_WORDS = frozenset(
         "congelateur",
         "oven",
         "four",
+        # Countertop appliances: an air fryer, a kettle or a coffee machine reads its own heat, not the room's.
+        "fryer",
+        "airfryer",
+        "friteuse",
+        "kettle",
+        "bouilloire",
+        "coffee",
+        "cafetiere",
+        "multicooker",
+        "sousvide",
+        "fritteuse",
+        "wasserkocher",
+        "kaffeemaschine",
+        "freidora",
+        "hervidor",
+        "cafetera",
+        "friggitrice",
+        "bollitore",
+        "waterkoker",
+        "fritadeira",
+        "chaleira",
+        "frytkownica",
+        "czajnik",
         "aquarium",
         "probe",
         "nvr",
@@ -457,6 +480,8 @@ APPLIANCE_WORDS = frozenset(
         "dryer",
         "microwave",
         "cooker",
+        "fryer",
+        "airfryer",
         # fr
         "refrigerateur",
         "frigo",
@@ -468,6 +493,7 @@ APPLIANCE_WORDS = frozenset(
         "linge",
         "seche",
         "cuisiniere",
+        "friteuse",
         # de
         "kuhlschrank",
         "gefrierschrank",
@@ -856,7 +882,12 @@ def discover_rooms(hass: HomeAssistant) -> Found:
             elif e.device_class == "sound_pressure":
                 found.outdoor_noise.append(e.entity_id)
     for area in sorted(areas, key=lambda a: a.name.casefold()):
-        sensors = [e for e in area.entities if e.domain == "sensor" and not busy(e) and not _equipment(e)]
+        # An appliance's sensors (an oven's cavity, an air fryer's basket…) read the appliance, not the room's air.
+        sensors = [
+            e
+            for e in area.entities
+            if e.domain == "sensor" and not busy(e) and not _equipment(e) and not _appliance(e, by_device)
+        ]
         temps = [e for e in sensors if e.device_class == "temperature"]
         if _has(area.name, OUTDOOR_WORDS) or _has(area.area_id, OUTDOOR_WORDS):
             place: dict[str, Any] = {k.CONF_NAME: area.name, k.CONF_AREA: area.area_id}
