@@ -199,7 +199,8 @@
           "climate": "Klimaanlage",
           "fans": "Lüfter",
           "purifiers": "Luftreiniger",
-          "lights": "Lichter"
+          "lights": "Lichter",
+          "type": "Typ"
         },
         "description": "Sensoren und Geräte des Raums. Leer lassen, was er nicht hat.",
         "sections": {
@@ -224,7 +225,8 @@
         "data_description": {
           "pm25": "Feinstaubsensoren (µg/m³), auch die der Luftreiniger: eine Warnung bei verschmutzter Luft, und die Luftreiniger laufen verstärkt, bis die Luft wieder sauber ist.",
           "air_quality": "Luftqualitätsindex-Sensoren des Raums (HomeKit 1–5, europäisch 1–6, US-AQI).",
-          "lights": "Dimmbare Lichter: ihre Helligkeit folgt der Tageszeit, solange sie an sind (adaptive Beleuchtung)."
+          "lights": "Dimmbare Lichter: ihre Helligkeit folgt der Tageszeit, solange sie an sind (adaptive Beleuchtung).",
+          "type": "Ein Wohnraum nutzt die Standard-Alarmschwellen; ein Nebenraum (Keller, Garage, Werkstatt…) hat eigene – nur Frost und Schimmel."
         }
       },
       "room": {
@@ -242,7 +244,8 @@
           "climate": "Klimaanlage",
           "fans": "Lüfter",
           "purifiers": "Luftreiniger",
-          "lights": "Lichter"
+          "lights": "Lichter",
+          "type": "Typ"
         },
         "description": "Sensoren und Geräte des Raums. Leer lassen, was er nicht hat.",
         "sections": {
@@ -267,7 +270,8 @@
         "data_description": {
           "pm25": "Feinstaubsensoren (µg/m³), auch die der Luftreiniger: eine Warnung bei verschmutzter Luft, und die Luftreiniger laufen verstärkt, bis die Luft wieder sauber ist.",
           "air_quality": "Luftqualitätsindex-Sensoren des Raums (HomeKit 1–5, europäisch 1–6, US-AQI).",
-          "lights": "Dimmbare Lichter: ihre Helligkeit folgt der Tageszeit, solange sie an sind (adaptive Beleuchtung)."
+          "lights": "Dimmbare Lichter: ihre Helligkeit folgt der Tageszeit, solange sie an sind (adaptive Beleuchtung).",
+          "type": "Ein Wohnraum nutzt die Standard-Alarmschwellen; ein Nebenraum (Keller, Garage, Werkstatt…) hat eigene – nur Frost und Schimmel."
         }
       },
       "outdoor": {
@@ -359,6 +363,12 @@
         "min": "Minimum",
         "max": "Maximum",
         "mean": "Mittelwert"
+      }
+    },
+    "room_type": {
+      "options": {
+        "living_space": "Wohnraum",
+        "annex": "Nebenraum (Keller, Garage…)"
       }
     }
   },

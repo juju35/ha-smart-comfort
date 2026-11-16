@@ -199,7 +199,8 @@
           "climate": "Klimaanlæg",
           "fans": "Ventilatorer",
           "purifiers": "Luftrensere",
-          "lights": "Lys"
+          "lights": "Lys",
+          "type": "Type"
         },
         "description": "Rummets sensorer og enheder. Lad det, rummet ikke har, være tomt.",
         "sections": {
@@ -224,7 +225,8 @@
         "data_description": {
           "pm25": "Sensorer for fine partikler (µg/m³), også luftrensernes: en advarsel om forurenet luft, og luftrenserne kører hårdere, indtil luften er ren igen.",
           "air_quality": "Rummets luftkvalitetsindekssensorer (HomeKit 1–5, europæisk 1–6, amerikansk AQI).",
-          "lights": "Dæmpbare lys: deres lysstyrke følger tidspunktet på dagen, mens de er tændt (adaptiv belysning)."
+          "lights": "Dæmpbare lys: deres lysstyrke følger tidspunktet på dagen, mens de er tændt (adaptiv belysning).",
+          "type": "Et opholdsrum bruger standardgrænserne; et birum (kælder, garage, værksted…) bruger sine egne — kun frost og skimmel."
         }
       },
       "room": {
@@ -242,7 +244,8 @@
           "climate": "Klimaanlæg",
           "fans": "Ventilatorer",
           "purifiers": "Luftrensere",
-          "lights": "Lys"
+          "lights": "Lys",
+          "type": "Type"
         },
         "description": "Rummets sensorer og enheder. Lad det, rummet ikke har, være tomt.",
         "sections": {
@@ -267,7 +270,8 @@
         "data_description": {
           "pm25": "Sensorer for fine partikler (µg/m³), også luftrensernes: en advarsel om forurenet luft, og luftrenserne kører hårdere, indtil luften er ren igen.",
           "air_quality": "Rummets luftkvalitetsindekssensorer (HomeKit 1–5, europæisk 1–6, amerikansk AQI).",
-          "lights": "Dæmpbare lys: deres lysstyrke følger tidspunktet på dagen, mens de er tændt (adaptiv belysning)."
+          "lights": "Dæmpbare lys: deres lysstyrke følger tidspunktet på dagen, mens de er tændt (adaptiv belysning).",
+          "type": "Et opholdsrum bruger standardgrænserne; et birum (kælder, garage, værksted…) bruger sine egne — kun frost og skimmel."
         }
       },
       "outdoor": {
@@ -359,6 +363,12 @@
         "min": "Minimum",
         "max": "Maksimum",
         "mean": "Gennemsnit"
+      }
+    },
+    "room_type": {
+      "options": {
+        "living_space": "Opholdsrum",
+        "annex": "Birum (kælder, garage…)"
       }
     }
   },

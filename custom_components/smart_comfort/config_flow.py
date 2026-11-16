@@ -283,6 +283,9 @@ def _room_schema(room: dict[str, Any]) -> vol.Schema:
     return vol.Schema(
         {
             vol.Required(k.CONF_NAME, default=room.get(k.CONF_NAME, "")): TEXT,
+            vol.Required(k.CONF_TYPE, default=room.get(k.CONF_TYPE) or k.ROOM_TYPE_LIVING): _select(
+                list(k.ROOM_TYPES), "room_type"
+            ),
             _opt(k.CONF_TEMPERATURE, room.get(k.CONF_TEMPERATURE)): _entity("sensor", device_class="temperature"),
             _opt(k.CONF_CO2, room.get(k.CONF_CO2)): _entity("sensor", device_class="carbon_dioxide"),
             _opt(k.CONF_HUMIDITY, room.get(k.CONF_HUMIDITY)): _entity("sensor", device_class="humidity"),
@@ -334,6 +337,11 @@ def _keep_items(old: Any, new_ids: list[str]) -> list[Any]:
 def _room_from_form(user_input: dict[str, Any], old: dict[str, Any]) -> dict[str, Any]:
     room = copy.deepcopy(old)
     room[k.CONF_NAME] = user_input[k.CONF_NAME].strip()
+    # Living space is the default: stored only when it is an annex, to keep the options minimal.
+    if (room_type := user_input.get(k.CONF_TYPE)) and room_type != k.ROOM_TYPE_LIVING:
+        room[k.CONF_TYPE] = room_type
+    else:
+        room.pop(k.CONF_TYPE, None)
     for key in (k.CONF_TEMPERATURE, k.CONF_CO2, k.CONF_HUMIDITY, k.CONF_NOISE):
         if user_input.get(key):
             room[key] = user_input[key]

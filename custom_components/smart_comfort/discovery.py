@@ -82,6 +82,79 @@ OUTDOOR_WORDS = (
     "napolj",
     "spolj",
 )
+# Words of annex areas (cellar, garage, workshop, laundry, attic, boiler room…): discovery suggests the annex type
+# for them, as it suggests the outdoor type from OUTDOOR_WORDS. Slug form (accents removed, lowercased); kept clear of
+# the living-room names so a study or a bedroom is never taken for an annex.
+ANNEX_WORDS = (
+    # French.
+    "cave",
+    "cellier",
+    "garage",
+    "atelier",
+    "buanderie",
+    "grenier",
+    "comble",
+    "chaufferie",
+    "debarras",
+    "sous_sol",
+    "remise",
+    # English.
+    "cellar",
+    "basement",
+    "workshop",
+    "laundry",
+    "attic",
+    "boiler",
+    "utility",
+    "shed",
+    # German.
+    "keller",
+    "werkstatt",
+    "waschkuche",
+    "dachboden",
+    "heizraum",
+    "abstellraum",
+    "speicher",
+    "hauswirtschaft",
+    # Spanish.
+    "sotano",
+    "taller",
+    "lavadero",
+    "desvan",
+    "trastero",
+    "bodega",
+    "caldera",
+    # Italian.
+    "cantina",
+    "officina",
+    "lavanderia",
+    "soffitta",
+    "sottotetto",
+    "ripostiglio",
+    "caldaia",
+    # Dutch.
+    "kelder",
+    "werkplaats",
+    "washok",
+    "zolder",
+    "berging",
+    "bijkeuken",
+    "stookruimte",
+    # Portuguese.
+    "adega",
+    "garagem",
+    "oficina",
+    "lavandaria",
+    "sotao",
+    "arrecadacao",
+    # Polish.
+    "piwnica",
+    "garaz",
+    "warsztat",
+    "pralnia",
+    "poddasze",
+    "kotlownia",
+)
 # Air quality index sensors (an index, not a pollutant), and what is not the current outdoor air.
 AIR_WORDS = (
     "air_quality",
@@ -821,6 +894,8 @@ def discover_rooms(hass: HomeAssistant) -> Found:
         )
         if openings:
             room[k.CONF_OPENINGS] = openings
+        if _has(area.name, ANNEX_WORDS) or _has(area.area_id, ANNEX_WORDS):
+            room[k.CONF_TYPE] = k.ROOM_TYPE_ANNEX
         coolers = [
             e for e in area.entities if e.domain == "climate" and "cool" in (e.attributes.get("hvac_modes") or [])
         ]
@@ -892,7 +967,7 @@ def merge(options: dict[str, Any], found: Found) -> tuple[dict[str, Any], Report
         changed = False
         if match.get(k.CONF_AREA) != new[k.CONF_AREA]:
             match[k.CONF_AREA] = new[k.CONF_AREA]
-        for key in (k.CONF_TEMPERATURE, k.CONF_CO2, k.CONF_HUMIDITY, k.CONF_NOISE, k.CONF_CLIMATE):
+        for key in (k.CONF_TYPE, k.CONF_TEMPERATURE, k.CONF_CO2, k.CONF_HUMIDITY, k.CONF_NOISE, k.CONF_CLIMATE):
             if key in new and not match.get(key):
                 match[key] = new[key]
                 changed = True

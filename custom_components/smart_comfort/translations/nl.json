@@ -199,7 +199,8 @@
           "climate": "Airco",
           "fans": "Ventilatoren",
           "purifiers": "Luchtreinigers",
-          "lights": "Lampen"
+          "lights": "Lampen",
+          "type": "Type"
         },
         "description": "Sensoren en apparaten van de kamer. Laat leeg wat er niet is.",
         "sections": {
@@ -224,7 +225,8 @@
         "data_description": {
           "pm25": "Fijnstofsensoren (µg/m³), ook die van de luchtreinigers: een melding bij vervuilde lucht, en de luchtreinigers harder tot de lucht weer schoon is.",
           "air_quality": "Luchtkwaliteitsindexsensoren van de ruimte (HomeKit 1–5, Europees 1–6, Amerikaanse AQI).",
-          "lights": "Dimbare lampen: hun helderheid volgt het moment van de dag zolang ze aan zijn (adaptieve verlichting)."
+          "lights": "Dimbare lampen: hun helderheid volgt het moment van de dag zolang ze aan zijn (adaptieve verlichting).",
+          "type": "Een leefruimte gebruikt de standaarddrempels; een bijruimte (kelder, garage, werkplaats…) gebruikt eigen drempels — alleen vorst en schimmel."
         }
       },
       "room": {
@@ -242,7 +244,8 @@
           "climate": "Airco",
           "fans": "Ventilatoren",
           "purifiers": "Luchtreinigers",
-          "lights": "Lampen"
+          "lights": "Lampen",
+          "type": "Type"
         },
         "description": "Sensoren en apparaten van de kamer. Laat leeg wat er niet is.",
         "sections": {
@@ -267,7 +270,8 @@
         "data_description": {
           "pm25": "Fijnstofsensoren (µg/m³), ook die van de luchtreinigers: een melding bij vervuilde lucht, en de luchtreinigers harder tot de lucht weer schoon is.",
           "air_quality": "Luchtkwaliteitsindexsensoren van de ruimte (HomeKit 1–5, Europees 1–6, Amerikaanse AQI).",
-          "lights": "Dimbare lampen: hun helderheid volgt het moment van de dag zolang ze aan zijn (adaptieve verlichting)."
+          "lights": "Dimbare lampen: hun helderheid volgt het moment van de dag zolang ze aan zijn (adaptieve verlichting).",
+          "type": "Een leefruimte gebruikt de standaarddrempels; een bijruimte (kelder, garage, werkplaats…) gebruikt eigen drempels — alleen vorst en schimmel."
         }
       },
       "outdoor": {
@@ -359,6 +363,12 @@
         "min": "Minimum",
         "max": "Maximum",
         "mean": "Gemiddelde"
+      }
+    },
+    "room_type": {
+      "options": {
+        "living_space": "Leefruimte",
+        "annex": "Bijruimte (kelder, garage…)"
       }
     }
   },

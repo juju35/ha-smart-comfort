@@ -199,7 +199,8 @@
           "climate": "Gaisa kondicionieris",
           "fans": "Ventilatori",
           "purifiers": "Gaisa attīrītāji",
-          "lights": "Gaismas"
+          "lights": "Gaismas",
+          "type": "Tips"
         },
         "description": "Telpas sensori un ierīces. Atstājiet tukšu to, kā tai nav.",
         "sections": {
@@ -224,7 +225,8 @@
         "data_description": {
           "pm25": "Smalko daļiņu sensori (µg/m³), arī gaisa attīrītāju: brīdinājums par piesārņotu gaisu, un attīrītāji darbojas jaudīgāk, līdz gaiss atkal ir tīrs.",
           "air_quality": "Telpas gaisa kvalitātes indeksa sensori (HomeKit 1–5, Eiropas 1–6, ASV AQI).",
-          "lights": "Regulējamas gaismas: to spilgtums seko diennakts laikam, kamēr tās ir ieslēgtas (adaptīvais apgaismojums)."
+          "lights": "Regulējamas gaismas: to spilgtums seko diennakts laikam, kamēr tās ir ieslēgtas (adaptīvais apgaismojums).",
+          "type": "Dzīvojamā telpa izmanto standarta sliekšņus; palīgtelpa (pagrabs, garāža, darbnīca…) izmanto savus — tikai salu un pelējumu."
         }
       },
       "room": {
@@ -242,7 +244,8 @@
           "climate": "Gaisa kondicionieris",
           "fans": "Ventilatori",
           "purifiers": "Gaisa attīrītāji",
-          "lights": "Gaismas"
+          "lights": "Gaismas",
+          "type": "Tips"
         },
         "description": "Telpas sensori un ierīces. Atstājiet tukšu to, kā tai nav.",
         "sections": {
@@ -267,7 +270,8 @@
         "data_description": {
           "pm25": "Smalko daļiņu sensori (µg/m³), arī gaisa attīrītāju: brīdinājums par piesārņotu gaisu, un attīrītāji darbojas jaudīgāk, līdz gaiss atkal ir tīrs.",
           "air_quality": "Telpas gaisa kvalitātes indeksa sensori (HomeKit 1–5, Eiropas 1–6, ASV AQI).",
-          "lights": "Regulējamas gaismas: to spilgtums seko diennakts laikam, kamēr tās ir ieslēgtas (adaptīvais apgaismojums)."
+          "lights": "Regulējamas gaismas: to spilgtums seko diennakts laikam, kamēr tās ir ieslēgtas (adaptīvais apgaismojums).",
+          "type": "Dzīvojamā telpa izmanto standarta sliekšņus; palīgtelpa (pagrabs, garāža, darbnīca…) izmanto savus — tikai salu un pelējumu."
         }
       },
       "outdoor": {
@@ -359,6 +363,12 @@
         "min": "Minimums",
         "max": "Maksimums",
         "mean": "Vidējais"
+      }
+    },
+    "room_type": {
+      "options": {
+        "living_space": "Dzīvojamā telpa",
+        "annex": "Palīgtelpa (pagrabs, garāža…)"
       }
     }
   },

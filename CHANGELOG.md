@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.21.0 - 2026-11-16
+
+### Features
+- Room types: every room is now a **living space** (the default) or an **annex** — cellar, garage, workshop, laundry, attic. Annexes have their own alert defaults (frost at 5 °C and mould at 80 % only; too hot, ventilation, window, CO₂ and noise alerts off; polluted air kept on), so a cold, humid cellar no longer alerts all the time. Pick the type in each room's form; the annex defaults sit in the Alerts tab next to the living-space ones and can be tuned once for every annex, and any room can still override them. Discovery suggests the annex type from the area name (cellar, cave, garage, atelier, grenier, Keller, Werkstatt…). Annex rooms stay out of the home's Overview comfort score, so an unlived space never pulls it down.
+
 ## 1.20.4 - 2026-11-16
 
 ### Fixes

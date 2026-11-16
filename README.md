@@ -19,7 +19,8 @@ Comfort automations built with a cooldown keep notifying every couple of hours a
 ## Features
 
 - **Eleven alerts per room**: too hot, too cold, open the windows (warmer inside than outside), close the windows (hotter outside), window open in the cold, high CO₂, polluted air (PM2.5, PM10 or air quality index), high humidity, noisy room, close the windows (noisy outside), close the windows (poor air outside) — each with its threshold, hysteresis, delay, severity and escalation step, globally and per room
-- **Comfort score** per room, 0 to 100 %, lowered by each problem under way according to its severity; its statistics give the comfort of the day or the week
+- **Room types**: each room is a **living space** or an **annex** (cellar, garage, workshop, laundry, attic), each with its own alert defaults — an annex only watches for frost (too cold at 5 °C) and mould (humidity at 80 %), plus polluted air, and stays silent on heat, ventilation, windows, CO₂ and noise; tune the annex defaults once for all of them, override any room, and Discover suggests the type from the area name
+- **Comfort score** per room, 0 to 100 %, lowered by each problem under way according to its severity; its statistics give the comfort of the day or the week — annex rooms stay out of the home's Overview score, so a cold cellar never drags it down
 - **Episodes, not cooldowns**: one notification when a problem starts, none while it lasts; again when it gets worse by the escalation step, or after the reminder delay (off by default)
 - **Hysteresis and delay**: a problem starts once its condition has held for the delay, and ends only once the value is back past the threshold by the hysteresis — no flapping. An unavailable sensor changes nothing
 - **Digest**: what comes up within the digest window (5 minutes by default) goes out in **one** notification listing every current problem, replacing the previous one on the phone (notification `tag`) instead of piling up
@@ -89,9 +90,9 @@ Once set up, Smart Comfort adds a **Smart Comfort** page to the sidebar, for adm
 
 - **Overview**: while nothing is set up (no room nor outdoor place), a **Discover** button that runs the discovery and opens its result in the Rooms tab; the active alerts with their state (notified, snoozed, acknowledged, handled by a running device) and **Snooze** / **Got it** buttons, the readings and devices of each room with their targets and manual overrides, the last notification, and switches for the notifications and the device control
 - **Activity**: what Smart Comfort did and why, live and by day — devices (cooling, window boost, night mode, back to normal…), lights (brightness of the moment, on with presence, off with nobody), indicator lights, notifications sent and cleared, changes by hand that pause a device or a light, reset times, commands that failed — drawn by the panel itself, at once, with filters (devices, lights, notifications, by hand) and a room filter; a line opens its entity
-- **Rooms**: **Discover** adds a room for every Home Assistant area with something to follow (a comfort sensor, an air conditioner, a fan, a purifier or a dimmable light — not a hallway with only its door) and sets it up: temperature, CO₂, humidity and noise sensors (a weather station preferred over a device's own sensor; never the temperatures of machines — NAS, internet box, server, UPS, printer, fridge…), PM2.5, PM10 and air quality index sensors (those of the purifiers too), windows and doors (an appliance's own door, light or extractor fan is left out — fridge, freezer, dishwasher, oven, range hood, washer, dryer; recognised by integration such as Home Connect or Miele, by name, or by a program / operation-state entity on the device), air conditioner (only one that can cool), fans with their natural / direct presets, purifiers with their auto / manual mode select or presets, dimmable lights (not the indicators of devices nor the floodlights of cameras; night lights flagged as such), the quiet morning of the bedrooms, and the night settings from their quiet presets and fan modes. Areas, bedrooms, night lights, indicators and machines are recognised by their names in English, French, German, Spanish, Italian, Dutch, Portuguese, Polish and Serbian (Garden, Jardin, Giardino, Tuin, Jardim, Ogród, Bašta / Башта…). The outdoor areas (garden, terrace, balcony…) with a sensor become outdoor places (an outdoor module counts by its device's area); outdoor sensors in no area — a sensor named outdoor, a city air quality index (Atmo France, WAQI…), and the weather entity when there is no outdoor temperature sensor — go to the other outdoor sensors. What is already set is kept, and running it again only adds what is new. Nothing is saved until **Save**. Each room shows the icon of its area (or one from its name) and folds into sections — **Sensors**, **Windows and doors**, **Devices**, **Lighting** (lights, quiet morning, naps), **Alerts** — each with a one-line summary; only what the room has is shown, and **+** buttons add the rest (a CO₂ sensor, a fan, a light, a nap, a customized alert…). Device settings stay folded under each device
+- **Rooms**: **Discover** adds a room for every Home Assistant area with something to follow (a comfort sensor, an air conditioner, a fan, a purifier or a dimmable light — not a hallway with only its door) and sets it up: temperature, CO₂, humidity and noise sensors (a weather station preferred over a device's own sensor; never the temperatures of machines — NAS, internet box, server, UPS, printer, fridge…), PM2.5, PM10 and air quality index sensors (those of the purifiers too), windows and doors (an appliance's own door, light or extractor fan is left out — fridge, freezer, dishwasher, oven, range hood, washer, dryer; recognised by integration such as Home Connect or Miele, by name, or by a program / operation-state entity on the device), air conditioner (only one that can cool), fans with their natural / direct presets, purifiers with their auto / manual mode select or presets, dimmable lights (not the indicators of devices nor the floodlights of cameras; night lights flagged as such), the quiet morning of the bedrooms, and the night settings from their quiet presets and fan modes. Areas, bedrooms, night lights, indicators and machines are recognised by their names in English, French, German, Spanish, Italian, Dutch, Portuguese, Polish and Serbian (Garden, Jardin, Giardino, Tuin, Jardim, Ogród, Bašta / Башта…). The outdoor areas (garden, terrace, balcony…) with a sensor become outdoor places (an outdoor module counts by its device's area); outdoor sensors in no area — a sensor named outdoor, a city air quality index (Atmo France, WAQI…), and the weather entity when there is no outdoor temperature sensor — go to the other outdoor sensors. What is already set is kept, and running it again only adds what is new. Nothing is saved until **Save**. Each room shows the icon of its area (or one from its name), a **Type** (living space or annex — cellar, garage, workshop…), and folds into sections — **Sensors**, **Windows and doors**, **Devices**, **Lighting** (lights, quiet morning, naps), **Alerts** — each with a one-line summary; only what the room has is shown, and **+** buttons add the rest (a CO₂ sensor, a fan, a light, a nap, a customized alert…). Device settings stay folded under each device. Discover suggests the annex type from the area name (cellar, garage, atelier, grenier, Keller, Werkstatt…)
 - **Outdoors**: the outdoor places (garden, terrace…) with their temperature, air quality and noise sensors, and the other outdoor sensors (weather entity, city air quality index) with how the temperatures are combined
-- **Alerts**: one line per alert with its state, threshold and severity; open it to change them (hysteresis, delay and escalation under **Advanced**)
+- **Alerts**: one line per alert with its state, threshold and severity; open it to change them (hysteresis, delay and escalation under **Advanced**). A second group, **Annex defaults**, holds the same fields for the annex rooms, tuned once for every annex
 - **Schedule**: every time window on one 24-hour line with the time now — quiet hours (notifications), quiet night (devices and lights), quiet morning (bedroom lights) and window boost — and their times, all in one place
 - **Settings**: notifications (where, presence, grouping, reminder; the rest under **Advanced**), device control (with the air conditioner, fan and purifier defaults folded) and adaptive lighting (the brightness of each moment on one row, the warmth only when it is on)
 - **YAML**: the configuration of Smart Comfort only, as it goes under `smart_comfort:` in `configuration.yaml` (the defaults are not repeated), with a **Copy** button — to move to YAML or keep a copy. Unsaved changes are included
@@ -167,11 +168,14 @@ smart_comfort:
   presence: zone.home
   url: homeassistant://navigate/lovelace/comfort
 
-  alerts:
+  alerts:                        # living-space defaults
     too_hot: { threshold: 27, delay: 15, escalation: 1 }
     close_windows: { min_outdoor: 27, severity: critical }
     co2_high: { threshold: 1300 }
     polluted_air: { threshold: 25, pm10_threshold: 50, aqi_threshold: 3 }
+
+  annex_alerts:                  # defaults of the annex rooms, same fields
+    too_cold: { threshold: 4 }   # frost protection
 
   control:
     start: "09:00"             # window boost hours
@@ -221,6 +225,11 @@ smart_comfort:
     - name: Bathroom
       humidity: sensor.bathroom_humidity
 
+    - name: Cellar
+      type: annex                # frost and mould only, out of the home's comfort score
+      temperature: sensor.cellar_temperature
+      humidity: sensor.cellar_humidity
+
   outdoors:
     - name: Terrace
       temperature:
@@ -253,9 +262,9 @@ smart_comfort:
 
 ### Alerts
 
-Set under `alerts:` for every room, and under `rooms[].alerts:` for one room.
+Set under `alerts:` for every living-space room, under `annex_alerts:` for every annex room, and under `rooms[].alerts:` for one room (either type). A room's `type` is `living_space` (the default) or `annex` (cellar, garage, workshop, laundry, attic…); an annex uses the `annex_alerts` defaults instead of `alerts` and is kept out of the home's Overview comfort score. The built-in annex defaults keep only frost (`too_cold` at 5 °C) and mould (`humidity_high` at 80 %) plus `polluted_air`, with `too_hot`, `ventilate`, `close_windows`, `window_open_cold`, `co2_high`, `noise_high`, `noisy_outside` and `bad_air_outside` off; `annex_alerts` overrides them for all annexes at once, and `rooms[].alerts:` still wins for one room.
 
-| Alert | Condition | Default |
+| Alert | Condition | Default (living space) |
 |---|---|---|
 | `too_hot` | temperature > `threshold` | 27 °C, warning |
 | `too_cold` | temperature < `threshold` | 17 °C, warning |

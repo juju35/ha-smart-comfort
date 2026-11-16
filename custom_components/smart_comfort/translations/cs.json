@@ -199,7 +199,8 @@
           "climate": "Klimatizace",
           "fans": "Ventilátory",
           "purifiers": "Čističky vzduchu",
-          "lights": "Světla"
+          "lights": "Světla",
+          "type": "Typ"
         },
         "description": "Senzory a zařízení místnosti. Nechte prázdné, co nemá.",
         "sections": {
@@ -224,7 +225,8 @@
         "data_description": {
           "pm25": "Senzory jemných prachových částic (µg/m³), i ty na čističkách: upozornění na znečištěný vzduch a čističky běží silněji, dokud vzduch není opět čistý.",
           "air_quality": "Senzory indexu kvality vzduchu v místnosti (HomeKit 1–5, evropský 1–6, americký AQI).",
-          "lights": "Stmívatelná světla: jejich jas sleduje denní dobu, dokud svítí (adaptivní osvětlení)."
+          "lights": "Stmívatelná světla: jejich jas sleduje denní dobu, dokud svítí (adaptivní osvětlení).",
+          "type": "Obytný prostor používá standardní prahy; vedlejší prostor (sklep, garáž, dílna…) používá vlastní — jen mráz a plíseň."
         }
       },
       "room": {
@@ -242,7 +244,8 @@
           "climate": "Klimatizace",
           "fans": "Ventilátory",
           "purifiers": "Čističky vzduchu",
-          "lights": "Světla"
+          "lights": "Světla",
+          "type": "Typ"
         },
         "description": "Senzory a zařízení místnosti. Nechte prázdné, co nemá.",
         "sections": {
@@ -267,7 +270,8 @@
         "data_description": {
           "pm25": "Senzory jemných prachových částic (µg/m³), i ty na čističkách: upozornění na znečištěný vzduch a čističky běží silněji, dokud vzduch není opět čistý.",
           "air_quality": "Senzory indexu kvality vzduchu v místnosti (HomeKit 1–5, evropský 1–6, americký AQI).",
-          "lights": "Stmívatelná světla: jejich jas sleduje denní dobu, dokud svítí (adaptivní osvětlení)."
+          "lights": "Stmívatelná světla: jejich jas sleduje denní dobu, dokud svítí (adaptivní osvětlení).",
+          "type": "Obytný prostor používá standardní prahy; vedlejší prostor (sklep, garáž, dílna…) používá vlastní — jen mráz a plíseň."
         }
       },
       "outdoor": {
@@ -359,6 +363,12 @@
         "min": "Minimum",
         "max": "Maximum",
         "mean": "Průměr"
+      }
+    },
+    "room_type": {
+      "options": {
+        "living_space": "Obytný prostor",
+        "annex": "Vedlejší prostor (sklep, garáž…)"
       }
     }
   },

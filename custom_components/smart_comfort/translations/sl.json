@@ -199,7 +199,8 @@
           "climate": "Klimatska naprava",
           "fans": "Ventilatorji",
           "purifiers": "Čistilniki zraka",
-          "lights": "Luči"
+          "lights": "Luči",
+          "type": "Vrsta"
         },
         "description": "Tipala in naprave prostora. Pustite prazno, česar nima.",
         "sections": {
@@ -224,7 +225,8 @@
         "data_description": {
           "pm25": "Senzorji drobnih delcev (µg/m³), tudi tisti na čistilnikih: opozorilo o onesnaženem zraku, čistilniki pa delajo močneje, dokler zrak spet ni čist.",
           "air_quality": "Senzorji indeksa kakovosti zraka v prostoru (HomeKit 1–5, evropski 1–6, ameriški AQI).",
-          "lights": "Zatemnilne luči: njihova svetlost sledi času dneva, dokler so prižgane (prilagodljiva razsvetljava)."
+          "lights": "Zatemnilne luči: njihova svetlost sledi času dneva, dokler so prižgane (prilagodljiva razsvetljava).",
+          "type": "Bivalni prostor uporablja standardne pragove; pomožni prostor (klet, garaža, delavnica…) uporablja svoje — samo zmrzal in plesen."
         }
       },
       "room": {
@@ -242,7 +244,8 @@
           "climate": "Klimatska naprava",
           "fans": "Ventilatorji",
           "purifiers": "Čistilniki zraka",
-          "lights": "Luči"
+          "lights": "Luči",
+          "type": "Vrsta"
         },
         "description": "Tipala in naprave prostora. Pustite prazno, česar nima.",
         "sections": {
@@ -267,7 +270,8 @@
         "data_description": {
           "pm25": "Senzorji drobnih delcev (µg/m³), tudi tisti na čistilnikih: opozorilo o onesnaženem zraku, čistilniki pa delajo močneje, dokler zrak spet ni čist.",
           "air_quality": "Senzorji indeksa kakovosti zraka v prostoru (HomeKit 1–5, evropski 1–6, ameriški AQI).",
-          "lights": "Zatemnilne luči: njihova svetlost sledi času dneva, dokler so prižgane (prilagodljiva razsvetljava)."
+          "lights": "Zatemnilne luči: njihova svetlost sledi času dneva, dokler so prižgane (prilagodljiva razsvetljava).",
+          "type": "Bivalni prostor uporablja standardne pragove; pomožni prostor (klet, garaža, delavnica…) uporablja svoje — samo zmrzal in plesen."
         }
       },
       "outdoor": {
@@ -359,6 +363,12 @@
         "min": "Najmanj",
         "max": "Največ",
         "mean": "Povprečje"
+      }
+    },
+    "room_type": {
+      "options": {
+        "living_space": "Bivalni prostor",
+        "annex": "Pomožni prostor (klet, garaža…)"
       }
     }
   },

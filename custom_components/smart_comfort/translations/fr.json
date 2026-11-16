@@ -199,7 +199,8 @@
           "climate": "Climatiseur",
           "fans": "Ventilateurs",
           "purifiers": "Purificateurs d'air",
-          "lights": "Lumières"
+          "lights": "Lumières",
+          "type": "Type"
         },
         "description": "Capteurs et appareils de la pièce. Laissez vide ce qu'elle n'a pas.",
         "sections": {
@@ -224,7 +225,8 @@
         "data_description": {
           "pm25": "Capteurs de particules fines (µg/m³), ceux des purificateurs aussi : une alerte air pollué, et les purificateurs poussés jusqu'à ce que l'air redevienne propre.",
           "air_quality": "Capteurs d'indice de qualité de l'air de la pièce (HomeKit 1–5, européen 1–6, AQI américain).",
-          "lights": "Lumières variables : leur intensité suit le moment de la journée quand elles sont allumées (éclairage adaptatif)."
+          "lights": "Lumières variables : leur intensité suit le moment de la journée quand elles sont allumées (éclairage adaptatif).",
+          "type": "Une pièce de vie utilise les seuils d'alerte standard ; une annexe (cave, garage, atelier…) utilise les siens — gel et moisissure seulement."
         }
       },
       "room": {
@@ -242,7 +244,8 @@
           "climate": "Climatiseur",
           "fans": "Ventilateurs",
           "purifiers": "Purificateurs d'air",
-          "lights": "Lumières"
+          "lights": "Lumières",
+          "type": "Type"
         },
         "description": "Capteurs et appareils de la pièce. Laissez vide ce qu'elle n'a pas.",
         "sections": {
@@ -267,7 +270,8 @@
         "data_description": {
           "pm25": "Capteurs de particules fines (µg/m³), ceux des purificateurs aussi : une alerte air pollué, et les purificateurs poussés jusqu'à ce que l'air redevienne propre.",
           "air_quality": "Capteurs d'indice de qualité de l'air de la pièce (HomeKit 1–5, européen 1–6, AQI américain).",
-          "lights": "Lumières variables : leur intensité suit le moment de la journée quand elles sont allumées (éclairage adaptatif)."
+          "lights": "Lumières variables : leur intensité suit le moment de la journée quand elles sont allumées (éclairage adaptatif).",
+          "type": "Une pièce de vie utilise les seuils d'alerte standard ; une annexe (cave, garage, atelier…) utilise les siens — gel et moisissure seulement."
         }
       },
       "outdoor": {
@@ -359,6 +363,12 @@
         "min": "Minimum",
         "max": "Maximum",
         "mean": "Moyenne"
+      }
+    },
+    "room_type": {
+      "options": {
+        "living_space": "Pièce de vie",
+        "annex": "Annexe (cave, garage…)"
       }
     }
   },

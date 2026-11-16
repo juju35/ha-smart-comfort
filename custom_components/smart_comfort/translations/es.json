@@ -199,7 +199,8 @@
           "climate": "Aire acondicionado",
           "fans": "Ventiladores",
           "purifiers": "Purificadores de aire",
-          "lights": "Luces"
+          "lights": "Luces",
+          "type": "Tipo"
         },
         "description": "Sensores y aparatos de la estancia. Deje vacío lo que no tenga.",
         "sections": {
@@ -224,7 +225,8 @@
         "data_description": {
           "pm25": "Sensores de partículas finas (µg/m³), también los de los purificadores: una alerta de aire contaminado, y los purificadores reforzados hasta que el aire vuelva a estar limpio.",
           "air_quality": "Sensores de índice de calidad del aire de la estancia (HomeKit 1–5, europeo 1–6, AQI de EE. UU.).",
-          "lights": "Luces regulables: su brillo sigue el momento del día mientras están encendidas (iluminación adaptativa)."
+          "lights": "Luces regulables: su brillo sigue el momento del día mientras están encendidas (iluminación adaptativa).",
+          "type": "Una estancia habitable usa los umbrales estándar; un anexo (bodega, garaje, taller…) usa los suyos: solo heladas y moho."
         }
       },
       "room": {
@@ -242,7 +244,8 @@
           "climate": "Aire acondicionado",
           "fans": "Ventiladores",
           "purifiers": "Purificadores de aire",
-          "lights": "Luces"
+          "lights": "Luces",
+          "type": "Tipo"
         },
         "description": "Sensores y aparatos de la estancia. Deje vacío lo que no tenga.",
         "sections": {
@@ -267,7 +270,8 @@
         "data_description": {
           "pm25": "Sensores de partículas finas (µg/m³), también los de los purificadores: una alerta de aire contaminado, y los purificadores reforzados hasta que el aire vuelva a estar limpio.",
           "air_quality": "Sensores de índice de calidad del aire de la estancia (HomeKit 1–5, europeo 1–6, AQI de EE. UU.).",
-          "lights": "Luces regulables: su brillo sigue el momento del día mientras están encendidas (iluminación adaptativa)."
+          "lights": "Luces regulables: su brillo sigue el momento del día mientras están encendidas (iluminación adaptativa).",
+          "type": "Una estancia habitable usa los umbrales estándar; un anexo (bodega, garaje, taller…) usa los suyos: solo heladas y moho."
         }
       },
       "outdoor": {
@@ -359,6 +363,12 @@
         "min": "Mínimo",
         "max": "Máximo",
         "mean": "Media"
+      }
+    },
+    "room_type": {
+      "options": {
+        "living_space": "Estancia habitable",
+        "annex": "Anexo (bodega, garaje…)"
       }
     }
   },

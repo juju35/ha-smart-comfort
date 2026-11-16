@@ -199,7 +199,8 @@
           "climate": "Klimatizácia",
           "fans": "Ventilátory",
           "purifiers": "Čističky vzduchu",
-          "lights": "Svetlá"
+          "lights": "Svetlá",
+          "type": "Typ"
         },
         "description": "Senzory a zariadenia miestnosti. Nechajte prázdne, čo nemá.",
         "sections": {
@@ -224,7 +225,8 @@
         "data_description": {
           "pm25": "Senzory jemných prachových častíc (µg/m³), aj tie na čističkách: upozornenie na znečistený vzduch a čističky bežia silnejšie, kým vzduch nie je opäť čistý.",
           "air_quality": "Senzory indexu kvality vzduchu v miestnosti (HomeKit 1–5, európsky 1–6, americký AQI).",
-          "lights": "Stmievateľné svetlá: ich jas sleduje dennú dobu, kým svietia (adaptívne osvetlenie)."
+          "lights": "Stmievateľné svetlá: ich jas sleduje dennú dobu, kým svietia (adaptívne osvetlenie).",
+          "type": "Obytný priestor používa štandardné prahy; vedľajší priestor (pivnica, garáž, dielňa…) používa vlastné — len mráz a pleseň."
         }
       },
       "room": {
@@ -242,7 +244,8 @@
           "climate": "Klimatizácia",
           "fans": "Ventilátory",
           "purifiers": "Čističky vzduchu",
-          "lights": "Svetlá"
+          "lights": "Svetlá",
+          "type": "Typ"
         },
         "description": "Senzory a zariadenia miestnosti. Nechajte prázdne, čo nemá.",
         "sections": {
@@ -267,7 +270,8 @@
         "data_description": {
           "pm25": "Senzory jemných prachových častíc (µg/m³), aj tie na čističkách: upozornenie na znečistený vzduch a čističky bežia silnejšie, kým vzduch nie je opäť čistý.",
           "air_quality": "Senzory indexu kvality vzduchu v miestnosti (HomeKit 1–5, európsky 1–6, americký AQI).",
-          "lights": "Stmievateľné svetlá: ich jas sleduje dennú dobu, kým svietia (adaptívne osvetlenie)."
+          "lights": "Stmievateľné svetlá: ich jas sleduje dennú dobu, kým svietia (adaptívne osvetlenie).",
+          "type": "Obytný priestor používa štandardné prahy; vedľajší priestor (pivnica, garáž, dielňa…) používa vlastné — len mráz a pleseň."
         }
       },
       "outdoor": {
@@ -359,6 +363,12 @@
         "min": "Minimum",
         "max": "Maximum",
         "mean": "Priemer"
+      }
+    },
+    "room_type": {
+      "options": {
+        "living_space": "Obytný priestor",
+        "annex": "Vedľajší priestor (pivnica, garáž…)"
       }
     }
   },

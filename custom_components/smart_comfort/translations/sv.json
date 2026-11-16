@@ -199,7 +199,8 @@
           "climate": "Luftkonditionering",
           "fans": "Fläktar",
           "purifiers": "Luftrenare",
-          "lights": "Lampor"
+          "lights": "Lampor",
+          "type": "Typ"
         },
         "description": "Rummets sensorer och enheter. Lämna tomt det som rummet inte har.",
         "sections": {
@@ -224,7 +225,8 @@
         "data_description": {
           "pm25": "Sensorer för fina partiklar (µg/m³), även luftrenarnas: en varning för förorenad luft, och luftrenarna går hårdare tills luften är ren igen.",
           "air_quality": "Rummets sensorer för luftkvalitetsindex (HomeKit 1–5, europeiskt 1–6, amerikanskt AQI).",
-          "lights": "Dimbara lampor: deras ljusstyrka följer tiden på dygnet medan de är tända (adaptiv belysning)."
+          "lights": "Dimbara lampor: deras ljusstyrka följer tiden på dygnet medan de är tända (adaptiv belysning).",
+          "type": "Ett vardagsrum använder standardtrösklarna; ett biutrymme (källare, garage, verkstad…) använder egna — bara frost och mögel."
         }
       },
       "room": {
@@ -242,7 +244,8 @@
           "climate": "Luftkonditionering",
           "fans": "Fläktar",
           "purifiers": "Luftrenare",
-          "lights": "Lampor"
+          "lights": "Lampor",
+          "type": "Typ"
         },
         "description": "Rummets sensorer och enheter. Lämna tomt det som rummet inte har.",
         "sections": {
@@ -267,7 +270,8 @@
         "data_description": {
           "pm25": "Sensorer för fina partiklar (µg/m³), även luftrenarnas: en varning för förorenad luft, och luftrenarna går hårdare tills luften är ren igen.",
           "air_quality": "Rummets sensorer för luftkvalitetsindex (HomeKit 1–5, europeiskt 1–6, amerikanskt AQI).",
-          "lights": "Dimbara lampor: deras ljusstyrka följer tiden på dygnet medan de är tända (adaptiv belysning)."
+          "lights": "Dimbara lampor: deras ljusstyrka följer tiden på dygnet medan de är tända (adaptiv belysning).",
+          "type": "Ett vardagsrum använder standardtrösklarna; ett biutrymme (källare, garage, verkstad…) använder egna — bara frost och mögel."
         }
       },
       "outdoor": {
@@ -359,6 +363,12 @@
         "min": "Minimum",
         "max": "Maximum",
         "mean": "Medelvärde"
+      }
+    },
+    "room_type": {
+      "options": {
+        "living_space": "Vardagsrum",
+        "annex": "Biutrymme (källare, garage…)"
       }
     }
   },

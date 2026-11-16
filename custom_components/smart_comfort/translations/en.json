@@ -199,7 +199,8 @@
           "climate": "Air conditioner",
           "fans": "Fans",
           "purifiers": "Air purifiers",
-          "lights": "Lights"
+          "lights": "Lights",
+          "type": "Type"
         },
         "description": "Sensors and devices of the room. Leave empty what it doesn't have.",
         "sections": {
@@ -224,7 +225,8 @@
         "data_description": {
           "pm25": "Fine particle sensors (µg/m³), those of the air purifiers too: a polluted air alert, and the purifiers boosted until the air is clean again.",
           "air_quality": "Air quality index sensors of the room (HomeKit 1–5, European 1–6, US AQI).",
-          "lights": "Dimmable lights: their brightness follows the time of day while they are on (adaptive lighting)."
+          "lights": "Dimmable lights: their brightness follows the time of day while they are on (adaptive lighting).",
+          "type": "Living space uses the standard alert defaults; an annex (cellar, garage, workshop…) uses its own — frost and mould only."
         }
       },
       "room": {
@@ -242,7 +244,8 @@
           "climate": "Air conditioner",
           "fans": "Fans",
           "purifiers": "Air purifiers",
-          "lights": "Lights"
+          "lights": "Lights",
+          "type": "Type"
         },
         "description": "Sensors and devices of the room. Leave empty what it doesn't have.",
         "sections": {
@@ -267,7 +270,8 @@
         "data_description": {
           "pm25": "Fine particle sensors (µg/m³), those of the air purifiers too: a polluted air alert, and the purifiers boosted until the air is clean again.",
           "air_quality": "Air quality index sensors of the room (HomeKit 1–5, European 1–6, US AQI).",
-          "lights": "Dimmable lights: their brightness follows the time of day while they are on (adaptive lighting)."
+          "lights": "Dimmable lights: their brightness follows the time of day while they are on (adaptive lighting).",
+          "type": "Living space uses the standard alert defaults; an annex (cellar, garage, workshop…) uses its own — frost and mould only."
         }
       },
       "outdoor": {
@@ -359,6 +363,12 @@
         "min": "Minimum",
         "max": "Maximum",
         "mean": "Mean"
+      }
+    },
+    "room_type": {
+      "options": {
+        "living_space": "Living space",
+        "annex": "Annex (cellar, garage…)"
       }
     }
   },

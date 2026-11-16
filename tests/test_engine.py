@@ -295,6 +295,59 @@ def test_room_override_and_disabled_kind():
     assert not room.alerts["co2_high"].enabled
 
 
+def test_annex_room_type():
+    """An annex room gets the annex alert defaults; a living space keeps the standard ones."""
+    s = build_settings(
+        {
+            "rooms": [
+                {"name": "Cave", "type": "annex", "temperature": "sensor.t", "humidity": "sensor.h"},
+                {"name": "Salon", "temperature": "sensor.t2"},
+            ]
+        }
+    )
+    cave, salon = s.rooms
+    assert cave.is_annex and cave.type == "annex"
+    assert not salon.is_annex
+    # Frost and mould only; comfort alerts off.
+    assert cave.alerts["too_cold"].threshold == 5
+    assert not cave.alerts["too_hot"].enabled
+    assert cave.alerts["humidity_high"].threshold == 80
+    assert not cave.alerts["co2_high"].enabled
+    assert not cave.alerts["ventilate"].enabled
+    assert cave.alerts["polluted_air"].enabled
+    # The living space is unchanged.
+    assert salon.alerts["too_cold"].threshold == 17
+    assert salon.alerts["too_hot"].enabled
+
+
+def test_annex_defaults_and_room_override():
+    """annex_alerts tunes every annex at once; a room's own alerts still win over its type."""
+    s = build_settings(
+        {
+            "annex_alerts": {"too_cold": {"threshold": 3}},
+            "rooms": [
+                {"name": "Garage", "type": "annex", "temperature": "sensor.t"},
+                {
+                    "name": "Atelier",
+                    "type": "annex",
+                    "temperature": "sensor.t2",
+                    "alerts": {"too_hot": {"enabled": True, "threshold": 30}},
+                },
+            ],
+        }
+    )
+    garage, atelier = s.rooms
+    assert garage.alerts["too_cold"].threshold == 3
+    assert atelier.alerts["too_cold"].threshold == 3
+    assert atelier.alerts["too_hot"].enabled and atelier.alerts["too_hot"].threshold == 30
+
+
+def test_unknown_room_type_falls_back_to_living_space():
+    s = build_settings({"rooms": [{"name": "X", "type": "bogus", "temperature": "sensor.t"}]})
+    assert s.rooms[0].type == "living_space"
+    assert s.rooms[0].alerts["too_cold"].threshold == 17
+
+
 def test_persistence_roundtrip():
     e = Engine(settings())
     for m in (0, 15, 20):

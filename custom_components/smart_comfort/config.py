@@ -15,6 +15,7 @@ from typing import Any
 from .const import (
     CONF_AIR_QUALITY,
     CONF_ALERTS,
+    CONF_ANNEX_ALERTS,
     CONF_AQI_HYSTERESIS,
     CONF_AQI_THRESHOLD,
     CONF_AREA,
@@ -121,9 +122,11 @@ from .const import (
     CONF_TEMPERATURE,
     CONF_THRESHOLD,
     CONF_TRANSITION,
+    CONF_TYPE,
     CONF_URL,
     CONF_WARMTH,
     DEFAULT_ALERTS,
+    DEFAULT_ANNEX_ALERTS,
     DEFAULT_CONTROL,
     DEFAULT_CRITICAL_VOLUME,
     DEFAULT_DIGEST_WINDOW,
@@ -134,6 +137,9 @@ from .const import (
     DEFAULT_STARTUP_GRACE,
     DEFAULT_TAG,
     KINDS,
+    ROOM_TYPE_ANNEX,
+    ROOM_TYPE_LIVING,
+    ROOM_TYPES,
     SEVERITY_INFO,
     WEEKDAYS,
 )
@@ -419,6 +425,8 @@ def _int(value: Any) -> int | None:
 class Room:
     id: str
     name: str
+    # Living space (its own alert defaults) or annex (cellar, garage…): the type picks which defaults apply.
+    type: str = ROOM_TYPE_LIVING
     temperature: str | None = None
     co2: str | None = None
     humidity: str | None = None
@@ -435,6 +443,11 @@ class Room:
     lights: tuple[LightDevice, ...] = ()
     naps: tuple[Nap, ...] = ()
     presence: Presence | None = None
+
+    @property
+    def is_annex(self) -> bool:
+        """An annex (cellar, garage, workshop…): kept out of the home's comfort score."""
+        return self.type == ROOM_TYPE_ANNEX
 
     def presence_lights(self) -> tuple[str, ...]:
         """The lights presence turns on and off: those chosen, else all those of the room."""
@@ -568,7 +581,11 @@ def _lights(raw: dict[str, Any], lighting: dict[str, Any]) -> tuple[LightDevice,
 
 
 def _room(
-    raw: dict[str, Any], alerts: dict[str, dict], control: dict[str, Any], used: set[str], lighting: dict[str, Any]
+    raw: dict[str, Any],
+    alerts_by_type: dict[str, dict[str, dict]],
+    control: dict[str, Any],
+    used: set[str],
+    lighting: dict[str, Any],
 ) -> Room:
     name = str(raw[CONF_NAME])
     room_id = base = str(raw.get("id") or slugify(name))
@@ -576,6 +593,10 @@ def _room(
     while room_id in used:
         room_id, n = f"{base}_{n}", n + 1
     used.add(room_id)
+    room_type = str(raw.get(CONF_TYPE) or ROOM_TYPE_LIVING)
+    if room_type not in ROOM_TYPES:
+        room_type = ROOM_TYPE_LIVING
+    alerts = alerts_by_type[room_type]
     room_alerts = raw.get(CONF_ALERTS) or {}
     room_control = raw.get(CONF_CONTROL) or {}
 
@@ -638,6 +659,7 @@ def _room(
     return Room(
         id=room_id,
         name=name,
+        type=room_type,
         temperature=raw.get(CONF_TEMPERATURE) or None,
         co2=raw.get(CONF_CO2) or None,
         humidity=raw.get(CONF_HUMIDITY) or None,
@@ -672,14 +694,19 @@ def _ids(value: Any) -> tuple[str, ...]:
 
 def build_settings(options: dict[str, Any]) -> Settings:
     """Settings from the options, every missing value taken from the defaults."""
-    alerts = {kind: _merge(DEFAULT_ALERTS[kind], (options.get(CONF_ALERTS) or {}).get(kind)) for kind in KINDS}
+    own_alerts = options.get(CONF_ALERTS) or {}
+    own_annex = options.get(CONF_ANNEX_ALERTS) or {}
+    alerts_by_type = {
+        ROOM_TYPE_LIVING: {kind: _merge(DEFAULT_ALERTS[kind], own_alerts.get(kind)) for kind in KINDS},
+        ROOM_TYPE_ANNEX: {kind: _merge(DEFAULT_ANNEX_ALERTS[kind], own_annex.get(kind)) for kind in KINDS},
+    }
     raw_control = options.get(CONF_CONTROL) or {}
     control = _merge(DEFAULT_CONTROL, raw_control)
     for section in (CONF_CLIMATE, CONF_FANS, CONF_PURIFIERS):
         control[section] = _merge(DEFAULT_CONTROL[section], raw_control.get(section))
     used: set[str] = set()
     lighting = _merge(DEFAULT_LIGHTING, options.get(CONF_LIGHTING))
-    rooms = tuple(_room(r, alerts, control, used, lighting) for r in options.get(CONF_ROOMS) or [])
+    rooms = tuple(_room(r, alerts_by_type, control, used, lighting) for r in options.get(CONF_ROOMS) or [])
     notify = options.get(CONF_NOTIFY) or []
     outdoors = tuple(
         Outdoor(

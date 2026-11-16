@@ -72,10 +72,12 @@ def ws_get_config(hass: HomeAssistant, connection: websocket_api.ActiveConnectio
             "defaults": {
                 "general": GENERAL_DEFAULTS,
                 "alerts": k.DEFAULT_ALERTS,
+                "annex_alerts": k.DEFAULT_ANNEX_ALERTS,
                 "control": k.DEFAULT_CONTROL,
                 "lighting": k.DEFAULT_LIGHTING,
             },
             "kinds": list(k.KINDS),
+            "room_types": list(k.ROOM_TYPES),
             "severities": list(k.SEVERITIES),
             "aggregates": list(k.AGGREGATES),
         },

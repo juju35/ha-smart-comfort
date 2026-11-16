@@ -25,6 +25,8 @@ CONF_CRITICAL_VOLUME: Final = "critical_volume"
 CONF_URL: Final = "url"
 CONF_TAG: Final = "tag"
 CONF_ALERTS: Final = "alerts"
+# Alert defaults of the annex rooms (cellar, garage…): same shape as CONF_ALERTS, tuned once for every annex.
+CONF_ANNEX_ALERTS: Final = "annex_alerts"
 CONF_CONTROL: Final = "control"
 CONF_ROOMS: Final = "rooms"
 # Outdoor places (garden, terrace…): their sensors give the outdoor temperature, air quality and noise.
@@ -35,6 +37,8 @@ CONF_LIGHTING: Final = "lighting"
 # Rooms.
 CONF_NAME: Final = "name"
 CONF_AREA: Final = "area"
+# Room type: a living space (its own alert defaults) or an annex (cellar, garage, workshop…) with its own.
+CONF_TYPE: Final = "type"
 CONF_TEMPERATURE: Final = "temperature"
 CONF_CO2: Final = "co2"
 CONF_HUMIDITY: Final = "humidity"
@@ -172,6 +176,11 @@ SEVERITY_WARNING: Final = "warning"
 SEVERITY_CRITICAL: Final = "critical"
 SEVERITIES: Final = (SEVERITY_INFO, SEVERITY_WARNING, SEVERITY_CRITICAL)
 
+# Room types: a living space (the default), or an annex (cellar, garage, workshop…) with its own alert defaults.
+ROOM_TYPE_LIVING: Final = "living_space"
+ROOM_TYPE_ANNEX: Final = "annex"
+ROOM_TYPES: Final = (ROOM_TYPE_LIVING, ROOM_TYPE_ANNEX)
+
 AGGREGATES: Final = ("min", "max", "mean")
 
 # Defaults. Durations are minutes.
@@ -293,6 +302,27 @@ DEFAULT_ALERTS: Final[dict[str, dict]] = {
         CONF_SEVERITY: SEVERITY_INFO,
         CONF_ESCALATION: 1.0,
     },
+}
+
+# Alert defaults of the annex rooms (cellar, garage, workshop, laundry, attic…): the living-space defaults with the
+# comfort alerts off and only the ones that matter in an unlived space left on — frost (too cold at 5 °C) and mould
+# (high humidity at 80 %), plus polluted air. Each annex can still be tuned once for all of them, or overridden room
+# by room. Same fields as DEFAULT_ALERTS, so the form and the merge stay in step.
+_ANNEX_OVERRIDES: Final[dict[str, dict]] = {
+    KIND_TOO_HOT: {CONF_ENABLED: False},
+    KIND_TOO_COLD: {CONF_THRESHOLD: 5.0},
+    KIND_VENTILATE: {CONF_ENABLED: False},
+    KIND_CLOSE_WINDOWS: {CONF_ENABLED: False},
+    KIND_WINDOW_OPEN_COLD: {CONF_ENABLED: False},
+    KIND_CO2: {CONF_ENABLED: False},
+    KIND_HUMIDITY: {CONF_THRESHOLD: 80.0},
+    KIND_NOISE: {CONF_ENABLED: False},
+    KIND_NOISY_OUTSIDE: {CONF_ENABLED: False},
+    KIND_BAD_AIR_OUTSIDE: {CONF_ENABLED: False},
+    # Polluted air stays on with the living-space defaults.
+}
+DEFAULT_ANNEX_ALERTS: Final[dict[str, dict]] = {
+    kind: {**DEFAULT_ALERTS[kind], **_ANNEX_OVERRIDES.get(kind, {})} for kind in KINDS
 }
 
 DEFAULT_CONTROL: Final[dict] = {

@@ -199,7 +199,8 @@
           "climate": "Klima uređaj",
           "fans": "Ventilatori",
           "purifiers": "Prečišćivači vazduha",
-          "lights": "Svetla"
+          "lights": "Svetla",
+          "type": "Tip"
         },
         "description": "Senzori i uređaji u sobi. Ostavite prazno ono što soba nema.",
         "sections": {
@@ -224,7 +225,8 @@
         "data_description": {
           "pm25": "Senzori finih čestica (µg/m³), i oni na prečistačima: upozorenje o zagađenom vazduhu, a prečistači rade jače dok vazduh ponovo ne bude čist.",
           "air_quality": "Senzori indeksa kvaliteta vazduha u prostoriji (HomeKit 1–5, evropski 1–6, američki AQI).",
-          "lights": "Svetla sa podesivom jačinom: njihova jačina prati doba dana dok su uključena (prilagodljivo osvetljenje)."
+          "lights": "Svetla sa podesivom jačinom: njihova jačina prati doba dana dok su uključena (prilagodljivo osvetljenje).",
+          "type": "Stambeni prostor koristi standardne pragove upozorenja; pomoćna prostorija (podrum, garaža, radionica…) koristi svoje — samo mraz i buđ."
         }
       },
       "room": {
@@ -242,7 +244,8 @@
           "climate": "Klima uređaj",
           "fans": "Ventilatori",
           "purifiers": "Prečišćivači vazduha",
-          "lights": "Svetla"
+          "lights": "Svetla",
+          "type": "Tip"
         },
         "description": "Senzori i uređaji u sobi. Ostavite prazno ono što soba nema.",
         "sections": {
@@ -267,7 +270,8 @@
         "data_description": {
           "pm25": "Senzori finih čestica (µg/m³), i oni na prečistačima: upozorenje o zagađenom vazduhu, a prečistači rade jače dok vazduh ponovo ne bude čist.",
           "air_quality": "Senzori indeksa kvaliteta vazduha u prostoriji (HomeKit 1–5, evropski 1–6, američki AQI).",
-          "lights": "Svetla sa podesivom jačinom: njihova jačina prati doba dana dok su uključena (prilagodljivo osvetljenje)."
+          "lights": "Svetla sa podesivom jačinom: njihova jačina prati doba dana dok su uključena (prilagodljivo osvetljenje).",
+          "type": "Stambeni prostor koristi standardne pragove upozorenja; pomoćna prostorija (podrum, garaža, radionica…) koristi svoje — samo mraz i buđ."
         }
       },
       "outdoor": {
@@ -359,6 +363,12 @@
         "min": "Minimum",
         "max": "Maximum",
         "mean": "Prosek"
+      }
+    },
+    "room_type": {
+      "options": {
+        "living_space": "Stambeni prostor",
+        "annex": "Pomoćna prostorija (podrum, garaža…)"
       }
     }
   },

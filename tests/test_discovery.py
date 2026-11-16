@@ -172,6 +172,25 @@ async def test_discover_rooms(hass: HomeAssistant) -> None:
     ]
 
 
+async def test_discover_annex_type(hass: HomeAssistant) -> None:
+    """An area named like an annex (cellar, garage…) is discovered as the annex type; living rooms are not."""
+    h = House(hass)
+    cellar = h.area("Cave")
+    living = h.area("Salon")
+    h.entity("sensor", "cellar_temperature", "14", area=cellar, device_class="temperature")
+    h.entity("sensor", "cellar_humidity", "72", area=cellar, device_class="humidity")
+    h.entity("sensor", "living_temperature", "21", area=living, device_class="temperature")
+    found = discover_rooms(hass)
+    by_name = {r["name"]: r for r in found.rooms}
+    assert by_name["Cave"]["type"] == "annex"
+    assert "type" not in by_name["Salon"]
+    # Merge fills the type on an existing room that has none, and leaves an explicit one alone.
+    options = {"rooms": [{"name": "Cave", "area": by_name["Cave"]["area"], "temperature": "sensor.cellar_temperature"}]}
+    merged, report = merge(options, found)
+    assert merged["rooms"][0]["type"] == "annex"
+    assert "Cave" in report.updated
+
+
 async def test_merge_keeps_what_is_set(hass: HomeAssistant) -> None:
     build(hass)
     found = discover_rooms(hass)

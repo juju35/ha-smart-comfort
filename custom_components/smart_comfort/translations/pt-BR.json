@@ -199,7 +199,8 @@
           "climate": "Ar condicionado",
           "fans": "Ventoinhas",
           "purifiers": "Purificadores de ar",
-          "lights": "Luzes"
+          "lights": "Luzes",
+          "type": "Tipo"
         },
         "description": "Sensores e dispositivos da divisão. Deixe vazio o que ela não tem.",
         "sections": {
@@ -224,7 +225,8 @@
         "data_description": {
           "pm25": "Sensores de partículas finas (µg/m³), também os dos purificadores: um alerta de ar poluído, e os purificadores reforçados até o ar voltar a estar limpo.",
           "air_quality": "Sensores de índice de qualidade do ar da divisão (HomeKit 1–5, europeu 1–6, AQI dos EUA).",
-          "lights": "Luzes reguláveis: o seu brilho segue o momento do dia enquanto estão ligadas (iluminação adaptativa)."
+          "lights": "Luzes reguláveis: o seu brilho segue o momento do dia enquanto estão ligadas (iluminação adaptativa).",
+          "type": "Um cômodo habitável usa os limites padrão; um anexo (adega, garagem, oficina…) usa os seus — apenas geada e mofo."
         }
       },
       "room": {
@@ -242,7 +244,8 @@
           "climate": "Ar condicionado",
           "fans": "Ventoinhas",
           "purifiers": "Purificadores de ar",
-          "lights": "Luzes"
+          "lights": "Luzes",
+          "type": "Tipo"
         },
         "description": "Sensores e dispositivos da divisão. Deixe vazio o que ela não tem.",
         "sections": {
@@ -267,7 +270,8 @@
         "data_description": {
           "pm25": "Sensores de partículas finas (µg/m³), também os dos purificadores: um alerta de ar poluído, e os purificadores reforçados até o ar voltar a estar limpo.",
           "air_quality": "Sensores de índice de qualidade do ar da divisão (HomeKit 1–5, europeu 1–6, AQI dos EUA).",
-          "lights": "Luzes reguláveis: o seu brilho segue o momento do dia enquanto estão ligadas (iluminação adaptativa)."
+          "lights": "Luzes reguláveis: o seu brilho segue o momento do dia enquanto estão ligadas (iluminação adaptativa).",
+          "type": "Um cômodo habitável usa os limites padrão; um anexo (adega, garagem, oficina…) usa os seus — apenas geada e mofo."
         }
       },
       "outdoor": {
@@ -359,6 +363,12 @@
         "min": "Mínimo",
         "max": "Máximo",
         "mean": "Média"
+      }
+    },
+    "room_type": {
+      "options": {
+        "living_space": "Cômodo habitável",
+        "annex": "Anexo (adega, garagem…)"
       }
     }
   },

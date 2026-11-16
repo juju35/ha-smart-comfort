@@ -197,6 +197,8 @@ ROOM = vol.Schema(
     {
         vol.Required(k.CONF_NAME): cv.string,
         vol.Optional("id"): cv.slug,
+        # Living space (the default) or annex (cellar, garage…): picks which alert defaults apply.
+        vol.Optional(k.CONF_TYPE): vol.In(k.ROOM_TYPES),
         # Home Assistant area the room was discovered from (re-running the discovery updates it).
         vol.Optional(k.CONF_AREA): cv.string,
         vol.Optional(k.CONF_TEMPERATURE): vol.Any(None, cv.entity_id),
@@ -253,6 +255,7 @@ OPTIONS = vol.Schema(
         vol.Optional(k.CONF_URL): OPT_STR,
         vol.Optional(k.CONF_TAG): cv.string,
         vol.Optional(k.CONF_ALERTS): ALERTS,
+        vol.Optional(k.CONF_ANNEX_ALERTS): ALERTS,
         vol.Optional(k.CONF_CONTROL): CONTROL,
         vol.Optional(k.CONF_ROOMS): vol.All(cv.ensure_list, [ROOM]),
         vol.Optional(k.CONF_OUTDOORS): vol.All(cv.ensure_list, [OUTDOOR]),

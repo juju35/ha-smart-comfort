@@ -199,7 +199,8 @@
           "climate": "Klíma",
           "fans": "Ventilátorok",
           "purifiers": "Légtisztítók",
-          "lights": "Lámpák"
+          "lights": "Lámpák",
+          "type": "Típus"
         },
         "description": "A helyiség érzékelői és eszközei. Hagyja üresen, ami nincs benne.",
         "sections": {
@@ -224,7 +225,8 @@
         "data_description": {
           "pm25": "Szálló por érzékelők (µg/m³), a légtisztítóké is: riasztás szennyezett levegőnél, és a légtisztítók erősebben mennek, amíg a levegő újra tiszta nem lesz.",
           "air_quality": "A helyiség levegőminőségi index érzékelői (HomeKit 1–5, európai 1–6, amerikai AQI).",
-          "lights": "Szabályozható fényerejű lámpák: fényerejük a napszakot követi, amíg be vannak kapcsolva (adaptív világítás)."
+          "lights": "Szabályozható fényerejű lámpák: fényerejük a napszakot követi, amíg be vannak kapcsolva (adaptív világítás).",
+          "type": "A lakótér a szokásos küszöböket használja; a melléképület (pince, garázs, műhely…) a sajátjait — csak fagy és penész."
         }
       },
       "room": {
@@ -242,7 +244,8 @@
           "climate": "Klíma",
           "fans": "Ventilátorok",
           "purifiers": "Légtisztítók",
-          "lights": "Lámpák"
+          "lights": "Lámpák",
+          "type": "Típus"
         },
         "description": "A helyiség érzékelői és eszközei. Hagyja üresen, ami nincs benne.",
         "sections": {
@@ -267,7 +270,8 @@
         "data_description": {
           "pm25": "Szálló por érzékelők (µg/m³), a légtisztítóké is: riasztás szennyezett levegőnél, és a légtisztítók erősebben mennek, amíg a levegő újra tiszta nem lesz.",
           "air_quality": "A helyiség levegőminőségi index érzékelői (HomeKit 1–5, európai 1–6, amerikai AQI).",
-          "lights": "Szabályozható fényerejű lámpák: fényerejük a napszakot követi, amíg be vannak kapcsolva (adaptív világítás)."
+          "lights": "Szabályozható fényerejű lámpák: fényerejük a napszakot követi, amíg be vannak kapcsolva (adaptív világítás).",
+          "type": "A lakótér a szokásos küszöböket használja; a melléképület (pince, garázs, műhely…) a sajátjait — csak fagy és penész."
         }
       },
       "outdoor": {
@@ -359,6 +363,12 @@
         "min": "Minimum",
         "max": "Maximum",
         "mean": "Átlag"
+      }
+    },
+    "room_type": {
+      "options": {
+        "living_space": "Lakótér",
+        "annex": "Melléképület (pince, garázs…)"
       }
     }
   },

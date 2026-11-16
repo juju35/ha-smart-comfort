@@ -41,6 +41,7 @@ def room_info(manager: SmartComfort, room: Room, now: datetime) -> dict[str, Any
     controller = manager.controller
     return {
         "room_id": room.id,
+        "is_annex": room.is_annex,
         "temperature": reading.temperature,
         "co2": reading.co2,
         "humidity": reading.humidity,

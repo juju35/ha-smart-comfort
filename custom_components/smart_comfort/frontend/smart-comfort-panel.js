@@ -65,6 +65,8 @@ const unitOf = (alert) => (alert.kind === "polluted_air" && alert.metric === "aq
 // Strings of the panel itself; field labels come from the integration translations.
 const STRINGS = {
   en: {
+    annex_alerts: "Annex defaults",
+    annex_alerts_help: "Default alert thresholds for annex rooms — cellar, garage, workshop, laundry, attic. Set a room's type to Annex in the Rooms tab; each room can still override these.",
     outdoor_noise: "Outdoor noise",
     quiet_night: "Quiet night",
     discovered_new: "new",
@@ -266,6 +268,8 @@ const STRINGS = {
     a_all_rooms: "All rooms",
   },
   fr: {
+    annex_alerts: "Réglages des annexes",
+    annex_alerts_help: "Seuils d'alerte par défaut des annexes — cave, garage, atelier, buanderie, grenier. Réglez le type d'une pièce sur Annexe dans l'onglet Pièces ; chaque pièce peut toujours les remplacer.",
     outdoor_noise: "Bruit extérieur",
     quiet_night: "Nuit calme",
     discovered_new: "nouvelle",
@@ -467,6 +471,8 @@ const STRINGS = {
     a_all_rooms: "Toutes les pièces",
   },
   de: {
+    annex_alerts: "Standardwerte für Nebenräume",
+    annex_alerts_help: "Standard-Alarmschwellen für Nebenräume – Keller, Garage, Werkstatt, Waschküche, Dachboden. Setze den Typ eines Raums im Tab Räume auf Nebenraum; jeder Raum kann sie weiterhin überschreiben.",
     outdoor_noise: "Außenlärm",
     quiet_night: "Ruhige Nacht",
     discovered_new: "neu",
@@ -668,6 +674,8 @@ const STRINGS = {
     a_all_rooms: "Alle Räume",
   },
   es: {
+    annex_alerts: "Valores por defecto de anexos",
+    annex_alerts_help: "Umbrales de alerta por defecto para anexos: bodega, garaje, taller, lavadero, desván. Cambia el tipo de una estancia a Anexo en la pestaña Estancias; cada estancia puede anularlos.",
     outdoor_noise: "Ruido exterior",
     quiet_night: "Noche tranquila",
     discovered_new: "nueva",
@@ -869,6 +877,8 @@ const STRINGS = {
     a_all_rooms: "Todas las habitaciones",
   },
   sr: {
+    annex_alerts: "Подразумеване вредности за помоћне просторије",
+    annex_alerts_help: "Подразумевани прагови упозорења за помоћне просторије — подрум, гаража, радионица, веш-соба, таван. Поставите тип просторије на Помоћна у картици Просторије; свака просторија их може заменити.",
     outdoor_noise: "Спољашња бука",
     quiet_night: "Мирна ноћ",
     discovered_new: "ново",
@@ -1070,6 +1080,8 @@ const STRINGS = {
     a_all_rooms: "Све просторије",
   },
   "sr-Latn": {
+    annex_alerts: "Podrazumevane vrednosti za pomoćne prostorije",
+    annex_alerts_help: "Podrazumevani pragovi upozorenja za pomoćne prostorije — podrum, garaža, radionica, veš-soba, tavan. Postavite tip prostorije na Pomoćna u kartici Prostorije; svaka prostorija ih može zameniti.",
     outdoor_noise: "Spoljašnja buka",
     quiet_night: "Mirna noć",
     discovered_new: "novo",
@@ -1271,6 +1283,8 @@ const STRINGS = {
     a_all_rooms: "Sve prostorije",
   },
   it: {
+    annex_alerts: "Valori predefiniti per locali di servizio",
+    annex_alerts_help: "Soglie di allerta predefinite per i locali di servizio — cantina, garage, officina, lavanderia, soffitta. Imposta il tipo di una stanza su Locale di servizio nella scheda Stanze; ogni stanza può comunque sovrascriverle.",
     outdoor_noise: "Rumore esterno",
     quiet_night: "Notte silenziosa",
     discovered_new: "nuova",
@@ -1472,6 +1486,8 @@ const STRINGS = {
     a_all_rooms: "Tutte le stanze",
   },
   nl: {
+    annex_alerts: "Standaardwaarden voor bijruimtes",
+    annex_alerts_help: "Standaarddrempels voor bijruimtes — kelder, garage, werkplaats, washok, zolder. Stel het type van een ruimte in op Bijruimte op het tabblad Ruimtes; elke ruimte kan ze nog overschrijven.",
     outdoor_noise: "Buitengeluid",
     quiet_night: "Stille nacht",
     discovered_new: "nieuw",
@@ -1673,6 +1689,8 @@ const STRINGS = {
     a_all_rooms: "Alle ruimtes",
   },
   pt: {
+    annex_alerts: "Predefinições de anexos",
+    annex_alerts_help: "Limites de alerta predefinidos para anexos — adega, garagem, oficina, lavandaria, sótão. Defina o tipo de uma divisão como Anexo no separador Divisões; cada divisão pode substituí-los.",
     outdoor_noise: "Ruído exterior",
     quiet_night: "Noite silenciosa",
     discovered_new: "nova",
@@ -1874,6 +1892,8 @@ const STRINGS = {
     a_all_rooms: "Todas as divisões",
   },
   pl: {
+    annex_alerts: "Domyślne dla pomieszczeń gospodarczych",
+    annex_alerts_help: "Domyślne progi alertów dla pomieszczeń gospodarczych — piwnica, garaż, warsztat, pralnia, strych. Ustaw typ pomieszczenia na Gospodarcze w zakładce Pomieszczenia; każde pomieszczenie może je nadpisać.",
     outdoor_noise: "Hałas na zewnątrz",
     quiet_night: "Cicha noc",
     discovered_new: "nowe",
@@ -2075,6 +2095,8 @@ const STRINGS = {
     a_all_rooms: "Wszystkie pomieszczenia",
   },
   ro: {
+    annex_alerts: "Valori implicite pentru anexe",
+    annex_alerts_help: "Praguri de alertă implicite pentru anexe — pivniță, garaj, atelier, spălătorie, pod. Setează tipul unei camere la Anexă în fila Camere; fiecare cameră le poate suprascrie.",
     outdoor_noise: "Zgomot exterior",
     quiet_night: "Noapte liniștită",
     discovered_new: "nouă",
@@ -2276,6 +2298,8 @@ const STRINGS = {
     a_all_rooms: "Toate camerele",
   },
   da: {
+    annex_alerts: "Standardværdier for birum",
+    annex_alerts_help: "Standard-alarmgrænser for birum — kælder, garage, værksted, bryggers, loft. Sæt et rums type til Birum under fanen Rum; hvert rum kan stadig tilsidesætte dem.",
     outdoor_noise: "Udendørs støj",
     quiet_night: "Stille nat",
     discovered_new: "nyt",
@@ -2477,6 +2501,8 @@ const STRINGS = {
     a_all_rooms: "Alle rum",
   },
   sv: {
+    annex_alerts: "Standardvärden för biutrymmen",
+    annex_alerts_help: "Standardtrösklar för biutrymmen — källare, garage, verkstad, tvättstuga, vind. Ange ett rums typ till Biutrymme på fliken Rum; varje rum kan fortfarande åsidosätta dem.",
     outdoor_noise: "Buller utomhus",
     quiet_night: "Tyst natt",
     discovered_new: "nytt",
@@ -2678,6 +2704,8 @@ const STRINGS = {
     a_all_rooms: "Alla rum",
   },
   bg: {
+    annex_alerts: "Стойности по подразбиране за спомагателни помещения",
+    annex_alerts_help: "Прагове за известия по подразбиране за спомагателни помещения — мазе, гараж, работилница, пералня, таван. Задайте типа на помещение на Спомагателно в раздела Помещения; всяко помещение може да ги замени.",
     outdoor_noise: "Външен шум",
     quiet_night: "Тиха нощ",
     discovered_new: "нова",
@@ -2879,6 +2907,8 @@ const STRINGS = {
     a_all_rooms: "Всички стаи",
   },
   ru: {
+    annex_alerts: "Значения по умолчанию для подсобных помещений",
+    annex_alerts_help: "Пороги оповещений по умолчанию для подсобных помещений — погреб, гараж, мастерская, прачечная, чердак. Укажите тип помещения «Подсобное» на вкладке «Помещения»; каждое помещение может их переопределить.",
     outdoor_noise: "Шум на улице",
     quiet_night: "Тихая ночь",
     discovered_new: "новая",
@@ -3080,6 +3110,8 @@ const STRINGS = {
     a_all_rooms: "Все комнаты",
   },
   uk: {
+    annex_alerts: "Значення за замовчуванням для підсобних приміщень",
+    annex_alerts_help: "Порогові значення сповіщень за замовчуванням для підсобних приміщень — погріб, гараж, майстерня, пральня, горище. Виберіть тип приміщення «Підсобне» на вкладці «Приміщення»; кожне приміщення може їх перевизначити.",
     outdoor_noise: "Шум надворі",
     quiet_night: "Тиха ніч",
     discovered_new: "нова",
@@ -3281,6 +3313,8 @@ const STRINGS = {
     a_all_rooms: "Усі кімнати",
   },
   hu: {
+    annex_alerts: "Melléképületek alapértékei",
+    annex_alerts_help: "Alapértelmezett riasztási küszöbök melléképületekhez — pince, garázs, műhely, mosókonyha, padlás. Állítsd a helyiség típusát Melléképületre a Helyiségek lapon; minden helyiség felülírhatja ezeket.",
     outdoor_noise: "Kültéri zaj",
     quiet_night: "Csendes éjszaka",
     discovered_new: "új",
@@ -3482,6 +3516,8 @@ const STRINGS = {
     a_all_rooms: "Minden helyiség",
   },
   sk: {
+    annex_alerts: "Predvolené hodnoty pre vedľajšie priestory",
+    annex_alerts_help: "Predvolené prahy upozornení pre vedľajšie priestory — pivnica, garáž, dielňa, práčovňa, povala. Nastav typ miestnosti na Vedľajší priestor na karte Miestnosti; každá miestnosť ich môže prepísať.",
     outdoor_noise: "Vonkajší hluk",
     quiet_night: "Tichá noc",
     discovered_new: "nová",
@@ -3683,6 +3719,8 @@ const STRINGS = {
     a_all_rooms: "Všetky miestnosti",
   },
   cs: {
+    annex_alerts: "Výchozí hodnoty pro vedlejší prostory",
+    annex_alerts_help: "Výchozí prahy upozornění pro vedlejší prostory — sklep, garáž, dílna, prádelna, půda. Nastav typ místnosti na Vedlejší prostor na kartě Místnosti; každá místnost je může přepsat.",
     outdoor_noise: "Venkovní hluk",
     quiet_night: "Tichá noc",
     discovered_new: "nová",
@@ -3884,6 +3922,8 @@ const STRINGS = {
     a_all_rooms: "Všechny místnosti",
   },
   sl: {
+    annex_alerts: "Privzete vrednosti za pomožne prostore",
+    annex_alerts_help: "Privzeti pragovi opozoril za pomožne prostore — klet, garaža, delavnica, pralnica, podstrešje. Vrsto prostora nastavite na Pomožni prostor na zavihku Prostori; vsak prostor jih lahko prepiše.",
     outdoor_noise: "Zunanji hrup",
     quiet_night: "Tiha noč",
     discovered_new: "nov",
@@ -4085,6 +4125,8 @@ const STRINGS = {
     a_all_rooms: "Vsi prostori",
   },
   lv: {
+    annex_alerts: "Palīgtelpu noklusējuma vērtības",
+    annex_alerts_help: "Noklusējuma brīdinājumu sliekšņi palīgtelpām — pagrabs, garāža, darbnīca, veļas telpa, bēniņi. Iestatiet telpas tipu uz Palīgtelpa cilnē Telpas; katra telpa tos var ignorēt.",
     outdoor_noise: "Āra troksnis",
     quiet_night: "Klusā nakts",
     discovered_new: "jauna",
@@ -4286,6 +4328,8 @@ const STRINGS = {
     a_all_rooms: "Visas telpas",
   },
   el: {
+    annex_alerts: "Προεπιλογές για βοηθητικούς χώρους",
+    annex_alerts_help: "Προεπιλεγμένα όρια ειδοποιήσεων για βοηθητικούς χώρους — κελάρι, γκαράζ, εργαστήριο, πλυσταριό, σοφίτα. Ορίστε τον τύπο ενός δωματίου σε Βοηθητικός στην καρτέλα Δωμάτια· κάθε δωμάτιο μπορεί να τα παρακάμψει.",
     outdoor_noise: "Εξωτερικός θόρυβος",
     quiet_night: "Ήσυχη νύχτα",
     discovered_new: "νέο",
@@ -5316,10 +5360,11 @@ class SmartComfortPanel extends HTMLElement {
 
   /** The comfort score shown in the overview hero: 100 minus a penalty per active alert, weighted by severity like the
    *  per-room comfort sensors (SCORE_PENALTY), the tone from it, the active alerts grouped by kind, and how many rooms
-   *  have nothing active. */
+   *  have nothing active. Annex rooms (cellar, garage…) stay out of it, so a cold cellar never pulls the home down. */
   _comfort(s) {
-    const alerts = s.alerts || [];
-    const rooms = s.rooms || [];
+    const annex = new Set((s.rooms || []).filter((r) => r.is_annex).map((r) => r.room_id));
+    const rooms = (s.rooms || []).filter((r) => !r.is_annex);
+    const alerts = (s.alerts || []).filter((a) => !annex.has(a.room));
     const points = alerts.length;
     const penalty = alerts.reduce((sum, a) => sum + (SCORE_PENALTY[a.severity] ?? SCORE_PENALTY.info), 0);
     const score = Math.max(0, 100 - penalty);
@@ -5794,21 +5839,32 @@ class SmartComfortPanel extends HTMLElement {
   }
 
   _renderAlerts(content) {
-    const defaults = this._config.defaults.alerts;
     const card = this._card(this._t("alerts"), "mdi:bell-alert-outline");
     card.append(this._el("div", "help", this._t("alerts_help")));
+    this._alertGroup(card, this._config.defaults.alerts, "alerts", "alert");
+    content.append(card);
+    // The annex defaults (cellar, garage…), tuned once for every annex room; same fields as the living-space ones.
+    const annex = this._card(this._t("annex_alerts"), "mdi:home-roof");
+    annex.append(this._el("div", "help", this._t("annex_alerts_help")));
+    this._alertGroup(annex, this._config.defaults.annex_alerts || {}, "annex_alerts", "annex");
+    content.append(annex);
+  }
+
+  /** The per-kind alert sections of a defaults group (living spaces or annexes), reading and writing `draftKey`. */
+  _alertGroup(card, defaults, draftKey, prefix) {
     for (const kind of this._config.kinds) {
-      const own = this._draft.alerts?.[kind] || {};
+      const own = this._draft[draftKey]?.[kind] || {};
       const settings = merged(defaults[kind], own);
-      this._section(card, `alert:${kind}`, KIND_ICONS[kind], this._kindName(kind), this._alertSummary(kind, settings), (body) =>
+      this._section(card, `${prefix}:${kind}`, KIND_ICONS[kind], this._kindName(kind), this._alertSummary(kind, settings), (body) =>
         body.append(
           this._form(
             this._alertSchema(kind, defaults[kind]),
             settings,
             (value) => {
-              const alerts = (this._draft.alerts = this._draft.alerts || {});
+              const alerts = (this._draft[draftKey] = this._draft[draftKey] || {});
               alerts[kind] = diff(value, defaults[kind]);
               if (!Object.keys(alerts[kind]).length) delete alerts[kind];
+              if (!Object.keys(this._draft[draftKey]).length) delete this._draft[draftKey];
             },
             (f) => (f.type === "expandable" ? f.title : this._label("alert", f.name)),
             (f) => this._helper("alert", f.name)
@@ -5816,7 +5872,6 @@ class SmartComfortPanel extends HTMLElement {
         )
       );
     }
-    content.append(card);
   }
 
   // Device control.
@@ -6230,15 +6285,23 @@ class SmartComfortPanel extends HTMLElement {
     card.append(header);
     if (!open) return card;
 
+    const typeOptions = this._options("room_type", this._config.room_types || ["living_space", "annex"]);
     card.append(
       this._form(
-        [{ name: "name", required: true, selector: text }],
-        { name: room.name },
+        [
+          { name: "name", required: true, selector: text },
+          { name: "type", selector: { select: { mode: "dropdown", options: typeOptions } } },
+        ],
+        { name: room.name, type: room.type || "living_space" },
         (value) => {
           room.name = value.name;
           toggle.lastChild.textContent = room.name || "—";
+          // Living space is the default: stored only when it is an annex, to keep the options minimal.
+          if (value.type && value.type !== "living_space") room.type = value.type;
+          else delete room.type;
         },
-        (f) => this._label("room", f.name)
+        (f) => this._label("room", f.name),
+        (f) => this._helper("room", f.name)
       )
     );
     const sections = this._el("div", "sections");
@@ -6467,7 +6530,8 @@ class SmartComfortPanel extends HTMLElement {
 
   /** Overrides of the alerts for a room: only those set, and a menu to customize another one. */
   _roomAlerts(body, room, index) {
-    const globals = this._config.defaults.alerts;
+    const globals =
+      (room.type === "annex" ? this._config.defaults.annex_alerts : null) || this._config.defaults.alerts;
     const roomAlerts = room.alerts || {};
     const kinds = this._config.kinds.filter((k) => roomAlerts[k] || this._shown.has(`${index}:alert:${k}`));
     body.append(this._el("div", "help", this._t("room_alerts_help")));
