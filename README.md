@@ -469,8 +469,8 @@ The alerts of the moment (the ones to deal with first, then the snoozed or handl
 
 | Light | Dark |
 |---|---|
-| ![The mini card: alerts of the moment and switches](https://raw.githubusercontent.com/juju35/ha-smart-comfort/main/screenshots/card-mini.png) | ![The mini card, dark mode](https://raw.githubusercontent.com/juju35/ha-smart-comfort/main/screenshots/card-mini-dark.png) |
-| <img src="https://raw.githubusercontent.com/juju35/ha-smart-comfort/main/screenshots/card-mini-full.png" alt="The mini card switched to the full card: alerts, rooms and activity" width="386"> | <img src="https://raw.githubusercontent.com/juju35/ha-smart-comfort/main/screenshots/card-mini-full-dark.png" alt="The full card, dark mode" width="386"> |
+| <img src="https://raw.githubusercontent.com/juju35/ha-smart-comfort/main/screenshots/card-mini.png" alt="The mini card: alerts of the moment and switches" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-smart-comfort/main/screenshots/card-mini-dark.png" alt="The mini card, dark mode" width="400"> |
+| <img src="https://raw.githubusercontent.com/juju35/ha-smart-comfort/main/screenshots/card-mini-full.png" alt="The mini card switched to the full card: alerts, rooms and activity" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-smart-comfort/main/screenshots/card-mini-full-dark.png" alt="The full card, dark mode" width="400"> |
 
 ```yaml
 type: custom:smart-comfort-mini-card

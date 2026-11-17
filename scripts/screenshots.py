@@ -966,25 +966,27 @@ CARD_MOUNT = """async ([data, tag, config, zoom, dark]) => {
 }"""
 
 # The card (a whole section), the mini card compact (half a section) and switched to the full card, the activity card.
+# Drawn at the other cards' size (a 460 px card, a 380 px mini card) and at twice the pixel density, as theirs: side
+# by side in a gallery, the headers have the same size.
 CARD_SHOTS = [
-    {"file": "card", "tag": "smart-comfort-card", "width": 640, "config": {"activity": 4}, "zoom": False},
-    {"file": "card-mini", "tag": "smart-comfort-mini-card", "width": 400, "config": {}, "zoom": False},
-    {"file": "card-mini-full", "tag": "smart-comfort-mini-card", "width": 640, "config": {"activity": 4}, "zoom": True},
+    {"file": "card", "tag": "smart-comfort-card", "width": 492, "config": {"activity": 4}, "zoom": False},
+    {"file": "card-mini", "tag": "smart-comfort-mini-card", "width": 412, "config": {}, "zoom": False},
+    {"file": "card-mini-full", "tag": "smart-comfort-mini-card", "width": 492, "config": {"activity": 4}, "zoom": True},
     {
         "file": "card-activity",
         "tag": "smart-comfort-activity-card",
-        "width": 500,
+        "width": 492,
         "config": {"limit": 8},
         "zoom": False,
     },
 ]
 
 
-def open_card(browser, theme, width, status, tag, config, zoom=False):
+def open_card(browser, theme, width, status, tag, config, zoom=False, scale=2):
     """A page with one card mounted on the mock entities of `status`, in the light or the dark theme."""
     context = browser.new_context(
         viewport={"width": width, "height": 400},
-        device_scale_factor=1,
+        device_scale_factor=scale,
         timezone_id="UTC",
         locale="en-US",
         color_scheme=theme,
@@ -1064,7 +1066,7 @@ def render_gif(browser, scene, seconds, theme):
     import tempfile
 
     name = f"header-{scene}" + ("-dark" if theme == "dark" else "")
-    context, page = open_card(browser, theme, 400, header_status(scene), "smart-comfort-mini-card", {})
+    context, page = open_card(browser, theme, 400, header_status(scene), "smart-comfort-mini-card", {}, scale=1)
     clip = page.evaluate(BANNER)
     with tempfile.TemporaryDirectory() as tmp:
         for i in range(round(GIF_FPS * seconds)):
