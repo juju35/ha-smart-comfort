@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.22.0 - 2026-11-17
+
+### Features
+- Cards: an animated illustrated header, 90 px, on the card and the mini card — the room's wall with an air conditioner and a thermometer over a parquet floor strip. A green thermometer when all is well; the sun and a red thermometer when a room is too hot (heat waves at night); a snowflake and a low blue thermometer when it is too cold; an alert sign for any other problem; the air conditioner blowing and the thermometer going down while a device cools a room. The header icon's colour is the status (green all good, grey snoozed or handled only, blue cooling, amber an alert to deal with, red a critical one). Night when `sun.sun` is below the horizon or the Home Assistant theme is dark, forced with `illustration_theme: day | night`; `illustration: false` keeps the classic header with its status pill; reduced motion is honoured. Both options are in the visual editor, translated in every language.
+- Cards: the status pill on every header, illustrated or classic — a dot and the status ("3 alerts", "All good") in the icon's colour, on the title row right after the title only when the whole title and its whole label fit there (measured, in every language); otherwise on its own line under the subtitle (then kept to one line), and only its dot when even that does not fit in the banner above the floor strip, beside the picture, or on a card 200 px wide or less. The subtitle keeps the outdoor temperature, in the other cards' size (13 px on the banner); the README pictures of the cards are drawn at the other cards' size and pixel density, so that their headers match side by side. The mini card's expand / collapse button sits in the banner's top right corner (24 px, frosted), like the other cards.
+- Screenshots: the animated header states (too hot, too cold, cooling, alert) are recorded as GIFs, light and dark, shown in the README; the card screenshots are rendered in Home Assistant's dark mode (dark theme and `hass.themes.darkMode`).
+
+### Fixes
+- Cards: the body follows the common look of the other cards — 16 px padding, section titles (Alerts, Rooms, Activity) with their icon in small capitals, alert rows with a 40 px round icon lined up with the activity rows, room tiles on the secondary background with 12 px corners (an alerting room tinted), even row spacing.
+
 ## 1.21.2 - 2026-11-16
 
 ### Fixes

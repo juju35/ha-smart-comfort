@@ -158,10 +158,14 @@ function make(config = {}, options = {}) {
 }
 
 test("compact: status, outdoor temperature, the alerts to deal with first, then the snoozed ones", () => {
-  const { card } = make({ alerts: 2 }, { alerts: ALERTS });
-  assert.deepEqual(text(card, "hsub"), ["3 alerts · Outside 18.5 °C"]);
+  const { card } = make({ alerts: 2, illustration: false }, { alerts: ALERTS });
+  // The state in the pill right after the title (in the icon's colour), the outdoor temperature in the subtitle.
+  assert.deepEqual(text(card, "hsub"), ["Outside 18.5 °C"]);
   const pill = byClass(card, "pill")[0];
-  assert.equal(pill.textContent, "3");
+  assert.deepEqual(text(card, "ptxt"), ["3 alerts"]);
+  assert.equal(pill.title, "3 alerts");
+  assert.equal(pill.parent, byClass(card, "trow")[0]);
+  assert.equal(byClass(card, "trow")[0].parent, byClass(card, "titles")[0]);
   assert.ok(pill.classList.contains("warning"));
   assert.deepEqual(text(card, "awhat"), ["Living room — Too hot", "Office — Open the windows (cooler outside)"]);
   assert.deepEqual(text(card, "avalue"), ["27.8 °C", "24.2 °C · outside 20.1 °C"]);
@@ -173,11 +177,12 @@ test("compact: status, outdoor temperature, the alerts to deal with first, then 
 });
 
 test("no alert: OK; only snoozed or handled ones: a quiet pill", () => {
-  let { card } = make();
-  assert.deepEqual(text(card, "hsub"), ["All good · Outside 18.5 °C"]);
+  let { card } = make({ illustration: false });
+  assert.deepEqual(text(card, "hsub"), ["Outside 18.5 °C"]);
+  assert.deepEqual(text(card, "ptxt"), ["All good"]);
   assert.ok(byClass(card, "pill")[0].classList.contains("ok"));
   assert.equal(byClass(card, "alert").length, 0);
-  ({ card } = make({}, { alerts: [ALERTS[0]] }));
+  ({ card } = make({ illustration: false }, { alerts: [ALERTS[0]] }));
   assert.ok(byClass(card, "pill")[0].classList.contains("quiet"));
   assert.ok(byClass(card, "alert")[0].classList.contains("quiet"));
 });
@@ -240,7 +245,8 @@ test("switches: tinted when on, a tap turns them off or on", () => {
 
 test("rooms option: only those rooms' alerts and tiles, and their activity for one room", () => {
   const { card } = make({ rooms: ["Living room"] }, { alerts: ALERTS });
-  assert.deepEqual(text(card, "hsub"), ["1 alert · Outside 18.5 °C"]);
+  assert.deepEqual(text(card, "hsub"), ["Outside 18.5 °C"]);
+  assert.deepEqual(text(card, "ptxt"), ["1 alert"]);
   byClass(card, "zoom")[0].fire("click");
   assert.deepEqual(text(card, "rname"), ["Living room"]);
   const activity = walk(card.shadowRoot).find((n) => n.tagName === "smart-comfort-activity-card");
@@ -272,6 +278,18 @@ test("Smart Comfort not loaded: says so", () => {
   assert.equal(byClass(card, "switch").length, 0);
 });
 
+test("full view: each section title has its icon, then its name, like the other cards", () => {
+  const { card } = make({}, { alerts: ALERTS });
+  byClass(card, "zoom")[0].fire("click");
+  const titles = byClass(card, "section-title");
+  assert.ok(titles.length >= 2, "alerts and rooms titled");
+  for (const title of titles) {
+    assert.equal(title.children[0].tagName, "ha-icon");
+    assert.match(String(title.children[0].icon), /^mdi:/);
+    assert.ok(title.children[1].textContent, "a name");
+  }
+});
+
 test("smart-comfort-card: the mini card's full view, standalone, never folded", () => {
   const Full = customElements.get("smart-comfort-card");
   assert.ok(Full.prototype instanceof Mini, "the mini card's rendering");
@@ -296,8 +314,8 @@ test("smart-comfort-card: the mini card's full view, standalone, never folded", 
   assert.equal(card.getCardSize(), 8);
   // Editor: the mini card's options but the compact view's.
   assert.deepEqual(Full.getStubConfig(), {});
-  assert.deepEqual(Full.getConfigForm().schema.map((f) => f.name), ["title", "show_title", "show_subtitle", "rooms", "activity"]);
-  assert.deepEqual(Mini.getConfigForm().schema.map((f) => f.name), ["title", "show_title", "show_subtitle", "rooms", "alerts", "activity", "zoom"]);
+  assert.deepEqual(Full.getConfigForm().schema.map((f) => f.name), ["title", "show_title", "show_subtitle", "illustration", "illustration_theme", "rooms", "activity"]);
+  assert.deepEqual(Mini.getConfigForm().schema.map((f) => f.name), ["title", "show_title", "show_subtitle", "illustration", "illustration_theme", "rooms", "alerts", "activity", "zoom"]);
   card.disconnectedCallback();
   mini.disconnectedCallback();
 });
@@ -350,4 +368,121 @@ test("no rewrite under a press: drawn after its release, and at once by its clic
   assert.equal(byClass(card, "room").length, 0, "the click draws at once");
   card.disconnectedCallback();
   assert.equal(card._pressing, false);
+});
+
+test("illustrated header: the scene and the icon colour follow the state, night by the sun or the option", () => {
+  const banner = (card) => byClass(card, "banner")[0];
+  const badge = (card) => byClass(card, "hbadge")[0];
+  // An alert to deal with: too hot, amber (red when critical); the pill after the title, the zoom button in the corner.
+  let { card } = make({}, { alerts: ALERTS });
+  assert.ok(banner(card).classList.contains("hot"));
+  assert.ok(badge(card).classList.contains("warning"));
+  assert.match(byClass(card, "scene")[0].innerHTML, /class="rays"/);
+  assert.deepEqual(text(card, "ptxt"), ["3 alerts"]);
+  assert.ok(byClass(card, "pill")[0].classList.contains("warning"));
+  assert.equal(byClass(card, "zoom")[0].parent, banner(card));
+  ({ card } = make({}, { alerts: [{ ...ALERTS[2], severity: "critical" }] }));
+  assert.ok(banner(card).classList.contains("warn"));
+  assert.ok(badge(card).classList.contains("critical"));
+  ({ card } = make({}, { alerts: [{ ...ALERTS[1], kind: "too_cold" }] }));
+  assert.ok(banner(card).classList.contains("cold"));
+  // Nothing to deal with: green; only snoozed ones: grey; too hot handled by a device: cooling, blue.
+  ({ card } = make());
+  assert.ok(banner(card).classList.contains("ok"));
+  assert.ok(badge(card).classList.contains("ok"));
+  ({ card } = make({}, { alerts: [ALERTS[0]] }));
+  assert.ok(badge(card).classList.contains("quiet"));
+  ({ card } = make({}, { alerts: [{ ...ALERTS[1], handled: true }] }));
+  assert.ok(banner(card).classList.contains("cool"));
+  assert.ok(badge(card).classList.contains("cool"));
+  assert.match(byClass(card, "scene")[0].innerHTML, /class="breeze"/);
+  // Night: forced by the option, else the sun below the horizon or the dark theme.
+  ({ card } = make({ illustration_theme: "night" }));
+  assert.ok(banner(card).classList.contains("night"));
+  const { card: day, fake } = make({ illustration_theme: "day" });
+  assert.ok(!banner(day).classList.contains("night"));
+  const auto = new Mini();
+  auto.setConfig({});
+  auto.hass = { ...fake.hass, states: { ...fake.hass.states, "sun.sun": { state: "below_horizon", attributes: {} } } };
+  assert.ok(banner(auto).classList.contains("night"));
+  auto.hass = { ...fake.hass, themes: { darkMode: true } };
+  assert.ok(banner(auto).classList.contains("night"));
+  // illustration: false: the classic header.
+  ({ card } = make({ illustration: false }));
+  assert.equal(byClass(card, "banner").length, 0);
+  assert.ok(badge(card).classList.contains("ok"));
+});
+
+// ── The status pill's place, decided by measurement (_fitPill), on a stand-in layout ──
+// A title block (.titles > .trow > .name + .chip, then .sub) in a banner `bannerH` px high (null: a classic header),
+// whose boxes follow the classes _fitPill sets: the parts stacked and centred above the 10 px ground strip.
+function block({ rowW, titleW, chipW, nameH = 20, subH = 17, bannerH = 90 }) {
+  const classes = new Set(["titles"]);
+  const classList = {
+    add: (...c) => {
+      for (const x of c) classes.add(x);
+    },
+    remove: (...c) => {
+      for (const x of c) classes.delete(x);
+    },
+    contains: (c) => classes.has(c),
+  };
+  const box = (top, height, width = 100) => ({ top, bottom: top + height, height, width, left: 0, right: width });
+  const layout = () => {
+    const below = classes.has("pill-below");
+    const height = nameH + subH + (below ? 18 : 0);
+    const top = ((bannerH ?? 80) - 10 - height) / 2;
+    return { name: box(top, nameH, titleW), sub: box(top + nameH, subH), chip: box(below ? top + nameH + subH : top + 2, 18, classes.has("pill-dot") ? 14 : chipW) };
+  };
+  const name = { scrollWidth: titleW, getBoundingClientRect: () => layout().name };
+  const chip = { classList: { contains: (c) => c === "pill" }, getBoundingClientRect: () => layout().chip };
+  const sub = { getBoundingClientRect: () => layout().sub };
+  const row = { children: [name, chip], querySelector: () => name, getBoundingClientRect: () => box(0, 20, rowW) };
+  name.classList = { contains: () => false };
+  const banner = bannerH === null ? null : { getBoundingClientRect: () => box(0, bannerH) };
+  const titles = { classList, querySelector: () => row, querySelectorAll: () => [sub], closest: () => banner, getBoundingClientRect: () => row.getBoundingClientRect() };
+  return { titles, classes };
+}
+
+const fit = (b) => Mini.prototype._fitPill.call({ shadowRoot: { querySelectorAll: () => [b.titles] } });
+
+test("the pill stays on the title row when the whole title and its whole label fit", () => {
+  const b = block({ rowW: 300, titleW: 120, chipW: 70 });
+  fit(b);
+  assert.ok(!b.classes.has("pill-below") && !b.classes.has("pill-dot"));
+});
+
+test("a title that would be cut sends the pill under the subtitle, with its whole label", () => {
+  for (const bannerH of [90, null]) {
+    const b = block({ rowW: 200, titleW: 150, chipW: 70, bannerH });
+    fit(b);
+    assert.ok(b.classes.has("pill-below"), "pill under the subtitle");
+    assert.ok(!b.classes.has("pill-dot"), "whole label");
+  }
+});
+
+test("the title is never cut by the pill: one pixel short is enough to move it", () => {
+  const b = block({ rowW: 199, titleW: 120, chipW: 71 });
+  fit(b);
+  assert.ok(b.classes.has("pill-below"));
+});
+
+test("no room left above the banner's ground strip: the pill keeps its dot only", () => {
+  const b = block({ rowW: 200, titleW: 250, chipW: 70, nameH: 50, subH: 17 });
+  fit(b);
+  assert.ok(b.classes.has("pill-below") && b.classes.has("pill-dot"));
+});
+
+test("a label wider than the text column under the subtitle: the pill keeps its dot only", () => {
+  const b = block({ rowW: 120, titleW: 110, chipW: 140 });
+  fit(b);
+  assert.ok(b.classes.has("pill-below") && b.classes.has("pill-dot"));
+});
+
+test("a new measure starts afresh: back on the title row once the card is wide again", () => {
+  const b = block({ rowW: 200, titleW: 250, chipW: 70, nameH: 40 });
+  fit(b);
+  b.titles.querySelector().getBoundingClientRect = () => ({ width: 600 });
+  fit(b);
+  assert.ok(!b.classes.has("pill-below") && !b.classes.has("pill-dot"));
 });

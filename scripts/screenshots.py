@@ -1,13 +1,14 @@
 """Render the Smart Comfort panel and mini card with mock data and save the README screenshots, light and dark.
 
-Usage: python scripts/screenshots.py  (needs `pip install playwright pillow` and `playwright install chromium`)
+Usage: python scripts/screenshots.py  (needs `pip install playwright pillow`, `playwright install chromium` and ffmpeg)
 CHROMIUM_PATH=/path/to/chrome to use another browser. The clock is frozen and the time zone is UTC, so the times stay
 the same. The panel runs in a page that mimics Home Assistant: a static sidebar, the theme variables, and stand-ins for
 <ha-icon>, <ha-menu-button> and <ha-form> (its text, number, select, boolean, entity and expandable fields). The
 WebSocket commands of the panel (config, subscribe, discover, translations) answer with the mock data below; the
 alert and control defaults and the field labels come from the integration itself (const.py, translations/en.json).
 A screenshot is only written when its pixels changed (not its bytes: PNG encoding may differ), so a render that looks
-the same leaves the file, and the pull request, untouched.
+the same leaves the file, and the pull request, untouched. The animated states of the card header are recorded as
+GIFs (header-<state>[-dark].gif): the animations are paused and stepped frame by frame, so they loop cleanly.
 """
 
 import importlib.util
@@ -942,13 +943,14 @@ def card_mock(status):
     }
 
 
-CARD_MOUNT = """async ([data, tag, config, zoom]) => {
+CARD_MOUNT = """async ([data, tag, config, zoom, dark]) => {
     await customElements.whenDefined(tag);
     const card = document.createElement(tag);
     card.setConfig(config);
     card.hass = {
         states: data.states, entities: data.entities, language: data.language, locale: { language: data.language },
         localize: (key) => data.localize[key] || "",
+        themes: { darkMode: dark },
         callService: async () => {},
         connection: {
             subscribeMessage: (callback) => {
@@ -964,31 +966,33 @@ CARD_MOUNT = """async ([data, tag, config, zoom]) => {
 }"""
 
 # The card (a whole section), the mini card compact (half a section) and switched to the full card, the activity card.
+# Drawn at the other cards' size (a 460 px card, a 380 px mini card) and at twice the pixel density, as theirs: side
+# by side in a gallery, the headers have the same size.
 CARD_SHOTS = [
-    {"file": "card", "tag": "smart-comfort-card", "width": 640, "config": {"activity": 4}, "zoom": False},
-    {"file": "card-mini", "tag": "smart-comfort-mini-card", "width": 400, "config": {}, "zoom": False},
-    {"file": "card-mini-full", "tag": "smart-comfort-mini-card", "width": 640, "config": {"activity": 4}, "zoom": True},
+    {"file": "card", "tag": "smart-comfort-card", "width": 492, "config": {"activity": 4}, "zoom": False},
+    {"file": "card-mini", "tag": "smart-comfort-mini-card", "width": 412, "config": {}, "zoom": False},
+    {"file": "card-mini-full", "tag": "smart-comfort-mini-card", "width": 492, "config": {"activity": 4}, "zoom": True},
     {
         "file": "card-activity",
         "tag": "smart-comfort-activity-card",
-        "width": 500,
+        "width": 492,
         "config": {"limit": 8},
         "zoom": False,
     },
 ]
 
 
-def render_card(browser, shot, theme):
-    name = shot["file"] + ("-dark" if theme == "dark" else "")
+def open_card(browser, theme, width, status, tag, config, zoom=False, scale=2):
+    """A page with one card mounted on the mock entities of `status`, in the light or the dark theme."""
     context = browser.new_context(
-        viewport={"width": shot["width"], "height": 400},
-        device_scale_factor=1,
+        viewport={"width": width, "height": 400},
+        device_scale_factor=scale,
         timezone_id="UTC",
         locale="en-US",
         color_scheme=theme,
     )
     page = context.new_page()
-    page.on("pageerror", lambda err: print(f"{name}: page error: {err}"))
+    page.on("pageerror", lambda err: print(f"{tag} ({theme}): page error: {err}"))
     page.clock.set_fixed_time(NOW)
     variables = "".join(f"{k}:{v};" for k, v in {**THEMES[theme], **COMMON}.items())
     html = f"""<!doctype html><html><head><meta charset="utf-8"><style>
@@ -1013,13 +1017,73 @@ html, body {{ margin: 0; background: var(--primary-background-color); color: var
     page.add_script_tag(
         url="http://homeassistant.local/smart_comfort_static/smart-comfort-mini-card.js?v=1", type="module"
     )
-    page.evaluate(CARD_MOUNT, [card_mock(STATUS), shot["tag"], shot["config"], shot["zoom"]])
+    # Home Assistant's dark mode: the dark theme variables above, and hass.themes.darkMode for the night header.
+    page.evaluate(CARD_MOUNT, [card_mock(status), tag, config, zoom, theme == "dark"])
     page.wait_for_timeout(200)
+    return context, page
+
+
+def render_card(browser, shot, theme):
+    name = shot["file"] + ("-dark" if theme == "dark" else "")
+    context, page = open_card(browser, theme, shot["width"], STATUS, shot["tag"], shot["config"], shot["zoom"])
     path = ROOT / "screenshots" / f"{name}.png"
     png = page.locator("#root").screenshot(animations="disabled")
     written = save_if_changed(path, png)
     print(path.relative_to(ROOT), "" if written else "(unchanged)")
     context.close()
+
+
+def header_status(scene):
+    """The mock status whose alerts and devices give the header `scene` (hot, cold, cool or warn)."""
+    alerts = {
+        "hot": [alert("living_room", "Living Room", "too_hot", 27.8)],
+        "cold": [alert("office", "Office", "too_cold", 16.2)],
+        "cool": [alert("living_room", "Living Room", "too_hot", 27.8, handled=True)],
+        "warn": [alert("living_room", "Living Room", "polluted_air", 47, metric="pm25", threshold=25, pm25=47)],
+    }[scene]
+    return {**STATUS, "alerts": alerts}
+
+
+# The animated header states, each with the length of one loop of all its animations (seconds).
+GIFS = [("hot", 12), ("cold", 3), ("cool", 12), ("warn", 2)]
+GIF_FPS = 12
+SEEK = """(t) => new Promise((done) => {
+    const roots = [document];
+    for (let i = 0; i < roots.length; i++) for (const el of roots[i].querySelectorAll("*")) if (el.shadowRoot) roots.push(el.shadowRoot);
+    const all = roots.flatMap((r) => r.getAnimations());
+    for (const a of all) { a.pause(); a.currentTime = t; }
+    requestAnimationFrame(() => requestAnimationFrame(() => done(all.length)));
+})"""
+BANNER = """() => {
+    const r = document.querySelector("#root > *").shadowRoot.querySelector(".banner").getBoundingClientRect();
+    return { x: r.x, y: r.y, width: r.width, height: r.height };
+}"""
+
+
+def render_gif(browser, scene, seconds, theme):
+    """The mini card's header in one animated state, its animations paused and stepped frame by frame (ffmpeg)."""
+    import subprocess
+    import tempfile
+
+    name = f"header-{scene}" + ("-dark" if theme == "dark" else "")
+    context, page = open_card(browser, theme, 400, header_status(scene), "smart-comfort-mini-card", {}, scale=1)
+    clip = page.evaluate(BANNER)
+    with tempfile.TemporaryDirectory() as tmp:
+        for i in range(round(GIF_FPS * seconds)):
+            if not page.evaluate(SEEK, 6000 + i * 1000 / GIF_FPS):
+                raise RuntimeError(f"{name}: no animation to step")
+            page.screenshot(path=f"{tmp}/f{i:03d}.png", clip=clip)
+        palette = "split[a][b];[a]palettegen=max_colors=96[p];[b][p]paletteuse=dither=bayer:bayer_scale=4"
+        out = f"{tmp}/out.gif"
+        cmd = ["ffmpeg", "-y", "-loglevel", "error", "-framerate", str(GIF_FPS), "-i", f"{tmp}/f%03d.png"]
+        subprocess.run([*cmd, "-vf", palette, "-loop", "0", out], check=True)
+        gif = Path(out).read_bytes()
+    context.close()
+    path = ROOT / "screenshots" / f"{name}.gif"
+    written = not path.exists() or path.read_bytes() != gif
+    if written:
+        path.write_bytes(gif)
+    print(path.relative_to(ROOT), "" if written else "(unchanged)")
 
 
 def render(browser, shot, theme):
@@ -1081,6 +1145,9 @@ def main():
         for shot in CARD_SHOTS:
             for theme in THEMES:
                 render_card(browser, shot, theme)
+        for scene, seconds in GIFS:
+            for theme in THEMES:
+                render_gif(browser, scene, seconds, theme)
         browser.close()
 
 
