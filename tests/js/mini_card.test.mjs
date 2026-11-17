@@ -159,9 +159,12 @@ function make(config = {}, options = {}) {
 
 test("compact: status, outdoor temperature, the alerts to deal with first, then the snoozed ones", () => {
   const { card } = make({ alerts: 2, illustration: false }, { alerts: ALERTS });
-  assert.deepEqual(text(card, "hsub"), ["3 alerts · Outside 18.5 °C"]);
+  // The state in the pill right after the title (in the icon's colour), the outdoor temperature in the subtitle.
+  assert.deepEqual(text(card, "hsub"), ["Outside 18.5 °C"]);
   const pill = byClass(card, "pill")[0];
-  assert.equal(pill.textContent, "3");
+  assert.deepEqual(text(card, "ptxt"), ["3 alerts"]);
+  assert.equal(pill.title, "3 alerts");
+  assert.equal(pill.parent, byClass(card, "titles")[0]);
   assert.ok(pill.classList.contains("warning"));
   assert.deepEqual(text(card, "awhat"), ["Living room — Too hot", "Office — Open the windows (cooler outside)"]);
   assert.deepEqual(text(card, "avalue"), ["27.8 °C", "24.2 °C · outside 20.1 °C"]);
@@ -174,7 +177,8 @@ test("compact: status, outdoor temperature, the alerts to deal with first, then 
 
 test("no alert: OK; only snoozed or handled ones: a quiet pill", () => {
   let { card } = make({ illustration: false });
-  assert.deepEqual(text(card, "hsub"), ["All good · Outside 18.5 °C"]);
+  assert.deepEqual(text(card, "hsub"), ["Outside 18.5 °C"]);
+  assert.deepEqual(text(card, "ptxt"), ["All good"]);
   assert.ok(byClass(card, "pill")[0].classList.contains("ok"));
   assert.equal(byClass(card, "alert").length, 0);
   ({ card } = make({ illustration: false }, { alerts: [ALERTS[0]] }));
@@ -240,7 +244,8 @@ test("switches: tinted when on, a tap turns them off or on", () => {
 
 test("rooms option: only those rooms' alerts and tiles, and their activity for one room", () => {
   const { card } = make({ rooms: ["Living room"] }, { alerts: ALERTS });
-  assert.deepEqual(text(card, "hsub"), ["1 alert · Outside 18.5 °C"]);
+  assert.deepEqual(text(card, "hsub"), ["Outside 18.5 °C"]);
+  assert.deepEqual(text(card, "ptxt"), ["1 alert"]);
   byClass(card, "zoom")[0].fire("click");
   assert.deepEqual(text(card, "rname"), ["Living room"]);
   const activity = walk(card.shadowRoot).find((n) => n.tagName === "smart-comfort-activity-card");
@@ -355,12 +360,13 @@ test("no rewrite under a press: drawn after its release, and at once by its clic
 test("illustrated header: the scene and the icon colour follow the state, night by the sun or the option", () => {
   const banner = (card) => byClass(card, "banner")[0];
   const badge = (card) => byClass(card, "hbadge")[0];
-  // An alert to deal with: too hot, amber (red when critical); no pill, the zoom button in the corner.
+  // An alert to deal with: too hot, amber (red when critical); the pill after the title, the zoom button in the corner.
   let { card } = make({}, { alerts: ALERTS });
   assert.ok(banner(card).classList.contains("hot"));
   assert.ok(badge(card).classList.contains("warning"));
   assert.match(byClass(card, "scene")[0].innerHTML, /class="rays"/);
-  assert.equal(byClass(card, "pill").length, 0);
+  assert.deepEqual(text(card, "ptxt"), ["3 alerts"]);
+  assert.ok(byClass(card, "pill")[0].classList.contains("warning"));
   assert.equal(byClass(card, "zoom")[0].parent, banner(card));
   ({ card } = make({}, { alerts: [{ ...ALERTS[2], severity: "critical" }] }));
   assert.ok(banner(card).classList.contains("warn"));

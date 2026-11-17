@@ -1406,21 +1406,20 @@ class SmartComfortMiniCard extends HTMLElement {
     badge.append(this._icon("mdi:home-thermometer"));
     const titles = this._el("div", "titles");
     titles.append(this._el("div", "hname", this._config.title || this._t("title")));
-    let pill = null;
     if (alerts) {
-      const pending = alerts.filter((a) => !a.snoozed && !a.handled).length;
+      // The status pill right after the title, in the icon's colour; the subtitle keeps the outdoor temperature.
       const outdoor = this._state(findEntities(this._hass).alerts)?.attributes?.outdoor_temperature;
       const status = alerts.length ? this._count(alerts.length) : this._t("all_good");
-      const parts = [status, outdoor === null || outdoor === undefined ? null : this._t("outside", { value: this._temp(outdoor) })];
-      titles.append(this._el("div", "hsub", parts.filter(Boolean).join(" · ")));
-      const level = pending ? "warning" : alerts.length ? "quiet" : "ok";
-      pill = this._el("span", `pill ${level}`, alerts.length ? this._number(alerts.length, 0) : "OK");
-      pill.setAttribute("aria-hidden", "true");
+      const pill = this._el("span", `pill ${mood.level}`);
+      pill.title = status;
+      pill.append(this._el("span", "pdot"), this._el("span", "ptxt", status));
+      titles.append(pill);
+      if (outdoor !== null && outdoor !== undefined) titles.append(this._el("div", "hsub", this._t("outside", { value: this._temp(outdoor) })));
     }
     const zoom = !this.constructor.FULL && this._config.zoom !== false ? this._zoomButton() : null;
     if (!this._illustrated()) {
       const header = this._el("div", "header");
-      header.append(badge, titles, ...[pill, zoom].filter(Boolean));
+      header.append(badge, titles, ...(zoom ? [zoom] : []));
       return header;
     }
     const header = this._el("div", `header banner ${mood.scene}${this._night() ? " night" : ""}`);
@@ -1572,7 +1571,7 @@ class SmartComfortMiniCard extends HTMLElement {
 
 const STYLE = `
   :host { display: block; }
-  ha-card { container-type: inline-size; overflow: hidden; }
+  ha-card { container: sc-card / inline-size; overflow: hidden; }
   .top { padding: 12px 16px; display: flex; flex-direction: column; gap: 10px; }
   .header { display: flex; align-items: center; gap: 10px; }
   ${HEADER_STYLE}
@@ -1605,10 +1604,18 @@ const STYLE = `
   .banner.night .hbadge { background: rgba(255,255,255,.12); color: color-mix(in srgb, var(--c) 75%, #ffffff);
                           box-shadow: inset 0 0 0 1px rgba(255,255,255,.14); }
   .banner.night .hbadge.quiet { --c: #b9c0c9; }
-  .banner .zoom { position: absolute; z-index: 2; top: 4px; right: 3px; width: 22px; height: 22px; margin: 0; background: rgba(255,255,255,.7); color: #4a515c; }
-  .banner.night .zoom { background: rgba(0,0,0,.28); color: rgba(255,255,255,.85); }
-  .banner .zoom:hover { background: #ffffff; color: #2a2f3a; }
-  .banner.night .zoom:hover { background: rgba(0,0,0,.45); color: #ffffff; }
+  /* The expand / collapse button: 24 px, round, frosted, in the banner's top right corner. */
+  .banner .zoom { position: absolute; z-index: 2; top: 5px; right: 5px; width: 24px; height: 24px; margin: 0; color: #33506b;
+                  background: rgba(255,255,255,.55); box-shadow: inset 0 0 0 1px rgba(255,255,255,.7);
+                  -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); }
+  .banner .zoom:hover { background: rgba(255,255,255,.75); color: #33506b; }
+  .banner.night .zoom { color: #ffffff; background: rgba(255,255,255,.12); box-shadow: inset 0 0 0 1px rgba(255,255,255,.2); }
+  .banner.night .zoom:hover { background: rgba(255,255,255,.22); color: #ffffff; }
+  /* The status pill on the sky: a frosted glass under the tint. */
+  .banner .pill { background: color-mix(in srgb, var(--c) 18%, rgba(255,255,255,.78)); color: color-mix(in srgb, var(--c) 45%, #0d2a45); }
+  .banner.night .pill { background: color-mix(in srgb, var(--c) 30%, rgba(8,18,38,.55)); color: color-mix(in srgb, var(--c) 35%, #ffffff); }
+  .banner .pill.quiet { --c: #8a929c; }
+  .banner.night .pill.quiet { --c: #b9c0c9; }
   /* Animations of the illustration. */
   .scene .blink { animation: sc-blink 1.2s steps(2) infinite; }
   .scene .breeze path { animation: sc-breeze 2s ease-in-out infinite; }
@@ -1637,12 +1644,28 @@ const STYLE = `
     .banner .scene { display: none; }
     .banner .head { right: 0; padding-right: 34px; }
   }
-  /* Status pill, at the right of the header, on the title's line. Its text is the colour toward the text colour. */
-  .pill { --c: var(--success-color, #43a047); flex: none; align-self: flex-start; margin-top: 2px; min-width: 12px; text-align: center;
-    padding: 2px 8px; border-radius: 12px; font-size: 12px; font-weight: 500; line-height: 16px;
+  /* Title row: the title, then the status pill 8 px after it, both shrinking (the title keeps a few characters, the
+     pill at most about half the row); the subtitle under them. Short of room the pill takes its own line under the
+     subtitle; on a very narrow card only its dot shows (its text stays in its title and for screen readers). */
+  .header .titles { container: sc-titles / inline-size; display: grid; align-items: center; column-gap: 8px; justify-content: start;
+    grid-template-columns: minmax(min(4.5ch, 100%), max-content) minmax(0, max-content); }
+  .header .titles > .hsub { grid-column: 1 / -1; }
+  .pill { --c: var(--success-color, #43a047); display: inline-flex; align-items: center; gap: 4px; justify-self: start; min-width: 0;
+    max-width: 100%; box-sizing: border-box; overflow: hidden; padding: 1px 8px; border-radius: 12px; font-size: 11px; font-weight: 500;
+    line-height: 16px; white-space: nowrap;
     background: color-mix(in srgb, var(--c) 16%, transparent); color: color-mix(in srgb, var(--c) 70%, var(--primary-text-color)); }
+  .pill .ptxt { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+  .pill .pdot { width: 7px; height: 7px; border-radius: 50%; background: var(--c); flex: none; }
+  .pill.ok { --c: var(--success-color, #43a047); }
+  .pill.quiet { --c: var(--secondary-text-color, #727272); }
+  .pill.cool { --c: var(--state-climate-cool-color, #2b9af9); }
   .pill.warning { --c: var(--warning-color, #ffa600); }
-  .pill.quiet { --c: var(--secondary-text-color); }
+  .pill.critical { --c: var(--error-color, #db4437); }
+  @container sc-titles (max-width: 200px) { .header .titles > .pill { grid-column: 1 / -1; grid-row: 3; margin-top: 3px; } }
+  @container sc-card (max-width: 200px) {
+    .pill { padding: 4px; }
+    .pill .ptxt { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  }
   .zoom { all: unset; flex: none; align-self: flex-start; cursor: pointer; width: 24px; height: 24px; margin: -2px -4px 0 0;
     border-radius: 50%; display: grid; place-items: center; color: var(--secondary-text-color); --mdc-icon-size: 16px; }
   .zoom:hover { background: color-mix(in srgb, var(--secondary-text-color) 16%, transparent); color: var(--primary-text-color); }

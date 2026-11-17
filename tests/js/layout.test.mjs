@@ -52,3 +52,22 @@ test("activity card header: the title block shrinks and truncates, the badge nev
   assert.match(badge, /flex:\s*none/);
   assert.match(badge, /width:\s*40px/);
 });
+
+test("mini card header: the status pill follows the title, truncates, moves under it short of room, then only its dot shows", async () => {
+  const css = await source("smart-comfort-mini-card.js");
+  const titles = rule(css, ".header .titles") || "";
+  assert.match(titles, /display:\s*grid/);
+  assert.match(titles, /grid-template-columns:\s*minmax\(min\(4\.5ch, 100%\), max-content\) minmax\(0, max-content\)/);
+  assert.match(titles, /container:\s*sc-titles \/ inline-size/);
+  const pill = css.match(/\n {2}\.pill \{([^}]*)\}/)?.[1] || "";
+  for (const d of [/min-width:\s*0/, /max-width:\s*100%/, /overflow:\s*hidden/, /font-size:\s*11px/, /padding:\s*1px 8px/]) assert.match(pill, d);
+  assert.match(rule(css, ".pill .ptxt") || "", /text-overflow:\s*ellipsis/);
+  assert.match(css, /@container sc-titles \(max-width: 200px\) \{ \.header \.titles > \.pill \{ grid-column: 1 \/ -1; grid-row: 3;/);
+  // Only the dot: the text is hidden visually, never removed (screen readers and the pill's title keep it).
+  assert.match(css, /@container sc-card \(max-width: 200px\) \{\s*\.pill \{ padding: 4px; \}\s*\.pill \.ptxt \{[^}]*clip-path: inset\(50%\)/);
+});
+
+test("mini card: the expand / collapse button sits in the banner's top right corner, 24 px", async () => {
+  const z = rule(await source("smart-comfort-mini-card.js"), ".banner .zoom") || "";
+  for (const d of [/position:\s*absolute/, /top:\s*5px/, /right:\s*5px/, /width:\s*24px/, /height:\s*24px/]) assert.match(z, d);
+});
