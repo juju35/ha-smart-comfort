@@ -447,12 +447,19 @@ title: Smart Comfort        # optional
 show_title: false           # optional: no title (shown by default)
 show_subtitle: false        # optional: no subtitle (shown by default)
 illustration: false         # optional: classic header, no illustration (shown by default)
-illustration_theme: night   # optional: auto (default: night when the sun is down, else the dark theme), day or night
+illustration_theme: night   # optional: auto (default: night when the sun is down or the theme is dark), day or night
 rooms: [Living room]        # optional: only these rooms, their names as shown in the panel
 activity: 5                 # activity entries (5 by default, 0 for none)
 ```
 
-**Illustrated header** (card and mini card, 90 px): the room's wall with an air conditioner and a thermometer, on a parquet floor strip — a green thermometer when all is well, the sun and a red thermometer when a room is too hot (heat waves at night), a snowflake and a low blue thermometer when it is too cold, an alert sign for any other problem, and the air conditioner blowing with the thermometer going down while a device cools a room. The icon's colour is the status: green all good, grey only snoozed or handled alerts, blue cooling, amber an alert to deal with, red a critical one. It turns to night with the sun (else the dark theme), honours reduced motion, and `illustration: false` brings back the classic header with its status pill.
+**Illustrated header** (card and mini card, 90 px): the room's wall with an air conditioner and a thermometer, on a parquet floor strip — a green thermometer when all is well, the sun and a red thermometer when a room is too hot (heat waves at night), a snowflake and a low blue thermometer when it is too cold, an alert sign for any other problem, and the air conditioner blowing with the thermometer going down while a device cools a room. The icon's colour is the status: green all good, grey only snoozed or handled alerts, blue cooling, amber an alert to deal with, red a critical one. It turns to night when the sun is down or the Home Assistant theme is dark, honours reduced motion, and `illustration: false` brings back the classic header with its status pill.
+
+| Animated header | Light | Dark |
+|---|---|---|
+| Too hot: the mercury rises and the sun turns (heat waves at night). | <img src="https://raw.githubusercontent.com/juju35/ha-smart-comfort/main/screenshots/header-hot.gif" alt="Header, hot" width="368"> | <img src="https://raw.githubusercontent.com/juju35/ha-smart-comfort/main/screenshots/header-hot-dark.gif" alt="Header, hot, dark mode" width="368"> |
+| Too cold: the snowflake bobs by the low thermometer. | <img src="https://raw.githubusercontent.com/juju35/ha-smart-comfort/main/screenshots/header-cold.gif" alt="Header, cold" width="368"> | <img src="https://raw.githubusercontent.com/juju35/ha-smart-comfort/main/screenshots/header-cold-dark.gif" alt="Header, cold, dark mode" width="368"> |
+| Cooling: the air conditioner blows, its light blinks and the mercury goes down. | <img src="https://raw.githubusercontent.com/juju35/ha-smart-comfort/main/screenshots/header-cool.gif" alt="Header, cool" width="368"> | <img src="https://raw.githubusercontent.com/juju35/ha-smart-comfort/main/screenshots/header-cool-dark.gif" alt="Header, cool, dark mode" width="368"> |
+| Another alert: the alert sign pulses. | <img src="https://raw.githubusercontent.com/juju35/ha-smart-comfort/main/screenshots/header-warn.gif" alt="Header, warn" width="368"> | <img src="https://raw.githubusercontent.com/juju35/ha-smart-comfort/main/screenshots/header-warn-dark.gif" alt="Header, warn, dark mode" width="368"> |
 
 In a Sections view the card is a whole section wide (at least 6 columns). With `rooms` set to a single room, its activity is that room's.
 
@@ -471,7 +478,7 @@ title: Smart Comfort        # optional
 show_title: false           # optional: no title (shown by default)
 show_subtitle: false        # optional: no subtitle (shown by default)
 illustration: false         # optional: classic header, no illustration (shown by default)
-illustration_theme: night   # optional: auto (default: night when the sun is down, else the dark theme), day or night
+illustration_theme: night   # optional: auto (default: night when the sun is down or the theme is dark), day or night
 rooms: [Living room]        # optional: only these rooms, their names as shown in the panel
 alerts: 3                   # alerts listed in the compact view (3 by default)
 activity: 5                 # activity entries in the full card (5 by default, 0 for none)
