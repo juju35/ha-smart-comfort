@@ -1178,12 +1178,14 @@ class SmartComfortMiniCard extends HTMLElement {
 
   connectedCallback() {
     this._outside.on();
+    this._watchPill();
     // Back on the page after leaving it: rendered again in the compact view.
     if (this._hass && this._config) this._render();
   }
 
   disconnectedCallback() {
     this._outside.off();
+    this._unwatchPill();
     this._dropPress();
     // Left (another dashboard view, a conditional card hidden): back to the compact view on return.
     this._zoomed = false;
@@ -1349,6 +1351,7 @@ class SmartComfortMiniCard extends HTMLElement {
     const place = (header, content) => {
       this._head.replaceChildren(...(banner ? [header] : []));
       this._top.replaceChildren(...(banner ? [] : [header]), ...content);
+      this._fitPill();
     };
     if (this._hass && !found.alerts) {
       place(this._header(null), [this._el("div", "empty", this._t("not_loaded"))]);
@@ -1405,7 +1408,9 @@ class SmartComfortMiniCard extends HTMLElement {
     const badge = this._el("span", `hbadge ${mood.level}`);
     badge.append(this._icon("mdi:home-thermometer"));
     const titles = this._el("div", "titles");
-    titles.append(this._el("div", "hname", this._config.title || this._t("title")));
+    const row = this._el("div", "trow");
+    row.append(this._el("div", "hname", this._config.title || this._t("title")));
+    titles.append(row);
     if (alerts) {
       // The status pill right after the title, in the icon's colour; the subtitle keeps the outdoor temperature.
       const outdoor = this._state(findEntities(this._hass).alerts)?.attributes?.outdoor_temperature;
@@ -1413,8 +1418,12 @@ class SmartComfortMiniCard extends HTMLElement {
       const pill = this._el("span", `pill ${mood.level}`);
       pill.title = status;
       pill.append(this._el("span", "pdot"), this._el("span", "ptxt", status));
-      titles.append(pill);
-      if (outdoor !== null && outdoor !== undefined) titles.append(this._el("div", "hsub", this._t("outside", { value: this._temp(outdoor) })));
+      row.append(pill);
+      if (outdoor !== null && outdoor !== undefined) {
+        const sub = this._el("div", "hsub", this._t("outside", { value: this._temp(outdoor) }));
+        sub.title = sub.textContent;
+        titles.append(sub);
+      }
     }
     const zoom = !this.constructor.FULL && this._config.zoom !== false ? this._zoomButton() : null;
     if (!this._illustrated()) {
@@ -1429,6 +1438,53 @@ class SmartComfortMiniCard extends HTMLElement {
     head.append(badge, titles);
     header.append(scene, this._el("div", "ground"), head, ...(zoom ? [zoom] : []));
     return header;
+  }
+
+  // The status pill goes on the title row, right after the title, only when the whole title and the pill's whole
+  // label fit there; otherwise it takes its own line under the subtitle (the subtitle then on one line). In the
+  // banner, when title, subtitle and pill still do not fit above the ground strip (or the pill's label runs past the
+  // text, over the picture), the pill keeps its dot only.
+  // Measured after each render and on every new width (or once the web font is loaded), never by a fixed width.
+  _fitPill() {
+    for (const t of this.shadowRoot?.querySelectorAll?.(".titles") || []) {
+      const row = t.querySelector?.(".trow");
+      const name = row?.querySelector(".hname");
+      const chips = row ? [...row.children].filter((n) => n.classList.contains("pill")) : [];
+      if (!name?.getBoundingClientRect || !chips.length) continue;
+      t.classList.remove("pill-below", "pill-dot");
+      // The title's whole width (scrollWidth is rounded: 1 px more, so that a title that fits is never cut).
+      const need = chips.reduce((w, c) => w + PILL_GAP_PX + c.getBoundingClientRect().width, name.scrollWidth + 1);
+      if (need <= row.getBoundingClientRect().width + 0.5) continue;
+      t.classList.add("pill-below");
+      const banner = t.closest(".banner");
+      if (!banner) continue;
+      const box = banner.getBoundingClientRect();
+      const ground = box.bottom - PILL_GROUND_PX;
+      const right = t.getBoundingClientRect().right;
+      const out = [name, ...t.querySelectorAll(".hsub"), ...chips].some((n) => {
+        const r = n.getBoundingClientRect();
+        return r.height > 0 && (r.top < box.top - 0.5 || r.bottom > ground + 0.5 || r.right > right + 0.5);
+      });
+      if (out) t.classList.add("pill-dot");
+    }
+  }
+
+  _watchPill() {
+    if (typeof ResizeObserver !== "function") return;
+    this._pillResize ??= new ResizeObserver((entries) => {
+      const w = Math.round(entries.at(-1).contentRect.width);
+      if (w === this._pillWidth) return;
+      this._pillWidth = w;
+      cancelAnimationFrame(this._pillFrame);
+      this._pillFrame = requestAnimationFrame(() => this._fitPill());
+    });
+    this._pillResize.observe(this);
+    document.fonts?.ready?.then(() => this._fitPill());
+  }
+
+  _unwatchPill() {
+    this._pillResize?.disconnect();
+    this._pillWidth = null;
   }
 
   _zoomButton() {
@@ -1576,6 +1632,11 @@ class SmartComfortMiniCard extends HTMLElement {
   }
 }
 
+// The banner's ground strip (the parquet floor), that the title block keeps clear of, and the gap between the title
+// and the status pill on its row (.trow).
+const PILL_GROUND_PX = 10;
+const PILL_GAP_PX = 8;
+
 const STYLE = `
   :host { display: block; }
   ha-card { container: sc-card / inline-size; overflow: hidden; }
@@ -1583,7 +1644,7 @@ const STYLE = `
   .header { display: flex; align-items: center; gap: 10px; }
   ${HEADER_STYLE}
   .hsub { font-size: 12px; line-height: 16px; color: var(--secondary-text-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  :host([hide-title]) .titles > .hname, :host([hide-subtitle]) .titles > .hsub { display: none; }
+  :host([hide-title]) .titles .hname, :host([hide-subtitle]) .titles > .hsub { display: none; }
   .top:empty { display: none; }
   /* The icon's colour is the status, in both headers. */
   .hbadge.ok { --c: var(--success-color, #43a047); }
@@ -1605,7 +1666,7 @@ const STYLE = `
   .banner .head { position: absolute; z-index: 1; left: 0; top: 0; bottom: var(--ground-h); right: min(var(--scene-w), 45%);
                   box-sizing: border-box; display: flex; align-items: center; gap: 10px; padding: 8px 8px 8px 14px; min-width: 0; }
   .banner .hname { color: var(--sky-text); }
-  .banner .hsub { color: var(--sky-muted); }
+  .banner .hsub { color: var(--sky-muted); font-size: 13px; line-height: 17px; }
   .banner .hbadge { background: rgba(255,255,255,.62); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--c) 22%, transparent); }
   .banner .hbadge.quiet { --c: #8a929c; }
   .banner.night .hbadge { background: rgba(255,255,255,.12); color: color-mix(in srgb, var(--c) 75%, #ffffff);
@@ -1651,24 +1712,29 @@ const STYLE = `
     .banner .scene { display: none; }
     .banner .head { right: 0; padding-right: 34px; }
   }
-  /* Title row: the title, then the status pill 8 px after it, both shrinking (the title keeps a few characters, the
-     pill at most about half the row); the subtitle under them. Short of room the pill takes its own line under the
-     subtitle; on a very narrow card only its dot shows (its text stays in its title and for screen readers). */
-  .header .titles { container: sc-titles / inline-size; display: grid; align-items: center; column-gap: 8px; justify-content: start;
-    grid-template-columns: minmax(min(4.5ch, 100%), max-content) minmax(0, max-content); }
-  .header .titles > .hsub { grid-column: 1 / -1; }
-  .pill { --c: var(--success-color, #43a047); display: inline-flex; align-items: center; gap: 4px; justify-self: start; min-width: 0;
-    max-width: 100%; box-sizing: border-box; overflow: hidden; padding: 1px 8px; border-radius: 12px; font-size: 11px; font-weight: 500;
+  /* Title row: the title, then the status pill 8 px after it, only when the whole title and the pill's whole label fit
+     there; otherwise the pill on its own line under the subtitle (then kept to one line), and its dot alone when the
+     banner has no room left for its label or at 200 px or less (its text stays in its title and for screen readers).
+     Measured after each render (_fitPill), in every language, never by a fixed width. */
+  .header .titles { display: flex; flex-direction: column; justify-content: center; }
+  .trow { display: flex; align-items: center; gap: 8px; min-width: 0; }
+  .trow .hname { flex: 0 1 auto; }
+  .titles.pill-below .trow { display: contents; }
+  .titles.pill-below .hsub { order: 1; }
+  .titles.pill-below .pill { order: 2; align-self: flex-start; margin-top: 3px; }
+  .titles.pill-dot .pill { padding: 4px; }
+  .titles.pill-dot .ptxt { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .pill { --c: var(--success-color, #43a047); display: inline-flex; align-items: center; gap: 4px; flex: none;
+    box-sizing: border-box; padding: 1px 8px; border-radius: 12px; font-size: 11px; font-weight: 500;
     line-height: 16px; white-space: nowrap;
     background: color-mix(in srgb, var(--c) 16%, transparent); color: color-mix(in srgb, var(--c) 70%, var(--primary-text-color)); }
-  .pill .ptxt { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+  .pill .ptxt { white-space: nowrap; }
   .pill .pdot { width: 7px; height: 7px; border-radius: 50%; background: var(--c); flex: none; }
   .pill.ok { --c: var(--success-color, #43a047); }
   .pill.quiet { --c: var(--secondary-text-color, #727272); }
   .pill.cool { --c: var(--state-climate-cool-color, #2b9af9); }
   .pill.warning { --c: var(--warning-color, #ffa600); }
   .pill.critical { --c: var(--error-color, #db4437); }
-  @container sc-titles (max-width: 200px) { .header .titles > .pill { grid-column: 1 / -1; grid-row: 3; margin-top: 3px; } }
   @container sc-card (max-width: 200px) {
     .pill { padding: 4px; }
     .pill .ptxt { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }

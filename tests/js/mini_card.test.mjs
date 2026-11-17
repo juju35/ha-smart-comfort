@@ -164,7 +164,8 @@ test("compact: status, outdoor temperature, the alerts to deal with first, then 
   const pill = byClass(card, "pill")[0];
   assert.deepEqual(text(card, "ptxt"), ["3 alerts"]);
   assert.equal(pill.title, "3 alerts");
-  assert.equal(pill.parent, byClass(card, "titles")[0]);
+  assert.equal(pill.parent, byClass(card, "trow")[0]);
+  assert.equal(byClass(card, "trow")[0].parent, byClass(card, "titles")[0]);
   assert.ok(pill.classList.contains("warning"));
   assert.deepEqual(text(card, "awhat"), ["Living room — Too hot", "Office — Open the windows (cooler outside)"]);
   assert.deepEqual(text(card, "avalue"), ["27.8 °C", "24.2 °C · outside 20.1 °C"]);
@@ -410,4 +411,78 @@ test("illustrated header: the scene and the icon colour follow the state, night 
   ({ card } = make({ illustration: false }));
   assert.equal(byClass(card, "banner").length, 0);
   assert.ok(badge(card).classList.contains("ok"));
+});
+
+// ── The status pill's place, decided by measurement (_fitPill), on a stand-in layout ──
+// A title block (.titles > .trow > .name + .chip, then .sub) in a banner `bannerH` px high (null: a classic header),
+// whose boxes follow the classes _fitPill sets: the parts stacked and centred above the 10 px ground strip.
+function block({ rowW, titleW, chipW, nameH = 20, subH = 17, bannerH = 90 }) {
+  const classes = new Set(["titles"]);
+  const classList = {
+    add: (...c) => {
+      for (const x of c) classes.add(x);
+    },
+    remove: (...c) => {
+      for (const x of c) classes.delete(x);
+    },
+    contains: (c) => classes.has(c),
+  };
+  const box = (top, height, width = 100) => ({ top, bottom: top + height, height, width, left: 0, right: width });
+  const layout = () => {
+    const below = classes.has("pill-below");
+    const height = nameH + subH + (below ? 18 : 0);
+    const top = ((bannerH ?? 80) - 10 - height) / 2;
+    return { name: box(top, nameH, titleW), sub: box(top + nameH, subH), chip: box(below ? top + nameH + subH : top + 2, 18, classes.has("pill-dot") ? 14 : chipW) };
+  };
+  const name = { scrollWidth: titleW, getBoundingClientRect: () => layout().name };
+  const chip = { classList: { contains: (c) => c === "pill" }, getBoundingClientRect: () => layout().chip };
+  const sub = { getBoundingClientRect: () => layout().sub };
+  const row = { children: [name, chip], querySelector: () => name, getBoundingClientRect: () => box(0, 20, rowW) };
+  name.classList = { contains: () => false };
+  const banner = bannerH === null ? null : { getBoundingClientRect: () => box(0, bannerH) };
+  const titles = { classList, querySelector: () => row, querySelectorAll: () => [sub], closest: () => banner, getBoundingClientRect: () => row.getBoundingClientRect() };
+  return { titles, classes };
+}
+
+const fit = (b) => Mini.prototype._fitPill.call({ shadowRoot: { querySelectorAll: () => [b.titles] } });
+
+test("the pill stays on the title row when the whole title and its whole label fit", () => {
+  const b = block({ rowW: 300, titleW: 120, chipW: 70 });
+  fit(b);
+  assert.ok(!b.classes.has("pill-below") && !b.classes.has("pill-dot"));
+});
+
+test("a title that would be cut sends the pill under the subtitle, with its whole label", () => {
+  for (const bannerH of [90, null]) {
+    const b = block({ rowW: 200, titleW: 150, chipW: 70, bannerH });
+    fit(b);
+    assert.ok(b.classes.has("pill-below"), "pill under the subtitle");
+    assert.ok(!b.classes.has("pill-dot"), "whole label");
+  }
+});
+
+test("the title is never cut by the pill: one pixel short is enough to move it", () => {
+  const b = block({ rowW: 199, titleW: 120, chipW: 71 });
+  fit(b);
+  assert.ok(b.classes.has("pill-below"));
+});
+
+test("no room left above the banner's ground strip: the pill keeps its dot only", () => {
+  const b = block({ rowW: 200, titleW: 250, chipW: 70, nameH: 50, subH: 17 });
+  fit(b);
+  assert.ok(b.classes.has("pill-below") && b.classes.has("pill-dot"));
+});
+
+test("a label wider than the text column under the subtitle: the pill keeps its dot only", () => {
+  const b = block({ rowW: 120, titleW: 110, chipW: 140 });
+  fit(b);
+  assert.ok(b.classes.has("pill-below") && b.classes.has("pill-dot"));
+});
+
+test("a new measure starts afresh: back on the title row once the card is wide again", () => {
+  const b = block({ rowW: 200, titleW: 250, chipW: 70, nameH: 40 });
+  fit(b);
+  b.titles.querySelector().getBoundingClientRect = () => ({ width: 600 });
+  fit(b);
+  assert.ok(!b.classes.has("pill-below") && !b.classes.has("pill-dot"));
 });

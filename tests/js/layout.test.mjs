@@ -53,18 +53,21 @@ test("activity card header: the title block shrinks and truncates, the badge nev
   assert.match(badge, /width:\s*40px/);
 });
 
-test("mini card header: the status pill follows the title, truncates, moves under it short of room, then only its dot shows", async () => {
+test("mini card header: the status pill beside a whole title, else under the subtitle, measured; its dot when narrow", async () => {
   const css = await source("smart-comfort-mini-card.js");
-  const titles = rule(css, ".header .titles") || "";
-  assert.match(titles, /display:\s*grid/);
-  assert.match(titles, /grid-template-columns:\s*minmax\(min\(4\.5ch, 100%\), max-content\) minmax\(0, max-content\)/);
-  assert.match(titles, /container:\s*sc-titles \/ inline-size/);
+  assert.match(rule(css, ".header .titles") || "", /flex-direction:\s*column/);
+  assert.match(rule(css, ".trow") || "", /display:\s*flex/);
+  assert.match(rule(css, ".titles.pill-below .trow") || "", /display:\s*contents/);
+  assert.match(rule(css, ".titles.pill-below .pill") || "", /order:\s*2/);
+  assert.match(rule(css, ".titles.pill-dot .ptxt") || "", /clip-path:\s*inset\(50%\)/);
   const pill = css.match(/\n {2}\.pill \{([^}]*)\}/)?.[1] || "";
-  for (const d of [/min-width:\s*0/, /max-width:\s*100%/, /overflow:\s*hidden/, /font-size:\s*11px/, /padding:\s*1px 8px/]) assert.match(pill, d);
-  assert.match(rule(css, ".pill .ptxt") || "", /text-overflow:\s*ellipsis/);
-  assert.match(css, /@container sc-titles \(max-width: 200px\) \{ \.header \.titles > \.pill \{ grid-column: 1 \/ -1; grid-row: 3;/);
+  for (const d of [/flex:\s*none/, /font-size:\s*11px/, /padding:\s*1px 8px/]) assert.match(pill, d);
+  assert.doesNotMatch(pill, /max-width|overflow:\s*hidden/);
+  assert.doesNotMatch(css, /sc-titles/, "no fixed-width rule moves the pill");
   // Only the dot: the text is hidden visually, never removed (screen readers and the pill's title keep it).
   assert.match(css, /@container sc-card \(max-width: 200px\) \{\s*\.pill \{ padding: 4px; \}\s*\.pill \.ptxt \{[^}]*clip-path: inset\(50%\)/);
+  // The banner's subtitle in the other cards' size.
+  assert.match(rule(css, ".banner .hsub") || "", /font-size:\s*13px/);
 });
 
 test("mini card: the expand / collapse button sits in the banner's top right corner, 24 px", async () => {
