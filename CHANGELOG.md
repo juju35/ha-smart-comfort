@@ -7,6 +7,9 @@
 - Cards: the status pill on every header, illustrated or classic — a dot and the status ("3 alerts", "All good") in the icon's colour, right after the title; short of room it takes its own line under the subtitle, on a very narrow card only its dot shows. The subtitle keeps the outdoor temperature. The mini card's expand / collapse button sits in the banner's top right corner (24 px, frosted), like the other cards.
 - Screenshots: the animated header states (too hot, too cold, cooling, alert) are recorded as GIFs, light and dark, shown in the README; the card screenshots are rendered in Home Assistant's dark mode (dark theme and `hass.themes.darkMode`).
 
+### Fixes
+- Cards: the body follows the common look of the other cards — 16 px padding, section titles (Alerts, Rooms, Activity) with their icon in small capitals, alert rows with a 40 px round icon lined up with the activity rows, room tiles on the secondary background with 12 px corners (an alerting room tinted), even row spacing.
+
 ## 1.21.2 - 2026-11-16
 
 ### Fixes

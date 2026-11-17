@@ -1358,9 +1358,9 @@ class SmartComfortMiniCard extends HTMLElement {
     const alerts = this._alerts();
     const children = [];
     if (this._zoomed) {
-      children.push(this._section("alerts_title", this._alertList(alerts, alerts.length, true)));
+      children.push(this._section("alerts_title", this._alertList(alerts, alerts.length, true), "mdi:bell-alert-outline"));
       const rooms = this._rooms();
-      if (rooms.length) children.push(this._section("rooms", this._roomGrid(rooms)));
+      if (rooms.length) children.push(this._section("rooms", this._roomGrid(rooms), "mdi:home-outline"));
       children.push(this._switches(found));
     } else {
       const shown = Math.max(0, this._config.alerts ?? 3);
@@ -1390,7 +1390,7 @@ class SmartComfortMiniCard extends HTMLElement {
       if (this._hass) this._activity.hass = this._hass;
     }
     if (!this._extra.contains(this._activity)) {
-      this._extra.replaceChildren(this._el("div", "section-title", this._t("activity")), this._activity);
+      this._extra.replaceChildren(this._sectionTitle("activity", "mdi:history"), this._activity);
     }
   }
 
@@ -1445,10 +1445,17 @@ class SmartComfortMiniCard extends HTMLElement {
     return button;
   }
 
-  _section(titleKey, content) {
+  _section(titleKey, content, icon) {
     const section = this._el("div", "section");
-    section.append(this._el("div", "section-title", this._t(titleKey)), content);
+    section.append(this._sectionTitle(titleKey, icon), content);
     return section;
+  }
+
+  /** A section's title, like the other cards': its icon, then the name in small capitals. */
+  _sectionTitle(titleKey, icon) {
+    const title = this._el("div", "section-title");
+    title.append(this._icon(icon), this._el("span", "", this._t(titleKey)));
+    return title;
   }
 
   /** The alerts, the first `max` of them (and how many more); in the full card, with since when and their state. */
@@ -1572,7 +1579,7 @@ class SmartComfortMiniCard extends HTMLElement {
 const STYLE = `
   :host { display: block; }
   ha-card { container: sc-card / inline-size; overflow: hidden; }
-  .top { padding: 12px 16px; display: flex; flex-direction: column; gap: 10px; }
+  .top { padding: 16px; display: flex; flex-direction: column; gap: 14px; }
   .header { display: flex; align-items: center; gap: 10px; }
   ${HEADER_STYLE}
   .hsub { font-size: 12px; line-height: 16px; color: var(--secondary-text-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -1671,14 +1678,17 @@ const STYLE = `
   .zoom:hover { background: color-mix(in srgb, var(--secondary-text-color) 16%, transparent); color: var(--primary-text-color); }
   .zoom:focus-visible { outline: 2px solid var(--primary-color, #03a9f4); outline-offset: 1px; }
   .empty { color: var(--secondary-text-color); font-size: 14px; }
-  .section { display: flex; flex-direction: column; gap: 6px; }
-  .section-title { font-size: 13px; font-weight: 500; color: var(--secondary-text-color); }
+  .section { display: flex; flex-direction: column; gap: 8px; }
+  /* Section titles like the other cards': a 16 px icon, the name in small capitals. */
+  .section-title { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 500; line-height: 16px; text-transform: uppercase;
+    letter-spacing: .04em; color: var(--secondary-text-color); --mdc-icon-size: 16px; }
+  .section-title ha-icon { flex: none; }
   .alerts { display: flex; flex-direction: column; }
-  .alert { display: grid; grid-template-columns: 28px minmax(0, 1fr) auto; align-items: center; column-gap: 10px; padding: 6px 0;
+  .alert { display: grid; grid-template-columns: 40px minmax(0, 1fr) auto; align-items: center; column-gap: 12px; padding: 8px 0;
     border-bottom: 1px solid var(--divider-color); }
   .alert:last-child { border-bottom: none; }
-  .abadge { --c: var(--warning-color, #ffa600); flex: none; width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center;
-    background: color-mix(in srgb, var(--c) 16%, transparent); color: var(--c); --mdc-icon-size: 16px; }
+  .abadge { --c: var(--warning-color, #ffa600); flex: none; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center;
+    background: color-mix(in srgb, var(--c) 16%, transparent); color: var(--c); --mdc-icon-size: 20px; }
   .alert.quiet .abadge { --c: var(--secondary-text-color); }
   .amain { min-width: 0; }
   .awhat { font-size: 14px; line-height: 20px; overflow-wrap: anywhere; }
@@ -1686,9 +1696,9 @@ const STYLE = `
   .avalue { flex: none; font-size: 13px; color: var(--secondary-text-color); white-space: nowrap; font-variant-numeric: tabular-nums; }
   .more { font-size: 12px; color: var(--secondary-text-color); padding-top: 4px; }
   .rooms { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 8px; }
-  .room { border: 1px solid var(--divider-color); border-radius: 12px; padding: 8px 10px; min-width: 0; }
-  .room.alerting { border-color: color-mix(in srgb, var(--warning-color, #ffa600) 60%, transparent);
-    background: color-mix(in srgb, var(--warning-color, #ffa600) 8%, transparent); }
+  /* Room tiles on the secondary background, like the other cards' tiles; a room with an alert tinted. */
+  .room { border-radius: 12px; padding: 8px 10px; min-width: 0; background: var(--secondary-background-color, rgba(127,127,127,.08)); }
+  .room.alerting { background: color-mix(in srgb, var(--warning-color, #ffa600) 14%, var(--secondary-background-color, transparent)); }
   .rname { font-size: 13px; color: var(--secondary-text-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .rvalue { font-size: 18px; font-weight: 500; line-height: 24px; font-variant-numeric: tabular-nums; }
   .rstate { display: flex; align-items: center; gap: 4px; font-size: 12px; color: var(--secondary-text-color); --mdc-icon-size: 14px;
@@ -1696,7 +1706,8 @@ const STYLE = `
   .rstate span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .room.alerting .rstate { color: color-mix(in srgb, var(--warning-color, #ffa600) 70%, var(--primary-text-color)); }
   .rstate.ok { color: color-mix(in srgb, var(--success-color, #43a047) 70%, var(--primary-text-color)); }
-  .clickable { cursor: pointer; border-radius: 8px; }
+  .clickable { cursor: pointer; }
+  .alert.clickable { border-radius: 8px; }
   .clickable:focus-visible { outline: 2px solid var(--primary-color, #03a9f4); outline-offset: 2px; }
   .switches { display: flex; flex-wrap: wrap; gap: 8px; }
   /* Not filled: tinted with an accent icon when on, outlined when off. */
@@ -1711,11 +1722,11 @@ const STYLE = `
   .slabel { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .extra:empty { display: none; }
   .extra { display: flex; flex-direction: column; border-top: 1px solid var(--divider-color); }
-  .extra > .section-title { padding: 12px 16px 0; }
+  .extra > .section-title { padding: 16px 16px 0; }
   /* Narrow card: the reading of an alert goes under its text. */
   @container (max-width: 360px) {
-    .alert { grid-template-columns: 28px minmax(0, 1fr); }
-    .abadge { grid-row: span 2; align-self: start; margin-top: 2px; }
+    .alert { grid-template-columns: 40px minmax(0, 1fr); }
+    .abadge { grid-row: span 2; align-self: start; margin-top: 0; }
     .avalue { grid-column: 2; white-space: normal; }
   }
   /* Narrow mini card (6 columns on a phone): the switches keep their icon only (their name stays in the tooltip). */

@@ -277,6 +277,18 @@ test("Smart Comfort not loaded: says so", () => {
   assert.equal(byClass(card, "switch").length, 0);
 });
 
+test("full view: each section title has its icon, then its name, like the other cards", () => {
+  const { card } = make({}, { alerts: ALERTS });
+  byClass(card, "zoom")[0].fire("click");
+  const titles = byClass(card, "section-title");
+  assert.ok(titles.length >= 2, "alerts and rooms titled");
+  for (const title of titles) {
+    assert.equal(title.children[0].tagName, "ha-icon");
+    assert.match(String(title.children[0].icon), /^mdi:/);
+    assert.ok(title.children[1].textContent, "a name");
+  }
+});
+
 test("smart-comfort-card: the mini card's full view, standalone, never folded", () => {
   const Full = customElements.get("smart-comfort-card");
   assert.ok(Full.prototype instanceof Mini, "the mini card's rendering");
