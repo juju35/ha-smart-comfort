@@ -158,7 +158,7 @@ function make(config = {}, options = {}) {
 }
 
 test("compact: status, outdoor temperature, the alerts to deal with first, then the snoozed ones", () => {
-  const { card } = make({ alerts: 2 }, { alerts: ALERTS });
+  const { card } = make({ alerts: 2, illustration: false }, { alerts: ALERTS });
   assert.deepEqual(text(card, "hsub"), ["3 alerts · Outside 18.5 °C"]);
   const pill = byClass(card, "pill")[0];
   assert.equal(pill.textContent, "3");
@@ -173,11 +173,11 @@ test("compact: status, outdoor temperature, the alerts to deal with first, then 
 });
 
 test("no alert: OK; only snoozed or handled ones: a quiet pill", () => {
-  let { card } = make();
+  let { card } = make({ illustration: false });
   assert.deepEqual(text(card, "hsub"), ["All good · Outside 18.5 °C"]);
   assert.ok(byClass(card, "pill")[0].classList.contains("ok"));
   assert.equal(byClass(card, "alert").length, 0);
-  ({ card } = make({}, { alerts: [ALERTS[0]] }));
+  ({ card } = make({ illustration: false }, { alerts: [ALERTS[0]] }));
   assert.ok(byClass(card, "pill")[0].classList.contains("quiet"));
   assert.ok(byClass(card, "alert")[0].classList.contains("quiet"));
 });
@@ -296,8 +296,8 @@ test("smart-comfort-card: the mini card's full view, standalone, never folded", 
   assert.equal(card.getCardSize(), 8);
   // Editor: the mini card's options but the compact view's.
   assert.deepEqual(Full.getStubConfig(), {});
-  assert.deepEqual(Full.getConfigForm().schema.map((f) => f.name), ["title", "show_title", "show_subtitle", "rooms", "activity"]);
-  assert.deepEqual(Mini.getConfigForm().schema.map((f) => f.name), ["title", "show_title", "show_subtitle", "rooms", "alerts", "activity", "zoom"]);
+  assert.deepEqual(Full.getConfigForm().schema.map((f) => f.name), ["title", "show_title", "show_subtitle", "illustration", "illustration_theme", "rooms", "activity"]);
+  assert.deepEqual(Mini.getConfigForm().schema.map((f) => f.name), ["title", "show_title", "show_subtitle", "illustration", "illustration_theme", "rooms", "alerts", "activity", "zoom"]);
   card.disconnectedCallback();
   mini.disconnectedCallback();
 });
@@ -350,4 +350,46 @@ test("no rewrite under a press: drawn after its release, and at once by its clic
   assert.equal(byClass(card, "room").length, 0, "the click draws at once");
   card.disconnectedCallback();
   assert.equal(card._pressing, false);
+});
+
+test("illustrated header: the scene and the icon colour follow the state, night by the sun or the option", () => {
+  const banner = (card) => byClass(card, "banner")[0];
+  const badge = (card) => byClass(card, "hbadge")[0];
+  // An alert to deal with: too hot, amber (red when critical); no pill, the zoom button in the corner.
+  let { card } = make({}, { alerts: ALERTS });
+  assert.ok(banner(card).classList.contains("hot"));
+  assert.ok(badge(card).classList.contains("warning"));
+  assert.match(byClass(card, "scene")[0].innerHTML, /class="rays"/);
+  assert.equal(byClass(card, "pill").length, 0);
+  assert.equal(byClass(card, "zoom")[0].parent, banner(card));
+  ({ card } = make({}, { alerts: [{ ...ALERTS[2], severity: "critical" }] }));
+  assert.ok(banner(card).classList.contains("warn"));
+  assert.ok(badge(card).classList.contains("critical"));
+  ({ card } = make({}, { alerts: [{ ...ALERTS[1], kind: "too_cold" }] }));
+  assert.ok(banner(card).classList.contains("cold"));
+  // Nothing to deal with: green; only snoozed ones: grey; too hot handled by a device: cooling, blue.
+  ({ card } = make());
+  assert.ok(banner(card).classList.contains("ok"));
+  assert.ok(badge(card).classList.contains("ok"));
+  ({ card } = make({}, { alerts: [ALERTS[0]] }));
+  assert.ok(badge(card).classList.contains("quiet"));
+  ({ card } = make({}, { alerts: [{ ...ALERTS[1], handled: true }] }));
+  assert.ok(banner(card).classList.contains("cool"));
+  assert.ok(badge(card).classList.contains("cool"));
+  assert.match(byClass(card, "scene")[0].innerHTML, /class="breeze"/);
+  // Night: forced by the option, else the sun, else the dark theme.
+  ({ card } = make({ illustration_theme: "night" }));
+  assert.ok(banner(card).classList.contains("night"));
+  const { card: day, fake } = make({ illustration_theme: "day" });
+  assert.ok(!banner(day).classList.contains("night"));
+  const auto = new Mini();
+  auto.setConfig({});
+  auto.hass = { ...fake.hass, states: { ...fake.hass.states, "sun.sun": { state: "below_horizon", attributes: {} } } };
+  assert.ok(banner(auto).classList.contains("night"));
+  auto.hass = { ...fake.hass, themes: { darkMode: true } };
+  assert.ok(banner(auto).classList.contains("night"));
+  // illustration: false: the classic header.
+  ({ card } = make({ illustration: false }));
+  assert.equal(byClass(card, "banner").length, 0);
+  assert.ok(badge(card).classList.contains("ok"));
 });

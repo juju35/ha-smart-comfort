@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.22.0 - 2026-11-17
+
+### Features
+- Cards: an animated illustrated header, 90 px, on the card and the mini card — the room's wall with an air conditioner and a thermometer over a parquet floor strip. A green thermometer when all is well; the sun and a red thermometer when a room is too hot (heat waves at night); a snowflake and a low blue thermometer when it is too cold; an alert sign for any other problem; the air conditioner blowing and the thermometer going down while a device cools a room. The header icon's colour is the status (green all good, grey snoozed or handled only, blue cooling, amber an alert to deal with, red a critical one). Night follows `sun.sun` (else the dark theme), forced with `illustration_theme: day | night`; `illustration: false` keeps the classic header with its status pill; reduced motion is honoured. Both options are in the visual editor, translated in every language.
+
 ## 1.21.2 - 2026-11-16
 
 ### Fixes

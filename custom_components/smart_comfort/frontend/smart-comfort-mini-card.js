@@ -47,6 +47,11 @@ const STRINGS = {
     h_activity: "0: no activity",
     f_zoom: "Full card button",
     h_zoom: "Switches the card to the full card and back",
+    f_illustration: "Illustration",
+    f_illustration_theme: "Illustration theme",
+    theme_auto: "Automatic",
+    theme_day: "Day",
+    theme_night: "Night",
   },
   fr: {
     title: "Smart Comfort",
@@ -82,6 +87,11 @@ const STRINGS = {
     h_activity: "0 : pas d'activité",
     f_zoom: "Bouton carte complète",
     h_zoom: "Passe de la carte compacte à la carte complète, et retour",
+    f_illustration: "Illustration",
+    f_illustration_theme: "Thème de l'illustration",
+    theme_auto: "Automatique",
+    theme_day: "Jour",
+    theme_night: "Nuit",
   },
   de: {
     title: "Smart Comfort",
@@ -117,6 +127,11 @@ const STRINGS = {
     h_activity: "0: keine Aktivität",
     f_zoom: "Schaltfläche für die vollständige Karte",
     h_zoom: "Wechselt zur vollständigen Karte und zurück",
+    f_illustration: "Illustration",
+    f_illustration_theme: "Thema der Illustration",
+    theme_auto: "Automatisch",
+    theme_day: "Tag",
+    theme_night: "Nacht",
   },
   es: {
     title: "Smart Comfort",
@@ -152,6 +167,11 @@ const STRINGS = {
     h_activity: "0: sin actividad",
     f_zoom: "Botón de tarjeta completa",
     h_zoom: "Cambia a la tarjeta completa y vuelve",
+    f_illustration: "Ilustración",
+    f_illustration_theme: "Tema de la ilustración",
+    theme_auto: "Automático",
+    theme_day: "Día",
+    theme_night: "Noche",
   },
   sr: {
     title: "Smart Comfort",
@@ -188,6 +208,11 @@ const STRINGS = {
     h_activity: "0: без активности",
     f_zoom: "Дугме пуне картице",
     h_zoom: "Пребацује на пуну картицу и назад",
+    f_illustration: "Илустрација",
+    f_illustration_theme: "Тема илустрације",
+    theme_auto: "Аутоматски",
+    theme_day: "Дан",
+    theme_night: "Ноћ",
   },
   "sr-Latn": {
     title: "Smart Comfort",
@@ -224,6 +249,11 @@ const STRINGS = {
     h_activity: "0: bez aktivnosti",
     f_zoom: "Dugme pune kartice",
     h_zoom: "Prebacuje na punu karticu i nazad",
+    f_illustration: "Ilustracija",
+    f_illustration_theme: "Tema ilustracije",
+    theme_auto: "Automatski",
+    theme_day: "Dan",
+    theme_night: "Noć",
   },
   it: {
     title: "Smart Comfort",
@@ -259,6 +289,11 @@ const STRINGS = {
     h_activity: "0: nessuna attività",
     f_zoom: "Pulsante scheda completa",
     h_zoom: "Passa alla scheda completa e ritorno",
+    f_illustration: "Illustrazione",
+    f_illustration_theme: "Tema dell'illustrazione",
+    theme_auto: "Automatico",
+    theme_day: "Giorno",
+    theme_night: "Notte",
   },
   nl: {
     title: "Smart Comfort",
@@ -294,6 +329,11 @@ const STRINGS = {
     h_activity: "0: geen activiteit",
     f_zoom: "Knop volledige kaart",
     h_zoom: "Schakelt naar de volledige kaart en terug",
+    f_illustration: "Illustratie",
+    f_illustration_theme: "Thema van de illustratie",
+    theme_auto: "Automatisch",
+    theme_day: "Dag",
+    theme_night: "Nacht",
   },
   pt: {
     title: "Smart Comfort",
@@ -329,6 +369,11 @@ const STRINGS = {
     h_activity: "0: sem atividade",
     f_zoom: "Botão do cartão completo",
     h_zoom: "Muda para o cartão completo e volta",
+    f_illustration: "Ilustração",
+    f_illustration_theme: "Tema da ilustração",
+    theme_auto: "Automático",
+    theme_day: "Dia",
+    theme_night: "Noite",
   },
   pl: {
     title: "Smart Comfort",
@@ -366,6 +411,11 @@ const STRINGS = {
     h_activity: "0: bez aktywności",
     f_zoom: "Przycisk pełnej karty",
     h_zoom: "Przełącza na pełną kartę i z powrotem",
+    f_illustration: "Ilustracja",
+    f_illustration_theme: "Motyw ilustracji",
+    theme_auto: "Automatyczny",
+    theme_day: "Dzień",
+    theme_night: "Noc",
   },
   ro: {
     title: "Smart Comfort",
@@ -402,6 +452,11 @@ const STRINGS = {
     h_activity: "0: fără activitate",
     f_zoom: "Buton card complet",
     h_zoom: "Comută la cardul complet și înapoi",
+    f_illustration: "Ilustrație",
+    f_illustration_theme: "Tema ilustrației",
+    theme_auto: "Automat",
+    theme_day: "Zi",
+    theme_night: "Noapte",
   },
   da: {
     title: "Smart Comfort",
@@ -437,6 +492,11 @@ const STRINGS = {
     h_activity: "0: ingen aktivitet",
     f_zoom: "Knap til fuldt kort",
     h_zoom: "Skifter til det fulde kort og tilbage",
+    f_illustration: "Illustration",
+    f_illustration_theme: "Illustrationstema",
+    theme_auto: "Automatisk",
+    theme_day: "Dag",
+    theme_night: "Nat",
   },
   sv: {
     title: "Smart Comfort",
@@ -472,6 +532,11 @@ const STRINGS = {
     h_activity: "0: ingen aktivitet",
     f_zoom: "Knapp för fullständigt kort",
     h_zoom: "Växlar till det fullständiga kortet och tillbaka",
+    f_illustration: "Illustration",
+    f_illustration_theme: "Illustrationstema",
+    theme_auto: "Automatiskt",
+    theme_day: "Dag",
+    theme_night: "Natt",
   },
   bg: {
     title: "Smart Comfort",
@@ -507,6 +572,11 @@ const STRINGS = {
     h_activity: "0: без дейност",
     f_zoom: "Бутон за пълна карта",
     h_zoom: "Превключва към пълната карта и обратно",
+    f_illustration: "Илюстрация",
+    f_illustration_theme: "Тема на илюстрацията",
+    theme_auto: "Автоматично",
+    theme_day: "Ден",
+    theme_night: "Нощ",
   },
   ru: {
     title: "Smart Comfort",
@@ -544,6 +614,11 @@ const STRINGS = {
     h_activity: "0: без активности",
     f_zoom: "Кнопка полной карточки",
     h_zoom: "Переключает на полную карточку и обратно",
+    f_illustration: "Иллюстрация",
+    f_illustration_theme: "Тема иллюстрации",
+    theme_auto: "Автоматически",
+    theme_day: "День",
+    theme_night: "Ночь",
   },
   uk: {
     title: "Smart Comfort",
@@ -581,6 +656,11 @@ const STRINGS = {
     h_activity: "0: без активності",
     f_zoom: "Кнопка повної картки",
     h_zoom: "Перемикає на повну картку й назад",
+    f_illustration: "Ілюстрація",
+    f_illustration_theme: "Тема ілюстрації",
+    theme_auto: "Автоматично",
+    theme_day: "День",
+    theme_night: "Ніч",
   },
   hu: {
     title: "Smart Comfort",
@@ -616,6 +696,11 @@ const STRINGS = {
     h_activity: "0: nincs tevékenység",
     f_zoom: "Teljes kártya gomb",
     h_zoom: "Átvált a teljes kártyára és vissza",
+    f_illustration: "Illusztráció",
+    f_illustration_theme: "Az illusztráció témája",
+    theme_auto: "Automatikus",
+    theme_day: "Nappal",
+    theme_night: "Éjszaka",
   },
   sk: {
     title: "Smart Comfort",
@@ -653,6 +738,11 @@ const STRINGS = {
     h_activity: "0: bez aktivity",
     f_zoom: "Tlačidlo celej karty",
     h_zoom: "Prepne na celú kartu a späť",
+    f_illustration: "Ilustrácia",
+    f_illustration_theme: "Téma ilustrácie",
+    theme_auto: "Automaticky",
+    theme_day: "Deň",
+    theme_night: "Noc",
   },
   cs: {
     title: "Smart Comfort",
@@ -688,6 +778,11 @@ const STRINGS = {
     h_activity: "0: bez aktivity",
     f_zoom: "Tlačítko celé karty",
     h_zoom: "Přepne na celou kartu a zpět",
+    f_illustration: "Ilustrace",
+    f_illustration_theme: "Motiv ilustrace",
+    theme_auto: "Automaticky",
+    theme_day: "Den",
+    theme_night: "Noc",
   },
   sl: {
     title: "Smart Comfort",
@@ -725,6 +820,11 @@ const STRINGS = {
     h_activity: "0: brez dejavnosti",
     f_zoom: "Gumb za polno kartico",
     h_zoom: "Preklopi na polno kartico in nazaj",
+    f_illustration: "Ilustracija",
+    f_illustration_theme: "Tema ilustracije",
+    theme_auto: "Samodejno",
+    theme_day: "Dan",
+    theme_night: "Noč",
   },
   lv: {
     title: "Smart Comfort",
@@ -761,6 +861,11 @@ const STRINGS = {
     h_activity: "0: bez aktivitātes",
     f_zoom: "Pilnās kartītes poga",
     h_zoom: "Pārslēdz uz pilno kartīti un atpakaļ",
+    f_illustration: "Ilustrācija",
+    f_illustration_theme: "Ilustrācijas tēma",
+    theme_auto: "Automātiski",
+    theme_day: "Diena",
+    theme_night: "Nakts",
   },
   el: {
     title: "Smart Comfort",
@@ -796,6 +901,11 @@ const STRINGS = {
     h_activity: "0: χωρίς δραστηριότητα",
     f_zoom: "Κουμπί πλήρους κάρτας",
     h_zoom: "Εναλλάσσει στην πλήρη κάρτα και πίσω",
+    f_illustration: "Εικονογράφηση",
+    f_illustration_theme: "Θέμα εικονογράφησης",
+    theme_auto: "Αυτόματο",
+    theme_day: "Ημέρα",
+    theme_night: "Νύχτα",
   },
 };
 
@@ -933,6 +1043,76 @@ function findEntities(hass) {
 /** The name of the room of a room sensor: its `room_name` attribute (set by the integration). */
 const roomName = (state) => state?.attributes?.room_name ?? state?.attributes?.friendly_name ?? state?.entity_id;
 
+// Device targets that mean the room is being cooled: an air conditioner cooling, a fan blowing.
+const COOLING_TARGETS = new Set(["cool", "cool_night", "on", "on_night"]);
+// Alert kinds drawn as a cold room.
+const COLD_KINDS = new Set(["too_cold", "window_open_cold"]);
+
+/**
+ * The state the header shows: `scene` picks the illustration (ok, hot, cold, cool, warn) and `level` the colour of
+ * the icon (ok green, quiet grey, cool blue, warning amber, critical red). An alert to deal with comes first, then a
+ * device cooling a room, then the alerts that are only snoozed or handled.
+ */
+function comfortMood(alerts, roomStates) {
+  if (!alerts) return { scene: "ok", level: "quiet" };
+  const open = alerts.filter((a) => !a.snoozed && !a.handled);
+  if (open.length) {
+    const level = open.some((a) => a.severity === "critical") ? "critical" : "warning";
+    if (open.some((a) => a.kind === "too_hot")) return { scene: "hot", level };
+    if (open.some((a) => COLD_KINDS.has(a.kind))) return { scene: "cold", level };
+    return { scene: "warn", level };
+  }
+  const cooling = roomStates.some((s) => Object.values(s?.attributes?.devices || {}).some((d) => COOLING_TARGETS.has(d?.target)));
+  if (cooling || alerts.some((a) => a.handled && a.kind === "too_hot")) return { scene: "cool", level: "cool" };
+  return { scene: "ok", level: alerts.length ? "quiet" : "ok" };
+}
+
+// The illustration, drawn in the right part (x 96–200) of a 200 × 80 room whose floor is the ground strip: an air
+// conditioner on the wall and a thermometer, the sun (heat waves at night), a snowflake or an alert sign by state.
+// It uses no id, so several cards on one page never clash.
+function comfortScene(scene, level, night) {
+  const [mercury, top, height] =
+    { hot: ["#e5484d", 6, 30], cool: ["#2f80ed", 18, 18], cold: ["#2f80ed", 26, 10] }[scene] || ["#43a047", 14, 22];
+  const cooling = scene === "cool";
+  const ticks = [8, 16, 24, 32].map((y) => `<line x1="5" y1="${y}" x2="7" y2="${y}"/>`).join("");
+  const ac = `<g transform="translate(140 12)">
+      <rect x="-30" y="0" width="60" height="16" rx="5" fill="${night ? "#d8dce2" : "#ffffff"}" stroke="#c9ced6"/>
+      <rect x="-24" y="12" width="48" height="2" rx="1" fill="#9aa3ae"/>
+      <circle class="${cooling ? "blink" : ""}" cx="22" cy="5" r="1.2" fill="${cooling ? "#2f80ed" : "#9aa3ae"}"/>
+      ${
+        cooling
+          ? `<g class="breeze" fill="none" stroke="#86b9de" stroke-width="1.4" stroke-linecap="round">
+        <path d="M-20 20 q4 8 0 16"/><path d="M0 20 q4 8 0 16"/><path d="M20 20 q4 8 0 16"/></g>`
+          : ""
+      }</g>`;
+  const thermometer = `<g transform="translate(104 22)">
+      <rect x="-4" y="0" width="8" height="40" rx="4" fill="#ffffff" stroke="#9aa3ae"/>
+      <g stroke="#9aa3ae" stroke-width=".6">${ticks}</g>
+      <rect class="merc${scene === "hot" ? " rise" : cooling ? " fall" : ""}" x="-1.6" y="${top}" width="3.2" height="${height}" rx="1.6" fill="${mercury}"/>
+      <circle cy="42" r="5" fill="${mercury}"/></g>`;
+  let extra = "";
+  if (scene === "hot" && !night) {
+    const rays = Array.from({ length: 8 }, (_, i) => {
+      const a = (i * Math.PI) / 4;
+      const at = (r) => [(Math.cos(a) * r).toFixed(1), (Math.sin(a) * r).toFixed(1)];
+      const [[x1, y1], [x2, y2]] = [at(6), at(10)];
+      return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"/>`;
+    }).join("");
+    extra = `<g transform="translate(186 44)"><g class="rays" stroke="#f5b400" stroke-width="1.6" stroke-linecap="round">${rays}</g><circle r="4" fill="#ffc83a"/></g>`;
+  } else if (scene === "hot") {
+    extra = `<g class="heat" transform="translate(186 50)" fill="none" stroke="#e5484d" stroke-width="1.4" stroke-linecap="round">
+      <path d="M-6 6 q-2 -4 0 -8 t0 -8"/><path d="M0 6 q-2 -4 0 -8 t0 -8"/><path d="M6 6 q-2 -4 0 -8 t0 -8"/></g>`;
+  } else if (scene === "cold") {
+    const arms = [0, 60, 120].map((d) => `<path transform="rotate(${d})" d="M0 -8 V8 M-2.5 -6 L0 -4 L2.5 -6 M-2.5 6 L0 4 L2.5 6"/>`).join("");
+    extra = `<g transform="translate(186 44)"><g class="snow" fill="none" stroke="${night ? "#a9d2f5" : "#5aa9e6"}" stroke-width="1.3" stroke-linecap="round">${arms}</g></g>`;
+  } else if (scene === "warn") {
+    const color = level === "critical" ? "#e5484d" : "#ffa600";
+    extra = `<g class="pulse" transform="translate(186 44)"><circle r="7" fill="${color}"/>
+      <rect x="-1" y="-4.5" width="2" height="5.5" rx="1" fill="#ffffff"/><circle cy="3.4" r="1.1" fill="#ffffff"/></g>`;
+  }
+  return `<svg viewBox="96 0 104 80" preserveAspectRatio="xMaxYMax meet" aria-hidden="true">${ac}${thermometer}${extra}</svg>`;
+}
+
 class SmartComfortMiniCard extends HTMLElement {
   // The full card (smart-comfort-card) is this card always switched to its full view.
   static FULL = false;
@@ -951,6 +1131,12 @@ class SmartComfortMiniCard extends HTMLElement {
         { name: "title", selector: { text: {} } },
         { name: "show_title", default: true, selector: { boolean: {} } },
         { name: "show_subtitle", default: true, selector: { boolean: {} } },
+        { name: "illustration", default: true, selector: { boolean: {} } },
+        {
+          name: "illustration_theme",
+          default: "auto",
+          selector: { select: { mode: "dropdown", options: ["auto", "day", "night"].map((value) => ({ value, label: t(`theme_${value}`) })) } },
+        },
         { name: "rooms", selector: { select: { multiple: true, custom_value: true, options: rooms } } },
         { name: "alerts", selector: { number: { min: 0, max: 10, mode: "box" } } },
         { name: "activity", selector: { number: { min: 0, max: 20, mode: "box" } } },
@@ -1107,7 +1293,23 @@ class SmartComfortMiniCard extends HTMLElement {
       const s = this._state(id);
       return s ? [s.state, s.last_updated, s.attributes] : null;
     });
-    return JSON.stringify([this._hass?.language, this._zoomed, ids, states]);
+    return JSON.stringify([this._hass?.language, this._zoomed, ids, states, this._night()]);
+  }
+
+  /** Whether the header has the illustration (`illustration: false`: the classic header). */
+  _illustrated() {
+    return this._config?.illustration !== false;
+  }
+
+  /** Night illustration: forced by illustration_theme, else the sun below the horizon, else the dark theme. */
+  _night() {
+    const mode = this._config?.illustration_theme;
+    if (mode === "night") return true;
+    if (mode === "day") return false;
+    const sun = this._state("sun.sun")?.state;
+    if (sun === "below_horizon") return true;
+    if (sun === "above_horizon") return false;
+    return !!this._hass?.themes?.darkMode;
   }
 
   _setZoom(zoomed) {
@@ -1137,20 +1339,27 @@ class SmartComfortMiniCard extends HTMLElement {
     if (!this._card) {
       root.innerHTML = `<style>${STYLE}</style>`;
       this._card = document.createElement("ha-card");
+      this._head = this._el("div", "head-box");
       this._top = this._el("div", "top");
       this._extra = this._el("div", "extra");
-      this._card.append(this._top, this._extra);
+      this._card.append(this._head, this._top, this._extra);
       root.append(this._card);
     }
     this._card.classList.toggle("zoomed", this._zoomed);
     const found = findEntities(this._hass);
+    // The illustrated header spans the card edge to edge, above the padded content; the classic one is in it.
+    const banner = this._illustrated();
+    const place = (header, content) => {
+      this._head.replaceChildren(...(banner ? [header] : []));
+      this._top.replaceChildren(...(banner ? [] : [header]), ...content);
+    };
     if (this._hass && !found.alerts) {
-      this._top.replaceChildren(this._header(null), this._el("div", "empty", this._t("not_loaded")));
+      place(this._header(null), [this._el("div", "empty", this._t("not_loaded"))]);
       this._showActivity(false);
       return;
     }
     const alerts = this._alerts();
-    const children = [this._header(alerts)];
+    const children = [];
     if (this._zoomed) {
       children.push(this._section("alerts_title", this._alertList(alerts, alerts.length, true)));
       const rooms = this._rooms();
@@ -1161,7 +1370,7 @@ class SmartComfortMiniCard extends HTMLElement {
       if (alerts.length && shown) children.push(this._alertList(alerts, shown, false));
       children.push(this._switches(found));
     }
-    this._top.replaceChildren(...children);
+    place(this._header(alerts), children);
     this._showActivity(this._zoomed && this._config.activity > 0);
     if (focusZoom) root.querySelector(".zoom")?.focus({ preventScroll: true });
     else if (focusSwitch) root.querySelector(`[data-key="${focusSwitch}"]`)?.focus({ preventScroll: true });
@@ -1188,14 +1397,19 @@ class SmartComfortMiniCard extends HTMLElement {
     }
   }
 
-  /** Header like the other cards: a tinted round badge, the title and the status, the zoom button at the right. */
+  /**
+   * Header like the other cards: a round badge whose icon colour is the status, the title and the status. Illustrated
+   * (the default): over the room's wall, the illustration of the state at the right, a parquet strip at the bottom,
+   * the zoom button in the corner. Classic (`illustration: false`): the status pill and the zoom button at the right.
+   */
   _header(alerts) {
-    const header = this._el("div", "header");
-    const badge = this._el("span", "hbadge");
+    const rooms = findEntities(this._hass).rooms.map((id) => this._state(id));
+    const mood = comfortMood(alerts, rooms);
+    const badge = this._el("span", `hbadge ${mood.level}`);
     badge.append(this._icon("mdi:home-thermometer"));
     const titles = this._el("div", "titles");
     titles.append(this._el("div", "hname", this._config.title || this._t("title")));
-    header.append(badge, titles);
+    let pill = null;
     if (alerts) {
       const pending = alerts.filter((a) => !a.snoozed && !a.handled).length;
       const outdoor = this._state(findEntities(this._hass).alerts)?.attributes?.outdoor_temperature;
@@ -1203,11 +1417,21 @@ class SmartComfortMiniCard extends HTMLElement {
       const parts = [status, outdoor === null || outdoor === undefined ? null : this._t("outside", { value: this._temp(outdoor) })];
       titles.append(this._el("div", "hsub", parts.filter(Boolean).join(" · ")));
       const level = pending ? "warning" : alerts.length ? "quiet" : "ok";
-      const pill = this._el("span", `pill ${level}`, alerts.length ? this._number(alerts.length, 0) : "OK");
+      pill = this._el("span", `pill ${level}`, alerts.length ? this._number(alerts.length, 0) : "OK");
       pill.setAttribute("aria-hidden", "true");
-      header.append(pill);
     }
-    if (!this.constructor.FULL && this._config.zoom !== false) header.append(this._zoomButton());
+    const zoom = !this.constructor.FULL && this._config.zoom !== false ? this._zoomButton() : null;
+    if (!this._illustrated()) {
+      const header = this._el("div", "header");
+      header.append(badge, titles, ...[pill, zoom].filter(Boolean));
+      return header;
+    }
+    const header = this._el("div", `header banner ${mood.scene}${this._night() ? " night" : ""}`);
+    const scene = this._el("div", "scene");
+    scene.innerHTML = comfortScene(mood.scene, mood.level, this._night());
+    const head = this._el("div", "head");
+    head.append(badge, titles);
+    header.append(scene, this._el("div", "ground"), head, ...(zoom ? [zoom] : []));
     return header;
   }
 
@@ -1357,6 +1581,65 @@ const STYLE = `
   ${HEADER_STYLE}
   .hsub { font-size: 12px; line-height: 16px; color: var(--secondary-text-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   :host([hide-title]) .titles > .hname, :host([hide-subtitle]) .titles > .hsub { display: none; }
+  .top:empty { display: none; }
+  /* The icon's colour is the status, in both headers. */
+  .hbadge.ok { --c: var(--success-color, #43a047); }
+  .hbadge.quiet { --c: var(--secondary-text-color, #727272); }
+  .hbadge.cool { --c: var(--state-climate-cool-color, #2b9af9); }
+  .hbadge.warning { --c: var(--warning-color, #ffa600); }
+  .hbadge.critical { --c: var(--error-color, #db4437); }
+
+  /* ── Illustrated header: the room's wall, the illustration at the right, a parquet floor strip ── */
+  .banner { position: relative; height: var(--banner-h, 90px); overflow: hidden; --ground-h: 10px; --scene-w: 104px;
+            --sky-text: #2a2f3a; --sky-muted: #5b6270; background: #f2eee8; }
+  .banner.night { --sky-text: #ffffff; --sky-muted: rgba(255,255,255,.75); background: #2a2f3d; }
+  .banner .scene { position: absolute; right: 0; bottom: var(--ground-h); height: calc(100% - var(--ground-h));
+                   width: min(var(--scene-w), 45%); overflow: hidden; }
+  .banner .scene svg { display: block; width: 100%; height: 100%; }
+  .banner .ground { position: absolute; left: 0; right: 0; bottom: 0; height: var(--ground-h);
+                    background: repeating-linear-gradient(90deg, #c99a6b 0 38px, #b98a5c 38px 40px); box-shadow: inset 0 2px 0 #a97c50; }
+  .banner.night .ground { background: repeating-linear-gradient(90deg, #4a3a2c 0 38px, #3e3024 38px 40px); box-shadow: inset 0 2px 0 #5c4836; }
+  .banner .head { position: absolute; z-index: 1; left: 0; top: 0; bottom: var(--ground-h); right: min(var(--scene-w), 45%);
+                  box-sizing: border-box; display: flex; align-items: center; gap: 10px; padding: 8px 8px 8px 14px; min-width: 0; }
+  .banner .hname { color: var(--sky-text); }
+  .banner .hsub { color: var(--sky-muted); }
+  .banner .hbadge { background: rgba(255,255,255,.62); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--c) 22%, transparent); }
+  .banner .hbadge.quiet { --c: #8a929c; }
+  .banner.night .hbadge { background: rgba(255,255,255,.12); color: color-mix(in srgb, var(--c) 75%, #ffffff);
+                          box-shadow: inset 0 0 0 1px rgba(255,255,255,.14); }
+  .banner.night .hbadge.quiet { --c: #b9c0c9; }
+  .banner .zoom { position: absolute; z-index: 2; top: 4px; right: 3px; width: 22px; height: 22px; margin: 0; background: rgba(255,255,255,.7); color: #4a515c; }
+  .banner.night .zoom { background: rgba(0,0,0,.28); color: rgba(255,255,255,.85); }
+  .banner .zoom:hover { background: #ffffff; color: #2a2f3a; }
+  .banner.night .zoom:hover { background: rgba(0,0,0,.45); color: #ffffff; }
+  /* Animations of the illustration. */
+  .scene .blink { animation: sc-blink 1.2s steps(2) infinite; }
+  .scene .breeze path { animation: sc-breeze 2s ease-in-out infinite; }
+  .scene .breeze path:nth-child(2) { animation-delay: -.66s; } .scene .breeze path:nth-child(3) { animation-delay: -1.33s; }
+  .scene .rays { animation: sc-spin 12s linear infinite; transform-box: fill-box; transform-origin: center; }
+  .scene .merc { transform-box: fill-box; transform-origin: 50% 100%; }
+  .scene .merc.rise { animation: sc-rise 4s ease-in-out infinite; }
+  .scene .merc.fall { animation: sc-fall 4s ease-in-out infinite; }
+  .scene .snow { animation: sc-bob 3s ease-in-out infinite; }
+  .scene .heat path { animation: sc-heat 2s ease-out infinite; }
+  .scene .heat path:nth-child(2) { animation-delay: -.66s; } .scene .heat path:nth-child(3) { animation-delay: -1.33s; }
+  .scene .pulse { animation: sc-pulse 2s ease-in-out infinite; }
+  @keyframes sc-blink { 50% { opacity: .2; } }
+  @keyframes sc-breeze { 0% { opacity: 0; transform: translateY(-3px); } 40% { opacity: 1; } 100% { opacity: 0; transform: translateY(5px); } }
+  @keyframes sc-spin { to { transform: rotate(360deg); } }
+  @keyframes sc-rise { 50% { transform: scaleY(1.1); } }
+  @keyframes sc-fall { from { transform: scaleY(1.4); } to { transform: scaleY(1); } }
+  @keyframes sc-bob { 50% { transform: translateY(2px); } }
+  @keyframes sc-heat { from { opacity: .9; transform: translateY(2px); } to { opacity: 0; transform: translateY(-5px); } }
+  @keyframes sc-pulse { 50% { opacity: .55; } }
+  @media (prefers-reduced-motion: reduce) {
+    .scene * { animation: none !important; }
+  }
+  /* A very narrow card keeps the wall and the floor for its texts: no illustration. */
+  @container (max-width: 220px) {
+    .banner .scene { display: none; }
+    .banner .head { right: 0; padding-right: 34px; }
+  }
   /* Status pill, at the right of the header, on the title's line. Its text is the colour toward the text colour. */
   .pill { --c: var(--success-color, #43a047); flex: none; align-self: flex-start; margin-top: 2px; min-width: 12px; text-align: center;
     padding: 2px 8px; border-radius: 12px; font-size: 12px; font-weight: 500; line-height: 16px;
