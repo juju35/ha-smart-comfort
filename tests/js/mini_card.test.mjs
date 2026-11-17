@@ -383,7 +383,7 @@ test("illustrated header: the scene and the icon colour follow the state, night 
   assert.ok(banner(card).classList.contains("cool"));
   assert.ok(badge(card).classList.contains("cool"));
   assert.match(byClass(card, "scene")[0].innerHTML, /class="breeze"/);
-  // Night: forced by the option, else the sun, else the dark theme.
+  // Night: forced by the option, else the sun below the horizon or the dark theme.
   ({ card } = make({ illustration_theme: "night" }));
   assert.ok(banner(card).classList.contains("night"));
   const { card: day, fake } = make({ illustration_theme: "day" });
