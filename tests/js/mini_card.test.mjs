@@ -396,7 +396,7 @@ test("illustrated header: the scene and the icon colour follow the state, night 
   assert.ok(banner(card).classList.contains("cool"));
   assert.ok(badge(card).classList.contains("cool"));
   assert.match(byClass(card, "scene")[0].innerHTML, /class="breeze"/);
-  // Night: forced by the option, else the sun below the horizon or the dark theme.
+  // Night: forced by the option, else the dark theme alone (a light theme keeps the day after sunset).
   ({ card } = make({ illustration_theme: "night" }));
   assert.ok(banner(card).classList.contains("night"));
   const { card: day, fake } = make({ illustration_theme: "day" });
@@ -404,7 +404,7 @@ test("illustrated header: the scene and the icon colour follow the state, night 
   const auto = new Mini();
   auto.setConfig({});
   auto.hass = { ...fake.hass, states: { ...fake.hass.states, "sun.sun": { state: "below_horizon", attributes: {} } } };
-  assert.ok(banner(auto).classList.contains("night"));
+  assert.ok(!banner(auto).classList.contains("night"));
   auto.hass = { ...fake.hass, themes: { darkMode: true } };
   assert.ok(banner(auto).classList.contains("night"));
   // illustration: false: the classic header.

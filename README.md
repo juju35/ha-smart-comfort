@@ -447,7 +447,7 @@ title: Smart Comfort        # optional
 show_title: false           # optional: no title (shown by default)
 show_subtitle: false        # optional: no subtitle (shown by default)
 illustration: false         # optional: classic header, no illustration (shown by default)
-illustration_theme: night   # optional: auto (default: night when the sun is down or the theme is dark), day or night
+illustration_theme: night   # optional: auto (default: follows the Home Assistant theme, night with a dark theme, day with a light theme), day or night
 rooms: [Living room]        # optional: only these rooms, their names as shown in the panel
 activity: 5                 # activity entries (5 by default, 0 for none)
 ```
@@ -478,7 +478,7 @@ title: Smart Comfort        # optional
 show_title: false           # optional: no title (shown by default)
 show_subtitle: false        # optional: no subtitle (shown by default)
 illustration: false         # optional: classic header, no illustration (shown by default)
-illustration_theme: night   # optional: auto (default: night when the sun is down or the theme is dark), day or night
+illustration_theme: night   # optional: auto (default: follows the Home Assistant theme, night with a dark theme, day with a light theme), day or night
 rooms: [Living room]        # optional: only these rooms, their names as shown in the panel
 alerts: 3                   # alerts listed in the compact view (3 by default)
 activity: 5                 # activity entries in the full card (5 by default, 0 for none)
