@@ -27,6 +27,7 @@ GENERAL_DEFAULTS = {
     k.CONF_CLEAR_WHEN_RESOLVED: True,
     k.CONF_CRITICAL_VOLUME: k.DEFAULT_CRITICAL_VOLUME,
     k.CONF_TAG: k.DEFAULT_TAG,
+    k.CONF_HIDE_HEADER: "off",
 }
 
 
@@ -51,6 +52,7 @@ def async_register(hass: HomeAssistant) -> None:
     websocket_api.async_register_command(hass, ws_subscribe)
     websocket_api.async_register_command(hass, ws_discover)
     websocket_api.async_register_command(hass, ws_activity)
+    websocket_api.async_register_command(hass, ws_header)
 
 
 @websocket_api.require_admin
@@ -80,6 +82,7 @@ def ws_get_config(hass: HomeAssistant, connection: websocket_api.ActiveConnectio
             "room_types": list(k.ROOM_TYPES),
             "severities": list(k.SEVERITIES),
             "aggregates": list(k.AGGREGATES),
+            "hide_header_modes": list(k.HIDE_HEADER_MODES),
         },
     )
 
@@ -158,3 +161,12 @@ def ws_activity(hass: HomeAssistant, connection: websocket_api.ActiveConnection,
     manager = _manager(hass)
     entries = manager.activity.as_list(msg["limit"]) if manager is not None else []
     connection.send_message(websocket_api.event_message(msg["id"], {"entries": entries}))
+
+
+@websocket_api.websocket_command({vol.Required("type"): f"{k.DOMAIN}/header"})
+@callback
+def ws_header(hass: HomeAssistant, connection: websocket_api.ActiveConnection, msg: dict[str, Any]) -> None:
+    """Who the dashboards' top bar is hidden for: asked by every user's browser, admin or not."""
+    entry = _entry(hass)
+    mode = entry.options.get(k.CONF_HIDE_HEADER, "off") if entry is not None else "off"
+    connection.send_result(msg["id"], {k.CONF_HIDE_HEADER: mode})

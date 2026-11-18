@@ -24,6 +24,7 @@ CONF_CLEAR_WHEN_RESOLVED: Final = "clear_when_resolved"
 CONF_CRITICAL_VOLUME: Final = "critical_volume"
 CONF_URL: Final = "url"
 CONF_TAG: Final = "tag"
+CONF_HIDE_HEADER: Final = "hide_header"
 CONF_ALERTS: Final = "alerts"
 # Alert defaults of the annex rooms (cellar, garage…): same shape as CONF_ALERTS, tuned once for every annex.
 CONF_ANNEX_ALERTS: Final = "annex_alerts"
@@ -182,6 +183,8 @@ ROOM_TYPE_ANNEX: Final = "annex"
 ROOM_TYPES: Final = (ROOM_TYPE_LIVING, ROOM_TYPE_ANNEX)
 
 AGGREGATES: Final = ("min", "max", "mean")
+# Who the dashboards' top bar is hidden for (smart-comfort-header.js, loaded on every page).
+HIDE_HEADER_MODES: Final = ("off", "everyone", "non_admins")
 
 # Defaults. Durations are minutes.
 DEFAULT_DIGEST_WINDOW: Final = 5

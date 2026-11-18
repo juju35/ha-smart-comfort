@@ -56,7 +56,8 @@
           "clear_when_resolved": "Smazat po vyřešení",
           "critical_volume": "Hlasitost kritických upozornění",
           "url": "Akce po klepnutí",
-          "tag": "Značka oznámení"
+          "tag": "Značka oznámení",
+          "hide_header": "Skrýt horní lištu"
         },
         "data_description": {
           "notify": "Kam jdou upozornění (notify.mobile_app_…, skupina notify…).",
@@ -73,7 +74,8 @@
           "clear_when_resolved": "Odstranit oznámení z telefonů, jakmile skončí všechny oznámené problémy.",
           "critical_volume": "Hlasitost kritického zvuku v iOS, 0 až 1.",
           "url": "Otevře se po klepnutí na oznámení, např. homeassistant://navigate/lovelace/comfort",
-          "tag": "Každé oznámení nahradí předchozí s touto značkou, místo aby se hromadila."
+          "tag": "Každé oznámení nahradí předchozí s touto značkou, místo aby se hromadila.",
+          "hide_header": "Horní lišta řídicích panelů (název, nabídka, tlačítka úprav a hledání); karty zobrazení zůstávají. Přidejte ?show_header k adrese panelu, chcete-li ji přesto vidět."
         }
       },
       "alerts": {
@@ -369,6 +371,13 @@
       "options": {
         "living_space": "Obytný prostor",
         "annex": "Vedlejší prostor (sklep, garáž…)"
+      }
+    },
+    "hide_header": {
+      "options": {
+        "off": "Nikdy",
+        "everyone": "Pro všechny",
+        "non_admins": "Jen pro neadministrátory"
       }
     }
   },

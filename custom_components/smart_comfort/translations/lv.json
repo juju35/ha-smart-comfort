@@ -56,7 +56,8 @@
           "clear_when_resolved": "Notīrīt, kad atrisināts",
           "critical_volume": "Kritisko brīdinājumu skaļums",
           "url": "Pieskāriena darbība",
-          "tag": "Paziņojuma tags"
+          "tag": "Paziņojuma tags",
+          "hide_header": "Paslēpt augšējo joslu"
         },
         "data_description": {
           "notify": "Kur nonāk brīdinājumi (notify.mobile_app_…, notify grupa…).",
@@ -73,7 +74,8 @@
           "clear_when_resolved": "Noņemt paziņojumu no tālruņiem, kad visas paziņotās problēmas ir beigušās.",
           "critical_volume": "Kritiskās skaņas skaļums iOS, no 0 līdz 1.",
           "url": "Tiek atvērts, pieskaroties paziņojumam, piem., homeassistant://navigate/lovelace/comfort",
-          "tag": "Katrs paziņojums aizstāj iepriekšējo ar šo tagu, nevis tie krājas."
+          "tag": "Katrs paziņojums aizstāj iepriekšējo ar šo tagu, nevis tie krājas.",
+          "hide_header": "Informācijas paneļu augšējā josla (virsraksts, izvēlne, rediģēšanas un meklēšanas pogas); skatu cilnes paliek. Pievienojiet ?show_header paneļa adresei, lai to tomēr redzētu."
         }
       },
       "alerts": {
@@ -369,6 +371,13 @@
       "options": {
         "living_space": "Dzīvojamā telpa",
         "annex": "Palīgtelpa (pagrabs, garāža…)"
+      }
+    },
+    "hide_header": {
+      "options": {
+        "off": "Nekad",
+        "everyone": "Visiem",
+        "non_admins": "Tikai ne-administratoriem"
       }
     }
   },

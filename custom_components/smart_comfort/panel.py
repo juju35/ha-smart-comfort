@@ -19,6 +19,7 @@ MODULE = "smart-comfort-panel.js"
 ICON_MODULE = "smart-comfort-icons.js"
 # Loaded on every page (not only dashboards): the sidebar badge, the number of active alerts on the panel item.
 BADGE_MODULE = "smart-comfort-badge.js"
+HEADER_MODULE = "smart-comfort-header.js"
 # The cards, loaded on every dashboard: the activity card and the mini card.
 CARDS = ("smart-comfort-activity-card.js", "smart-comfort-mini-card.js")
 ELEMENT = "smart-comfort-panel"
@@ -56,6 +57,10 @@ async def async_register_panel(hass: HomeAssistant) -> None:
     if not data.get("badge_registered"):
         frontend.add_extra_js_url(hass, f"{STATIC_URL}/{BADGE_MODULE}?v={version}")
         data["badge_registered"] = True
+    # The dashboards' top bar option, loaded on every page (once per run), for every user.
+    if not data.get("header_registered"):
+        frontend.add_extra_js_url(hass, f"{STATIC_URL}/{HEADER_MODULE}?v={version}")
+        data["header_registered"] = True
     await _async_register_cards(hass, data, [f"{url}?v={version}" for url in CARD_URLS])
     if PANEL_URL in hass.data.get(frontend.DATA_PANELS, {}):
         return

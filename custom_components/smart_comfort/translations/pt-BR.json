@@ -56,7 +56,8 @@
           "clear_when_resolved": "Limpar quando resolvido",
           "critical_volume": "Volume dos alertas críticos",
           "url": "Ação ao tocar",
-          "tag": "Etiqueta da notificação"
+          "tag": "Etiqueta da notificação",
+          "hide_header": "Ocultar a barra superior"
         },
         "data_description": {
           "notify": "Para onde vão os alertas (notify.mobile_app_…, um grupo de notificação…).",
@@ -73,7 +74,8 @@
           "clear_when_resolved": "Remover a notificação dos telemóveis assim que todos os problemas notificados terminarem.",
           "critical_volume": "Volume do som crítico do iOS, de 0 a 1.",
           "url": "Aberto ao tocar na notificação, p. ex. homeassistant://navigate/lovelace/comfort",
-          "tag": "Cada notificação substitui a anterior com esta etiqueta em vez de se acumular."
+          "tag": "Cada notificação substitui a anterior com esta etiqueta em vez de se acumular.",
+          "hide_header": "A barra superior dos painéis (título, menu, botões de edição e pesquisa); os separadores das vistas ficam. Adicione ?show_header ao endereço de um painel para a ver na mesma."
         }
       },
       "alerts": {
@@ -369,6 +371,13 @@
       "options": {
         "living_space": "Cômodo habitável",
         "annex": "Anexo (adega, garagem…)"
+      }
+    },
+    "hide_header": {
+      "options": {
+        "off": "Nunca",
+        "everyone": "Para todos",
+        "non_admins": "Só para quem não é administrador"
       }
     }
   },

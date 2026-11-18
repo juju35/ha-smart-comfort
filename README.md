@@ -259,6 +259,7 @@ smart_comfort:
 | `critical_volume` | 0.5 | Volume of the iOS critical sound, 0 to 1 |
 | `url` | none | Opened when the notification is tapped |
 | `tag` | `smart_comfort` | Notification tag: each notification replaces the previous one |
+| `hide_header` | `off` | Hide the dashboards' top bar (title, menu, buttons; the view tabs stay): `off`, `everyone` or `non_admins`. Add `?show_header` to a dashboard's address to see it anyway |
 
 ### Alerts
 

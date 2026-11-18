@@ -56,7 +56,8 @@
           "clear_when_resolved": "Clear when resolved",
           "critical_volume": "Critical alert volume",
           "url": "Tap action",
-          "tag": "Notification tag"
+          "tag": "Notification tag",
+          "hide_header": "Hide the top bar"
         },
         "data_description": {
           "notify": "Where the alerts go (notify.mobile_app_…, a notify group…).",
@@ -73,7 +74,8 @@
           "clear_when_resolved": "Remove the notification from the phones once every notified problem is over.",
           "critical_volume": "iOS critical sound volume, 0 to 1.",
           "url": "Opened when the notification is tapped, e.g. homeassistant://navigate/lovelace/comfort",
-          "tag": "Each notification replaces the previous one with this tag instead of piling up."
+          "tag": "Each notification replaces the previous one with this tag instead of piling up.",
+          "hide_header": "The dashboards' top bar (title, menu, edit and search buttons); the view tabs stay. Add ?show_header to a dashboard's address to see it anyway."
         }
       },
       "alerts": {
@@ -369,6 +371,13 @@
       "options": {
         "living_space": "Living space",
         "annex": "Annex (cellar, garage…)"
+      }
+    },
+    "hide_header": {
+      "options": {
+        "off": "Never",
+        "everyone": "For everyone",
+        "non_admins": "For non-admins only"
       }
     }
   },

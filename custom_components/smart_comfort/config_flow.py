@@ -478,7 +478,7 @@ class SmartComfortOptionsFlow(OptionsFlow):
         if user_input is not None:
             keep = {
                 key: copy.deepcopy(self.options[key])
-                for key in (k.CONF_ALERTS, k.CONF_CONTROL, k.CONF_ROOMS)
+                for key in (k.CONF_ALERTS, k.CONF_CONTROL, k.CONF_ROOMS, k.CONF_HIDE_HEADER)
                 if key in self.options
             }
             if (result := self._save({**_clean(user_input), **keep})) is not None:

@@ -56,7 +56,8 @@
           "clear_when_resolved": "Effacer une fois résolu",
           "critical_volume": "Volume des alertes critiques",
           "url": "Action au toucher",
-          "tag": "Tag de notification"
+          "tag": "Tag de notification",
+          "hide_header": "Masquer la barre du haut"
         },
         "data_description": {
           "notify": "Où envoyer les alertes (notify.mobile_app_…, un groupe notify…).",
@@ -73,7 +74,8 @@
           "clear_when_resolved": "Retire la notification des téléphones quand tous les problèmes notifiés sont terminés.",
           "critical_volume": "Volume du son critique iOS, de 0 à 1.",
           "url": "Ouverte au toucher de la notification, ex. homeassistant://navigate/lovelace/confort",
-          "tag": "Chaque notification remplace la précédente de même tag au lieu de s'empiler."
+          "tag": "Chaque notification remplace la précédente de même tag au lieu de s'empiler.",
+          "hide_header": "La barre du haut des tableaux de bord (titre, menu, boutons de modification et de recherche) ; les onglets des vues restent. Ajoutez ?show_header à l'adresse d'un tableau de bord pour l'afficher quand même."
         }
       },
       "alerts": {
@@ -369,6 +371,13 @@
       "options": {
         "living_space": "Pièce de vie",
         "annex": "Annexe (cave, garage…)"
+      }
+    },
+    "hide_header": {
+      "options": {
+        "off": "Jamais",
+        "everyone": "Pour tout le monde",
+        "non_admins": "Seulement pour les non-admins"
       }
     }
   },

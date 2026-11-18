@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.25.0 - 2026-11-19
+
+### Features
+- **Settings: "Hide the top bar"** of the dashboards, for everyone or for non-admins only (`hide_header: off | everyone | non_admins`): the title, the menu and the buttons go, the view tabs stay (a single-view dashboard loses the whole bar); the edit mode is left alone. A small module loaded on every page applies it for each user, admin or not; `?show_header` in a dashboard's address shows the bar anyway. The bar is hidden from the first frame: the style goes into the dashboard as soon as it is attached, before it is drawn, and the browser remembers whether the user is an administrator. Translated in every language.
+
 ## 1.24.0 - 2026-11-18
 
 ### Features

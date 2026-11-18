@@ -83,6 +83,7 @@ const STRINGS = {
     rooms: "Rooms",
     alerts: "Alerts",
     notifications: "Notifications",
+    dashboards: "Dashboards",
     control: "Device control",
     save: "Save",
     discard: "Discard",
@@ -286,6 +287,7 @@ const STRINGS = {
     rooms: "Pièces",
     alerts: "Alertes",
     notifications: "Notifications",
+    dashboards: "Tableaux de bord",
     control: "Pilotage des appareils",
     save: "Enregistrer",
     discard: "Annuler",
@@ -489,6 +491,7 @@ const STRINGS = {
     rooms: "Räume",
     alerts: "Meldungen",
     notifications: "Benachrichtigungen",
+    dashboards: "Dashboards",
     control: "Gerätesteuerung",
     save: "Speichern",
     discard: "Verwerfen",
@@ -692,6 +695,7 @@ const STRINGS = {
     rooms: "Estancias",
     alerts: "Alertas",
     notifications: "Notificaciones",
+    dashboards: "Paneles",
     control: "Control de aparatos",
     save: "Guardar",
     discard: "Descartar",
@@ -895,6 +899,7 @@ const STRINGS = {
     rooms: "Собе",
     alerts: "Упозорења",
     notifications: "Обавештења",
+    dashboards: "Контролне табле",
     control: "Контрола уређаја",
     save: "Сачувај",
     discard: "Одбаци",
@@ -1098,6 +1103,7 @@ const STRINGS = {
     rooms: "Sobe",
     alerts: "Upozorenja",
     notifications: "Obaveštenja",
+    dashboards: "Kontrolne table",
     control: "Kontrola uređaja",
     save: "Sačuvaj",
     discard: "Odbaci",
@@ -1301,6 +1307,7 @@ const STRINGS = {
     rooms: "Stanze",
     alerts: "Avvisi",
     notifications: "Notifiche",
+    dashboards: "Dashboard",
     control: "Controllo dei dispositivi",
     save: "Salva",
     discard: "Annulla",
@@ -1504,6 +1511,7 @@ const STRINGS = {
     rooms: "Kamers",
     alerts: "Waarschuwingen",
     notifications: "Meldingen",
+    dashboards: "Dashboards",
     control: "Apparaatbediening",
     save: "Opslaan",
     discard: "Verwerpen",
@@ -1707,6 +1715,7 @@ const STRINGS = {
     rooms: "Divisões",
     alerts: "Alertas",
     notifications: "Notificações",
+    dashboards: "Painéis",
     control: "Controlo dos dispositivos",
     save: "Guardar",
     discard: "Descartar",
@@ -1910,6 +1919,7 @@ const STRINGS = {
     rooms: "Pomieszczenia",
     alerts: "Alerty",
     notifications: "Powiadomienia",
+    dashboards: "Pulpity",
     control: "Sterowanie urządzeniami",
     save: "Zapisz",
     discard: "Odrzuć",
@@ -2113,6 +2123,7 @@ const STRINGS = {
     rooms: "Camere",
     alerts: "Alerte",
     notifications: "Notificări",
+    dashboards: "Tablouri de bord",
     control: "Controlul aparatelor",
     save: "Salvează",
     discard: "Renunță",
@@ -2316,6 +2327,7 @@ const STRINGS = {
     rooms: "Rum",
     alerts: "Advarsler",
     notifications: "Notifikationer",
+    dashboards: "Dashboards",
     control: "Styring af enheder",
     save: "Gem",
     discard: "Kassér",
@@ -2519,6 +2531,7 @@ const STRINGS = {
     rooms: "Rum",
     alerts: "Varningar",
     notifications: "Aviseringar",
+    dashboards: "Instrumentpaneler",
     control: "Styrning av enheter",
     save: "Spara",
     discard: "Förkasta",
@@ -2722,6 +2735,7 @@ const STRINGS = {
     rooms: "Стаи",
     alerts: "Сигнали",
     notifications: "Известия",
+    dashboards: "Табла",
     control: "Управление на устройствата",
     save: "Запази",
     discard: "Отказ",
@@ -2925,6 +2939,7 @@ const STRINGS = {
     rooms: "Комнаты",
     alerts: "Оповещения",
     notifications: "Уведомления",
+    dashboards: "Панели",
     control: "Управление устройствами",
     save: "Сохранить",
     discard: "Отменить",
@@ -3128,6 +3143,7 @@ const STRINGS = {
     rooms: "Кімнати",
     alerts: "Попередження",
     notifications: "Сповіщення",
+    dashboards: "Панелі",
     control: "Керування пристроями",
     save: "Зберегти",
     discard: "Відхилити",
@@ -3331,6 +3347,7 @@ const STRINGS = {
     rooms: "Helyiségek",
     alerts: "Riasztások",
     notifications: "Értesítések",
+    dashboards: "Irányítópultok",
     control: "Eszközvezérlés",
     save: "Mentés",
     discard: "Elvetés",
@@ -3534,6 +3551,7 @@ const STRINGS = {
     rooms: "Miestnosti",
     alerts: "Upozornenia",
     notifications: "Oznámenia",
+    dashboards: "Dashboardy",
     control: "Ovládanie zariadení",
     save: "Uložiť",
     discard: "Zahodiť",
@@ -3737,6 +3755,7 @@ const STRINGS = {
     rooms: "Místnosti",
     alerts: "Upozornění",
     notifications: "Oznámení",
+    dashboards: "Řídicí panely",
     control: "Ovládání zařízení",
     save: "Uložit",
     discard: "Zahodit",
@@ -3940,6 +3959,7 @@ const STRINGS = {
     rooms: "Prostori",
     alerts: "Opozorila",
     notifications: "Obvestila",
+    dashboards: "Nadzorne plošče",
     control: "Upravljanje naprav",
     save: "Shrani",
     discard: "Zavrzi",
@@ -4143,6 +4163,7 @@ const STRINGS = {
     rooms: "Telpas",
     alerts: "Brīdinājumi",
     notifications: "Paziņojumi",
+    dashboards: "Informācijas paneļi",
     control: "Ierīču vadība",
     save: "Saglabāt",
     discard: "Atmest",
@@ -4346,6 +4367,7 @@ const STRINGS = {
     rooms: "Δωμάτια",
     alerts: "Προειδοποιήσεις",
     notifications: "Ειδοποιήσεις",
+    dashboards: "Πίνακες ελέγχου",
     control: "Έλεγχος συσκευών",
     save: "Αποθήκευση",
     discard: "Απόρριψη",
@@ -4943,6 +4965,7 @@ class SmartComfortPanel extends HTMLElement {
       const result = await this._hass.callWS({ type: `${DOMAIN}/config/save`, options: prune(this._draft) });
       this._config.options = result.options;
       this._draft = clone(result.options);
+      window.dispatchEvent(new CustomEvent("smart-comfort-header", { detail: { hide_header: result.options.hide_header || "off" } }));
       this._message = { type: "success", text: this._t("saved") };
       this._discovered = null;
     } catch (err) {
@@ -5749,6 +5772,20 @@ class SmartComfortPanel extends HTMLElement {
       )
     );
     content.append(lighting);
+
+    // The dashboards' top bar, hidden by smart-comfort-header.js (loaded on every page) for everyone or the non-admins
+    const dashboards = this._card(this._t("dashboards"), "mdi:view-dashboard-outline");
+    dashboards.append(
+      this._topForm([
+        {
+          name: "hide_header",
+          selector: {
+            select: { mode: "dropdown", options: this._options("hide_header", this._config.hide_header_modes || ["off", "everyone", "non_admins"]) },
+          },
+        },
+      ])
+    );
+    content.append(dashboards);
   }
 
   // Alerts.

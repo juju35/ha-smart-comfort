@@ -56,7 +56,8 @@
           "clear_when_resolved": "Ryd når løst",
           "critical_volume": "Lydstyrke for kritiske advarsler",
           "url": "Tryk-handling",
-          "tag": "Notifikationsmærke"
+          "tag": "Notifikationsmærke",
+          "hide_header": "Skjul den øverste bjælke"
         },
         "data_description": {
           "notify": "Hvor advarslerne sendes hen (notify.mobile_app_…, en notify-gruppe…).",
@@ -73,7 +74,8 @@
           "clear_when_resolved": "Fjern notifikationen fra telefonerne, når alle notificerede problemer er overstået.",
           "critical_volume": "Lydstyrke for kritiske lyde på iOS, 0 til 1.",
           "url": "Åbnes, når der trykkes på notifikationen, f.eks. homeassistant://navigate/lovelace/comfort",
-          "tag": "Hver notifikation erstatter den forrige med dette mærke i stedet for at hobe sig op."
+          "tag": "Hver notifikation erstatter den forrige med dette mærke i stedet for at hobe sig op.",
+          "hide_header": "Dashboardenes øverste bjælke (titel, menu, redigerings- og søgeknapper); visningernes faner bliver. Tilføj ?show_header til et dashboards adresse for at se den alligevel."
         }
       },
       "alerts": {
@@ -369,6 +371,13 @@
       "options": {
         "living_space": "Opholdsrum",
         "annex": "Birum (kælder, garage…)"
+      }
+    },
+    "hide_header": {
+      "options": {
+        "off": "Aldrig",
+        "everyone": "For alle",
+        "non_admins": "Kun for ikke-administratorer"
       }
     }
   },

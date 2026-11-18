@@ -254,6 +254,7 @@ OPTIONS = vol.Schema(
         vol.Optional(k.CONF_CRITICAL_VOLUME): vol.All(NUMBER, vol.Range(min=0, max=1)),
         vol.Optional(k.CONF_URL): OPT_STR,
         vol.Optional(k.CONF_TAG): cv.string,
+        vol.Optional(k.CONF_HIDE_HEADER): vol.In(k.HIDE_HEADER_MODES),
         vol.Optional(k.CONF_ALERTS): ALERTS,
         vol.Optional(k.CONF_ANNEX_ALERTS): ALERTS,
         vol.Optional(k.CONF_CONTROL): CONTROL,
