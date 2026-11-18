@@ -3,6 +3,9 @@
 // administrators, set in the panel's Settings tab. The setting is read from `smart_comfort/header` (open to every user) and kept by the browser,
 // so the bar is hidden at once on the next visit. `?show_header` in the address shows the bar anyway.
 var SCH_KEY = 'smart-comfort-hide-header';
+// Whether the last user seen was an administrator: known before Home Assistant has loaded the user, so that a
+// non-admin's bar is hidden from the first frame.
+var SCH_ADMIN_KEY = 'smart-comfort-hide-header-admin';
 var SCH_STYLE_ID = 'smart-comfort-hide-header';
 var SCH_MODES = ['off', 'everyone', 'non_admins'];
 // Home Assistant's dashboard (hui-root). A dashboard with several views keeps its view tabs (the bar shows only them:
@@ -48,16 +51,29 @@ function schDashboard() {
   return lovelace?.shadowRoot?.querySelector('hui-root')?.shadowRoot || null;
 }
 
+function schIsAdmin(hass) {
+  try {
+    if (hass?.user) {
+      var admin = Boolean(hass.user.is_admin);
+      if (localStorage.getItem(SCH_ADMIN_KEY) !== String(admin)) localStorage.setItem(SCH_ADMIN_KEY, String(admin));
+      return admin;
+    }
+    // The user not loaded yet: the last one seen in this browser; never seen, an administrator (the bar stays).
+    return localStorage.getItem(SCH_ADMIN_KEY) !== 'false';
+  } catch (_err) {
+    return hass?.user ? Boolean(hass.user.is_admin) : true;
+  }
+}
+
 function schHidden(hass) {
   if (/[?&]show_header\b/.test(location.search)) return false;
   var mode = window.__smartComfortHeader;
   if (mode === 'everyone') return true;
-  // Until the user is known, an administrator is not assumed: the bar stays.
-  return mode === 'non_admins' && hass?.user != null && !hass.user.is_admin;
+  return mode === 'non_admins' && !schIsAdmin(hass);
 }
 
-function schApply() {
-  var root = schDashboard();
+// The hiding style in a dashboard's shadow root, added or removed to match the setting.
+function schApplyTo(root) {
   if (!root) return;
   var style = root.getElementById(SCH_STYLE_ID);
   var hide = schHidden(schHass());
@@ -69,6 +85,28 @@ function schApply() {
   } else if (!hide && style) {
     style.remove();
   }
+}
+
+function schApply() {
+  schApplyTo(schDashboard());
+}
+
+// The dashboard element itself: the style goes into its shadow root as soon as it is attached, before its first
+// render, so the bar is never drawn then hidden. Lit leaves the nodes it did not render alone.
+function schPatchDashboard() {
+  var proto = customElements.get('hui-root')?.prototype;
+  if (!proto || proto.__smartComfortHeader) return;
+  proto.__smartComfortHeader = true;
+  var connected = proto.connectedCallback;
+  proto.connectedCallback = function (...args) {
+    connected?.apply(this, args);
+    schApplyTo(this.shadowRoot);
+  };
+  var updated = proto.updated;
+  proto.updated = function (...args) {
+    updated?.apply(this, args);
+    schApplyTo(this.shadowRoot);
+  };
 }
 
 // The setting, asked of Home Assistant once it is connected, then every 5 minutes.
@@ -92,7 +130,8 @@ if (!window.__smartComfortHeader_init) {
   // The panel tells at once when the setting is saved.
   window.addEventListener('smart-comfort-header', (ev) => schSet(ev.detail?.hide_header));
   window.addEventListener('location-changed', () => setTimeout(schApply, 0));
-  // A dashboard is drawn again on navigation and on reconnection: the check is cheap, made every second.
+  customElements.whenDefined('hui-root').then(schPatchDashboard);
+  // A fallback, should Home Assistant's dashboard element change: the check is cheap, made every second.
   setInterval(schApply, SCH_EVERY_MS);
   schApply();
   schFetch();
