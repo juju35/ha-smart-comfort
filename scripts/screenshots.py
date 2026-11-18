@@ -86,6 +86,9 @@ COMMON = {
 
 # Material Design Icons paths used by the panel, the form fields and the sidebar (from @mdi/js 7.4.47).
 ICONS = {
+    "floor-plan": "M10,5V10H9V5H5V13H9V12H10V17H9V14H5V19H12V17H13V19H19V17H21V21H3V3H21V15H19V10H13V15H12V9H19V5H10Z",
+    "calendar-clock": "M15,13H16.5V15.82L18.94,17.23L18.19,18.53L15,16.69V13M19,8H5V19H9.67C9.24,18.09 9,17.07 9,16A7,7 0 0,1 16,9C17.07,9 18.09,9.24 19,9.67V8M5,21C3.89,21 3,20.1 3,19V5C3,3.89 3.89,3 5,3H6V1H8V3H16V1H18V3H19A2,2 0 0,1 21,5V11.1C22.24,12.36 23,14.09 23,16A7,7 0 0,1 16,23C14.09,23 12.36,22.24 11.1,21H5M16,11.15A4.85,4.85 0 0,0 11.15,16C11.15,18.68 13.32,20.85 16,20.85A4.85,4.85 0 0,0 20.85,16C20.85,13.32 18.68,11.15 16,11.15Z",
+    "cog-outline": "M12,8A4,4 0 0,1 16,12A4,4 0 0,1 12,16A4,4 0 0,1 8,12A4,4 0 0,1 12,8M12,10A2,2 0 0,0 10,12A2,2 0 0,0 12,14A2,2 0 0,0 14,12A2,2 0 0,0 12,10M10,22C9.75,22 9.54,21.82 9.5,21.58L9.13,18.93C8.5,18.68 7.96,18.34 7.44,17.94L4.95,18.95C4.73,19.03 4.46,18.95 4.34,18.73L2.34,15.27C2.21,15.05 2.27,14.78 2.46,14.63L4.57,12.97L4.5,12L4.57,11L2.46,9.37C2.27,9.22 2.21,8.95 2.34,8.73L4.34,5.27C4.46,5.05 4.73,4.96 4.95,5.05L7.44,6.05C7.96,5.66 8.5,5.32 9.13,5.07L9.5,2.42C9.54,2.18 9.75,2 10,2H14C14.25,2 14.46,2.18 14.5,2.42L14.87,5.07C15.5,5.32 16.04,5.66 16.56,6.05L19.05,5.05C19.27,4.96 19.54,5.05 19.66,5.27L21.66,8.73C21.79,8.95 21.73,9.22 21.54,9.37L19.43,11L19.5,12L19.43,13L21.54,14.63C21.73,14.78 21.79,15.05 21.66,15.27L19.66,18.73C19.54,18.95 19.27,19.04 19.05,18.95L16.56,17.95C16.04,18.34 15.5,18.68 14.87,18.93L14.5,21.58C14.46,21.82 14.25,22 14,22H10M11.25,4L10.88,6.61C9.68,6.86 8.62,7.5 7.85,8.39L5.44,7.35L4.69,8.65L6.8,10.2C6.4,11.37 6.4,12.64 6.8,13.8L4.68,15.36L5.43,16.66L7.86,15.62C8.63,16.5 9.68,17.14 10.87,17.38L11.24,20H12.76L13.13,17.39C14.32,17.14 15.37,16.5 16.14,15.62L18.57,16.66L19.32,15.36L17.2,13.81C17.6,12.64 17.6,11.37 17.2,10.2L19.31,8.65L18.56,7.35L16.15,8.39C15.38,7.5 14.32,6.86 13.12,6.62L12.75,4H11.25Z",
     "motion-sensor": "M10,0.2C9,0.2 8.2,1 8.2,2C8.2,3 9,3.8 10,3.8C11,3.8 11.8,3 11.8,2C11.8,1 11,0.2 10,0.2M15.67,1A7.33,7.33 0 0,0 23,8.33V7A6,6 0 0,1 17,1H15.67M18.33,1C18.33,3.58 20.42,5.67 23,5.67V4.33C21.16,4.33 19.67,2.84 19.67,1H18.33M21,1A2,2 0 0,0 23,3V1H21M7.92,4.03C7.75,4.03 7.58,4.06 7.42,4.11L2,5.8V11H3.8V7.33L5.91,6.67L2,22H3.8L6.67,13.89L9,17V22H10.8V15.59L8.31,11.05L9.04,8.18L10.12,10H15V8.2H11.38L9.38,4.87C9.08,4.37 8.54,4.03 7.92,4.03Z",
     "brightness-5": "M12,18A6,6 0 0,1 6,12A6,6 0 0,1 12,6A6,6 0 0,1 18,12A6,6 0 0,1 12,18M20,15.31L23.31,12L20,8.69V4H15.31L12,0.69L8.69,4H4V8.69L0.69,12L4,15.31V20H8.69L12,23.31L15.31,20H20V15.31Z",
     "sofa": "M12.5 7C12.5 5.89 13.39 5 14.5 5H18C19.1 5 20 5.9 20 7V9.16C18.84 9.57 18 10.67 18 11.97V14H12.5V7M6 11.96V14H11.5V7C11.5 5.89 10.61 5 9.5 5H6C4.9 5 4 5.9 4 7V9.15C5.16 9.56 6 10.67 6 11.96M20.66 10.03C19.68 10.19 19 11.12 19 12.12V15H5V12C5 10.9 4.11 10 3 10S1 10.9 1 12V17C1 18.1 1.9 19 3 19V21H5V19H19V21H21V19C22.1 19 23 18.1 23 17V12C23 10.79 21.91 9.82 20.66 10.03Z",
@@ -204,10 +207,9 @@ customElements.define("ha-icon", class extends HTMLElement {
   connectedCallback() { this._draw(); }
   attributeChangedCallback(_, __, value) { this._icon = value; this._draw(); }
   _draw() {
-    this.style.display = "inline-flex";
-    this.style.flex = "none";
-    this.innerHTML = '<svg viewBox="0 0 24 24" style="width:var(--mdc-icon-size,24px);height:var(--mdc-icon-size,24px);fill:currentColor"><path d="' +
-      (ICONS[(this._icon || "").replace("mdi:", "")] || "") + '"/></svg>';
+    // As Home Assistant draws it: <ha-icon> left inline, its icon an inline-flex box on the line's middle (ha-svg-icon)
+    this.innerHTML = '<span style="display:inline-flex;vertical-align:middle;position:relative;width:var(--mdc-icon-size,24px);height:var(--mdc-icon-size,24px)"><svg viewBox="0 0 24 24" style="width:100%;height:100%;display:block;fill:currentColor"><path d="' +
+      (ICONS[(this._icon || "").replace("mdi:", "")] || "") + '"/></svg></span>';
   }
 });
 
@@ -769,12 +771,14 @@ def mock(options, status):
 
 # Mounts the panel the way Home Assistant does (panel, narrow, route, then hass); the WebSocket commands answer with
 # the mock data. Resolves once the tab is rendered (and, on the overview, the status received).
-MOUNT = """async ([data, tab]) => {
+MOUNT = """async ([data, tab, dark]) => {
     const el = document.createElement("smart-comfort-panel");
     const pretty = (s) => s.charAt(0).toUpperCase() + s.slice(1);
     const hass = {
         states: data.states, entities: data.entities, areas: data.areas, services: data.services,
         language: data.language, locale: { language: data.language },
+        // The tabs' illustrated headers draw their night picture in Home Assistant's dark mode
+        themes: { darkMode: dark },
         formatEntityState: (state) => pretty(state.state),
         callService: async () => {},
         callWS: async (msg) => {
@@ -1106,7 +1110,7 @@ def render(browser, shot, theme):
     page.add_script_tag(content=HA_ELEMENTS)
     page.add_script_tag(content=PANEL_JS)
     page.add_script_tag(content=CARD_JS, type="module")
-    page.evaluate(MOUNT, [mock(shot["options"], shot["status"]), shot["tab"]])
+    page.evaluate(MOUNT, [mock(shot["options"], shot["status"]), shot["tab"], theme == "dark"])
     for click in shot.get("clicks", []):
         page.evaluate(CLICK, list(click))
     if "scroll" in shot:
