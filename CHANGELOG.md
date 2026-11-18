@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.23.0 - 2026-11-18
+
+### Features
+- **Illustrated header on the activity card**, as on the card and the mini card: the Smart Comfort room for the state of the home (hot, cold, cooling, an alert, all good), animated, over the parquet floor, the history icon in the colour of the status, a pill counting today's entries and the latest entry under the title. Night with a dark Home Assistant theme; `illustration_theme: day | night` forces it, `illustration: false` keeps the classic header. Both options are in the visual editor, translated in every language.
+
+### Maintenance
+- The illustration, the header's stylesheets, the pill placement and the entity discovery now live in the activity card's module, which the mini card already imports.
+
 ## 1.22.1 - 2026-11-18
 
 ### Fixes
