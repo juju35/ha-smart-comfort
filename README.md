@@ -491,6 +491,8 @@ In a Sections view the mini card is 6 columns wide (half a section), the full ca
 
 The latest activity of Smart Comfort, live: devices turned on or off and why, lights adjusted, notifications sent, changes made by hand.
 
+It opens on the same illustrated header as the other cards: the room of the Smart Comfort card for the state of the home (hot, cold, cooling, an alert, all good), the history icon in the colour of the status, a pill counting today's entries and the latest entry under the title, over the parquet floor.
+
 | Light | Dark |
 |---|---|
 | <img src="https://raw.githubusercontent.com/juju35/ha-smart-comfort/main/screenshots/card-activity.png" alt="The activity card: the latest activity of Smart Comfort" width="400"> | <img src="https://raw.githubusercontent.com/juju35/ha-smart-comfort/main/screenshots/card-activity-dark.png" alt="The activity card, dark mode" width="400"> |
@@ -499,6 +501,8 @@ The latest activity of Smart Comfort, live: devices turned on or off and why, li
 type: custom:smart-comfort-activity-card
 title: Smart Comfort        # optional ("" for no header)
 show_title: false           # optional: no title (shown by default)
+illustration: false         # optional: the classic header instead of the illustrated one (default: true)
+illustration_theme: night   # optional: auto (default: follows the Home Assistant theme), day or night
 limit: 10                   # entries shown (10 by default)
 kinds: [device, presence]   # optional: device, lighting, presence, display, notified, manual, reset, failed
 room: Living room           # optional: one room only, its name as shown in the panel

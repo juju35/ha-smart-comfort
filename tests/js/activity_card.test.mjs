@@ -419,3 +419,27 @@ test("rendered again when the language or a shown name changes, not on every oth
   // Still one subscription.
   assert.equal(fake.subs.length, 1);
 });
+
+test("illustrated header: the Smart Comfort room for the home's state, today's count and the latest entry", async () => {
+  const fake = fakeHass();
+  fake.hass.entities = { "sensor.sc_alerts": { platform: "smart_comfort", entity_id: "sensor.sc_alerts", translation_key: "alerts" } };
+  fake.hass.states = { "sensor.sc_alerts": { state: "1", attributes: { alerts: [{ kind: "too_hot", severity: "warning" }] } } };
+  const card = new Card();
+  card.setConfig({});
+  card.hass = fake.hass;
+  attach(card);
+  await fake.settle();
+  fake.push({ entries: [entry({ entity_id: "fan.office", target: "on" })] });
+  const banner = find(card, "banner");
+  assert.ok(banner, "a banner");
+  assert.match(banner.className, /header banner hot/);
+  assert.match(find(card, "hbadge").className, /warning/);
+  assert.equal(find(card, "ptxt").textContent, "Today · 1");
+  assert.match(find(card, "hsub").textContent, / · /);
+  // Night with a dark theme, or forced; the classic header with illustration: false.
+  card.setConfig({ illustration_theme: "night" });
+  assert.match(find(card, "banner").className, /night/);
+  card.setConfig({ illustration: false });
+  assert.equal(find(card, "banner"), undefined);
+  assert.equal(find(card, "hname").textContent, "Smart Comfort activity");
+});

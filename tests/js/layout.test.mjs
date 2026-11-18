@@ -53,8 +53,11 @@ test("activity card header: the title block shrinks and truncates, the badge nev
   assert.match(badge, /width:\s*40px/);
 });
 
+// The mini card's stylesheet: its own, then the parts it shares with the activity card (TITLE_STYLE, BANNER_STYLE).
+const miniCss = async () => (await source("smart-comfort-mini-card.js")) + (await source("smart-comfort-activity-card.js"));
+
 test("mini card header: the status pill beside a whole title, else under the subtitle, measured; its dot when narrow", async () => {
-  const css = await source("smart-comfort-mini-card.js");
+  const css = await miniCss();
   assert.match(rule(css, ".header .titles") || "", /flex-direction:\s*column/);
   assert.match(rule(css, ".trow") || "", /display:\s*flex/);
   assert.match(rule(css, ".titles.pill-below .trow") || "", /display:\s*contents/);
@@ -71,6 +74,6 @@ test("mini card header: the status pill beside a whole title, else under the sub
 });
 
 test("mini card: the expand / collapse button sits in the banner's top right corner, 24 px", async () => {
-  const z = rule(await source("smart-comfort-mini-card.js"), ".banner .zoom") || "";
+  const z = rule(await miniCss(), ".banner .zoom") || "";
   for (const d of [/position:\s*absolute/, /top:\s*5px/, /right:\s*5px/, /width:\s*24px/, /height:\s*24px/]) assert.match(z, d);
 });

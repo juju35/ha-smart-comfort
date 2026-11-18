@@ -57,6 +57,11 @@ const STRINGS = {
     k_reset: "Back to normal",
     k_failed: "Failed commands",
     h_room: "Name of a Smart Comfort room, as shown in the panel (empty: all rooms)",
+    f_illustration: "Illustration",
+    f_illustration_theme: "Illustration theme",
+    theme_auto: "Automatic (follows the theme)",
+    theme_day: "Day",
+    theme_night: "Night",
   },
   fr: {
     title: "Activité Smart Comfort",
@@ -105,6 +110,11 @@ const STRINGS = {
     k_reset: "Retour à la normale",
     k_failed: "Échecs d'envoi",
     h_room: "Nom d'une pièce Smart Comfort, tel qu'affiché dans le panneau (vide : toutes les pièces)",
+    f_illustration: "Illustration",
+    f_illustration_theme: "Thème de l'illustration",
+    theme_auto: "Automatique (suit le thème)",
+    theme_day: "Jour",
+    theme_night: "Nuit",
   },
   de: {
     title: "Smart Comfort Aktivität",
@@ -153,6 +163,11 @@ const STRINGS = {
     k_reset: "Zurück zum Normalzustand",
     k_failed: "Fehlgeschlagene Befehle",
     h_room: "Name eines Smart-Comfort-Raums, wie im Panel angezeigt (leer: alle Räume)",
+    f_illustration: "Illustration",
+    f_illustration_theme: "Thema der Illustration",
+    theme_auto: "Automatisch (folgt dem Design)",
+    theme_day: "Tag",
+    theme_night: "Nacht",
   },
   es: {
     title: "Actividad de Smart Comfort",
@@ -201,6 +216,11 @@ const STRINGS = {
     k_reset: "Vuelta a lo normal",
     k_failed: "Envíos fallidos",
     h_room: "Nombre de una habitación de Smart Comfort, tal como aparece en el panel (vacío: todas)",
+    f_illustration: "Ilustración",
+    f_illustration_theme: "Tema de la ilustración",
+    theme_auto: "Automático (sigue el tema)",
+    theme_day: "Día",
+    theme_night: "Noche",
   },
   sr: {
     title: "Smart Comfort активност",
@@ -249,6 +269,11 @@ const STRINGS = {
     k_reset: "Повратак на нормално",
     k_failed: "Неуспела слања",
     h_room: "Назив собе у Smart Comfort-у, као у панелу (празно: све собе)",
+    f_illustration: "Илустрација",
+    f_illustration_theme: "Тема илустрације",
+    theme_auto: "Аутоматски (прати тему)",
+    theme_day: "Дан",
+    theme_night: "Ноћ",
   },
   "sr-Latn": {
     title: "Smart Comfort aktivnost",
@@ -297,6 +322,11 @@ const STRINGS = {
     k_reset: "Povratak na normalno",
     k_failed: "Neuspela slanja",
     h_room: "Naziv sobe u Smart Comfort-u, kao u panelu (prazno: sve sobe)",
+    f_illustration: "Ilustracija",
+    f_illustration_theme: "Tema ilustracije",
+    theme_auto: "Automatski (prati temu)",
+    theme_day: "Dan",
+    theme_night: "Noć",
   },
   it: {
     title: "Attività Smart Comfort",
@@ -345,6 +375,11 @@ const STRINGS = {
     k_reset: "Ritorno alla normalità",
     k_failed: "Invii non riusciti",
     h_room: "Nome di una stanza Smart Comfort, come appare nel pannello (vuoto: tutte le stanze)",
+    f_illustration: "Illustrazione",
+    f_illustration_theme: "Tema dell'illustrazione",
+    theme_auto: "Automatico (segue il tema)",
+    theme_day: "Giorno",
+    theme_night: "Notte",
   },
   nl: {
     title: "Smart Comfort-activiteit",
@@ -393,6 +428,11 @@ const STRINGS = {
     k_reset: "Terug naar normaal",
     k_failed: "Mislukte opdrachten",
     h_room: "Naam van een Smart Comfort-kamer, zoals in het paneel (leeg: alle kamers)",
+    f_illustration: "Illustratie",
+    f_illustration_theme: "Thema van de illustratie",
+    theme_auto: "Automatisch (volgt het thema)",
+    theme_day: "Dag",
+    theme_night: "Nacht",
   },
   pt: {
     title: "Atividade do Smart Comfort",
@@ -441,6 +481,11 @@ const STRINGS = {
     k_reset: "De volta ao normal",
     k_failed: "Envios falhados",
     h_room: "Nome de uma divisão do Smart Comfort, tal como aparece no painel (vazio: todas as divisões)",
+    f_illustration: "Ilustração",
+    f_illustration_theme: "Tema da ilustração",
+    theme_auto: "Automático (segue o tema)",
+    theme_day: "Dia",
+    theme_night: "Noite",
   },
   pl: {
     title: "Aktywność Smart Comfort",
@@ -489,6 +534,11 @@ const STRINGS = {
     k_reset: "Powrót do normy",
     k_failed: "Nieudane polecenia",
     h_room: "Nazwa pomieszczenia Smart Comfort, jak w panelu (puste: wszystkie pomieszczenia)",
+    f_illustration: "Ilustracja",
+    f_illustration_theme: "Motyw ilustracji",
+    theme_auto: "Automatycznie (według motywu)",
+    theme_day: "Dzień",
+    theme_night: "Noc",
   },
   ro: {
     title: "Activitate Smart Comfort",
@@ -537,6 +587,11 @@ const STRINGS = {
     k_reset: "Revenire la normal",
     k_failed: "Comenzi eșuate",
     h_room: "Numele unei camere Smart Comfort, așa cum apare în panou (gol: toate camerele)",
+    f_illustration: "Ilustrație",
+    f_illustration_theme: "Tema ilustrației",
+    theme_auto: "Automat (urmează tema)",
+    theme_day: "Zi",
+    theme_night: "Noapte",
   },
   da: {
     title: "Smart Comfort-aktivitet",
@@ -585,6 +640,11 @@ const STRINGS = {
     k_reset: "Tilbage til normal",
     k_failed: "Mislykkede kommandoer",
     h_room: "Navnet på et Smart Comfort-rum, som det vises i panelet (tomt: alle rum)",
+    f_illustration: "Illustration",
+    f_illustration_theme: "Illustrationstema",
+    theme_auto: "Automatisk (følger temaet)",
+    theme_day: "Dag",
+    theme_night: "Nat",
   },
   sv: {
     title: "Smart Comfort-aktivitet",
@@ -633,6 +693,11 @@ const STRINGS = {
     k_reset: "Tillbaka till normalt",
     k_failed: "Misslyckade kommandon",
     h_room: "Namnet på ett Smart Comfort-rum, som det visas i panelen (tomt: alla rum)",
+    f_illustration: "Illustration",
+    f_illustration_theme: "Illustrationstema",
+    theme_auto: "Automatiskt (följer temat)",
+    theme_day: "Dag",
+    theme_night: "Natt",
   },
   bg: {
     title: "Дейност на Smart Comfort",
@@ -681,6 +746,11 @@ const STRINGS = {
     k_reset: "Връщане към нормалното",
     k_failed: "Неуспешни команди",
     h_room: "Име на стая в Smart Comfort, както се показва в панела (празно: всички стаи)",
+    f_illustration: "Илюстрация",
+    f_illustration_theme: "Тема на илюстрацията",
+    theme_auto: "Автоматично (следва темата)",
+    theme_day: "Ден",
+    theme_night: "Нощ",
   },
   ru: {
     title: "Активность Smart Comfort",
@@ -729,6 +799,11 @@ const STRINGS = {
     k_reset: "Возврат к обычному",
     k_failed: "Неудачные команды",
     h_room: "Название комнаты Smart Comfort, как на панели (пусто: все комнаты)",
+    f_illustration: "Иллюстрация",
+    f_illustration_theme: "Тема иллюстрации",
+    theme_auto: "Автоматически (следует теме)",
+    theme_day: "День",
+    theme_night: "Ночь",
   },
   uk: {
     title: "Активність Smart Comfort",
@@ -777,6 +852,11 @@ const STRINGS = {
     k_reset: "Повернення до звичайного",
     k_failed: "Невдалі команди",
     h_room: "Назва кімнати Smart Comfort, як на панелі (порожньо: усі кімнати)",
+    f_illustration: "Ілюстрація",
+    f_illustration_theme: "Тема ілюстрації",
+    theme_auto: "Автоматично (за темою)",
+    theme_day: "День",
+    theme_night: "Ніч",
   },
   hu: {
     title: "Smart Comfort tevékenység",
@@ -825,6 +905,11 @@ const STRINGS = {
     k_reset: "Vissza a normálra",
     k_failed: "Sikertelen parancsok",
     h_room: "Egy Smart Comfort helyiség neve, ahogy a panelen látszik (üres: minden helyiség)",
+    f_illustration: "Illusztráció",
+    f_illustration_theme: "Az illusztráció témája",
+    theme_auto: "Automatikus (a témát követi)",
+    theme_day: "Nappal",
+    theme_night: "Éjszaka",
   },
   sk: {
     title: "Aktivita Smart Comfort",
@@ -873,6 +958,11 @@ const STRINGS = {
     k_reset: "Návrat do normálu",
     k_failed: "Neúspešné príkazy",
     h_room: "Názov miestnosti Smart Comfort, ako sa zobrazuje na paneli (prázdne: všetky miestnosti)",
+    f_illustration: "Ilustrácia",
+    f_illustration_theme: "Téma ilustrácie",
+    theme_auto: "Automaticky (podľa témy)",
+    theme_day: "Deň",
+    theme_night: "Noc",
   },
   cs: {
     title: "Aktivita Smart Comfort",
@@ -921,6 +1011,11 @@ const STRINGS = {
     k_reset: "Návrat do normálu",
     k_failed: "Neúspěšné příkazy",
     h_room: "Název místnosti Smart Comfort, jak se zobrazuje na panelu (prázdné: všechny místnosti)",
+    f_illustration: "Ilustrace",
+    f_illustration_theme: "Motiv ilustrace",
+    theme_auto: "Automaticky (podle motivu)",
+    theme_day: "Den",
+    theme_night: "Noc",
   },
   sl: {
     title: "Dejavnost Smart Comfort",
@@ -969,6 +1064,11 @@ const STRINGS = {
     k_reset: "Nazaj na običajno",
     k_failed: "Neuspeli ukazi",
     h_room: "Ime prostora Smart Comfort, kot je prikazano na plošči (prazno: vsi prostori)",
+    f_illustration: "Ilustracija",
+    f_illustration_theme: "Tema ilustracije",
+    theme_auto: "Samodejno (sledi temi)",
+    theme_day: "Dan",
+    theme_night: "Noč",
   },
   lv: {
     title: "Smart Comfort aktivitāte",
@@ -1017,6 +1117,11 @@ const STRINGS = {
     k_reset: "Atpakaļ uz normālu",
     k_failed: "Neizdevušās komandas",
     h_room: "Smart Comfort telpas nosaukums, kā tas redzams panelī (tukšs: visas telpas)",
+    f_illustration: "Ilustrācija",
+    f_illustration_theme: "Ilustrācijas tēma",
+    theme_auto: "Automātiski (pēc tēmas)",
+    theme_day: "Diena",
+    theme_night: "Nakts",
   },
   el: {
     title: "Δραστηριότητα Smart Comfort",
@@ -1065,6 +1170,11 @@ const STRINGS = {
     k_reset: "Επιστροφή στο κανονικό",
     k_failed: "Αποτυχημένες εντολές",
     h_room: "Όνομα ενός δωματίου του Smart Comfort, όπως εμφανίζεται στον πίνακα (κενό: όλα τα δωμάτια)",
+    f_illustration: "Εικονογράφηση",
+    f_illustration_theme: "Θέμα εικονογράφησης",
+    theme_auto: "Αυτόματο (ακολουθεί το θέμα)",
+    theme_day: "Ημέρα",
+    theme_night: "Νύχτα",
   },
 };
 
@@ -1152,6 +1262,11 @@ class SmartComfortActivityCard extends HTMLElement {
       schema: [
         { name: "title", selector: { text: {} } },
         { name: "show_title", default: true, selector: { boolean: {} } },
+        { name: "illustration", default: true, selector: { boolean: {} } },
+        {
+          name: "illustration_theme",
+          selector: { select: { mode: "dropdown", options: ["auto", "day", "night"].map((value) => ({ value, label: t(`theme_${value}`) })) } },
+        },
         { name: "limit", selector: { number: { min: 1, max: 100, mode: "box" } } },
         {
           name: "kinds",
@@ -1199,6 +1314,8 @@ class SmartComfortActivityCard extends HTMLElement {
 
   disconnectedCallback() {
     this._unsubscribe();
+    this._pillResize?.disconnect();
+    this._pillResize = null;
   }
 
   getCardSize() {
@@ -1318,10 +1435,30 @@ class SmartComfortActivityCard extends HTMLElement {
     return config.panel ? entries : entries.slice(0, config.limit || 10);
   }
 
-  /** What the lines depend on besides the entries: the language, the names shown, today's date. */
+  /** What the lines depend on besides the entries: the language, the names shown, today's date, the header's picture. */
   _signature() {
     const names = this._loaded ? this._visible().map((e) => (e.entity_id ? this._name(e.entity_id) : "")) : [];
-    return JSON.stringify([this._hass?.language, new Date().toDateString(), names]);
+    return JSON.stringify([this._hass?.language, new Date().toDateString(), names, this._illustrated() ? [this._mood(), this._night()] : null]);
+  }
+
+  // The illustrated header is on unless `illustration: false`; never in the panel (no header there).
+  _illustrated() {
+    return this._config?.illustration !== false && !this._config?.panel;
+  }
+
+  // Night picture: forced by illustration_theme, else Home Assistant's dark theme alone.
+  _night() {
+    const mode = this._config?.illustration_theme;
+    if (mode === "night") return true;
+    if (mode === "day") return false;
+    return !!this._hass?.themes?.darkMode;
+  }
+
+  // The state of the home, as on the Smart Comfort card: its picture (scene) and the icon's colour (level).
+  _mood() {
+    const found = findEntities(this._hass);
+    const alerts = this._hass?.states?.[found.alerts]?.attributes?.alerts;
+    return comfortMood(Array.isArray(alerts) ? alerts : null, found.rooms.map((id) => this._hass.states[id]));
   }
 
   _render() {
@@ -1336,6 +1473,7 @@ class SmartComfortActivityCard extends HTMLElement {
     root.append(card);
     const title = this._config.title ?? this._t("title");
     if (!this._config.panel && title) card.append(this._header(title));
+    if (this._illustrated()) this._watchPill();
     const body = document.createElement("div");
     body.className = this._config.panel ? "body flat" : "body";
     card.append(body);
@@ -1363,17 +1501,64 @@ class SmartComfortActivityCard extends HTMLElement {
     this._restoreFocus(body, focusKey);
   }
 
-  /** Header like the other cards: a tinted round badge and the title. */
+  /**
+   * Header like the other cards: a tinted round badge and the title. Illustrated (the default): the Smart Comfort
+   * card's room for the state of the home, the badge in its colour, the title with a pill counting today's entries and
+   * the latest entry under it, over the parquet floor.
+   */
   _header(title) {
-    const header = this._el("div", "header");
-    const badge = this._el("span", "hbadge");
     const icon = document.createElement("ha-icon");
     icon.icon = "mdi:history";
+    if (!this._illustrated()) {
+      const header = this._el("div", "header");
+      const badge = this._el("span", "hbadge");
+      badge.append(icon);
+      const titles = this._el("div", "titles");
+      titles.append(this._el("div", "hname", title));
+      header.append(badge, titles);
+      return header;
+    }
+    const mood = this._mood();
+    const night = this._night();
+    const badge = this._el("span", `hbadge ${mood.level}`);
     badge.append(icon);
     const titles = this._el("div", "titles");
-    titles.append(this._el("div", "hname", title));
-    header.append(badge, titles);
+    const row = this._el("div", "trow");
+    row.append(this._el("div", "hname", title));
+    titles.append(row);
+    const entries = this._loaded ? this._visible() : [];
+    if (entries.length) {
+      const today = entries.filter((e) => this._day(e.at) === this._t("today")).length;
+      const status = `${this._t("today")} · ${today}`;
+      row.append(statusPill(mood.level, status));
+      const { text } = this._describe(entries[0]);
+      const who = entries[0].entity_id ? this._name(entries[0].entity_id) : null;
+      const sub = this._el("div", "hsub", `${this._time(entries[0].at)} · ${who ? `${who} — ${text}` : text}`);
+      sub.title = sub.textContent;
+      titles.append(sub);
+    }
+    const header = this._el("div", `header banner ${mood.scene}${night ? " night" : ""}`);
+    const scene = this._el("div", "scene");
+    scene.innerHTML = comfortScene(mood.scene, mood.level, night);
+    const head = this._el("div", "head");
+    head.append(badge, titles);
+    header.append(scene, this._el("div", "ground"), head);
     return header;
+  }
+
+  // The pill's place is measured (fitPill): after each render, on every new width and once the web font is loaded.
+  _watchPill() {
+    if (typeof requestAnimationFrame !== "function") return;
+    const fit = () => {
+      cancelAnimationFrame(this._pillFrame);
+      this._pillFrame = requestAnimationFrame(() => fitPill(this.shadowRoot));
+    };
+    if (!this._pillResize && typeof ResizeObserver === "function") {
+      this._pillResize = new ResizeObserver(fit);
+      this._pillResize.observe(this);
+      document.fonts?.ready?.then(fit);
+    }
+    fit();
   }
 
   _restoreFocus(body, key) {
@@ -1446,10 +1631,250 @@ export const HEADER_STYLE = `
   :host([hide-title]) .titles > .hname { display: none; }
 `;
 
+// The integration's domain, and its switches by translation key, in the order shown (the mini card's controls).
+export const DOMAIN = "smart_comfort";
+export const SWITCHES = [
+  ["notifications", "mdi:bell-outline", "mdi:bell-off-outline"],
+  ["control", "mdi:fan", "mdi:fan"],
+  ["lighting", "mdi:lightbulb-auto-outline", "mdi:lightbulb-auto-outline"],
+];
+
+/** The integration's entities: its alerts sensor, its room sensors and its switches. */
+export function findEntities(hass) {
+  const found = { alerts: null, rooms: [], switches: {} };
+  for (const entry of Object.values(hass?.entities || {})) {
+    if (entry.platform !== DOMAIN) continue;
+    const id = entry.entity_id;
+    const key = entry.translation_key;
+    if (id.startsWith("sensor.") && key === "alerts") found.alerts = id;
+    else if (id.startsWith("sensor.") && key === "room") found.rooms.push(id);
+    else if (id.startsWith("switch.") && SWITCHES.some(([k]) => k === key)) found.switches[key] = id;
+  }
+  return found;
+}
+
+// Device targets that mean the room is being cooled: an air conditioner cooling, a fan blowing.
+const COOLING_TARGETS = new Set(["cool", "cool_night", "on", "on_night"]);
+// Alert kinds drawn as a cold room.
+const COLD_KINDS = new Set(["too_cold", "window_open_cold"]);
+
+/**
+ * The state the header shows: `scene` picks the illustration (ok, hot, cold, cool, warn) and `level` the colour of
+ * the icon (ok green, quiet grey, cool blue, warning amber, critical red). An alert to deal with comes first, then a
+ * device cooling a room, then the alerts that are only snoozed or handled.
+ */
+export function comfortMood(alerts, roomStates) {
+  if (!alerts) return { scene: "ok", level: "quiet" };
+  const open = alerts.filter((a) => !a.snoozed && !a.handled);
+  if (open.length) {
+    const level = open.some((a) => a.severity === "critical") ? "critical" : "warning";
+    if (open.some((a) => a.kind === "too_hot")) return { scene: "hot", level };
+    if (open.some((a) => COLD_KINDS.has(a.kind))) return { scene: "cold", level };
+    return { scene: "warn", level };
+  }
+  const cooling = roomStates.some((s) => Object.values(s?.attributes?.devices || {}).some((d) => COOLING_TARGETS.has(d?.target)));
+  if (cooling || alerts.some((a) => a.handled && a.kind === "too_hot")) return { scene: "cool", level: "cool" };
+  return { scene: "ok", level: alerts.length ? "quiet" : "ok" };
+}
+
+// The illustration, drawn in the right part (x 96–200) of a 200 × 80 room whose floor is the ground strip: an air
+// conditioner on the wall and a thermometer, the sun (heat waves at night), a snowflake or an alert sign by state.
+// It uses no id, so several cards on one page never clash.
+export function comfortScene(scene, level, night) {
+  const [mercury, top, height] =
+    { hot: ["#e5484d", 6, 30], cool: ["#2f80ed", 18, 18], cold: ["#2f80ed", 26, 10] }[scene] || ["#43a047", 14, 22];
+  const cooling = scene === "cool";
+  const ticks = [8, 16, 24, 32].map((y) => `<line x1="5" y1="${y}" x2="7" y2="${y}"/>`).join("");
+  const ac = `<g transform="translate(140 12)">
+      <rect x="-30" y="0" width="60" height="16" rx="5" fill="${night ? "#d8dce2" : "#ffffff"}" stroke="#c9ced6"/>
+      <rect x="-24" y="12" width="48" height="2" rx="1" fill="#9aa3ae"/>
+      <circle class="${cooling ? "blink" : ""}" cx="22" cy="5" r="1.2" fill="${cooling ? "#2f80ed" : "#9aa3ae"}"/>
+      ${
+        cooling
+          ? `<g class="breeze" fill="none" stroke="#86b9de" stroke-width="1.4" stroke-linecap="round">
+        <path d="M-20 20 q4 8 0 16"/><path d="M0 20 q4 8 0 16"/><path d="M20 20 q4 8 0 16"/></g>`
+          : ""
+      }</g>`;
+  const thermometer = `<g transform="translate(104 22)">
+      <rect x="-4" y="0" width="8" height="40" rx="4" fill="#ffffff" stroke="#9aa3ae"/>
+      <g stroke="#9aa3ae" stroke-width=".6">${ticks}</g>
+      <rect class="merc${scene === "hot" ? " rise" : cooling ? " fall" : ""}" x="-1.6" y="${top}" width="3.2" height="${height}" rx="1.6" fill="${mercury}"/>
+      <circle cy="42" r="5" fill="${mercury}"/></g>`;
+  let extra = "";
+  if (scene === "hot" && !night) {
+    const rays = Array.from({ length: 8 }, (_, i) => {
+      const a = (i * Math.PI) / 4;
+      const at = (r) => [(Math.cos(a) * r).toFixed(1), (Math.sin(a) * r).toFixed(1)];
+      const [[x1, y1], [x2, y2]] = [at(6), at(10)];
+      return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"/>`;
+    }).join("");
+    extra = `<g transform="translate(186 44)"><g class="rays" stroke="#f5b400" stroke-width="1.6" stroke-linecap="round">${rays}</g><circle r="4" fill="#ffc83a"/></g>`;
+  } else if (scene === "hot") {
+    extra = `<g class="heat" transform="translate(186 50)" fill="none" stroke="#e5484d" stroke-width="1.4" stroke-linecap="round">
+      <path d="M-6 6 q-2 -4 0 -8 t0 -8"/><path d="M0 6 q-2 -4 0 -8 t0 -8"/><path d="M6 6 q-2 -4 0 -8 t0 -8"/></g>`;
+  } else if (scene === "cold") {
+    const arms = [0, 60, 120].map((d) => `<path transform="rotate(${d})" d="M0 -8 V8 M-2.5 -6 L0 -4 L2.5 -6 M-2.5 6 L0 4 L2.5 6"/>`).join("");
+    extra = `<g transform="translate(186 44)"><g class="snow" fill="none" stroke="${night ? "#a9d2f5" : "#5aa9e6"}" stroke-width="1.3" stroke-linecap="round">${arms}</g></g>`;
+  } else if (scene === "warn") {
+    const color = level === "critical" ? "#e5484d" : "#ffa600";
+    extra = `<g class="pulse" transform="translate(186 44)"><circle r="7" fill="${color}"/>
+      <rect x="-1" y="-4.5" width="2" height="5.5" rx="1" fill="#ffffff"/><circle cy="3.4" r="1.1" fill="#ffffff"/></g>`;
+  }
+  return `<svg viewBox="96 0 104 80" preserveAspectRatio="xMaxYMax meet" aria-hidden="true">${ac}${thermometer}${extra}</svg>`;
+}
+
+// The banner's ground strip (the parquet floor), that the title block keeps clear of, and the gap between the title
+// and the status pill on its row (.trow).
+const PILL_GROUND_PX = 10;
+const PILL_GAP_PX = 8;
+
+// The status pill goes on the title row, right after the title, only when the whole title and the pill's whole label
+// fit there; otherwise it takes its own line under the subtitle, and in the banner its dot alone when even that does not
+// fit above the ground strip. Measured after each render, never by a fixed width (the mini card's and the activity card's).
+export function fitPill(root) {
+  for (const t of root?.querySelectorAll?.(".titles") || []) {
+    const row = t.querySelector?.(".trow");
+    const name = row?.querySelector(".hname");
+    const chips = row ? [...row.children].filter((n) => n.classList.contains("pill")) : [];
+    if (!name?.getBoundingClientRect || !chips.length) continue;
+    t.classList.remove("pill-below", "pill-dot");
+    // The title's whole width (scrollWidth is rounded: 1 px more, so that a title that fits is never cut).
+    const need = chips.reduce((w, c) => w + PILL_GAP_PX + c.getBoundingClientRect().width, name.scrollWidth + 1);
+    if (need <= row.getBoundingClientRect().width + 0.5) continue;
+    t.classList.add("pill-below");
+    const banner = t.closest(".banner");
+    if (!banner) continue;
+    const box = banner.getBoundingClientRect();
+    const ground = box.bottom - PILL_GROUND_PX;
+    const right = t.getBoundingClientRect().right;
+    const out = [name, ...t.querySelectorAll(".hsub"), ...chips].some((n) => {
+      const r = n.getBoundingClientRect();
+      return r.height > 0 && (r.top < box.top - 0.5 || r.bottom > ground + 0.5 || r.right > right + 0.5);
+    });
+    if (out) t.classList.add("pill-dot");
+  }
+}
+
+/** The status pill after the title, in the colour of the header's icon (`level`), its text in its tooltip too. */
+export function statusPill(level, text) {
+  const pill = el("span", `pill ${level}`);
+  pill.title = text;
+  pill.append(el("span", "pdot"), el("span", "ptxt", text));
+  return pill;
+}
+
+// The title block's stylesheet, shared with the mini card: subtitle, badge colours by status, the title row and its pill.
+export const TITLE_STYLE = `
+  .hsub { font-size: 12px; line-height: 16px; color: var(--secondary-text-color); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  :host([hide-title]) .titles .hname, :host([hide-subtitle]) .titles > .hsub { display: none; }
+  .top:empty { display: none; }
+  /* The icon's colour is the status, in both headers. */
+  .hbadge.ok { --c: var(--success-color, #43a047); }
+  .hbadge.quiet { --c: var(--secondary-text-color, #727272); }
+  .hbadge.cool { --c: var(--state-climate-cool-color, #2b9af9); }
+  .hbadge.warning { --c: var(--warning-color, #ffa600); }
+  .hbadge.critical { --c: var(--error-color, #db4437); }
+  /* Title row: the title, then the status pill 8 px after it, only when the whole title and the pill's whole label fit
+     there; otherwise the pill on its own line under the subtitle (then kept to one line), and its dot alone when the
+     banner has no room left for its label or at 200 px or less (its text stays in its title and for screen readers).
+     Measured after each render (_fitPill), in every language, never by a fixed width. */
+  .header .titles { display: flex; flex-direction: column; justify-content: center; }
+  .trow { display: flex; align-items: center; gap: 8px; min-width: 0; }
+  .trow .hname { flex: 0 1 auto; }
+  .titles.pill-below .trow { display: contents; }
+  .titles.pill-below .hsub { order: 1; }
+  .titles.pill-below .pill { order: 2; align-self: flex-start; margin-top: 3px; }
+  .titles.pill-dot .pill { padding: 4px; }
+  .titles.pill-dot .ptxt { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .pill { --c: var(--success-color, #43a047); display: inline-flex; align-items: center; gap: 4px; flex: none;
+    box-sizing: border-box; padding: 1px 8px; border-radius: 12px; font-size: 11px; font-weight: 500;
+    line-height: 16px; white-space: nowrap;
+    background: color-mix(in srgb, var(--c) 16%, transparent); color: color-mix(in srgb, var(--c) 70%, var(--primary-text-color)); }
+  .pill .ptxt { white-space: nowrap; }
+  .pill .pdot { width: 7px; height: 7px; border-radius: 50%; background: var(--c); flex: none; }
+  .pill.ok { --c: var(--success-color, #43a047); }
+  .pill.quiet { --c: var(--secondary-text-color, #727272); }
+  .pill.cool { --c: var(--state-climate-cool-color, #2b9af9); }
+  .pill.warning { --c: var(--warning-color, #ffa600); }
+  .pill.critical { --c: var(--error-color, #db4437); }
+  @container sc-card (max-width: 200px) {
+    .pill { padding: 4px; }
+    .pill .ptxt { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  }
+`;
+
+// The illustrated header's stylesheet, shared with the mini card: the room's wall, the illustration, the floor strip.
+export const BANNER_STYLE = `
+  /* ── Illustrated header: the room's wall, the illustration at the right, a parquet floor strip ── */
+  .banner { position: relative; height: var(--banner-h, 90px); overflow: hidden; --ground-h: 10px; --scene-w: 104px;
+            --sky-text: #2a2f3a; --sky-muted: #5b6270; background: #f2eee8; }
+  .banner.night { --sky-text: #ffffff; --sky-muted: rgba(255,255,255,.75); background: #2a2f3d; }
+  .banner .scene { position: absolute; right: 0; bottom: var(--ground-h); height: calc(100% - var(--ground-h));
+                   width: min(var(--scene-w), 45%); overflow: hidden; }
+  .banner .scene svg { display: block; width: 100%; height: 100%; }
+  .banner .ground { position: absolute; left: 0; right: 0; bottom: 0; height: var(--ground-h);
+                    background: repeating-linear-gradient(90deg, #c99a6b 0 38px, #b98a5c 38px 40px); box-shadow: inset 0 2px 0 #a97c50; }
+  .banner.night .ground { background: repeating-linear-gradient(90deg, #4a3a2c 0 38px, #3e3024 38px 40px); box-shadow: inset 0 2px 0 #5c4836; }
+  .banner .head { position: absolute; z-index: 1; left: 0; top: 0; bottom: var(--ground-h); right: min(var(--scene-w), 45%);
+                  box-sizing: border-box; display: flex; align-items: center; gap: 10px; padding: 8px 8px 8px 14px; min-width: 0; }
+  .banner .hname { color: var(--sky-text); }
+  .banner .hsub { color: var(--sky-muted); font-size: 13px; line-height: 17px; }
+  .banner .hbadge { background: rgba(255,255,255,.62); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--c) 22%, transparent); }
+  .banner .hbadge.quiet { --c: #8a929c; }
+  .banner.night .hbadge { background: rgba(255,255,255,.12); color: color-mix(in srgb, var(--c) 75%, #ffffff);
+                          box-shadow: inset 0 0 0 1px rgba(255,255,255,.14); }
+  .banner.night .hbadge.quiet { --c: #b9c0c9; }
+  /* The expand / collapse button: 24 px, round, frosted, in the banner's top right corner. */
+  .banner .zoom { position: absolute; z-index: 2; top: 5px; right: 5px; width: 24px; height: 24px; margin: 0; color: #33506b;
+                  background: rgba(255,255,255,.55); box-shadow: inset 0 0 0 1px rgba(255,255,255,.7);
+                  -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); }
+  .banner .zoom:hover { background: rgba(255,255,255,.75); color: #33506b; }
+  .banner.night .zoom { color: #ffffff; background: rgba(255,255,255,.12); box-shadow: inset 0 0 0 1px rgba(255,255,255,.2); }
+  .banner.night .zoom:hover { background: rgba(255,255,255,.22); color: #ffffff; }
+  /* The status pill on the sky: a frosted glass under the tint. */
+  .banner .pill { background: color-mix(in srgb, var(--c) 18%, rgba(255,255,255,.78)); color: color-mix(in srgb, var(--c) 45%, #0d2a45); }
+  .banner.night .pill { background: color-mix(in srgb, var(--c) 30%, rgba(8,18,38,.55)); color: color-mix(in srgb, var(--c) 35%, #ffffff); }
+  .banner .pill.quiet { --c: #8a929c; }
+  .banner.night .pill.quiet { --c: #b9c0c9; }
+  /* Animations of the illustration. */
+  .scene .blink { animation: sc-blink 1.2s steps(2) infinite; }
+  .scene .breeze path { animation: sc-breeze 2s ease-in-out infinite; }
+  .scene .breeze path:nth-child(2) { animation-delay: -.66s; } .scene .breeze path:nth-child(3) { animation-delay: -1.33s; }
+  .scene .rays { animation: sc-spin 12s linear infinite; transform-box: fill-box; transform-origin: center; }
+  .scene .merc { transform-box: fill-box; transform-origin: 50% 100%; }
+  .scene .merc.rise { animation: sc-rise 4s ease-in-out infinite; }
+  .scene .merc.fall { animation: sc-fall 4s ease-in-out infinite; }
+  .scene .snow { animation: sc-bob 3s ease-in-out infinite; }
+  .scene .heat path { animation: sc-heat 2s ease-out infinite; }
+  .scene .heat path:nth-child(2) { animation-delay: -.66s; } .scene .heat path:nth-child(3) { animation-delay: -1.33s; }
+  .scene .pulse { animation: sc-pulse 2s ease-in-out infinite; }
+  @keyframes sc-blink { 50% { opacity: .2; } }
+  @keyframes sc-breeze { 0% { opacity: 0; transform: translateY(-3px); } 40% { opacity: 1; } 100% { opacity: 0; transform: translateY(5px); } }
+  @keyframes sc-spin { to { transform: rotate(360deg); } }
+  @keyframes sc-rise { 50% { transform: scaleY(1.1); } }
+  @keyframes sc-fall { from { transform: scaleY(1.4); } to { transform: scaleY(1); } }
+  @keyframes sc-bob { 50% { transform: translateY(2px); } }
+  @keyframes sc-heat { from { opacity: .9; transform: translateY(2px); } to { opacity: 0; transform: translateY(-5px); } }
+  @keyframes sc-pulse { 50% { opacity: .55; } }
+  @media (prefers-reduced-motion: reduce) {
+    .scene * { animation: none !important; }
+  }
+  /* A very narrow card keeps the wall and the floor for its texts: no illustration. */
+  @container (max-width: 220px) {
+    .banner .scene { display: none; }
+    .banner .head { right: 0; padding-right: 34px; }
+  }
+`;
+
+
 const STYLE = `
   :host { display: block; }
+  ha-card { container: sc-card / inline-size; overflow: hidden; }
   .header { display: flex; align-items: center; gap: 10px; padding: 12px 16px 4px; }
   ${HEADER_STYLE}
+  ${TITLE_STYLE}
+  ${BANNER_STYLE}
+  .header.banner { padding: 0; margin-bottom: 4px; }
   .body { padding: 0 16px 12px; }
   .body.flat { padding: 0; }
   .empty { color: var(--secondary-text-color); padding: 12px 0; }
