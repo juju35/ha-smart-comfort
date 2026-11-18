@@ -75,7 +75,7 @@
           "critical_volume": "iOS jačina zvuka kritičnog upozorenja, od 0 do 1.",
           "url": "Otvara se kada se dodirne obaveštenje, npr. homeassistant://navigate/lovelace/comfort",
           "tag": "Svako obaveštenje zamenjuje prethodno sa ovom oznakom umesto da se gomilaju.",
-          "hide_header": "Gornja traka kontrolnih tabli (naslov, prikazi, dugme za uređivanje). Dodajte ?show_header na adresu table da biste je ipak videli."
+          "hide_header": "Gornja traka kontrolnih tabli (naslov, meni, dugmad za uređivanje i pretragu); kartice prikaza ostaju. Dodajte ?show_header na adresu table da biste je ipak videli."
         }
       },
       "alerts": {

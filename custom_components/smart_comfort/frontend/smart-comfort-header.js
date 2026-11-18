@@ -1,14 +1,18 @@
 // Smart Comfort's "Hide the top bar" option, loaded on every page for every user: hides the top bar of the dashboards
-// (title, views, edit and search buttons) for everyone or only for the users who are not administrators, set in the
-// panel's Settings tab. The setting is read from `smart_comfort/header` (open to every user) and kept by the browser,
+// (title, menu, edit and search buttons; the view tabs stay) for everyone or only for the users who are not
+// administrators, set in the panel's Settings tab. The setting is read from `smart_comfort/header` (open to every user) and kept by the browser,
 // so the bar is hidden at once on the next visit. `?show_header` in the address shows the bar anyway.
 var SCH_KEY = 'smart-comfort-hide-header';
 var SCH_STYLE_ID = 'smart-comfort-hide-header';
 var SCH_MODES = ['off', 'everyone', 'non_admins'];
-// Home Assistant's dashboard (hui-root): its header, and the view's room left for it.
+// Home Assistant's dashboard (hui-root). A dashboard with several views keeps its view tabs (the bar shows only them:
+// no menu, title or buttons); one with a single view, or a subview, loses the whole bar and the room left for it. The
+// edit mode is left alone.
+var SCH_LIVE = ':not(.edit-mode) > .header';
 var SCH_CSS =
-  '.header { display:none !important; }' +
-  ' #view { padding-top:var(--safe-area-inset-top, env(safe-area-inset-top, 0px)) !important; min-height:100vh !important; }';
+  `${SCH_LIVE}:not(:has(.toolbar ha-tab-group)) { display:none !important; }` +
+  ` ${SCH_LIVE}:not(:has(.toolbar ha-tab-group)) ~ #view { padding-top:var(--safe-area-inset-top, 0px) !important; }` +
+  ` ${SCH_LIVE} .toolbar:has(ha-tab-group) > :not(ha-tab-group) { display:none !important; }`;
 var SCH_EVERY_MS = 1000;
 var SCH_FETCH_MS = 300000;
 

@@ -75,7 +75,7 @@
           "critical_volume": "Volumul sunetului critic iOS, de la 0 la 1.",
           "url": "Se deschide la atingerea notificării, de ex. homeassistant://navigate/lovelace/comfort",
           "tag": "Fiecare notificare o înlocuiește pe cea anterioară cu această etichetă, în loc să se adune.",
-          "hide_header": "Bara de sus a tablourilor de bord (titlu, vizualizări, butonul de editare). Adaugă ?show_header la adresa unui tablou de bord ca s-o vezi totuși."
+          "hide_header": "Bara de sus a tablourilor de bord (titlu, meniu, butoanele de editare și căutare); filele vizualizărilor rămân. Adaugă ?show_header la adresa unui tablou de bord ca s-o vezi totuși."
         }
       },
       "alerts": {

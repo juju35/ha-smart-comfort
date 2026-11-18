@@ -75,7 +75,7 @@
           "critical_volume": "Głośność dźwięku krytycznego iOS, od 0 do 1.",
           "url": "Otwierane po dotknięciu powiadomienia, np. homeassistant://navigate/lovelace/comfort",
           "tag": "Każde powiadomienie zastępuje poprzednie z tym tagiem zamiast się gromadzić.",
-          "hide_header": "Górny pasek pulpitów (tytuł, widoki, przycisk edycji). Dodaj ?show_header do adresu pulpitu, aby mimo to go zobaczyć."
+          "hide_header": "Górny pasek pulpitów (tytuł, menu, przyciski edycji i wyszukiwania); karty widoków zostają. Dodaj ?show_header do adresu pulpitu, aby mimo to go zobaczyć."
         }
       },
       "alerts": {

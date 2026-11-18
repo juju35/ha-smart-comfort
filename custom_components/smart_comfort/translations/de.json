@@ -75,7 +75,7 @@
           "critical_volume": "Lautstärke des kritischen iOS-Tons, 0 bis 1.",
           "url": "Wird beim Tippen geöffnet, z. B. homeassistant://navigate/lovelace/komfort",
           "tag": "Jede Benachrichtigung ersetzt die vorherige mit diesem Tag, statt sich zu stapeln.",
-          "hide_header": "Die obere Leiste der Dashboards (Titel, Ansichten, Bearbeiten-Schaltfläche). Mit ?show_header in der Adresse eines Dashboards wird sie trotzdem angezeigt."
+          "hide_header": "Die obere Leiste der Dashboards (Titel, Menü, Bearbeiten- und Suchschaltflächen); die Ansichts-Tabs bleiben. Mit ?show_header in der Adresse eines Dashboards wird sie trotzdem angezeigt."
         }
       },
       "alerts": {

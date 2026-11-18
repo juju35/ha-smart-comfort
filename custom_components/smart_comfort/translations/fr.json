@@ -75,7 +75,7 @@
           "critical_volume": "Volume du son critique iOS, de 0 à 1.",
           "url": "Ouverte au toucher de la notification, ex. homeassistant://navigate/lovelace/confort",
           "tag": "Chaque notification remplace la précédente de même tag au lieu de s'empiler.",
-          "hide_header": "La barre du haut des tableaux de bord (titre, vues, bouton de modification). Ajoutez ?show_header à l'adresse d'un tableau de bord pour l'afficher quand même."
+          "hide_header": "La barre du haut des tableaux de bord (titre, menu, boutons de modification et de recherche) ; les onglets des vues restent. Ajoutez ?show_header à l'adresse d'un tableau de bord pour l'afficher quand même."
         }
       },
       "alerts": {

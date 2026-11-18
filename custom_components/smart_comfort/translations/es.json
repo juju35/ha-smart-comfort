@@ -75,7 +75,7 @@
           "critical_volume": "Volumen del sonido crítico de iOS, de 0 a 1.",
           "url": "Se abre al tocar la notificación, p. ej. homeassistant://navigate/lovelace/confort",
           "tag": "Cada notificación sustituye a la anterior con esta etiqueta en lugar de acumularse.",
-          "hide_header": "La barra superior de los paneles (título, vistas, botón de edición). Añade ?show_header a la dirección de un panel para verla igualmente."
+          "hide_header": "La barra superior de los paneles (título, menú, botones de edición y búsqueda); las pestañas de las vistas se quedan. Añade ?show_header a la dirección de un panel para verla igualmente."
         }
       },
       "alerts": {

@@ -75,7 +75,7 @@
           "critical_volume": "Volym för kritiskt ljud på iOS, 0 till 1.",
           "url": "Öppnas när man trycker på aviseringen, t.ex. homeassistant://navigate/lovelace/comfort",
           "tag": "Varje avisering ersätter den föregående med denna tagg i stället för att samlas på hög.",
-          "hide_header": "Instrumentpanelernas övre fält (titel, vyer, redigeringsknapp). Lägg till ?show_header i en instrumentpanels adress för att ändå se det."
+          "hide_header": "Instrumentpanelernas övre fält (titel, meny, redigerings- och sökknappar); vyernas flikar finns kvar. Lägg till ?show_header i en instrumentpanels adress för att ändå se det."
         }
       },
       "alerts": {

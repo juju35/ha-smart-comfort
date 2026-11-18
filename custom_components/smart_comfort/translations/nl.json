@@ -75,7 +75,7 @@
           "critical_volume": "Volume van het kritieke geluid op iOS, 0 tot 1.",
           "url": "Geopend bij tikken op de melding, bijv. homeassistant://navigate/lovelace/comfort",
           "tag": "Elke melding vervangt de vorige met deze tag in plaats van zich op te stapelen.",
-          "hide_header": "De bovenste balk van de dashboards (titel, weergaven, bewerkknop). Voeg ?show_header toe aan het adres van een dashboard om hem toch te zien."
+          "hide_header": "De bovenste balk van de dashboards (titel, menu, bewerk- en zoekknoppen); de tabbladen van de weergaven blijven. Voeg ?show_header toe aan het adres van een dashboard om hem toch te zien."
         }
       },
       "alerts": {

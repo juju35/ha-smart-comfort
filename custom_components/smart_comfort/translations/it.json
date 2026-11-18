@@ -75,7 +75,7 @@
           "critical_volume": "Volume del suono critico iOS, da 0 a 1.",
           "url": "Aperto quando si tocca la notifica, ad es. homeassistant://navigate/lovelace/comfort",
           "tag": "Ogni notifica sostituisce la precedente con questo tag invece di accumularsi.",
-          "hide_header": "La barra superiore delle dashboard (titolo, viste, pulsante di modifica). Aggiungi ?show_header all'indirizzo di una dashboard per vederla comunque."
+          "hide_header": "La barra superiore delle dashboard (titolo, menu, pulsanti di modifica e ricerca); le schede delle viste restano. Aggiungi ?show_header all'indirizzo di una dashboard per vederla comunque."
         }
       },
       "alerts": {

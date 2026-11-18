@@ -75,7 +75,7 @@
           "critical_volume": "Glasnost kritičnega zvoka v iOS, od 0 do 1.",
           "url": "Odpre se ob dotiku obvestila, npr. homeassistant://navigate/lovelace/comfort",
           "tag": "Vsako obvestilo nadomesti prejšnje s to oznako, namesto da bi se kopičila.",
-          "hide_header": "Zgornja vrstica nadzornih plošč (naslov, pogledi, gumb za urejanje). Dodajte ?show_header naslovu plošče, da jo vseeno vidite."
+          "hide_header": "Zgornja vrstica nadzornih plošč (naslov, meni, gumba za urejanje in iskanje); zavihki pogledov ostanejo. Dodajte ?show_header naslovu plošče, da jo vseeno vidite."
         }
       },
       "alerts": {

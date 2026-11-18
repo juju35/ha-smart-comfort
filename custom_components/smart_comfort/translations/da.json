@@ -75,7 +75,7 @@
           "critical_volume": "Lydstyrke for kritiske lyde på iOS, 0 til 1.",
           "url": "Åbnes, når der trykkes på notifikationen, f.eks. homeassistant://navigate/lovelace/comfort",
           "tag": "Hver notifikation erstatter den forrige med dette mærke i stedet for at hobe sig op.",
-          "hide_header": "Dashboardenes øverste bjælke (titel, visninger, redigeringsknap). Tilføj ?show_header til et dashboards adresse for at se den alligevel."
+          "hide_header": "Dashboardenes øverste bjælke (titel, menu, redigerings- og søgeknapper); visningernes faner bliver. Tilføj ?show_header til et dashboards adresse for at se den alligevel."
         }
       },
       "alerts": {
