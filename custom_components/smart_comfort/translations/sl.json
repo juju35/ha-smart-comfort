@@ -56,7 +56,8 @@
           "clear_when_resolved": "Počisti ob rešitvi",
           "critical_volume": "Glasnost kritičnih opozoril",
           "url": "Dejanje ob dotiku",
-          "tag": "Oznaka obvestila"
+          "tag": "Oznaka obvestila",
+          "hide_header": "Skrij zgornjo vrstico"
         },
         "data_description": {
           "notify": "Kam gredo opozorila (notify.mobile_app_…, skupina notify…).",
@@ -73,7 +74,8 @@
           "clear_when_resolved": "Odstrani obvestilo s telefonov, ko so vse obveščene težave mimo.",
           "critical_volume": "Glasnost kritičnega zvoka v iOS, od 0 do 1.",
           "url": "Odpre se ob dotiku obvestila, npr. homeassistant://navigate/lovelace/comfort",
-          "tag": "Vsako obvestilo nadomesti prejšnje s to oznako, namesto da bi se kopičila."
+          "tag": "Vsako obvestilo nadomesti prejšnje s to oznako, namesto da bi se kopičila.",
+          "hide_header": "Zgornja vrstica nadzornih plošč (naslov, pogledi, gumb za urejanje). Dodajte ?show_header naslovu plošče, da jo vseeno vidite."
         }
       },
       "alerts": {
@@ -369,6 +371,13 @@
       "options": {
         "living_space": "Bivalni prostor",
         "annex": "Pomožni prostor (klet, garaža…)"
+      }
+    },
+    "hide_header": {
+      "options": {
+        "off": "Nikoli",
+        "everyone": "Za vse",
+        "non_admins": "Samo za neskrbnike"
       }
     }
   },

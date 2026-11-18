@@ -79,6 +79,26 @@ async def test_save_rejects_invalid(hass: HomeAssistant, hass_ws_client) -> None
     assert entry.options == OPTIONS
 
 
+async def test_header_any_user(hass: HomeAssistant, hass_ws_client, hass_read_only_access_token) -> None:
+    """The dashboards' top bar setting: off by default, saved from the panel, readable by a non-admin."""
+    await _setup(hass)
+    client = await hass_ws_client(hass, hass_read_only_access_token)
+    await client.send_json_auto_id({"type": f"{DOMAIN}/header"})
+    msg = await client.receive_json()
+    assert msg["success"], msg
+    assert msg["result"] == {"hide_header": "off"}
+    admin = await hass_ws_client(hass)
+    await admin.send_json_auto_id(
+        {"type": f"{DOMAIN}/config/save", "options": {**OPTIONS, "hide_header": "non_admins"}}
+    )
+    assert (await admin.receive_json())["success"]
+    await hass.async_block_till_done()
+    await client.send_json_auto_id({"type": f"{DOMAIN}/header"})
+    assert (await client.receive_json())["result"] == {"hide_header": "non_admins"}
+    await admin.send_json_auto_id({"type": f"{DOMAIN}/config/save", "options": {**OPTIONS, "hide_header": "kiosk"}})
+    assert not (await admin.receive_json())["success"]
+
+
 async def test_subscribe_follows_reloads(hass: HomeAssistant, hass_ws_client) -> None:
     entry = await _setup(hass)
     client = await hass_ws_client(hass)
@@ -121,12 +141,13 @@ async def test_panel_registered(hass: HomeAssistant) -> None:
     hass.http = Mock(async_register_static_paths=AsyncMock())
     hass.data["frontend_extra_module_url"] = extra = Mock()
     await _setup(hass)
-    # The sidebar icon set and badge on every page, then the activity card and the mini card on every dashboard (once
-    # each, across reloads).
+    # The sidebar icon set, badge and top bar option on every page, then the activity card and the mini card on every
+    # dashboard (once each, across reloads).
     added = [c.args[0].split("?")[0] for c in extra.add.call_args_list]
     assert added == [
         "/smart_comfort_static/smart-comfort-icons.js",
         "/smart_comfort_static/smart-comfort-badge.js",
+        "/smart_comfort_static/smart-comfort-header.js",
         "/smart_comfort_static/smart-comfort-activity-card.js",
         "/smart_comfort_static/smart-comfort-mini-card.js",
     ]
@@ -147,7 +168,7 @@ async def test_panel_registered(hass: HomeAssistant) -> None:
     await hass.async_block_till_done()
     assert PANEL_URL in hass.data["frontend_panels"]
     assert hass.http.async_register_static_paths.call_count == 1
-    assert extra.add.call_count == 4
+    assert extra.add.call_count == 5
     # Removing the integration removes the panel.
     assert await hass.config_entries.async_remove(entry.entry_id)
     await hass.async_block_till_done()
@@ -203,6 +224,7 @@ async def test_card_dashboard_resource(hass: HomeAssistant) -> None:
     assert badge_added == [
         "/smart_comfort_static/smart-comfort-icons.js",
         "/smart_comfort_static/smart-comfort-badge.js",
+        "/smart_comfort_static/smart-comfort-header.js",
     ]
     # Removing the integration drops its resources, not the others.
     assert await hass.config_entries.async_remove(entry.entry_id)

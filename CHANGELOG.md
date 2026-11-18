@@ -5,6 +5,7 @@
 ### Features
 - **Panel: illustrated header on every tab**, like the cards: a Smart Comfort room per tab (living room for the overview, garden for the outdoors, office for the activity and the YAML, bedroom for the schedule…), animated, over its floor strip, with the tab's icon in a frosted badge, a title, a pill and a subtitle. The overview's header carries the comfort score ("Comfort 60 / 100"), the points to watch, the outdoor temperature and the quiet night, its wall tinted by the status; Alerts counts the active alerts, Rooms the rooms that are fine, Outdoors the outdoor air and noise. Night with a dark Home Assistant theme; reduced motion is honoured. It replaces the overview's former comfort block.
 - **Panel: the charter look** of the cards — the header card gathers the tab's first blocks (summary tiles, help, discovery, the YAML notice); filled rounded tiles with a round tinted icon; uppercase section headers; icons centred everywhere.
+- **Settings: "Hide the top bar"** of the dashboards, for everyone or for non-admins only (`hide_header: off | everyone | non_admins`). A small module loaded on every page applies it for each user, admin or not; `?show_header` in a dashboard's address shows the bar anyway. Translated in every language.
 
 ### Maintenance
 - Screenshots: the panel is drawn with the dark theme flag for the dark twins, and the icon stub lays icons out like Home Assistant.

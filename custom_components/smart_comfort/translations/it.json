@@ -56,7 +56,8 @@
           "clear_when_resolved": "Cancella quando risolto",
           "critical_volume": "Volume degli avvisi critici",
           "url": "Azione al tocco",
-          "tag": "Tag della notifica"
+          "tag": "Tag della notifica",
+          "hide_header": "Nascondi la barra superiore"
         },
         "data_description": {
           "notify": "Dove vanno gli avvisi (notify.mobile_app_…, un gruppo di notifica…).",
@@ -73,7 +74,8 @@
           "clear_when_resolved": "Rimuovi la notifica dai telefoni quando tutti i problemi notificati sono finiti.",
           "critical_volume": "Volume del suono critico iOS, da 0 a 1.",
           "url": "Aperto quando si tocca la notifica, ad es. homeassistant://navigate/lovelace/comfort",
-          "tag": "Ogni notifica sostituisce la precedente con questo tag invece di accumularsi."
+          "tag": "Ogni notifica sostituisce la precedente con questo tag invece di accumularsi.",
+          "hide_header": "La barra superiore delle dashboard (titolo, viste, pulsante di modifica). Aggiungi ?show_header all'indirizzo di una dashboard per vederla comunque."
         }
       },
       "alerts": {
@@ -369,6 +371,13 @@
       "options": {
         "living_space": "Ambiente abitato",
         "annex": "Locale di servizio (cantina, garage…)"
+      }
+    },
+    "hide_header": {
+      "options": {
+        "off": "Mai",
+        "everyone": "Per tutti",
+        "non_admins": "Solo per i non amministratori"
       }
     }
   },

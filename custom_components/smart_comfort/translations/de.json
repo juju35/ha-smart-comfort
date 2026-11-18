@@ -56,7 +56,8 @@
           "clear_when_resolved": "Nach Lösung entfernen",
           "critical_volume": "Lautstärke kritischer Meldungen",
           "url": "Aktion beim Tippen",
-          "tag": "Benachrichtigungs-Tag"
+          "tag": "Benachrichtigungs-Tag",
+          "hide_header": "Obere Leiste ausblenden"
         },
         "data_description": {
           "notify": "Wohin die Meldungen gehen (notify.mobile_app_…, eine notify-Gruppe…).",
@@ -73,7 +74,8 @@
           "clear_when_resolved": "Entfernt die Benachrichtigung von den Telefonen, sobald alle gemeldeten Probleme vorbei sind.",
           "critical_volume": "Lautstärke des kritischen iOS-Tons, 0 bis 1.",
           "url": "Wird beim Tippen geöffnet, z. B. homeassistant://navigate/lovelace/komfort",
-          "tag": "Jede Benachrichtigung ersetzt die vorherige mit diesem Tag, statt sich zu stapeln."
+          "tag": "Jede Benachrichtigung ersetzt die vorherige mit diesem Tag, statt sich zu stapeln.",
+          "hide_header": "Die obere Leiste der Dashboards (Titel, Ansichten, Bearbeiten-Schaltfläche). Mit ?show_header in der Adresse eines Dashboards wird sie trotzdem angezeigt."
         }
       },
       "alerts": {
@@ -369,6 +371,13 @@
       "options": {
         "living_space": "Wohnraum",
         "annex": "Nebenraum (Keller, Garage…)"
+      }
+    },
+    "hide_header": {
+      "options": {
+        "off": "Nie",
+        "everyone": "Für alle",
+        "non_admins": "Nur für Nicht-Admins"
       }
     }
   },

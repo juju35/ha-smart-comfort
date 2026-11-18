@@ -56,7 +56,8 @@
           "clear_when_resolved": "Wissen wanneer opgelost",
           "critical_volume": "Volume van kritieke waarschuwingen",
           "url": "Actie bij tikken",
-          "tag": "Meldingstag"
+          "tag": "Meldingstag",
+          "hide_header": "Bovenste balk verbergen"
         },
         "data_description": {
           "notify": "Waar de waarschuwingen naartoe gaan (notify.mobile_app_…, een meldingsgroep…).",
@@ -73,7 +74,8 @@
           "clear_when_resolved": "Verwijder de melding van de telefoons zodra elk gemeld probleem voorbij is.",
           "critical_volume": "Volume van het kritieke geluid op iOS, 0 tot 1.",
           "url": "Geopend bij tikken op de melding, bijv. homeassistant://navigate/lovelace/comfort",
-          "tag": "Elke melding vervangt de vorige met deze tag in plaats van zich op te stapelen."
+          "tag": "Elke melding vervangt de vorige met deze tag in plaats van zich op te stapelen.",
+          "hide_header": "De bovenste balk van de dashboards (titel, weergaven, bewerkknop). Voeg ?show_header toe aan het adres van een dashboard om hem toch te zien."
         }
       },
       "alerts": {
@@ -369,6 +371,13 @@
       "options": {
         "living_space": "Leefruimte",
         "annex": "Bijruimte (kelder, garage…)"
+      }
+    },
+    "hide_header": {
+      "options": {
+        "off": "Nooit",
+        "everyone": "Voor iedereen",
+        "non_admins": "Alleen voor niet-beheerders"
       }
     }
   },

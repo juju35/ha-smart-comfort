@@ -56,7 +56,8 @@
           "clear_when_resolved": "Törlés megoldáskor",
           "critical_volume": "Kritikus riasztás hangereje",
           "url": "Koppintási művelet",
-          "tag": "Értesítési címke"
+          "tag": "Értesítési címke",
+          "hide_header": "Felső sáv elrejtése"
         },
         "data_description": {
           "notify": "Hová mennek a riasztások (notify.mobile_app_…, egy notify csoport…).",
@@ -73,7 +74,8 @@
           "clear_when_resolved": "Eltávolítja az értesítést a telefonokról, amint minden értesített probléma megszűnt.",
           "critical_volume": "Kritikus hang hangereje iOS-en, 0 és 1 között.",
           "url": "Az értesítésre koppintva nyílik meg, pl. homeassistant://navigate/lovelace/comfort",
-          "tag": "Minden értesítés lecseréli az előzőt ezzel a címkével, ahelyett hogy felhalmozódnának."
+          "tag": "Minden értesítés lecseréli az előzőt ezzel a címkével, ahelyett hogy felhalmozódnának.",
+          "hide_header": "Az irányítópultok felső sávja (cím, nézetek, szerkesztés gomb). Az irányítópult címéhez fűzött ?show_header mégis megjeleníti."
         }
       },
       "alerts": {
@@ -369,6 +371,13 @@
       "options": {
         "living_space": "Lakótér",
         "annex": "Melléképület (pince, garázs…)"
+      }
+    },
+    "hide_header": {
+      "options": {
+        "off": "Soha",
+        "everyone": "Mindenkinek",
+        "non_admins": "Csak a nem rendszergazdáknak"
       }
     }
   },
