@@ -75,7 +75,7 @@
           "critical_volume": "iOS critical sound volume, 0 to 1.",
           "url": "Opened when the notification is tapped, e.g. homeassistant://navigate/lovelace/comfort",
           "tag": "Each notification replaces the previous one with this tag instead of piling up.",
-          "hide_header": "The dashboards' top bar (title, menu, edit and search buttons); the view tabs stay. Add ?show_header to a dashboard's address to see it anyway."
+          "hide_header": "The dashboards' top bar (title, menu, edit and search buttons); the view tabs stay. This panel's top bar goes too; its tabs stay. Add ?show_header to a dashboard's address to see it anyway."
         }
       },
       "alerts": {
@@ -375,9 +375,9 @@
     },
     "hide_header": {
       "options": {
-        "off": "Never",
+        "off": "No",
         "everyone": "For everyone",
-        "non_admins": "For non-admins only"
+        "non_admins": "For non-admins"
       }
     }
   },

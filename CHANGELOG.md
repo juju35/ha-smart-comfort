@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.26.1 - 2026-11-19
+
+### Fixes
+- **Hide the top bar**: its choices read **No**, **For everyone** and **For non-admins**, as in the other ha-* panels, and its description says the panel's top bar goes too (its tabs stay), in every language.
+- **Top bar status as a pill**: the points to watch (and each tab's status) show as a tinted pill with a coloured dot, as in the other ha-* panels; the banner's round badge takes the state's colour too.
+
+### Maintenance
+- **Screenshots**: the panel edge to edge, without Home Assistant's sidebar, as in the other ha-* repos; one shot (`panel-sidebar`) keeps the sidebar for the panel's item and its badge.
+
 ## 1.26.0 - 2026-11-19
 
 ### Features

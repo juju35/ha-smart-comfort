@@ -75,7 +75,7 @@
           "critical_volume": "Volume do som crítico do iOS, de 0 a 1.",
           "url": "Aberto ao tocar na notificação, p. ex. homeassistant://navigate/lovelace/comfort",
           "tag": "Cada notificação substitui a anterior com esta etiqueta em vez de se acumular.",
-          "hide_header": "A barra superior dos painéis (título, menu, botões de edição e pesquisa); os separadores das vistas ficam. Adicione ?show_header ao endereço de um painel para a ver na mesma."
+          "hide_header": "A barra superior dos painéis (título, menu, botões de edição e pesquisa); os separadores das vistas ficam. A barra superior deste painel também; as abas dele ficam. Adicione ?show_header ao endereço de um painel para a ver na mesma."
         }
       },
       "alerts": {
@@ -375,9 +375,9 @@
     },
     "hide_header": {
       "options": {
-        "off": "Nunca",
+        "off": "Não",
         "everyone": "Para todos",
-        "non_admins": "Só para quem não é administrador"
+        "non_admins": "Para não administradores"
       }
     }
   },

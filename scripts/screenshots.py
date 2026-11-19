@@ -2,7 +2,8 @@
 
 Usage: python scripts/screenshots.py  (needs `pip install playwright pillow`, `playwright install chromium` and ffmpeg)
 CHROMIUM_PATH=/path/to/chrome to use another browser. The clock is frozen and the time zone is UTC, so the times stay
-the same. The panel runs in a page that mimics Home Assistant: a static sidebar, the theme variables, and stand-ins for
+the same. The panel runs in a page that mimics Home Assistant: the theme variables (edge to
+edge, Home Assistant's static sidebar only for the shot of its badge), and stand-ins for
 <ha-icon>, <ha-menu-button> and <ha-form> (its text, number, select, boolean, entity and expandable fields). The
 WebSocket commands of the panel (config, subscribe, discover, translations) answer with the mock data below; the
 alert and control defaults and the field labels come from the integration itself (const.py, translations/en.json).
@@ -27,6 +28,8 @@ DOMAIN = "smart_comfort"
 NOW = "2026-10-24T11:45:00Z"
 URL = "http://homeassistant.local/smart-comfort"
 WIDTH = 1280
+# The panel alone, edge to edge as in the other ha-* repos: the page less Home Assistant's sidebar (256 px)
+PANEL_WIDTH = WIDTH - 256
 
 # const.py only imports typing: load it alone, without the package (which needs Home Assistant).
 _spec = importlib.util.spec_from_file_location("smart_comfort_const", COMPONENT / "const.py")
@@ -363,7 +366,7 @@ def sidebar_html():
     )
 
 
-def page_html(theme):
+def page_html(theme, sidebar=False):
     variables = "".join(f"{k}:{v};" for k, v in {**THEMES[theme], **COMMON}.items())
     return f"""<!doctype html><html><head><meta charset="utf-8"><style>
 :root {{ {variables} color-scheme: {theme}; }}
@@ -387,8 +390,8 @@ html, body {{ margin: 0; background: var(--primary-background-color); color: var
 .spacer {{ flex: 1; }}
 .avatar {{ width: 40px; height: 40px; margin-left: -8px; margin-right: -8px; border-radius: 50%; display: flex; align-items: center;
           justify-content: center; background: rgba(var(--rgb-primary-color), 0.3); font-size: 14px; font-weight: 400; }}
-main {{ margin-left: 256px; }}
-</style></head><body>{sidebar_html()}<main id="root"></main></body></html>"""
+main {{ margin-left: {256 if sidebar else 0}px; }}
+</style></head><body>{sidebar_html() if sidebar else ""}<main id="root"></main></body></html>"""
 
 
 # Mock Home Assistant: the entities of the rooms (friendly name, icon, area), the switches of the integration.
@@ -835,6 +838,8 @@ SCROLL = """([selector, text]) => {
 SHOTS = [
     {"file": "panel-overview", "options": SAVED, "status": STATUS, "tab": "overview", "height": 900},
     {"file": "panel-start", "options": {}, "status": START_STATUS, "tab": "overview", "height": 600},
+    # The one shot with Home Assistant's sidebar around the panel: its item and the badge of the active alerts
+    {"file": "panel-sidebar", "options": SAVED, "status": STATUS, "tab": "overview", "height": 420, "sidebar": True},
     {
         "file": "panel-discover",
         "options": {},
@@ -1116,10 +1121,10 @@ def render_panel_gif(browser, scene, seconds, theme):
     context.close()
 
 
-def open_panel(browser, name, theme, height, options, status, tab):
+def open_panel(browser, name, theme, height, options, status, tab, sidebar=False):
     """A page that mimics Home Assistant with the panel mounted on `tab`, its commands answered with the mock data."""
     context = browser.new_context(
-        viewport={"width": WIDTH, "height": height},
+        viewport={"width": WIDTH if sidebar else PANEL_WIDTH, "height": height},
         device_scale_factor=1,
         timezone_id="UTC",
         locale="en-US",
@@ -1130,7 +1135,8 @@ def open_panel(browser, name, theme, height, options, status, tab):
     page.clock.set_fixed_time(NOW)
     # A real origin, so the panel can change the URL when it switches tabs.
     page.route(
-        "http://homeassistant.local/**", lambda route: route.fulfill(content_type="text/html", body=page_html(theme))
+        "http://homeassistant.local/**",
+        lambda route: route.fulfill(content_type="text/html", body=page_html(theme, sidebar)),
     )
     page.goto(URL)
     page.add_script_tag(content=HA_ELEMENTS)
@@ -1142,7 +1148,9 @@ def open_panel(browser, name, theme, height, options, status, tab):
 
 def render(browser, shot, theme):
     name = shot["file"] + ("-dark" if theme == "dark" else "")
-    context, page = open_panel(browser, name, theme, shot["height"], shot["options"], shot["status"], shot["tab"])
+    context, page = open_panel(
+        browser, name, theme, shot["height"], shot["options"], shot["status"], shot["tab"], shot.get("sidebar", False)
+    )
     for click in shot.get("clicks", []):
         page.evaluate(CLICK, list(click))
     if "scroll" in shot:

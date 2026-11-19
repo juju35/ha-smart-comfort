@@ -75,7 +75,7 @@
           "critical_volume": "Kritiskās skaņas skaļums iOS, no 0 līdz 1.",
           "url": "Tiek atvērts, pieskaroties paziņojumam, piem., homeassistant://navigate/lovelace/comfort",
           "tag": "Katrs paziņojums aizstāj iepriekšējo ar šo tagu, nevis tie krājas.",
-          "hide_header": "Informācijas paneļu augšējā josla (virsraksts, izvēlne, rediģēšanas un meklēšanas pogas); skatu cilnes paliek. Pievienojiet ?show_header paneļa adresei, lai to tomēr redzētu."
+          "hide_header": "Informācijas paneļu augšējā josla (virsraksts, izvēlne, rediģēšanas un meklēšanas pogas); skatu cilnes paliek. Arī šī paneļa augšējā josla; tā cilnes paliek. Pievienojiet ?show_header paneļa adresei, lai to tomēr redzētu."
         }
       },
       "alerts": {
@@ -375,9 +375,9 @@
     },
     "hide_header": {
       "options": {
-        "off": "Nekad",
+        "off": "Nē",
         "everyone": "Visiem",
-        "non_admins": "Tikai ne-administratoriem"
+        "non_admins": "Ne-administratoriem"
       }
     }
   },
