@@ -2,6 +2,9 @@
 
 from __future__ import annotations
 
+import hashlib
+import json
+from collections.abc import Mapping
 from typing import Any
 
 import voluptuous as vol
@@ -49,6 +52,7 @@ def _manager(hass: HomeAssistant) -> Any:
 def async_register(hass: HomeAssistant) -> None:
     websocket_api.async_register_command(hass, ws_get_config)
     websocket_api.async_register_command(hass, ws_save_config)
+    websocket_api.async_register_command(hass, ws_create_file)
     websocket_api.async_register_command(hass, ws_subscribe)
     websocket_api.async_register_command(hass, ws_discover)
     websocket_api.async_register_command(hass, ws_activity)
@@ -70,6 +74,8 @@ def ws_get_config(hass: HomeAssistant, connection: websocket_api.ActiveConnectio
             "entry_id": entry.entry_id,
             "loaded": entry.state is ConfigEntryState.LOADED,
             "yaml": bool(entry.data.get("yaml_hash")),
+            "file": _file(hass),
+            "revision": revision(entry.options),
             "options": dict(entry.options),
             "defaults": {
                 "general": GENERAL_DEFAULTS,
@@ -87,6 +93,18 @@ def ws_get_config(hass: HomeAssistant, connection: websocket_api.ActiveConnectio
     )
 
 
+def revision(options: Mapping[str, Any]) -> str:
+    """Identifies the options: the panel saves only over the ones it loaded."""
+    return hashlib.sha256(json.dumps(dict(options), sort_keys=True, default=str).encode()).hexdigest()[:16]
+
+
+def _file(hass: HomeAssistant) -> dict[str, Any] | None:
+    """The configuration file when it is the configuration (yaml_file.py)."""
+    if (file := hass.data.get(k.DOMAIN, {}).get("file")) is None:
+        return None
+    return file.info()
+
+
 def check_rooms(options: dict[str, Any]) -> str | None:
     seen: set[str] = set()
     for room in options.get(k.CONF_ROOMS) or []:
@@ -98,7 +116,14 @@ def check_rooms(options: dict[str, Any]) -> str | None:
 
 
 @websocket_api.require_admin
-@websocket_api.websocket_command({vol.Required("type"): f"{k.DOMAIN}/config/save", vol.Required("options"): dict})
+@websocket_api.websocket_command(
+    {
+        vol.Required("type"): f"{k.DOMAIN}/config/save",
+        vol.Required("options"): dict,
+        vol.Optional("revision"): str,
+        vol.Optional("force", default=False): bool,
+    }
+)
 @callback
 def ws_save_config(hass: HomeAssistant, connection: websocket_api.ActiveConnection, msg: dict[str, Any]) -> None:
     """Validate and store the options; the integration reloads with them."""
@@ -114,8 +139,34 @@ def ws_save_config(hass: HomeAssistant, connection: websocket_api.ActiveConnecti
     if (problem := check_rooms(options)) is not None:
         connection.send_error(msg["id"], "invalid_format", problem)
         return
+    if msg.get("revision") not in (None, revision(entry.options)) and not msg["force"]:
+        # Changed meanwhile (the file, the YAML, another window): the panel shows both and lets choose.
+        current = dict(entry.options)
+        connection.send_result(
+            msg["id"], {"conflict": {"options": current, "revision": revision(current), "file": _file(hass)}}
+        )
+        return
     hass.config_entries.async_update_entry(entry, options=options)
-    connection.send_result(msg["id"], {"options": options})
+    connection.send_result(msg["id"], {"options": options, "revision": revision(options)})
+
+
+@websocket_api.require_admin
+@websocket_api.websocket_command({vol.Required("type"): f"{k.DOMAIN}/file/create"})
+@websocket_api.async_response
+async def ws_create_file(hass: HomeAssistant, connection: websocket_api.ActiveConnection, msg: dict[str, Any]) -> None:
+    """Write the options in use to smart_comfort.yaml, which then becomes the configuration."""
+    entry, file = _entry(hass), hass.data.get(k.DOMAIN, {}).get("file")
+    if entry is None or file is None:
+        connection.send_error(msg["id"], "not_found", "Smart Comfort is not set up")
+        return
+    if file.active:
+        connection.send_error(msg["id"], "exists", f"{file.path.name} already exists")
+        return
+    if not await file.async_write(dict(entry.options), create=True):
+        connection.send_error(msg["id"], "write_failed", f"Can't write {file.path.name}: see the logs")
+        return
+    await file.async_check(force=True)
+    connection.send_result(msg["id"], {"file": file.info()})
 
 
 @websocket_api.require_admin
@@ -128,7 +179,9 @@ def ws_subscribe(hass: HomeAssistant, connection: websocket_api.ActiveConnection
     def send() -> None:
         manager = _manager(hass)
         payload = status(manager, dt_util.utcnow()) if manager is not None else None
-        connection.send_message(websocket_api.event_message(msg["id"], {"status": payload}))
+        entry = _entry(hass)
+        rev = revision(entry.options) if entry is not None else None
+        connection.send_message(websocket_api.event_message(msg["id"], {"status": payload, "revision": rev}))
 
     connection.subscriptions[msg["id"]] = async_dispatcher_connect(hass, k.SIGNAL_UPDATE, send)
     connection.send_result(msg["id"])

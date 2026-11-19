@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.28.0 - 2026-11-20
+
+### Features
+- **`smart_comfort.yaml`, kept in sync both ways**: while this file exists in the configuration folder, it is the configuration — nothing to add to `configuration.yaml`. What is saved in the panel is written to it, and changes made to it (or to the files it includes) are applied within seconds.
+  - **Only what changed is rewritten**: comments, layout and the other settings stay as they are; the previous version of each rewritten file is kept as `.bak`. Times are quoted so Home Assistant reads them back as times.
+  - **Included files**: `!include` and `!include_dir_merge_list` / `!include_dir_list` are followed — a room is rewritten in the file it comes from, a new room of an included folder gets its own file there. `!secret` stays while its value doesn't change.
+  - **Settings → Configuration source**: the file, when it was modified, the number of rooms and the sync state, **Reload**, the included files, and two switches — **Editing in the panel** (`file_write`) and **File monitoring** (`file_watch`). Without the file, **Create smart_comfort.yaml** writes the configuration in use to it.
+  - **The file changed while you were editing**: saving then shows what changed in the file next to the panel's values, with **Keep the file** / **Keep the panel**. An open panel without unsaved changes follows the file by itself.
+  - An empty file is filled with the configuration in use; an invalid file is left alone (and not overwritten) with a repair until it is fixed.
+  - A `smart_comfort:` block in `configuration.yaml` is left out while the file exists.
+- The YAML tab shows the file's content when the configuration is kept in it. Translated in every language.
+
 ## 1.27.0 - 2026-11-20
 
 ### Features

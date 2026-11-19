@@ -548,6 +548,10 @@
     "yaml_conflicts": {
       "title": "A YAML felülírta a panelen végzett módosításokat",
       "description": "A Smart Comfort YAML-je olyan beállításokat módosított, amelyeket a panelen is módosítottak. A YAML értéke maradt meg ezeknél:\n\n{paths}\n\nÁllítsa be őket újra a panelen, vagy módosítsa a YAML-ben, ha más értéket szeretne."
+    },
+    "file_invalid": {
+      "title": "Smart Comfort: {file} érvénytelen",
+      "description": "A konfigurációs mappa {file} fájlja nem alkalmazható: a használt konfiguráció változatlan marad, és a panel nem ír a fájlba, amíg nincs javítva:\n\n`{error}`"
     }
   }
 }

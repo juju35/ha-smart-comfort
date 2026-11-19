@@ -548,6 +548,10 @@
     "yaml_conflicts": {
       "title": "YAML je zamenjal spremembe, narejene v plošči",
       "description": "YAML za Smart Comfort je spremenil nastavitve, ki so bile spremenjene tudi v plošči. Ohranjena je vrednost iz YAML za:\n\n{paths}\n\nZnova jih nastavite v plošči ali jih spremenite v YAML, če želite ohraniti drugo vrednost."
+    },
+    "file_invalid": {
+      "title": "Smart Comfort: {file} ni veljaven",
+      "description": "{file} v mapi konfiguracije ni mogoče uveljaviti: trenutna konfiguracija ostane enaka, plošča pa v datoteko ne piše, dokler ni popravljena:\n\n`{error}`"
     }
   }
 }

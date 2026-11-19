@@ -25,6 +25,9 @@ CONF_CRITICAL_VOLUME: Final = "critical_volume"
 CONF_URL: Final = "url"
 CONF_TAG: Final = "tag"
 CONF_HIDE_HEADER: Final = "hide_header"
+# smart_comfort.yaml (yaml_file.py): apply its changes / write the panel's changes into it (both on by default).
+CONF_FILE_WATCH: Final = "file_watch"
+CONF_FILE_WRITE: Final = "file_write"
 CONF_ALERTS: Final = "alerts"
 # Alert defaults of the annex rooms (cellar, garage…): same shape as CONF_ALERTS, tuned once for every annex.
 CONF_ANNEX_ALERTS: Final = "annex_alerts"

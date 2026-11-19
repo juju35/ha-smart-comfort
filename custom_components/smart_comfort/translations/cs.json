@@ -548,6 +548,10 @@
     "yaml_conflicts": {
       "title": "YAML nahradil změny provedené v panelu",
       "description": "YAML Smart Comfort změnil nastavení, která byla změněna i v panelu. Zachována byla hodnota z YAML pro:\n\n{paths}\n\nNastavte je znovu v panelu nebo je změňte v YAML, chcete-li zachovat jinou hodnotu."
+    },
+    "file_invalid": {
+      "title": "Smart Comfort: {file} je neplatný",
+      "description": "{file} ve složce konfigurace nelze použít: aktuální konfigurace zůstává stejná a panel do souboru nezapisuje, dokud nebude opraven:\n\n`{error}`"
     }
   }
 }

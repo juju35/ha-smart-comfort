@@ -99,6 +99,28 @@ const STRINGS = {
     yaml_reloaded: "YAML applied: only what changed in it was updated.",
     yaml_unchanged: "The YAML hasn't changed: nothing to apply.",
     yaml_conflicts: "YAML applied. It replaced what had been changed here for: {paths}",
+    yaml_file: "This configuration is kept in {file} in the configuration folder: what you save here is written to it, and changes made to the file are applied within seconds.",
+    yaml_help_file: "The content of {file} in the configuration folder (the defaults are not repeated).",
+    src_title: "Configuration source",
+    src_status: "Modified at {time} · {rooms} rooms · synced",
+    src_status_invalid: "Modified at {time} · invalid, not applied: {error}",
+    src_reload: "Reload",
+    src_write: "Editing in the panel",
+    src_write_help: "Each save rewrites only what changed in the file, comments and layout kept · backup .bak.",
+    src_watch: "File monitoring",
+    src_watch_help: "Read again at each change (included files too) · only what changed is applied.",
+    src_included: "Included files",
+    src_included_help: "{files} · a room is rewritten in its own file.",
+    src_create: "Create {file}",
+    src_create_help: "Writes the configuration in use to {file} in the configuration folder; the file and the panel then stay in sync.",
+    src_none: "No {file}: the configuration is kept by Home Assistant only.",
+    conflict_title: "The file changed while you were editing",
+    conflict_sub: "{n} settings changed in {file} at {time}",
+    conflict_sub_other: "{n} settings changed elsewhere (YAML or another window)",
+    conflict_file: "File",
+    conflict_panel: "Panel",
+    conflict_keep_file: "Keep the file",
+    conflict_keep_panel: "Keep the panel",
     not_loaded: "Smart Comfort is not loaded. Check the logs.",
     not_setup: "Smart Comfort is not set up yet: add it in Settings → Devices & services.",
     retry: "Retry",
@@ -311,6 +333,28 @@ const STRINGS = {
     yaml_reloaded: "YAML appliqué : seul ce qui y a changé a été mis à jour.",
     yaml_unchanged: "Le YAML n'a pas changé : rien à appliquer.",
     yaml_conflicts: "YAML appliqué. Il a remplacé ce qui avait été modifié ici pour : {paths}",
+    yaml_file: "Cette configuration est gardée dans {file}, dans le dossier de configuration : ce que vous enregistrez ici y est écrit, et les modifications du fichier sont appliquées en quelques secondes.",
+    yaml_help_file: "Le contenu de {file}, dans le dossier de configuration (les valeurs par défaut ne sont pas répétées).",
+    src_title: "Source de la configuration",
+    src_status: "Modifié à {time} · {rooms} pièces · synchronisé",
+    src_status_invalid: "Modifié à {time} · invalide, non appliqué : {error}",
+    src_reload: "Recharger",
+    src_write: "Édition dans le panneau",
+    src_write_help: "Chaque enregistrement ne réécrit que ce qui a changé dans le fichier, commentaires et mise en forme conservés · sauvegarde .bak.",
+    src_watch: "Surveillance du fichier",
+    src_watch_help: "Relecture à chaque modification (fichiers inclus compris) · seul ce qui a changé est appliqué.",
+    src_included: "Fichiers inclus",
+    src_included_help: "{files} · une pièce est réécrite dans son propre fichier.",
+    src_create: "Créer {file}",
+    src_create_help: "Écrit la configuration en vigueur dans {file}, dans le dossier de configuration ; le fichier et le panneau restent ensuite synchronisés.",
+    src_none: "Pas de {file} : la configuration n'est gardée que par Home Assistant.",
+    conflict_title: "Le fichier a changé pendant l'édition",
+    conflict_sub: "{n} réglages modifiés dans {file} à {time}",
+    conflict_sub_other: "{n} réglages modifiés ailleurs (YAML ou autre fenêtre)",
+    conflict_file: "Fichier",
+    conflict_panel: "Panneau",
+    conflict_keep_file: "Garder le fichier",
+    conflict_keep_panel: "Garder le panneau",
     not_loaded: "Smart Comfort n'est pas chargé. Consultez les journaux.",
     not_setup: "Smart Comfort n'est pas encore configuré : ajoutez-le dans Paramètres → Appareils et services.",
     retry: "Réessayer",
@@ -523,6 +567,28 @@ const STRINGS = {
     yaml_reloaded: "YAML übernommen: nur das Geänderte wurde aktualisiert.",
     yaml_unchanged: "Das YAML hat sich nicht geändert: nichts zu übernehmen.",
     yaml_conflicts: "YAML übernommen. Es hat hier Geändertes ersetzt bei: {paths}",
+    yaml_file: "Diese Konfiguration wird in {file} im Konfigurationsordner gehalten: was du hier speicherst, wird hineingeschrieben, und Änderungen an der Datei werden binnen Sekunden übernommen.",
+    yaml_help_file: "Der Inhalt von {file} im Konfigurationsordner (Standardwerte werden nicht wiederholt).",
+    src_title: "Quelle der Konfiguration",
+    src_status: "Geändert um {time} · {rooms} Räume · synchronisiert",
+    src_status_invalid: "Geändert um {time} · ungültig, nicht übernommen: {error}",
+    src_reload: "Neu laden",
+    src_write: "Bearbeitung im Panel",
+    src_write_help: "Jedes Speichern schreibt nur das Geänderte in die Datei, Kommentare und Formatierung bleiben · Sicherung .bak.",
+    src_watch: "Dateiüberwachung",
+    src_watch_help: "Bei jeder Änderung neu gelesen (eingebundene Dateien auch) · nur das Geänderte wird übernommen.",
+    src_included: "Eingebundene Dateien",
+    src_included_help: "{files} · ein Raum wird in seiner eigenen Datei geschrieben.",
+    src_create: "{file} erstellen",
+    src_create_help: "Schreibt die aktuelle Konfiguration in {file} im Konfigurationsordner; Datei und Panel bleiben danach synchron.",
+    src_none: "Keine {file}: die Konfiguration wird nur von Home Assistant gehalten.",
+    conflict_title: "Die Datei hat sich während der Bearbeitung geändert",
+    conflict_sub: "{n} Einstellungen in {file} um {time} geändert",
+    conflict_sub_other: "{n} Einstellungen anderswo geändert (YAML oder anderes Fenster)",
+    conflict_file: "Datei",
+    conflict_panel: "Panel",
+    conflict_keep_file: "Datei behalten",
+    conflict_keep_panel: "Panel behalten",
     not_loaded: "Smart Comfort ist nicht geladen. Prüfen Sie die Protokolle.",
     not_setup: "Smart Comfort ist noch nicht eingerichtet: unter Einstellungen → Geräte & Dienste hinzufügen.",
     retry: "Erneut versuchen",
@@ -735,6 +801,28 @@ const STRINGS = {
     yaml_reloaded: "YAML aplicado: solo se ha actualizado lo que ha cambiado.",
     yaml_unchanged: "El YAML no ha cambiado: nada que aplicar.",
     yaml_conflicts: "YAML aplicado. Ha sustituido lo cambiado aquí en: {paths}",
+    yaml_file: "Esta configuración se guarda en {file}, en la carpeta de configuración: lo que guardas aquí se escribe en él, y los cambios del archivo se aplican en unos segundos.",
+    yaml_help_file: "El contenido de {file}, en la carpeta de configuración (los valores por defecto no se repiten).",
+    src_title: "Origen de la configuración",
+    src_status: "Modificado a las {time} · {rooms} estancias · sincronizado",
+    src_status_invalid: "Modificado a las {time} · no válido, no aplicado: {error}",
+    src_reload: "Recargar",
+    src_write: "Edición en el panel",
+    src_write_help: "Cada guardado solo reescribe lo que ha cambiado en el archivo, conservando comentarios y formato · copia .bak.",
+    src_watch: "Vigilancia del archivo",
+    src_watch_help: "Se relee en cada cambio (también los archivos incluidos) · solo se aplica lo que ha cambiado.",
+    src_included: "Archivos incluidos",
+    src_included_help: "{files} · una estancia se reescribe en su propio archivo.",
+    src_create: "Crear {file}",
+    src_create_help: "Escribe la configuración en uso en {file}, en la carpeta de configuración; después el archivo y el panel se mantienen sincronizados.",
+    src_none: "No hay {file}: la configuración solo la guarda Home Assistant.",
+    conflict_title: "El archivo ha cambiado durante la edición",
+    conflict_sub: "{n} ajustes cambiados en {file} a las {time}",
+    conflict_sub_other: "{n} ajustes cambiados en otro lugar (YAML u otra ventana)",
+    conflict_file: "Archivo",
+    conflict_panel: "Panel",
+    conflict_keep_file: "Mantener el archivo",
+    conflict_keep_panel: "Mantener el panel",
     not_loaded: "Smart Comfort no está cargado. Revise los registros.",
     not_setup: "Smart Comfort aún no está configurado: añádalo en Ajustes → Dispositivos y servicios.",
     retry: "Reintentar",
@@ -947,6 +1035,28 @@ const STRINGS = {
     yaml_reloaded: "YAML је примењен: ажурирано је само оно што се променило.",
     yaml_unchanged: "YAML се није променио: нема шта да се примени.",
     yaml_conflicts: "YAML је примењен. Заменио је оно што је овде измењено за: {paths}",
+    yaml_file: "Ова конфигурација се чува у {file} у фасцикли конфигурације: оно што сачувате овде уписује се у њега, а измене датотеке примењују се за неколико секунди.",
+    yaml_help_file: "Садржај {file} у фасцикли конфигурације (подразумеване вредности се не понављају).",
+    src_title: "Извор конфигурације",
+    src_status: "Измењено у {time} · {rooms} просторија · усклађено",
+    src_status_invalid: "Измењено у {time} · неисправно, није примењено: {error}",
+    src_reload: "Поново учитај",
+    src_write: "Измене у панелу",
+    src_write_help: "Свако чување преписује у датотеци само оно што се променило, уз задржане коментаре и распоред · резервна копија се чува.",
+    src_watch: "Праћење датотеке",
+    src_watch_help: "Поново се чита при свакој измени (и укључене датотеке) · примењује се само оно што се променило.",
+    src_included: "Укључене датотеке",
+    src_included_help: "{files} · просторија се преписује у своју датотеку.",
+    src_create: "Направи {file}",
+    src_create_help: "Уписује тренутну конфигурацију у {file} у фасцикли конфигурације; датотека и панел затим остају усклађени.",
+    src_none: "Нема {file}: конфигурацију чува само Home Assistant.",
+    conflict_title: "Датотека се променила током измене",
+    conflict_sub: "{n} подешавања промењено у {file} у {time}",
+    conflict_sub_other: "{n} подешавања промењено на другом месту (YAML или други прозор)",
+    conflict_file: "Датотека",
+    conflict_panel: "Панел",
+    conflict_keep_file: "Задржи датотеку",
+    conflict_keep_panel: "Задржи панел",
     not_loaded: "Smart Comfort није учитан. Проверите дневнике логова.",
     not_setup: "Smart Comfort још увек није подешен: додајте га у Подешавања → Уређаји и услуге.",
     retry: "Покушај поново",
@@ -1159,6 +1269,28 @@ const STRINGS = {
     yaml_reloaded: "YAML je primenjen: ažurirano je samo ono što se promenilo.",
     yaml_unchanged: "YAML se nije promenio: nema šta da se primeni.",
     yaml_conflicts: "YAML je primenjen. Zamenio je ono što je ovde izmenjeno za: {paths}",
+    yaml_file: "Ova konfiguracija se čuva u {file} u fascikli konfiguracije: ono što sačuvate ovde upisuje se u njega, a izmene datoteke primenjuju se za nekoliko sekundi.",
+    yaml_help_file: "Sadržaj {file} u fascikli konfiguracije (podrazumevane vrednosti se ne ponavljaju).",
+    src_title: "Izvor konfiguracije",
+    src_status: "Izmenjeno u {time} · {rooms} prostorija · usklađeno",
+    src_status_invalid: "Izmenjeno u {time} · neispravno, nije primenjeno: {error}",
+    src_reload: "Ponovo učitaj",
+    src_write: "Izmene u panelu",
+    src_write_help: "Svako čuvanje prepisuje u datoteci samo ono što se promenilo, uz zadržane komentare i raspored · rezerva .bak.",
+    src_watch: "Praćenje datoteke",
+    src_watch_help: "Ponovo se čita pri svakoj izmeni (i uključene datoteke) · primenjuje se samo ono što se promenilo.",
+    src_included: "Uključene datoteke",
+    src_included_help: "{files} · prostorija se prepisuje u svoju datoteku.",
+    src_create: "Napravi {file}",
+    src_create_help: "Upisuje trenutnu konfiguraciju u {file} u fascikli konfiguracije; datoteka i panel zatim ostaju usklađeni.",
+    src_none: "Nema {file}: konfiguraciju čuva samo Home Assistant.",
+    conflict_title: "Datoteka se promenila tokom izmene",
+    conflict_sub: "{n} podešavanja promenjeno u {file} u {time}",
+    conflict_sub_other: "{n} podešavanja promenjeno na drugom mestu (YAML ili drugi prozor)",
+    conflict_file: "Datoteka",
+    conflict_panel: "Panel",
+    conflict_keep_file: "Zadrži datoteku",
+    conflict_keep_panel: "Zadrži panel",
     not_loaded: "Smart Comfort nije učitan. Proverite dnevnike logova.",
     not_setup: "Smart Comfort još uvek nije podešen: dodajte ga u Podešavanja → Uređaji i usluge.",
     retry: "Pokušaj ponovo",
@@ -1371,6 +1503,28 @@ const STRINGS = {
     yaml_reloaded: "YAML applicato: è stato aggiornato solo ciò che è cambiato.",
     yaml_unchanged: "Lo YAML non è cambiato: niente da applicare.",
     yaml_conflicts: "YAML applicato. Ha sostituito ciò che era stato modificato qui per: {paths}",
+    yaml_file: "Questa configurazione è conservata in {file}, nella cartella di configurazione: ciò che salvi qui vi viene scritto, e le modifiche al file sono applicate in pochi secondi.",
+    yaml_help_file: "Il contenuto di {file}, nella cartella di configurazione (i valori predefiniti non sono ripetuti).",
+    src_title: "Origine della configurazione",
+    src_status: "Modificato alle {time} · {rooms} stanze · sincronizzato",
+    src_status_invalid: "Modificato alle {time} · non valido, non applicato: {error}",
+    src_reload: "Ricarica",
+    src_write: "Modifica nel pannello",
+    src_write_help: "Ogni salvataggio riscrive solo ciò che è cambiato nel file, mantenendo commenti e formattazione · copia .bak.",
+    src_watch: "Sorveglianza del file",
+    src_watch_help: "Riletto a ogni modifica (anche i file inclusi) · viene applicato solo ciò che è cambiato.",
+    src_included: "File inclusi",
+    src_included_help: "{files} · una stanza viene riscritta nel proprio file.",
+    src_create: "Crea {file}",
+    src_create_help: "Scrive la configurazione in uso in {file}, nella cartella di configurazione; poi file e pannello restano sincronizzati.",
+    src_none: "Nessun {file}: la configurazione è conservata solo da Home Assistant.",
+    conflict_title: "Il file è cambiato durante la modifica",
+    conflict_sub: "{n} impostazioni modificate in {file} alle {time}",
+    conflict_sub_other: "{n} impostazioni modificate altrove (YAML o un'altra finestra)",
+    conflict_file: "File",
+    conflict_panel: "Pannello",
+    conflict_keep_file: "Tieni il file",
+    conflict_keep_panel: "Tieni il pannello",
     not_loaded: "Smart Comfort non è caricato. Controlla i log.",
     not_setup: "Smart Comfort non è ancora configurato: aggiungilo in Impostazioni → Dispositivi e servizi.",
     retry: "Riprova",
@@ -1583,6 +1737,28 @@ const STRINGS = {
     yaml_reloaded: "YAML toegepast: alleen wat veranderd is, is bijgewerkt.",
     yaml_unchanged: "De YAML is niet veranderd: niets toe te passen.",
     yaml_conflicts: "YAML toegepast. Het heeft hier gewijzigde waarden vervangen voor: {paths}",
+    yaml_file: "Deze configuratie staat in {file} in de configuratiemap: wat je hier opslaat wordt erin geschreven, en wijzigingen in het bestand worden binnen enkele seconden toegepast.",
+    yaml_help_file: "De inhoud van {file} in de configuratiemap (standaardwaarden worden niet herhaald).",
+    src_title: "Bron van de configuratie",
+    src_status: "Gewijzigd om {time} · {rooms} ruimtes · gesynchroniseerd",
+    src_status_invalid: "Gewijzigd om {time} · ongeldig, niet toegepast: {error}",
+    src_reload: "Opnieuw laden",
+    src_write: "Bewerken in het paneel",
+    src_write_help: "Elke keer opslaan herschrijft alleen wat in het bestand is gewijzigd, opmerkingen en opmaak blijven · back-up .bak.",
+    src_watch: "Bestandsbewaking",
+    src_watch_help: "Bij elke wijziging opnieuw gelezen (ook ingevoegde bestanden) · alleen het gewijzigde wordt toegepast.",
+    src_included: "Ingevoegde bestanden",
+    src_included_help: "{files} · een ruimte wordt in haar eigen bestand herschreven.",
+    src_create: "{file} aanmaken",
+    src_create_help: "Schrijft de huidige configuratie naar {file} in de configuratiemap; bestand en paneel blijven daarna gesynchroniseerd.",
+    src_none: "Geen {file}: de configuratie wordt alleen door Home Assistant bewaard.",
+    conflict_title: "Het bestand is tijdens het bewerken gewijzigd",
+    conflict_sub: "{n} instellingen gewijzigd in {file} om {time}",
+    conflict_sub_other: "{n} instellingen elders gewijzigd (YAML of een ander venster)",
+    conflict_file: "Bestand",
+    conflict_panel: "Paneel",
+    conflict_keep_file: "Bestand behouden",
+    conflict_keep_panel: "Paneel behouden",
     not_loaded: "Smart Comfort is niet geladen. Controleer de logboeken.",
     not_setup: "Smart Comfort is nog niet ingesteld: voeg het toe via Instellingen → Apparaten & diensten.",
     retry: "Opnieuw proberen",
@@ -1795,6 +1971,28 @@ const STRINGS = {
     yaml_reloaded: "YAML aplicado: só foi atualizado o que mudou.",
     yaml_unchanged: "O YAML não mudou: nada a aplicar.",
     yaml_conflicts: "YAML aplicado. Substituiu o que tinha sido alterado aqui em: {paths}",
+    yaml_file: "Esta configuração é guardada em {file}, na pasta de configuração: o que guarda aqui é escrito nele, e as alterações ao ficheiro são aplicadas em poucos segundos.",
+    yaml_help_file: "O conteúdo de {file}, na pasta de configuração (os valores predefinidos não são repetidos).",
+    src_title: "Origem da configuração",
+    src_status: "Modificado às {time} · {rooms} divisões · sincronizado",
+    src_status_invalid: "Modificado às {time} · inválido, não aplicado: {error}",
+    src_reload: "Recarregar",
+    src_write: "Edição no painel",
+    src_write_help: "Cada gravação reescreve apenas o que mudou no ficheiro, mantendo comentários e formatação · cópia .bak.",
+    src_watch: "Vigilância do ficheiro",
+    src_watch_help: "Relido a cada alteração (incluindo ficheiros incluídos) · só é aplicado o que mudou.",
+    src_included: "Ficheiros incluídos",
+    src_included_help: "{files} · uma divisão é reescrita no seu próprio ficheiro.",
+    src_create: "Criar {file}",
+    src_create_help: "Escreve a configuração em uso em {file}, na pasta de configuração; depois o ficheiro e o painel ficam sincronizados.",
+    src_none: "Sem {file}: a configuração só é guardada pelo Home Assistant.",
+    conflict_title: "O ficheiro mudou durante a edição",
+    conflict_sub: "{n} definições alteradas em {file} às {time}",
+    conflict_sub_other: "{n} definições alteradas noutro lado (YAML ou outra janela)",
+    conflict_file: "Ficheiro",
+    conflict_panel: "Painel",
+    conflict_keep_file: "Manter o ficheiro",
+    conflict_keep_panel: "Manter o painel",
     not_loaded: "O Smart Comfort não está carregado. Consulte os registos.",
     not_setup: "O Smart Comfort ainda não está configurado: adicione-o em Definições → Dispositivos e serviços.",
     retry: "Tentar novamente",
@@ -2007,6 +2205,28 @@ const STRINGS = {
     yaml_reloaded: "Zastosowano YAML: zaktualizowano tylko to, co się zmieniło.",
     yaml_unchanged: "YAML się nie zmienił: nie ma czego stosować.",
     yaml_conflicts: "Zastosowano YAML. Zastąpił zmiany wprowadzone tutaj w: {paths}",
+    yaml_file: "Ta konfiguracja jest przechowywana w {file} w folderze konfiguracji: to, co tu zapiszesz, trafia do niego, a zmiany w pliku są stosowane w ciągu kilku sekund.",
+    yaml_help_file: "Zawartość {file} w folderze konfiguracji (wartości domyślne nie są powtarzane).",
+    src_title: "Źródło konfiguracji",
+    src_status: "Zmieniono o {time} · {rooms} pomieszczeń · zsynchronizowano",
+    src_status_invalid: "Zmieniono o {time} · nieprawidłowy, nie zastosowano: {error}",
+    src_reload: "Przeładuj",
+    src_write: "Edycja w panelu",
+    src_write_help: "Każdy zapis przepisuje w pliku tylko to, co się zmieniło, z zachowaniem komentarzy i formatowania · kopia .bak.",
+    src_watch: "Obserwowanie pliku",
+    src_watch_help: "Odczyt przy każdej zmianie (także plików dołączonych) · stosowane jest tylko to, co się zmieniło.",
+    src_included: "Pliki dołączone",
+    src_included_help: "{files} · pomieszczenie jest zapisywane we własnym pliku.",
+    src_create: "Utwórz {file}",
+    src_create_help: "Zapisuje bieżącą konfigurację do {file} w folderze konfiguracji; potem plik i panel pozostają zsynchronizowane.",
+    src_none: "Brak {file}: konfigurację przechowuje tylko Home Assistant.",
+    conflict_title: "Plik zmienił się podczas edycji",
+    conflict_sub: "{n} ustawień zmienionych w {file} o {time}",
+    conflict_sub_other: "{n} ustawień zmienionych gdzie indziej (YAML lub inne okno)",
+    conflict_file: "Plik",
+    conflict_panel: "Panel",
+    conflict_keep_file: "Zachowaj plik",
+    conflict_keep_panel: "Zachowaj panel",
     not_loaded: "Smart Comfort nie jest załadowany. Sprawdź logi.",
     not_setup: "Smart Comfort nie jest jeszcze skonfigurowany: dodaj go w Ustawienia → Urządzenia oraz usługi.",
     retry: "Spróbuj ponownie",
@@ -2219,6 +2439,28 @@ const STRINGS = {
     yaml_reloaded: "YAML aplicat: s-a actualizat doar ce s-a schimbat.",
     yaml_unchanged: "YAML nu s-a schimbat: nimic de aplicat.",
     yaml_conflicts: "YAML aplicat. A înlocuit ce fusese modificat aici pentru: {paths}",
+    yaml_file: "Această configurație este păstrată în {file}, în folderul de configurare: ce salvați aici este scris în el, iar modificările fișierului sunt aplicate în câteva secunde.",
+    yaml_help_file: "Conținutul {file}, din folderul de configurare (valorile implicite nu sunt repetate).",
+    src_title: "Sursa configurației",
+    src_status: "Modificat la {time} · {rooms} camere · sincronizat",
+    src_status_invalid: "Modificat la {time} · invalid, neaplicat: {error}",
+    src_reload: "Reîncarcă",
+    src_write: "Editare în panou",
+    src_write_help: "Fiecare salvare rescrie în fișier doar ce s-a schimbat, păstrând comentariile și formatarea · copie .bak.",
+    src_watch: "Supravegherea fișierului",
+    src_watch_help: "Recitit la fiecare modificare (inclusiv fișierele incluse) · se aplică doar ce s-a schimbat.",
+    src_included: "Fișiere incluse",
+    src_included_help: "{files} · o cameră este rescrisă în propriul fișier.",
+    src_create: "Creează {file}",
+    src_create_help: "Scrie configurația în uz în {file}, în folderul de configurare; apoi fișierul și panoul rămân sincronizate.",
+    src_none: "Niciun {file}: configurația este păstrată doar de Home Assistant.",
+    conflict_title: "Fișierul s-a schimbat în timpul editării",
+    conflict_sub: "{n} setări modificate în {file} la {time}",
+    conflict_sub_other: "{n} setări modificate în altă parte (YAML sau altă fereastră)",
+    conflict_file: "Fișier",
+    conflict_panel: "Panou",
+    conflict_keep_file: "Păstrează fișierul",
+    conflict_keep_panel: "Păstrează panoul",
     not_loaded: "Smart Comfort nu este încărcat. Verificați jurnalele.",
     not_setup: "Smart Comfort nu este încă configurat: adăugați-l din Setări → Dispozitive și servicii.",
     retry: "Reîncearcă",
@@ -2431,6 +2673,28 @@ const STRINGS = {
     yaml_reloaded: "YAML anvendt: kun det ændrede er opdateret.",
     yaml_unchanged: "YAML er ikke ændret: intet at anvende.",
     yaml_conflicts: "YAML anvendt. Det erstattede det, der var ændret her, for: {paths}",
+    yaml_file: "Denne konfiguration gemmes i {file} i konfigurationsmappen: det, du gemmer her, skrives i den, og ændringer i filen anvendes inden for få sekunder.",
+    yaml_help_file: "Indholdet af {file} i konfigurationsmappen (standardværdier gentages ikke).",
+    src_title: "Konfigurationens kilde",
+    src_status: "Ændret kl. {time} · {rooms} rum · synkroniseret",
+    src_status_invalid: "Ændret kl. {time} · ugyldig, ikke anvendt: {error}",
+    src_reload: "Genindlæs",
+    src_write: "Redigering i panelet",
+    src_write_help: "Hver gemning omskriver kun det ændrede i filen, kommentarer og layout bevares · backup .bak.",
+    src_watch: "Overvågning af filen",
+    src_watch_help: "Læses igen ved hver ændring (også inkluderede filer) · kun det ændrede anvendes.",
+    src_included: "Inkluderede filer",
+    src_included_help: "{files} · et rum omskrives i sin egen fil.",
+    src_create: "Opret {file}",
+    src_create_help: "Skriver den aktuelle konfiguration til {file} i konfigurationsmappen; derefter holdes filen og panelet synkroniseret.",
+    src_none: "Ingen {file}: konfigurationen gemmes kun af Home Assistant.",
+    conflict_title: "Filen blev ændret under redigeringen",
+    conflict_sub: "{n} indstillinger ændret i {file} kl. {time}",
+    conflict_sub_other: "{n} indstillinger ændret andetsteds (YAML eller et andet vindue)",
+    conflict_file: "Fil",
+    conflict_panel: "Panel",
+    conflict_keep_file: "Behold filen",
+    conflict_keep_panel: "Behold panelet",
     not_loaded: "Smart Comfort er ikke indlæst. Tjek logfilerne.",
     not_setup: "Smart Comfort er ikke sat op endnu: tilføj det under Indstillinger → Enheder og tjenester.",
     retry: "Prøv igen",
@@ -2643,6 +2907,28 @@ const STRINGS = {
     yaml_reloaded: "YAML tillämpad: bara det som ändrats uppdaterades.",
     yaml_unchanged: "YAML har inte ändrats: inget att tillämpa.",
     yaml_conflicts: "YAML tillämpad. Den ersatte det som ändrats här för: {paths}",
+    yaml_file: "Den här konfigurationen sparas i {file} i konfigurationsmappen: det du sparar här skrivs till den, och ändringar i filen tillämpas inom några sekunder.",
+    yaml_help_file: "Innehållet i {file} i konfigurationsmappen (standardvärden upprepas inte).",
+    src_title: "Konfigurationens källa",
+    src_status: "Ändrad {time} · {rooms} rum · synkroniserad",
+    src_status_invalid: "Ändrad {time} · ogiltig, inte tillämpad: {error}",
+    src_reload: "Läs in igen",
+    src_write: "Redigering i panelen",
+    src_write_help: "Varje sparning skriver bara om det som ändrats i filen, kommentarer och layout behålls · säkerhetskopia .bak.",
+    src_watch: "Bevakning av filen",
+    src_watch_help: "Läses igen vid varje ändring (även inkluderade filer) · bara det som ändrats tillämpas.",
+    src_included: "Inkluderade filer",
+    src_included_help: "{files} · ett rum skrivs om i sin egen fil.",
+    src_create: "Skapa {file}",
+    src_create_help: "Skriver den aktuella konfigurationen till {file} i konfigurationsmappen; sedan hålls filen och panelen synkroniserade.",
+    src_none: "Ingen {file}: konfigurationen sparas bara av Home Assistant.",
+    conflict_title: "Filen ändrades medan du redigerade",
+    conflict_sub: "{n} inställningar ändrade i {file} {time}",
+    conflict_sub_other: "{n} inställningar ändrade på annat håll (YAML eller ett annat fönster)",
+    conflict_file: "Fil",
+    conflict_panel: "Panel",
+    conflict_keep_file: "Behåll filen",
+    conflict_keep_panel: "Behåll panelen",
     not_loaded: "Smart Comfort är inte inläst. Kontrollera loggarna.",
     not_setup: "Smart Comfort är inte konfigurerat än: lägg till det under Inställningar → Enheter och tjänster.",
     retry: "Försök igen",
@@ -2855,6 +3141,28 @@ const STRINGS = {
     yaml_reloaded: "YAML е приложен: обновено е само промененото.",
     yaml_unchanged: "YAML не е променен: няма какво да се приложи.",
     yaml_conflicts: "YAML е приложен. Замени промененото тук за: {paths}",
+    yaml_file: "Тази конфигурация се пази в {file} в папката с конфигурацията: това, което запазите тук, се записва в него, а промените във файла се прилагат до няколко секунди.",
+    yaml_help_file: "Съдържанието на {file} в папката с конфигурацията (стойностите по подразбиране не се повтарят).",
+    src_title: "Източник на конфигурацията",
+    src_status: "Променено в {time} · {rooms} стаи · синхронизирано",
+    src_status_invalid: "Променено в {time} · невалидно, не е приложено: {error}",
+    src_reload: "Презареди",
+    src_write: "Редактиране в панела",
+    src_write_help: "Всяко запазване презаписва във файла само промененото, коментарите и форматът се запазват · резервно копие .bak.",
+    src_watch: "Наблюдение на файла",
+    src_watch_help: "Прочита се отново при всяка промяна (включително включените файлове) · прилага се само промененото.",
+    src_included: "Включени файлове",
+    src_included_help: "{files} · стая се презаписва в собствения си файл.",
+    src_create: "Създай {file}",
+    src_create_help: "Записва текущата конфигурация в {file} в папката с конфигурацията; след това файлът и панелът остават синхронизирани.",
+    src_none: "Няма {file}: конфигурацията се пази само от Home Assistant.",
+    conflict_title: "Файлът се промени по време на редактирането",
+    conflict_sub: "{n} настройки променени в {file} в {time}",
+    conflict_sub_other: "{n} настройки променени другаде (YAML или друг прозорец)",
+    conflict_file: "Файл",
+    conflict_panel: "Панел",
+    conflict_keep_file: "Запази файла",
+    conflict_keep_panel: "Запази панела",
     not_loaded: "Smart Comfort не е зареден. Проверете журналите.",
     not_setup: "Smart Comfort все още не е настроен: добавете го от Настройки → Устройства и услуги.",
     retry: "Опитай отново",
@@ -3067,6 +3375,28 @@ const STRINGS = {
     yaml_reloaded: "YAML применён: обновлено только изменённое.",
     yaml_unchanged: "YAML не изменился: применять нечего.",
     yaml_conflicts: "YAML применён. Он заменил изменённое здесь для: {paths}",
+    yaml_file: "Эта конфигурация хранится в {file} в папке конфигурации: то, что вы сохраняете здесь, записывается в него, а изменения файла применяются за несколько секунд.",
+    yaml_help_file: "Содержимое {file} в папке конфигурации (значения по умолчанию не повторяются).",
+    src_title: "Источник конфигурации",
+    src_status: "Изменено в {time} · {rooms} комнат · синхронизировано",
+    src_status_invalid: "Изменено в {time} · недействительно, не применено: {error}",
+    src_reload: "Перезагрузить",
+    src_write: "Редактирование в панели",
+    src_write_help: "Каждое сохранение переписывает в файле только изменённое, комментарии и оформление сохраняются · копия .bak.",
+    src_watch: "Отслеживание файла",
+    src_watch_help: "Перечитывается при каждом изменении (включая подключённые файлы) · применяется только изменённое.",
+    src_included: "Подключённые файлы",
+    src_included_help: "{files} · комната переписывается в своём файле.",
+    src_create: "Создать {file}",
+    src_create_help: "Записывает текущую конфигурацию в {file} в папке конфигурации; затем файл и панель остаются синхронизированы.",
+    src_none: "Нет {file}: конфигурацию хранит только Home Assistant.",
+    conflict_title: "Файл изменился во время редактирования",
+    conflict_sub: "{n} настроек изменено в {file} в {time}",
+    conflict_sub_other: "{n} настроек изменено в другом месте (YAML или другое окно)",
+    conflict_file: "Файл",
+    conflict_panel: "Панель",
+    conflict_keep_file: "Оставить файл",
+    conflict_keep_panel: "Оставить панель",
     not_loaded: "Smart Comfort не загружен. Проверьте журналы.",
     not_setup: "Smart Comfort ещё не настроен: добавьте его в Настройки → Устройства и службы.",
     retry: "Повторить",
@@ -3279,6 +3609,28 @@ const STRINGS = {
     yaml_reloaded: "YAML застосовано: оновлено лише змінене.",
     yaml_unchanged: "YAML не змінився: нічого застосовувати.",
     yaml_conflicts: "YAML застосовано. Він замінив змінене тут для: {paths}",
+    yaml_file: "Ця конфігурація зберігається в {file} у теці конфігурації: те, що ви зберігаєте тут, записується в нього, а зміни файлу застосовуються за кілька секунд.",
+    yaml_help_file: "Вміст {file} у теці конфігурації (типові значення не повторюються).",
+    src_title: "Джерело конфігурації",
+    src_status: "Змінено о {time} · {rooms} кімнат · синхронізовано",
+    src_status_invalid: "Змінено о {time} · недійсне, не застосовано: {error}",
+    src_reload: "Перезавантажити",
+    src_write: "Редагування в панелі",
+    src_write_help: "Кожне збереження переписує у файлі лише змінене, коментарі та оформлення зберігаються · копія .bak.",
+    src_watch: "Стеження за файлом",
+    src_watch_help: "Перечитується після кожної зміни (разом із підключеними файлами) · застосовується лише змінене.",
+    src_included: "Підключені файли",
+    src_included_help: "{files} · кімната переписується у власному файлі.",
+    src_create: "Створити {file}",
+    src_create_help: "Записує поточну конфігурацію в {file} у теці конфігурації; далі файл і панель лишаються синхронізованими.",
+    src_none: "Немає {file}: конфігурацію зберігає лише Home Assistant.",
+    conflict_title: "Файл змінився під час редагування",
+    conflict_sub: "{n} налаштувань змінено в {file} о {time}",
+    conflict_sub_other: "{n} налаштувань змінено деінде (YAML або інше вікно)",
+    conflict_file: "Файл",
+    conflict_panel: "Панель",
+    conflict_keep_file: "Залишити файл",
+    conflict_keep_panel: "Залишити панель",
     not_loaded: "Smart Comfort не завантажено. Перевірте журнали.",
     not_setup: "Smart Comfort ще не налаштовано: додайте його в Налаштування → Пристрої та служби.",
     retry: "Повторити",
@@ -3491,6 +3843,28 @@ const STRINGS = {
     yaml_reloaded: "YAML alkalmazva: csak a változások frissültek.",
     yaml_unchanged: "A YAML nem változott: nincs mit alkalmazni.",
     yaml_conflicts: "YAML alkalmazva. Felülírta az itt módosítottakat ezeknél: {paths}",
+    yaml_file: "Ez a konfiguráció a konfigurációs mappa {file} fájljában van: amit itt ment, beleíródik, a fájl módosításai pedig másodperceken belül érvénybe lépnek.",
+    yaml_help_file: "A konfigurációs mappa {file} fájljának tartalma (az alapértékek nem ismétlődnek).",
+    src_title: "A konfiguráció forrása",
+    src_status: "Módosítva: {time} · {rooms} helyiség · szinkronban",
+    src_status_invalid: "Módosítva: {time} · érvénytelen, nincs alkalmazva: {error}",
+    src_reload: "Újratöltés",
+    src_write: "Szerkesztés a panelen",
+    src_write_help: "Minden mentés csak a változást írja a fájlba, a megjegyzések és a formázás megmaradnak · .bak mentés.",
+    src_watch: "Fájlfigyelés",
+    src_watch_help: "Minden módosításkor újraolvasva (a beillesztett fájlok is) · csak a változás kerül alkalmazásra.",
+    src_included: "Beillesztett fájlok",
+    src_included_help: "{files} · egy helyiség a saját fájljába íródik.",
+    src_create: "{file} létrehozása",
+    src_create_help: "A használt konfigurációt a konfigurációs mappa {file} fájljába írja; ezután a fájl és a panel szinkronban marad.",
+    src_none: "Nincs {file}: a konfigurációt csak a Home Assistant tárolja.",
+    conflict_title: "A fájl megváltozott szerkesztés közben",
+    conflict_sub: "{n} beállítás módosult itt: {file}, {time}",
+    conflict_sub_other: "{n} beállítás máshol módosult (YAML vagy másik ablak)",
+    conflict_file: "Fájl",
+    conflict_panel: "Panel",
+    conflict_keep_file: "Fájl megtartása",
+    conflict_keep_panel: "Panel megtartása",
     not_loaded: "A Smart Comfort nincs betöltve. Nézze meg a naplókat.",
     not_setup: "A Smart Comfort még nincs beállítva: adja hozzá a Beállítások → Eszközök és szolgáltatások menüben.",
     retry: "Újra",
@@ -3703,6 +4077,28 @@ const STRINGS = {
     yaml_reloaded: "YAML použitý: aktualizovalo sa len to, čo sa zmenilo.",
     yaml_unchanged: "YAML sa nezmenil: nie je čo použiť.",
     yaml_conflicts: "YAML použitý. Nahradil to, čo bolo tu zmenené, pre: {paths}",
+    yaml_file: "Táto konfigurácia sa uchováva v {file} v priečinku konfigurácie: čo tu uložíte, zapíše sa doň, a zmeny súboru sa použijú do niekoľkých sekúnd.",
+    yaml_help_file: "Obsah {file} v priečinku konfigurácie (predvolené hodnoty sa neopakujú).",
+    src_title: "Zdroj konfigurácie",
+    src_status: "Zmenené o {time} · {rooms} miestností · synchronizované",
+    src_status_invalid: "Zmenené o {time} · neplatné, nepoužité: {error}",
+    src_reload: "Znova načítať",
+    src_write: "Úpravy v paneli",
+    src_write_help: "Každé uloženie prepíše v súbore len to, čo sa zmenilo, komentáre a formátovanie zostanú · záloha .bak.",
+    src_watch: "Sledovanie súboru",
+    src_watch_help: "Znova načítané pri každej zmene (aj vložené súbory) · použije sa len to, čo sa zmenilo.",
+    src_included: "Vložené súbory",
+    src_included_help: "{files} · miestnosť sa prepisuje vo vlastnom súbore.",
+    src_create: "Vytvoriť {file}",
+    src_create_help: "Zapíše aktuálnu konfiguráciu do {file} v priečinku konfigurácie; súbor a panel potom zostávajú synchronizované.",
+    src_none: "Žiadny {file}: konfiguráciu uchováva len Home Assistant.",
+    conflict_title: "Súbor sa zmenil počas úprav",
+    conflict_sub: "{n} nastavení zmenených v {file} o {time}",
+    conflict_sub_other: "{n} nastavení zmenených inde (YAML alebo iné okno)",
+    conflict_file: "Súbor",
+    conflict_panel: "Panel",
+    conflict_keep_file: "Ponechať súbor",
+    conflict_keep_panel: "Ponechať panel",
     not_loaded: "Smart Comfort nie je načítaný. Skontrolujte záznamy.",
     not_setup: "Smart Comfort ešte nie je nastavený: pridajte ho v Nastavenia → Zariadenia a služby.",
     retry: "Skúsiť znova",
@@ -3915,6 +4311,28 @@ const STRINGS = {
     yaml_reloaded: "YAML použit: aktualizovalo se jen to, co se změnilo.",
     yaml_unchanged: "YAML se nezměnil: není co použít.",
     yaml_conflicts: "YAML použit. Nahradil to, co bylo změněno zde, pro: {paths}",
+    yaml_file: "Tato konfigurace se uchovává v {file} ve složce konfigurace: co zde uložíte, se do něj zapíše, a změny souboru se použijí během několika sekund.",
+    yaml_help_file: "Obsah {file} ve složce konfigurace (výchozí hodnoty se neopakují).",
+    src_title: "Zdroj konfigurace",
+    src_status: "Změněno v {time} · {rooms} místností · synchronizováno",
+    src_status_invalid: "Změněno v {time} · neplatné, nepoužito: {error}",
+    src_reload: "Znovu načíst",
+    src_write: "Úpravy v panelu",
+    src_write_help: "Každé uložení přepíše v souboru jen to, co se změnilo, komentáře a formátování zůstanou · záloha .bak.",
+    src_watch: "Sledování souboru",
+    src_watch_help: "Znovu načteno při každé změně (i vložené soubory) · použije se jen to, co se změnilo.",
+    src_included: "Vložené soubory",
+    src_included_help: "{files} · místnost se přepisuje ve vlastním souboru.",
+    src_create: "Vytvořit {file}",
+    src_create_help: "Zapíše aktuální konfiguraci do {file} ve složce konfigurace; soubor a panel pak zůstávají synchronizované.",
+    src_none: "Žádný {file}: konfiguraci uchovává jen Home Assistant.",
+    conflict_title: "Soubor se změnil během úprav",
+    conflict_sub: "{n} nastavení změněno v {file} v {time}",
+    conflict_sub_other: "{n} nastavení změněno jinde (YAML nebo jiné okno)",
+    conflict_file: "Soubor",
+    conflict_panel: "Panel",
+    conflict_keep_file: "Ponechat soubor",
+    conflict_keep_panel: "Ponechat panel",
     not_loaded: "Smart Comfort není načten. Zkontrolujte protokoly.",
     not_setup: "Smart Comfort zatím není nastaven: přidejte ho v Nastavení → Zařízení a služby.",
     retry: "Zkusit znovu",
@@ -4127,6 +4545,28 @@ const STRINGS = {
     yaml_reloaded: "YAML uveljavljen: posodobljeno je le spremenjeno.",
     yaml_unchanged: "YAML se ni spremenil: ni česa uveljaviti.",
     yaml_conflicts: "YAML uveljavljen. Zamenjal je, kar je bilo tukaj spremenjeno, za: {paths}",
+    yaml_file: "Ta konfiguracija je shranjena v {file} v mapi konfiguracije: kar shranite tukaj, se zapiše vanjo, spremembe datoteke pa se uveljavijo v nekaj sekundah.",
+    yaml_help_file: "Vsebina {file} v mapi konfiguracije (privzete vrednosti se ne ponavljajo).",
+    src_title: "Vir konfiguracije",
+    src_status: "Spremenjeno ob {time} · {rooms} prostorov · usklajeno",
+    src_status_invalid: "Spremenjeno ob {time} · neveljavno, ni uveljavljeno: {error}",
+    src_reload: "Znova naloži",
+    src_write: "Urejanje v plošči",
+    src_write_help: "Vsako shranjevanje v datoteki prepiše le spremenjeno, komentarji in oblika ostanejo · varnostna kopija .bak.",
+    src_watch: "Spremljanje datoteke",
+    src_watch_help: "Znova prebrano ob vsaki spremembi (tudi vključene datoteke) · uveljavi se le spremenjeno.",
+    src_included: "Vključene datoteke",
+    src_included_help: "{files} · prostor se prepiše v svojo datoteko.",
+    src_create: "Ustvari {file}",
+    src_create_help: "Zapiše trenutno konfiguracijo v {file} v mapi konfiguracije; datoteka in plošča nato ostaneta usklajeni.",
+    src_none: "Ni {file}: konfiguracijo hrani le Home Assistant.",
+    conflict_title: "Datoteka se je med urejanjem spremenila",
+    conflict_sub: "{n} nastavitev spremenjenih v {file} ob {time}",
+    conflict_sub_other: "{n} nastavitev spremenjenih drugje (YAML ali drugo okno)",
+    conflict_file: "Datoteka",
+    conflict_panel: "Plošča",
+    conflict_keep_file: "Obdrži datoteko",
+    conflict_keep_panel: "Obdrži ploščo",
     not_loaded: "Smart Comfort ni naložen. Preverite dnevnike.",
     not_setup: "Smart Comfort še ni nastavljen: dodajte ga v Nastavitve → Naprave in storitve.",
     retry: "Poskusi znova",
@@ -4339,6 +4779,28 @@ const STRINGS = {
     yaml_reloaded: "YAML piemērots: atjaunināts tikai mainītais.",
     yaml_unchanged: "YAML nav mainījies: nav ko piemērot.",
     yaml_conflicts: "YAML piemērots. Tas aizstāja šeit mainīto šiem: {paths}",
+    yaml_file: "Šī konfigurācija tiek glabāta failā {file} konfigurācijas mapē: tas, ko saglabājat šeit, tiek ierakstīts tajā, un faila izmaiņas tiek piemērotas dažās sekundēs.",
+    yaml_help_file: "Faila {file} saturs konfigurācijas mapē (noklusējuma vērtības netiek atkārtotas).",
+    src_title: "Konfigurācijas avots",
+    src_status: "Mainīts {time} · {rooms} telpas · sinhronizēts",
+    src_status_invalid: "Mainīts {time} · nederīgs, nav piemērots: {error}",
+    src_reload: "Pārlādēt",
+    src_write: "Rediģēšana panelī",
+    src_write_help: "Katra saglabāšana failā pārraksta tikai mainīto, komentāri un formatējums saglabājas · rezerves kopija .bak.",
+    src_watch: "Faila uzraudzība",
+    src_watch_help: "Nolasīts no jauna pēc katras izmaiņas (arī iekļautie faili) · piemērots tikai mainītais.",
+    src_included: "Iekļautie faili",
+    src_included_help: "{files} · telpa tiek pārrakstīta savā failā.",
+    src_create: "Izveidot {file}",
+    src_create_help: "Ieraksta pašreizējo konfigurāciju failā {file} konfigurācijas mapē; pēc tam fails un panelis paliek sinhronizēti.",
+    src_none: "Nav {file}: konfigurāciju glabā tikai Home Assistant.",
+    conflict_title: "Fails mainījās rediģēšanas laikā",
+    conflict_sub: "{n} iestatījumi mainīti failā {file} {time}",
+    conflict_sub_other: "{n} iestatījumi mainīti citur (YAML vai citā logā)",
+    conflict_file: "Fails",
+    conflict_panel: "Panelis",
+    conflict_keep_file: "Paturēt failu",
+    conflict_keep_panel: "Paturēt paneli",
     not_loaded: "Smart Comfort nav ielādēts. Pārbaudiet žurnālus.",
     not_setup: "Smart Comfort vēl nav iestatīts: pievienojiet to sadaļā Iestatījumi → Ierīces un pakalpojumi.",
     retry: "Mēģināt vēlreiz",
@@ -4551,6 +5013,28 @@ const STRINGS = {
     yaml_reloaded: "Το YAML εφαρμόστηκε: ενημερώθηκε μόνο ό,τι άλλαξε.",
     yaml_unchanged: "Το YAML δεν άλλαξε: τίποτα προς εφαρμογή.",
     yaml_conflicts: "Το YAML εφαρμόστηκε. Αντικατέστησε ό,τι είχε αλλάξει εδώ για: {paths}",
+    yaml_file: "Αυτή η διαμόρφωση φυλάσσεται στο {file} στον φάκελο διαμόρφωσης: ό,τι αποθηκεύετε εδώ γράφεται σε αυτό, και οι αλλαγές του αρχείου εφαρμόζονται σε λίγα δευτερόλεπτα.",
+    yaml_help_file: "Το περιεχόμενο του {file} στον φάκελο διαμόρφωσης (οι προεπιλεγμένες τιμές δεν επαναλαμβάνονται).",
+    src_title: "Πηγή διαμόρφωσης",
+    src_status: "Τροποποιήθηκε στις {time} · {rooms} χώροι · συγχρονισμένο",
+    src_status_invalid: "Τροποποιήθηκε στις {time} · μη έγκυρο, δεν εφαρμόστηκε: {error}",
+    src_reload: "Επαναφόρτωση",
+    src_write: "Επεξεργασία στον πίνακα",
+    src_write_help: "Κάθε αποθήκευση ξαναγράφει στο αρχείο μόνο ό,τι άλλαξε, με τα σχόλια και τη μορφή να διατηρούνται · αντίγραφο .bak.",
+    src_watch: "Παρακολούθηση αρχείου",
+    src_watch_help: "Διαβάζεται ξανά σε κάθε αλλαγή (και τα ενσωματωμένα αρχεία) · εφαρμόζεται μόνο ό,τι άλλαξε.",
+    src_included: "Ενσωματωμένα αρχεία",
+    src_included_help: "{files} · ένας χώρος ξαναγράφεται στο δικό του αρχείο.",
+    src_create: "Δημιουργία {file}",
+    src_create_help: "Γράφει την τρέχουσα διαμόρφωση στο {file} στον φάκελο διαμόρφωσης· στη συνέχεια αρχείο και πίνακας μένουν συγχρονισμένα.",
+    src_none: "Δεν υπάρχει {file}: τη διαμόρφωση κρατά μόνο το Home Assistant.",
+    conflict_title: "Το αρχείο άλλαξε κατά την επεξεργασία",
+    conflict_sub: "{n} ρυθμίσεις άλλαξαν στο {file} στις {time}",
+    conflict_sub_other: "{n} ρυθμίσεις άλλαξαν αλλού (YAML ή άλλο παράθυρο)",
+    conflict_file: "Αρχείο",
+    conflict_panel: "Πίνακας",
+    conflict_keep_file: "Κράτηση αρχείου",
+    conflict_keep_panel: "Κράτηση πίνακα",
     not_loaded: "Το Smart Comfort δεν έχει φορτωθεί. Ελέγξτε τα αρχεία καταγραφής.",
     not_setup: "Το Smart Comfort δεν έχει ρυθμιστεί ακόμα: προσθέστε το στις Ρυθμίσεις → Συσκευές και υπηρεσίες.",
     retry: "Δοκιμή ξανά",
@@ -4784,6 +5268,19 @@ function yamlScalar(v) {
   const text = String(v);
   return YAML_PLAIN.test(text) && !YAML_WORDS.has(text.toLowerCase()) && !text.endsWith(" ") ? text : JSON.stringify(text);
 }
+/** The paths (key lists) where `a` and `b` differ; lists are compared whole. */
+function changedPaths(a, b, path = []) {
+  const plain = (v) => v !== null && typeof v === "object" && !Array.isArray(v);
+  if (plain(a) && plain(b)) {
+    return [...new Set([...Object.keys(a), ...Object.keys(b)])].flatMap((key) => changedPaths(a[key], b[key], [...path, key]));
+  }
+  return JSON.stringify(a) === JSON.stringify(b) ? [] : [path];
+}
+
+function pathValue(value, path) {
+  return path.reduce((v, key) => (v === null || v === undefined ? undefined : v[key]), value);
+}
+
 function toYaml(value, indent = "") {
   const lines = [];
   const block = (v) => v !== null && typeof v === "object" && Object.keys(v).length > 0;
@@ -5119,6 +5616,11 @@ class SmartComfortPanel extends HTMLElement {
     this._unsub = this._hass.connection.subscribeMessage(
       (msg) => {
         this._status = msg.status;
+        // The options changed elsewhere (the file, the YAML, another window): load them, unless edits are pending.
+        if (msg.revision && this._config && msg.revision !== this._config.revision && !this._dirty && !this._saving) {
+          this._reload();
+          return;
+        }
         if (this._tab === "overview") this._renderTab();
         else this._renderHead();
       },
@@ -5134,13 +5636,27 @@ class SmartComfortPanel extends HTMLElement {
     return JSON.stringify(prune(this._draft)) !== JSON.stringify(prune(this._config.options));
   }
 
-  async _save() {
+  async _save(force = false) {
     this._saving = true;
     this._message = null;
     this._renderToolbar();
     try {
-      const result = await this._hass.callWS({ type: `${DOMAIN}/config/save`, options: prune(this._draft) });
+      const result = await this._hass.callWS({
+        type: `${DOMAIN}/config/save`,
+        options: prune(this._draft),
+        revision: this._config.revision,
+        force,
+      });
+      if (result.conflict) {
+        // Changed meanwhile (the file, the YAML, another window): both shown, the user chooses.
+        this._conflict = { ...result.conflict, base: this._config.options };
+        this._saving = false;
+        this._render();
+        return;
+      }
+      this._conflict = null;
       this._config.options = result.options;
+      this._config.revision = result.revision;
       this._draft = clone(result.options);
       window.dispatchEvent(new CustomEvent("smart-comfort-header", { detail: { hide_header: result.options.hide_header || "off" } }));
       this._message = { type: "success", text: this._t("saved") };
@@ -5353,7 +5869,10 @@ class SmartComfortPanel extends HTMLElement {
     const top = this._el("div", "card shtop");
     if (this._tab !== "overview") top.append(scbBanner(this, this._tab, { compact: true }));
     content.append(top);
-    if (this._config.yaml && this._tab !== "overview") content.append(this._yamlBanner());
+    if (this._conflict) content.append(this._conflictCard());
+    // Settings shows the file in its Source card.
+    const banner = this._config.file ? !["overview", "settings"].includes(this._tab) : this._config.yaml && this._tab !== "overview";
+    if (banner) content.append(this._yamlBanner());
     render();
     const body = this._el("div", "shbody");
     while (top.nextElementSibling?.matches(".banner.info, .summary, .section-help, .discover, .start")) body.append(top.nextElementSibling);
@@ -5547,8 +6066,12 @@ class SmartComfortPanel extends HTMLElement {
 
   _renderYaml(content) {
     const card = this._card(this._t("yaml_tab"), "mdi:code-braces");
-    const text = `smart_comfort:\n${toYaml(this._draft || {}, "  ")}\n`;
-    card.append(this._el("div", "help", this._t(this._dirty ? "yaml_help_unsaved" : "yaml_help")));
+    // Kept in smart_comfort.yaml: the file as it is (or will be once saved), without the `smart_comfort:` key.
+    const file = this._config.file;
+    const text = file ? `${toYaml(this._draft || {}, "")}\n` : `smart_comfort:\n${toYaml(this._draft || {}, "  ")}\n`;
+    let help = file ? this._t("yaml_help_file", { file: file.name }) : this._t(this._dirty ? "yaml_help_unsaved" : "yaml_help");
+    if (file && this._dirty) help += ` · ${this._t("unsaved")}`;
+    card.append(this._el("div", "help", help));
     const pre = this._el("pre", "yaml", text);
     const copy = this._button(this._t("yaml_copy"), async () => {
       try {
@@ -5582,9 +6105,111 @@ class SmartComfortPanel extends HTMLElement {
       : d.toLocaleString(intlLocale(this._hass), { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
   }
 
+  /** Settings: smart_comfort.yaml, kept in sync both ways (or how to start it). */
+  _sourceCard() {
+    const card = this._card(this._t("src_title"), "mdi:file-sync-outline");
+    card.classList.add("source");
+    const file = this._config.file;
+    const name = file?.name || "smart_comfort.yaml";
+    if (!file) {
+      const row = this._el("div", "srow");
+      const text = this._el("div", "stext");
+      text.append(this._el("div", "sname", this._t("src_none", { file: name })), this._el("div", "shelp", this._t("src_create_help", { file: name })));
+      const create = this._button(this._t("src_create", { file: name }), () => this._createFile(), "primary");
+      row.append(text, create);
+      card.append(row);
+      return card;
+    }
+    const head = this._el("div", "sfile");
+    head.append(this._el("span", "pill info", "YAML"), this._el("code", "", `/config/${name}`));
+    const time = file.mtime ? new Date(file.mtime * 1000).toLocaleTimeString(this._hass.language, { hour: "2-digit", minute: "2-digit" }) : "—";
+    const rooms = (this._config.options.rooms || []).length;
+    const status = file.invalid ? this._t("src_status_invalid", { time, error: file.invalid }) : this._t("src_status", { time, rooms });
+    head.append(this._el("span", `sstatus${file.invalid ? " bad" : ""}`, status));
+    const reload = this._button(this._t("src_reload"), () => this._reloadYaml());
+    reload.disabled = !!this._reloadingYaml;
+    head.append(reload);
+    card.append(head);
+    if (this._yamlNote) card.append(this._el("div", "shelp note", this._yamlNote));
+    const toggle = (key, label, help) => {
+      const row = this._el("div", "srow");
+      const text = this._el("div", "stext");
+      text.append(this._el("div", "sname", label), this._el("div", "shelp", help));
+      const sw = this._el("label", "sw");
+      const input = document.createElement("input");
+      input.type = "checkbox";
+      input.checked = this._draft[key] !== false;
+      input.setAttribute("aria-label", label);
+      input.addEventListener("change", () => {
+        if (input.checked) delete this._draft[key];
+        else this._draft[key] = false;
+        this._changed();
+      });
+      sw.append(input, this._el("span"));
+      row.append(text, sw);
+      card.append(row);
+    };
+    toggle("file_write", this._t("src_write"), this._t("src_write_help"));
+    toggle("file_watch", this._t("src_watch"), this._t("src_watch_help"));
+    if (file.included?.length) {
+      const row = this._el("div", "srow");
+      const text = this._el("div", "stext");
+      text.append(this._el("div", "sname", this._t("src_included")), this._el("div", "shelp", this._t("src_included_help", { files: file.included.join(", ") })));
+      row.append(text, this._el("span", "pill", String(file.included.length)));
+      card.append(row);
+    }
+    return card;
+  }
+
+  async _createFile() {
+    try {
+      await this._hass.callWS({ type: `${DOMAIN}/file/create` });
+      this._yamlNote = null;
+    } catch (err) {
+      this._message = { type: "error", text: err.message };
+    }
+    this._reload();
+  }
+
+  /** Saving found options changed elsewhere: what changed there, the file's value against the panel's. */
+  _conflictCard() {
+    const c = this._conflict;
+    const card = this._card(this._t("conflict_title"), "mdi:file-alert-outline");
+    card.classList.add("conflict");
+    const paths = changedPaths(c.base, c.options);
+    const time = c.file?.mtime ? new Date(c.file.mtime * 1000).toLocaleTimeString(this._hass.language, { hour: "2-digit", minute: "2-digit" }) : "";
+    card.append(
+      this._el("div", "shelp", c.file ? this._t("conflict_sub", { n: paths.length, file: c.file.name, time }) : this._t("conflict_sub_other", { n: paths.length }))
+    );
+    const show = (source) =>
+      paths
+        .slice(0, 8)
+        .map((path) => `${path.join(".")}: ${JSON.stringify(pathValue(source, path)) ?? "—"}`)
+        .join("\n");
+    const grid = this._el("div", "cgrid");
+    const side = (cls, title, text) => {
+      const box = this._el("div", `cbox ${cls}`);
+      box.append(this._el("div", "ctitle", title), this._el("pre", "", text));
+      return box;
+    };
+    grid.append(side("file", this._t("conflict_file"), show(c.options)), side("panel", this._t("conflict_panel"), show(this._draft)));
+    const actions = this._el("div", "cactions");
+    actions.append(
+      this._button(this._t("conflict_keep_file"), () => {
+        this._conflict = null;
+        this._reload();
+      }),
+      this._button(this._t("conflict_keep_panel"), () => this._save(true), "primary")
+    );
+    card.append(grid, actions);
+    return card;
+  }
+
   /** The configuration comes from YAML: what that means, and Reload the YAML (the result stays shown until the next one). */
   _yamlBanner() {
-    const banner = this._el("div", "banner info", this._t("yaml"));
+    const file = this._config.file;
+    const text = file ? this._t("yaml_file", { file: file.name }) : this._t("yaml");
+    const banner = this._el("div", "banner info", text);
     const reload = this._el("button", "retry", this._t("yaml_reload"));
     reload.type = "button";
     reload.disabled = !!this._reloadingYaml;
@@ -6020,6 +6645,7 @@ class SmartComfortPanel extends HTMLElement {
   // Settings: notifications, device control, adaptive lighting.
 
   _renderSettings(content) {
+    content.append(this._sourceCard());
     const notify = Object.keys(this._hass.services.notify || {})
       .filter((n) => !["send_message", "persistent_notification"].includes(n))
       .map((n) => `notify.${n}`);
@@ -7712,6 +8338,33 @@ const STYLE = `
   .banner.error { background: rgba(var(--rgb-error-color, 219, 68, 55), 0.14); color: var(--error-color); }
   .banner.success { background: rgba(var(--rgb-success-color, 67, 160, 71), 0.14); }
   .banner .note { margin-top: 6px; font-weight: 500; }
+  .source .sfile { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 12px; background: var(--secondary-background-color, rgba(0, 0, 0, 0.04)); margin: 4px 0; }
+  .source .sfile code { flex: 1 1 200px; font-size: 13px; }
+  .source .sstatus { font-size: 12px; color: var(--secondary-text-color); }
+  .source .sstatus.bad { color: var(--error-color); }
+  .srow { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--divider-color, rgba(0, 0, 0, 0.08)); }
+  .srow:last-child { border-bottom: 0; }
+  .stext { flex: 1 1 300px; min-width: 0; }
+  .sname { font-size: 14px; font-weight: 600; }
+  .shelp { font-size: 12px; color: var(--secondary-text-color); line-height: 1.4; }
+  .shelp.note { margin: 4px 0 0; font-weight: 500; color: var(--primary-text-color); }
+  .pill.info { background: rgba(var(--rgb-primary-color, 3, 169, 244), 0.14); color: var(--primary-color); }
+  .sw { position: relative; display: inline-block; width: 40px; height: 24px; flex: none; }
+  .sw input { position: absolute; inset: 0; opacity: 0; margin: 0; cursor: pointer; }
+  .sw span { position: absolute; inset: 0; border-radius: 12px; background: var(--disabled-color, #bdbdbd); pointer-events: none; }
+  .sw span::after { content: ""; position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 50%; background: #fff; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2); transition: left 0.15s; }
+  .sw input:checked + span { background: var(--primary-color); }
+  .sw input:checked + span::after { left: 19px; }
+  .sw input:focus-visible + span { outline: 2px solid var(--primary-color); outline-offset: 2px; }
+  .btn.primary { border-color: var(--primary-color); color: var(--primary-color); }
+  .card.conflict { box-shadow: 0 0 0 2px var(--warning-color, #f59e0b); }
+  .cgrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 10px; }
+  .cbox { padding: 10px 12px; border-radius: 10px; min-width: 0; }
+  .cbox.file { background: rgba(var(--rgb-warning-color, 245, 158, 11), 0.14); }
+  .cbox.panel { background: rgba(var(--rgb-primary-color, 3, 169, 244), 0.12); }
+  .cbox .ctitle { font-size: 12px; font-weight: 600; margin-bottom: 4px; }
+  .cbox pre { margin: 0; font: 13px/1.5 var(--code-font-family, monospace); white-space: pre-wrap; word-break: break-word; }
+  .cactions { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; margin-top: 12px; }
   .banner .retry { margin-left: 8px; font: inherit; font-weight: 500; color: var(--primary-color); background: none; border: 1px solid currentColor; border-radius: 16px; padding: 2px 12px; cursor: pointer; }
   .summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; }
   .tile {

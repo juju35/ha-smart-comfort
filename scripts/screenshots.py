@@ -835,6 +835,13 @@ SCROLL = """([selector, text]) => {
 }"""
 
 # Each state of the README: the saved options or none, the tab, the clicks after loading, the page height.
+FILE = {
+    "name": "smart_comfort.yaml",
+    "mtime": 1795131840,
+    "included": ["comfort_rooms/bedroom.yaml", "comfort_rooms/living_room.yaml"],
+    "invalid": None,
+}
+
 SHOTS = [
     {"file": "panel-overview", "options": SAVED, "status": STATUS, "tab": "overview", "height": 900},
     {"file": "panel-start", "options": {}, "status": START_STATUS, "tab": "overview", "height": 600},
@@ -893,6 +900,24 @@ SHOTS = [
     {"file": "panel-schedule", "options": SAVED, "status": STATUS, "tab": "schedule", "height": 1100},
     {"file": "panel-activity", "options": SAVED, "status": STATUS, "tab": "activity", "height": 900},
     {"file": "panel-yaml", "options": SAVED, "status": STATUS, "tab": "yaml_tab", "height": 1100},
+    # The configuration kept in smart_comfort.yaml: saved in the panel, written to the file.
+    {
+        "file": "panel-yaml-file",
+        "options": SAVED,
+        "status": STATUS,
+        "tab": "yaml_tab",
+        "height": 1100,
+        "config": {"yaml": False, "file": FILE},
+    },
+    # Settings: the configuration source card (smart_comfort.yaml, included files).
+    {
+        "file": "panel-settings-file",
+        "options": SAVED,
+        "status": STATUS,
+        "tab": "settings",
+        "height": 640,
+        "config": {"yaml": False, "file": FILE},
+    },
     {
         "file": "panel-lighting",
         "options": SAVED,
@@ -1121,7 +1146,7 @@ def render_panel_gif(browser, scene, seconds, theme):
     context.close()
 
 
-def open_panel(browser, name, theme, height, options, status, tab, sidebar=False):
+def open_panel(browser, name, theme, height, options, status, tab, sidebar=False, config_extra=None):
     """A page that mimics Home Assistant with the panel mounted on `tab`, its commands answered with the mock data."""
     context = browser.new_context(
         viewport={"width": WIDTH if sidebar else PANEL_WIDTH, "height": height},
@@ -1142,14 +1167,24 @@ def open_panel(browser, name, theme, height, options, status, tab, sidebar=False
     page.add_script_tag(content=HA_ELEMENTS)
     page.add_script_tag(content=PANEL_JS)
     page.add_script_tag(content=CARD_JS, type="module")
-    page.evaluate(MOUNT, [mock(options, status), tab, theme == "dark"])
+    data = mock(options, status)
+    data["config"].update(config_extra or {})
+    page.evaluate(MOUNT, [data, tab, theme == "dark"])
     return context, page
 
 
 def render(browser, shot, theme):
     name = shot["file"] + ("-dark" if theme == "dark" else "")
     context, page = open_panel(
-        browser, name, theme, shot["height"], shot["options"], shot["status"], shot["tab"], shot.get("sidebar", False)
+        browser,
+        name,
+        theme,
+        shot["height"],
+        shot["options"],
+        shot["status"],
+        shot["tab"],
+        shot.get("sidebar", False),
+        shot.get("config"),
     )
     for click in shot.get("clicks", []):
         page.evaluate(CLICK, list(click))

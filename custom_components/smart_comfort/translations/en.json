@@ -548,6 +548,10 @@
     "yaml_conflicts": {
       "title": "The YAML replaced changes made in the panel",
       "description": "The Smart Comfort YAML changed settings that had also been changed in the panel. The YAML's value was kept for:\n\n{paths}\n\nSet them again in the panel, or change them in the YAML, to keep another value."
+    },
+    "file_invalid": {
+      "title": "Smart Comfort: {file} is invalid",
+      "description": "{file} in the configuration folder can't be applied, the configuration in use stays the same, and the panel doesn't write to the file until it is fixed:\n\n`{error}`"
     }
   }
 }

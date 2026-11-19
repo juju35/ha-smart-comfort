@@ -255,6 +255,8 @@ OPTIONS = vol.Schema(
         vol.Optional(k.CONF_URL): OPT_STR,
         vol.Optional(k.CONF_TAG): cv.string,
         vol.Optional(k.CONF_HIDE_HEADER): vol.In(k.HIDE_HEADER_MODES),
+        vol.Optional(k.CONF_FILE_WATCH): cv.boolean,
+        vol.Optional(k.CONF_FILE_WRITE): cv.boolean,
         vol.Optional(k.CONF_ALERTS): ALERTS,
         vol.Optional(k.CONF_ANNEX_ALERTS): ALERTS,
         vol.Optional(k.CONF_CONTROL): CONTROL,

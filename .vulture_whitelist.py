@@ -35,3 +35,7 @@ _.is_on  # unused property (custom_components/smart_comfort/switch.py:46)
 _.is_on  # unused property (custom_components/smart_comfort/switch.py:57)
 _.async_get_events  # unused method (custom_components/smart_comfort/calendar.py:88)
 async_get_config_entry_diagnostics  # unused function (custom_components/smart_comfort/diagnostics.py:19)
+
+# ruamel.yaml settings (yaml_file.Writer)
+_.preserve_quotes
+_.width
