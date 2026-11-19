@@ -7421,6 +7421,8 @@ function scbBanner(panel, tab = panel._tab, opts = {}) {
   const el = document.createElement("div");
   el.className = `shbanner ${tone}${night ? " night" : ""}${opts.compact ? " compact" : ""}${opts.head ? " head" : ""}`;
   el.style.setProperty("--sh-wall", wall);
+  // The state's colour, for the round badge and the status pill
+  el.style.setProperty("--tone", SCB_TONES[tone] || SCB_TONES.idle);
   const esc = (v) => String(v).replace(/[&<>"]/g, (ch) => `&#${ch.charCodeAt(0)};`);
   const scene = opts.compact
     ? ""
@@ -7750,11 +7752,11 @@ const STYLE = `
     .shtitles { flex:1; min-width:0; display:flex; flex-direction:column; gap:2px; }
     .shtrow { display:flex; align-items:center; gap:8px; min-width:0; }
     .shtitle { flex:0 1 auto; min-width:0; font-size:16px; font-weight:500; line-height:1.25; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    .shpill { flex:none; display:inline-flex; align-items:center; gap:4px; padding:1px 8px; border-radius:12px; font-size:11px; font-weight:500; line-height:16px;
+    .shpill { flex:none; display:inline-flex; align-items:center; gap:5px; padding:1px 8px; border-radius:10px; font-size:12px; font-weight:500; line-height:16px;
               white-space:nowrap; max-width:60%; overflow:hidden; text-overflow:ellipsis;
-              background:color-mix(in srgb, var(--tone) 18%, rgba(255,255,255,.78)); color:color-mix(in srgb, var(--tone) 45%, #0d2a45); }
+              background:color-mix(in srgb, var(--tone) 16%, transparent); color:color-mix(in srgb, var(--tone) 60%, var(--primary-text-color, #1f2328)); }
     .shpill::before { content:""; flex:none; width:7px; height:7px; border-radius:50%; background:var(--tone); }
-    .night .shpill { background:color-mix(in srgb, var(--tone) 30%, rgba(8,18,38,.55)); color:color-mix(in srgb, var(--tone) 35%, #fff); }
+    .night .shpill { background:color-mix(in srgb, var(--tone) 22%, rgba(255,255,255,.12)); color:color-mix(in srgb, var(--tone) 55%, #fff); }
     .shsub { font-size:13px; line-height:18px; color:var(--sh-sub); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
     .idle { --tone:#8a96a6; }
     @container (max-width:560px) { .shscene { display:none; } .shhead { right:0; } }
