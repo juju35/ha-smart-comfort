@@ -75,7 +75,7 @@
           "critical_volume": "Kritikus hang hangereje iOS-en, 0 és 1 között.",
           "url": "Az értesítésre koppintva nyílik meg, pl. homeassistant://navigate/lovelace/comfort",
           "tag": "Minden értesítés lecseréli az előzőt ezzel a címkével, ahelyett hogy felhalmozódnának.",
-          "hide_header": "Az irányítópultok felső sávja (cím, menü, szerkesztés és keresés gombok); a nézetek fülei maradnak. Az irányítópult címéhez fűzött ?show_header mégis megjeleníti."
+          "hide_header": "Az irányítópultok felső sávja (cím, menü, szerkesztés és keresés gombok); a nézetek fülei maradnak. Ennek a panelnek a felső sávja is; a lapjai maradnak. Az irányítópult címéhez fűzött ?show_header mégis megjeleníti."
         }
       },
       "alerts": {
@@ -375,9 +375,9 @@
     },
     "hide_header": {
       "options": {
-        "off": "Soha",
+        "off": "Nem",
         "everyone": "Mindenkinek",
-        "non_admins": "Csak a nem rendszergazdáknak"
+        "non_admins": "Nem rendszergazdáknak"
       }
     }
   },

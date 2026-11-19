@@ -75,7 +75,7 @@
           "critical_volume": "Hlasitost kritického zvuku v iOS, 0 až 1.",
           "url": "Otevře se po klepnutí na oznámení, např. homeassistant://navigate/lovelace/comfort",
           "tag": "Každé oznámení nahradí předchozí s touto značkou, místo aby se hromadila.",
-          "hide_header": "Horní lišta řídicích panelů (název, nabídka, tlačítka úprav a hledání); karty zobrazení zůstávají. Přidejte ?show_header k adrese panelu, chcete-li ji přesto vidět."
+          "hide_header": "Horní lišta řídicích panelů (název, nabídka, tlačítka úprav a hledání); karty zobrazení zůstávají. Také horní lišta tohoto panelu; jeho karty zůstávají. Přidejte ?show_header k adrese panelu, chcete-li ji přesto vidět."
         }
       },
       "alerts": {
@@ -375,9 +375,9 @@
     },
     "hide_header": {
       "options": {
-        "off": "Nikdy",
+        "off": "Ne",
         "everyone": "Pro všechny",
-        "non_admins": "Jen pro neadministrátory"
+        "non_admins": "Pro neadministrátory"
       }
     }
   },

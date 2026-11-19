@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.26.1 - 2026-11-19
+
+### Fixes
+- **Hide the top bar**: its choices read **No**, **For everyone** and **For non-admins**, as in the other ha-* panels, and its description says the panel's top bar goes too (its tabs stay), in every language.
+
+### Maintenance
+- **Screenshots**: the panel edge to edge, without Home Assistant's sidebar, as in the other ha-* repos; one shot (`panel-sidebar`) keeps the sidebar for the panel's item and its badge.
+
 ## 1.26.0 - 2026-11-19
 
 ### Features

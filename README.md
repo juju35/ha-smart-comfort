@@ -108,6 +108,10 @@ Each tab has its own address, e.g. `/smart-comfort/rooms` (the addresses of earl
 <details>
 <summary>More screenshots</summary>
 
+| The panel's item in the sidebar, with the badge of the active alerts | Dark mode |
+|---|---|
+| <img src="https://raw.githubusercontent.com/juju35/ha-smart-comfort/main/screenshots/panel-sidebar.png" alt="The Smart Comfort item in the sidebar, with the badge of the active alerts" width="700"> | <img src="https://raw.githubusercontent.com/juju35/ha-smart-comfort/main/screenshots/panel-sidebar-dark.png" alt="The Smart Comfort item in the sidebar, with the badge of the active alerts, dark mode" width="700"> |
+
 | Discover offered in the overview while nothing is set up | Dark mode |
 |---|---|
 | <img src="https://raw.githubusercontent.com/juju35/ha-smart-comfort/main/screenshots/panel-start.png" alt="Discover offered in the overview while nothing is set up" width="700"> | <img src="https://raw.githubusercontent.com/juju35/ha-smart-comfort/main/screenshots/panel-start-dark.png" alt="Discover offered in the overview while nothing is set up, dark mode" width="700"> |
