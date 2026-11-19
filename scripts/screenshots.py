@@ -535,6 +535,7 @@ def room_status(name, alerts, devices=None, lights=None, **values):
     reading.update(pm25=None, pm10=None, air_quality=None)
     return {
         "name": name,
+        "room_id": name.lower().replace(" ", "_"),
         **reading,
         **values,
         "alerts": alerts,
@@ -821,12 +822,12 @@ CLICK = """async ([selector, text]) => {
     await new Promise((r) => setTimeout(r, 200));
 }"""
 
-# Scrolls the page so the element sits just under the sticky toolbar and tabs.
+# Scrolls the page so the element sits just under the sticky tabs (the top bar scrolls away with the page).
 SCROLL = """([selector, text]) => {
     const root = document.querySelector("smart-comfort-panel").shadowRoot;
     const all = [...root.querySelectorAll(selector)];
     const target = all.find((b) => b.textContent.trim() === text) || all.find((b) => b.textContent.trim().startsWith(text));
-    const bar = root.querySelector(".toolbar").offsetHeight + root.querySelector(".tabs").offsetHeight;
+    const bar = root.querySelector(".tabs").offsetHeight;
     window.scrollTo(0, target.getBoundingClientRect().top + window.scrollY - bar - 10);
 }"""
 
@@ -1067,14 +1068,11 @@ BANNER = """() => {
 }"""
 
 
-def render_gif(browser, scene, seconds, theme):
-    """The mini card's header in one animated state, its animations paused and stepped frame by frame (ffmpeg)."""
+def write_gif(page, clip, name, seconds):
+    """Step the page's animations frame by frame over `seconds`, capture `clip` and write screenshots/<name>.gif."""
     import subprocess
     import tempfile
 
-    name = f"header-{scene}" + ("-dark" if theme == "dark" else "")
-    context, page = open_card(browser, theme, 400, header_status(scene), "smart-comfort-mini-card", {}, scale=1)
-    clip = page.evaluate(BANNER)
     with tempfile.TemporaryDirectory() as tmp:
         for i in range(round(GIF_FPS * seconds)):
             if not page.evaluate(SEEK, 6000 + i * 1000 / GIF_FPS):
@@ -1085,7 +1083,6 @@ def render_gif(browser, scene, seconds, theme):
         cmd = ["ffmpeg", "-y", "-loglevel", "error", "-framerate", str(GIF_FPS), "-i", f"{tmp}/f%03d.png"]
         subprocess.run([*cmd, "-vf", palette, "-loop", "0", out], check=True)
         gif = Path(out).read_bytes()
-    context.close()
     path = ROOT / "screenshots" / f"{name}.gif"
     written = not path.exists() or path.read_bytes() != gif
     if written:
@@ -1093,10 +1090,36 @@ def render_gif(browser, scene, seconds, theme):
     print(path.relative_to(ROOT), "" if written else "(unchanged)")
 
 
-def render(browser, shot, theme):
-    name = shot["file"] + ("-dark" if theme == "dark" else "")
+def render_gif(browser, scene, seconds, theme):
+    """The mini card's header in one animated state, its animations paused and stepped frame by frame (ffmpeg)."""
+    name = f"header-{scene}" + ("-dark" if theme == "dark" else "")
+    context, page = open_card(browser, theme, 400, header_status(scene), "smart-comfort-mini-card", {}, scale=1)
+    clip = page.evaluate(BANNER)
+    write_gif(page, clip, name, seconds)
+    context.close()
+
+
+# The panel's top bar (the living room across the page), in the panel's shadow root.
+TOPBAR = """() => {
+    const r = document.querySelector("smart-comfort-panel").shadowRoot.querySelector(".topbar").getBoundingClientRect();
+    return { x: r.x, y: r.y, width: r.width, height: r.height };
+}"""
+
+
+def render_panel_gif(browser, scene, seconds, theme):
+    """The panel's top bar in one animated state, stepped frame by frame like the mini card's header (ffmpeg)."""
+    name = f"panel-header-{scene}" + ("-dark" if theme == "dark" else "")
+    context, page = open_panel(browser, name, theme, 300, SAVED, header_status(scene), "overview")
+    page.wait_for_timeout(200)
+    clip = page.evaluate(TOPBAR)
+    write_gif(page, clip, name, seconds)
+    context.close()
+
+
+def open_panel(browser, name, theme, height, options, status, tab):
+    """A page that mimics Home Assistant with the panel mounted on `tab`, its commands answered with the mock data."""
     context = browser.new_context(
-        viewport={"width": WIDTH, "height": shot["height"]},
+        viewport={"width": WIDTH, "height": height},
         device_scale_factor=1,
         timezone_id="UTC",
         locale="en-US",
@@ -1113,7 +1136,13 @@ def render(browser, shot, theme):
     page.add_script_tag(content=HA_ELEMENTS)
     page.add_script_tag(content=PANEL_JS)
     page.add_script_tag(content=CARD_JS, type="module")
-    page.evaluate(MOUNT, [mock(shot["options"], shot["status"]), shot["tab"], theme == "dark"])
+    page.evaluate(MOUNT, [mock(options, status), tab, theme == "dark"])
+    return context, page
+
+
+def render(browser, shot, theme):
+    name = shot["file"] + ("-dark" if theme == "dark" else "")
+    context, page = open_panel(browser, name, theme, shot["height"], shot["options"], shot["status"], shot["tab"])
     for click in shot.get("clicks", []):
         page.evaluate(CLICK, list(click))
     if "scroll" in shot:
@@ -1155,6 +1184,7 @@ def main():
         for scene, seconds in GIFS:
             for theme in THEMES:
                 render_gif(browser, scene, seconds, theme)
+                render_panel_gif(browser, scene, seconds, theme)
         browser.close()
 
 

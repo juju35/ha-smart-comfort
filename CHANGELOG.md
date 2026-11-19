@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.26.0 - 2026-11-19
+
+### Features
+- **Panel laid out like the ENT ONE panel**: the living room is the panel's top bar, across the page — Smart Comfort, the points to watch as a pill, the comfort score, the outdoor temperature and the quiet night, the picture showing the worst state, with Notify now and the integration as round buttons (the title bar is gone). The tabs sit under it on the page background, sticky, Alerts with the number of active alerts; Save / Discard at their right. *Hide the top bar* hides this banner too, the tabs staying. The other tabs keep a compact header without the picture.
+- **Overview**: a room filter (rooms with alerts as chips, busiest first; the fine rooms behind **+ N OK**), the notifications / device control / adaptive lighting switches as pills, four tiles (alerts with how many are handled, outdoor temperature, outdoor air, noise), then **To handle** (the active alerts) and the rooms — both following the filter.
+- Screenshots: a GIF of the panel's top bar per animated state (hot, cold, cooling, other alert), light and dark.
+
 ## 1.25.0 - 2026-11-19
 
 ### Features

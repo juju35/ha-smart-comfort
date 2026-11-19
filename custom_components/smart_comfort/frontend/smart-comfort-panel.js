@@ -62,6 +62,10 @@ const STRINGS = {
     annex_alerts_help: "Default alert thresholds for annex rooms — cellar, garage, workshop, laundry, attic. Set a room's type to Annex in the Rooms tab; each room can still override these.",
     outdoor_noise: "Outdoor noise",
     quiet_night: "Quiet night",
+    to_handle: "To handle",
+    all_rooms: "All rooms",
+    n_ok_rooms: "+ {n} OK",
+    n_handled: "{n} handled",
     discovered_new: "new",
     discovered_updated: "completed",
     discovered_new_outdoor: "new",
@@ -266,6 +270,10 @@ const STRINGS = {
     annex_alerts_help: "Seuils d'alerte par défaut des annexes — cave, garage, atelier, buanderie, grenier. Réglez le type d'une pièce sur Annexe dans l'onglet Pièces ; chaque pièce peut toujours les remplacer.",
     outdoor_noise: "Bruit extérieur",
     quiet_night: "Nuit calme",
+    to_handle: "À traiter",
+    all_rooms: "Toutes les pièces",
+    n_ok_rooms: "+ {n} OK",
+    n_handled: "{n} prises en charge",
     discovered_new: "nouvelle",
     discovered_updated: "complétée",
     discovered_new_outdoor: "nouvelle",
@@ -470,6 +478,10 @@ const STRINGS = {
     annex_alerts_help: "Standard-Alarmschwellen für Nebenräume – Keller, Garage, Werkstatt, Waschküche, Dachboden. Setze den Typ eines Raums im Tab Räume auf Nebenraum; jeder Raum kann sie weiterhin überschreiben.",
     outdoor_noise: "Außenlärm",
     quiet_night: "Ruhige Nacht",
+    to_handle: "Zu erledigen",
+    all_rooms: "Alle Räume",
+    n_ok_rooms: "+ {n} OK",
+    n_handled: "{n} übernommen",
     discovered_new: "neu",
     discovered_updated: "ergänzt",
     discovered_new_outdoor: "neu",
@@ -674,6 +686,10 @@ const STRINGS = {
     annex_alerts_help: "Umbrales de alerta por defecto para anexos: bodega, garaje, taller, lavadero, desván. Cambia el tipo de una estancia a Anexo en la pestaña Estancias; cada estancia puede anularlos.",
     outdoor_noise: "Ruido exterior",
     quiet_night: "Noche tranquila",
+    to_handle: "Por atender",
+    all_rooms: "Todas las estancias",
+    n_ok_rooms: "+ {n} OK",
+    n_handled: "{n} atendidas",
     discovered_new: "nueva",
     discovered_updated: "completada",
     discovered_new_outdoor: "nueva",
@@ -878,6 +894,10 @@ const STRINGS = {
     annex_alerts_help: "Подразумевани прагови упозорења за помоћне просторије — подрум, гаража, радионица, веш-соба, таван. Поставите тип просторије на Помоћна у картици Просторије; свака просторија их може заменити.",
     outdoor_noise: "Спољашња бука",
     quiet_night: "Мирна ноћ",
+    to_handle: "За обраду",
+    all_rooms: "Све просторије",
+    n_ok_rooms: "+ {n} у реду",
+    n_handled: "{n} преузето",
     discovered_new: "ново",
     discovered_updated: "допуњено",
     discovered_new_outdoor: "ново",
@@ -1082,6 +1102,10 @@ const STRINGS = {
     annex_alerts_help: "Podrazumevani pragovi upozorenja za pomoćne prostorije — podrum, garaža, radionica, veš-soba, tavan. Postavite tip prostorije na Pomoćna u kartici Prostorije; svaka prostorija ih može zameniti.",
     outdoor_noise: "Spoljašnja buka",
     quiet_night: "Mirna noć",
+    to_handle: "Za obradu",
+    all_rooms: "Sve prostorije",
+    n_ok_rooms: "+ {n} u redu",
+    n_handled: "{n} preuzeto",
     discovered_new: "novo",
     discovered_updated: "dopunjeno",
     discovered_new_outdoor: "novo",
@@ -1286,6 +1310,10 @@ const STRINGS = {
     annex_alerts_help: "Soglie di allerta predefinite per i locali di servizio — cantina, garage, officina, lavanderia, soffitta. Imposta il tipo di una stanza su Locale di servizio nella scheda Stanze; ogni stanza può comunque sovrascriverle.",
     outdoor_noise: "Rumore esterno",
     quiet_night: "Notte silenziosa",
+    to_handle: "Da gestire",
+    all_rooms: "Tutte le stanze",
+    n_ok_rooms: "+ {n} OK",
+    n_handled: "{n} gestiti",
     discovered_new: "nuova",
     discovered_updated: "completata",
     discovered_new_outdoor: "nuovo",
@@ -1490,6 +1518,10 @@ const STRINGS = {
     annex_alerts_help: "Standaarddrempels voor bijruimtes — kelder, garage, werkplaats, washok, zolder. Stel het type van een ruimte in op Bijruimte op het tabblad Ruimtes; elke ruimte kan ze nog overschrijven.",
     outdoor_noise: "Buitengeluid",
     quiet_night: "Stille nacht",
+    to_handle: "Af te handelen",
+    all_rooms: "Alle kamers",
+    n_ok_rooms: "+ {n} OK",
+    n_handled: "{n} afgehandeld",
     discovered_new: "nieuw",
     discovered_updated: "aangevuld",
     discovered_new_outdoor: "nieuw",
@@ -1694,6 +1726,10 @@ const STRINGS = {
     annex_alerts_help: "Limites de alerta predefinidos para anexos — adega, garagem, oficina, lavandaria, sótão. Defina o tipo de uma divisão como Anexo no separador Divisões; cada divisão pode substituí-los.",
     outdoor_noise: "Ruído exterior",
     quiet_night: "Noite silenciosa",
+    to_handle: "Por tratar",
+    all_rooms: "Todas as divisões",
+    n_ok_rooms: "+ {n} OK",
+    n_handled: "{n} tratados",
     discovered_new: "nova",
     discovered_updated: "completada",
     discovered_new_outdoor: "novo",
@@ -1898,6 +1934,10 @@ const STRINGS = {
     annex_alerts_help: "Domyślne progi alertów dla pomieszczeń gospodarczych — piwnica, garaż, warsztat, pralnia, strych. Ustaw typ pomieszczenia na Gospodarcze w zakładce Pomieszczenia; każde pomieszczenie może je nadpisać.",
     outdoor_noise: "Hałas na zewnątrz",
     quiet_night: "Cicha noc",
+    to_handle: "Do obsłużenia",
+    all_rooms: "Wszystkie pokoje",
+    n_ok_rooms: "+ {n} OK",
+    n_handled: "{n} obsłużono",
     discovered_new: "nowe",
     discovered_updated: "uzupełnione",
     discovered_new_outdoor: "nowe",
@@ -2102,6 +2142,10 @@ const STRINGS = {
     annex_alerts_help: "Praguri de alertă implicite pentru anexe — pivniță, garaj, atelier, spălătorie, pod. Setează tipul unei camere la Anexă în fila Camere; fiecare cameră le poate suprascrie.",
     outdoor_noise: "Zgomot exterior",
     quiet_night: "Noapte liniștită",
+    to_handle: "De rezolvat",
+    all_rooms: "Toate camerele",
+    n_ok_rooms: "+ {n} OK",
+    n_handled: "{n} preluate",
     discovered_new: "nouă",
     discovered_updated: "completată",
     discovered_new_outdoor: "nou",
@@ -2306,6 +2350,10 @@ const STRINGS = {
     annex_alerts_help: "Standard-alarmgrænser for birum — kælder, garage, værksted, bryggers, loft. Sæt et rums type til Birum under fanen Rum; hvert rum kan stadig tilsidesætte dem.",
     outdoor_noise: "Udendørs støj",
     quiet_night: "Stille nat",
+    to_handle: "Skal håndteres",
+    all_rooms: "Alle rum",
+    n_ok_rooms: "+ {n} OK",
+    n_handled: "{n} håndteret",
     discovered_new: "nyt",
     discovered_updated: "udfyldt",
     discovered_new_outdoor: "nyt",
@@ -2510,6 +2558,10 @@ const STRINGS = {
     annex_alerts_help: "Standardtrösklar för biutrymmen — källare, garage, verkstad, tvättstuga, vind. Ange ett rums typ till Biutrymme på fliken Rum; varje rum kan fortfarande åsidosätta dem.",
     outdoor_noise: "Buller utomhus",
     quiet_night: "Tyst natt",
+    to_handle: "Att hantera",
+    all_rooms: "Alla rum",
+    n_ok_rooms: "+ {n} OK",
+    n_handled: "{n} hanterade",
     discovered_new: "nytt",
     discovered_updated: "kompletterat",
     discovered_new_outdoor: "ny",
@@ -2714,6 +2766,10 @@ const STRINGS = {
     annex_alerts_help: "Прагове за известия по подразбиране за спомагателни помещения — мазе, гараж, работилница, пералня, таван. Задайте типа на помещение на Спомагателно в раздела Помещения; всяко помещение може да ги замени.",
     outdoor_noise: "Външен шум",
     quiet_night: "Тиха нощ",
+    to_handle: "За обработка",
+    all_rooms: "Всички стаи",
+    n_ok_rooms: "+ {n} наред",
+    n_handled: "{n} поети",
     discovered_new: "нова",
     discovered_updated: "допълнена",
     discovered_new_outdoor: "ново",
@@ -2918,6 +2974,10 @@ const STRINGS = {
     annex_alerts_help: "Пороги оповещений по умолчанию для подсобных помещений — погреб, гараж, мастерская, прачечная, чердак. Укажите тип помещения «Подсобное» на вкладке «Помещения»; каждое помещение может их переопределить.",
     outdoor_noise: "Шум на улице",
     quiet_night: "Тихая ночь",
+    to_handle: "К обработке",
+    all_rooms: "Все комнаты",
+    n_ok_rooms: "+ {n} в норме",
+    n_handled: "{n} обработано",
     discovered_new: "новая",
     discovered_updated: "дополнена",
     discovered_new_outdoor: "новое",
@@ -3122,6 +3182,10 @@ const STRINGS = {
     annex_alerts_help: "Порогові значення сповіщень за замовчуванням для підсобних приміщень — погріб, гараж, майстерня, пральня, горище. Виберіть тип приміщення «Підсобне» на вкладці «Приміщення»; кожне приміщення може їх перевизначити.",
     outdoor_noise: "Шум надворі",
     quiet_night: "Тиха ніч",
+    to_handle: "До опрацювання",
+    all_rooms: "Усі кімнати",
+    n_ok_rooms: "+ {n} в нормі",
+    n_handled: "{n} опрацьовано",
     discovered_new: "нова",
     discovered_updated: "доповнено",
     discovered_new_outdoor: "нове",
@@ -3326,6 +3390,10 @@ const STRINGS = {
     annex_alerts_help: "Alapértelmezett riasztási küszöbök melléképületekhez — pince, garázs, műhely, mosókonyha, padlás. Állítsd a helyiség típusát Melléképületre a Helyiségek lapon; minden helyiség felülírhatja ezeket.",
     outdoor_noise: "Kültéri zaj",
     quiet_night: "Csendes éjszaka",
+    to_handle: "Teendő",
+    all_rooms: "Minden helyiség",
+    n_ok_rooms: "+ {n} rendben",
+    n_handled: "{n} kezelve",
     discovered_new: "új",
     discovered_updated: "kiegészítve",
     discovered_new_outdoor: "új",
@@ -3530,6 +3598,10 @@ const STRINGS = {
     annex_alerts_help: "Predvolené prahy upozornení pre vedľajšie priestory — pivnica, garáž, dielňa, práčovňa, povala. Nastav typ miestnosti na Vedľajší priestor na karte Miestnosti; každá miestnosť ich môže prepísať.",
     outdoor_noise: "Vonkajší hluk",
     quiet_night: "Tichá noc",
+    to_handle: "Na vybavenie",
+    all_rooms: "Všetky miestnosti",
+    n_ok_rooms: "+ {n} v poriadku",
+    n_handled: "{n} vybavené",
     discovered_new: "nová",
     discovered_updated: "doplnená",
     discovered_new_outdoor: "nové",
@@ -3734,6 +3806,10 @@ const STRINGS = {
     annex_alerts_help: "Výchozí prahy upozornění pro vedlejší prostory — sklep, garáž, dílna, prádelna, půda. Nastav typ místnosti na Vedlejší prostor na kartě Místnosti; každá místnost je může přepsat.",
     outdoor_noise: "Venkovní hluk",
     quiet_night: "Tichá noc",
+    to_handle: "K vyřízení",
+    all_rooms: "Všechny místnosti",
+    n_ok_rooms: "+ {n} v pořádku",
+    n_handled: "{n} vyřízeno",
     discovered_new: "nová",
     discovered_updated: "doplněná",
     discovered_new_outdoor: "nové",
@@ -3938,6 +4014,10 @@ const STRINGS = {
     annex_alerts_help: "Privzeti pragovi opozoril za pomožne prostore — klet, garaža, delavnica, pralnica, podstrešje. Vrsto prostora nastavite na Pomožni prostor na zavihku Prostori; vsak prostor jih lahko prepiše.",
     outdoor_noise: "Zunanji hrup",
     quiet_night: "Tiha noč",
+    to_handle: "Za obravnavo",
+    all_rooms: "Vsi prostori",
+    n_ok_rooms: "+ {n} v redu",
+    n_handled: "{n} obravnavanih",
     discovered_new: "nov",
     discovered_updated: "dopolnjen",
     discovered_new_outdoor: "novo",
@@ -4142,6 +4222,10 @@ const STRINGS = {
     annex_alerts_help: "Noklusējuma brīdinājumu sliekšņi palīgtelpām — pagrabs, garāža, darbnīca, veļas telpa, bēniņi. Iestatiet telpas tipu uz Palīgtelpa cilnē Telpas; katra telpa tos var ignorēt.",
     outdoor_noise: "Āra troksnis",
     quiet_night: "Klusā nakts",
+    to_handle: "Jāapstrādā",
+    all_rooms: "Visas telpas",
+    n_ok_rooms: "+ {n} kārtībā",
+    n_handled: "{n} apstrādāti",
     discovered_new: "jauna",
     discovered_updated: "papildināta",
     discovered_new_outdoor: "jauna",
@@ -4346,6 +4430,10 @@ const STRINGS = {
     annex_alerts_help: "Προεπιλεγμένα όρια ειδοποιήσεων για βοηθητικούς χώρους — κελάρι, γκαράζ, εργαστήριο, πλυσταριό, σοφίτα. Ορίστε τον τύπο ενός δωματίου σε Βοηθητικός στην καρτέλα Δωμάτια· κάθε δωμάτιο μπορεί να τα παρακάμψει.",
     outdoor_noise: "Εξωτερικός θόρυβος",
     quiet_night: "Ήσυχη νύχτα",
+    to_handle: "Προς χειρισμό",
+    all_rooms: "Όλοι οι χώροι",
+    n_ok_rooms: "+ {n} εντάξει",
+    n_handled: "{n} σε χειρισμό",
     discovered_new: "νέο",
     discovered_updated: "συμπληρώθηκε",
     discovered_new_outdoor: "νέος",
@@ -4944,6 +5032,7 @@ class SmartComfortPanel extends HTMLElement {
       (msg) => {
         this._status = msg.status;
         if (this._tab === "overview") this._renderTab();
+        else this._renderHead();
       },
       { type: `${DOMAIN}/subscribe` }
     );
@@ -4990,30 +5079,79 @@ class SmartComfortPanel extends HTMLElement {
 
   _render() {
     const root = this.shadowRoot;
+    // The top bar is the living room across the page (as on the ENT ONE panel); the tabs under it, with the
+    // unsaved-changes actions at their right so they stay in reach while scrolling.
     root.innerHTML = `<style>${STYLE}</style>
-      <div class="toolbar">
-        <span class="menu"></span>
-        <div class="title">Smart Comfort</div>
-        <div class="actions"></div>
-      </div>
-      <div class="tabs" role="tablist"></div>
+      <div class="topbar"></div>
+      <div class="tabs"><span class="tabmenu"></span><div class="tablist" role="tablist"></div><div class="actions"></div></div>
       <div class="content"></div>`;
     const menu = document.createElement("ha-menu-button");
     menu.hass = this._hass;
     menu.narrow = this._narrow;
     this._menu = menu;
-    root.querySelector(".menu").append(menu);
-    const tabs = root.querySelector(".tabs");
+    const tabs = root.querySelector(".tablist");
     for (const tab of TABS) {
       const b = document.createElement("button");
       b.className = `tab${tab === this._tab ? " active" : ""}`;
+      b.dataset.tab = tab;
       b.setAttribute("role", "tab");
       b.textContent = this._t(tab);
       b.addEventListener("click", () => this._goTab(tab));
       tabs.append(b);
     }
+    this._renderHead();
     this._renderToolbar();
     this._renderTab();
+  }
+
+  /** Whether the panel's top bar is hidden for this user: the dashboards' "Hide the top bar" option applies here too. */
+  _bare() {
+    const mode = this._config?.options?.hide_header || "off";
+    return mode === "everyone" || (mode === "non_admins" && this._hass?.user?.is_admin === false);
+  }
+
+  /**
+   * The top bar: Smart Comfort, the points to watch as a pill, the comfort score, the outdoor temperature and the
+   * quiet night under it, the living room picturing the worst state; Notify now and the integration as round buttons.
+   * Hidden (option): the tabs alone, the menu button in front of them. The menu button is kept across redraws.
+   */
+  _renderHead() {
+    const root = this.shadowRoot;
+    const bar = root?.querySelector?.(".topbar");
+    if (!bar) return;
+    const bare = this._bare();
+    this.toggleAttribute("bare", bare);
+    const menu = this._menu;
+    if (bare) {
+      bar.replaceChildren();
+      if (menu) root.querySelector(".tabmenu")?.append(menu);
+    } else {
+      const banner = scbBanner(this, "overview", { head: true });
+      const slot = banner.querySelector(".shhead");
+      const hmenu = this._el("span", "hmenu");
+      if (menu) hmenu.append(menu);
+      slot?.prepend(hmenu);
+      const acts = this._el("div", "hacts");
+      if (this._status) {
+        const notify = this._iconButton("mdi:bell-ring-outline", this._t("notify_now"), () => this._service("notify_now"));
+        acts.append(notify);
+      }
+      const cog = document.createElement("a");
+      cog.href = `/config/integrations/integration/${DOMAIN}`;
+      cog.className = "icon-btn";
+      cog.title = this._t("settings");
+      cog.setAttribute("aria-label", this._t("settings"));
+      const ci = document.createElement("ha-icon");
+      ci.icon = "mdi:cog";
+      cog.append(ci);
+      acts.append(cog);
+      banner.append(acts);
+      bar.replaceChildren(banner);
+    }
+    // The active alerts on the Alerts tab, like the sidebar badge
+    const points = this._status ? this._comfort(this._status).points : 0;
+    const alertsTab = root.querySelector('.tab[data-tab="alerts"]');
+    if (alertsTab) alertsTab.innerHTML = `${this._t("alerts").replace(/[&<>"]/g, (ch) => `&#${ch.charCodeAt(0)};`)}${points ? `<span class="cnt">${points}</span>` : ""}`;
   }
 
   _renderToolbar() {
@@ -5121,15 +5259,18 @@ class SmartComfortPanel extends HTMLElement {
       yaml_tab: () => this._renderYaml(content),
       activity: () => this._renderActivity(content),
     }[this._tab];
-    // The tab's header card: its illustrated banner, then the blocks that open the tab (summary tiles, help, discover)
+    this._renderHead();
+    // The tab's header card: a compact header (the picture is the panel's top bar), then the blocks that open the tab
+    // (summary tiles, help, discover); the overview has no header of its own, the top bar is its header.
     const top = this._el("div", "card shtop");
-    top.append(scbBanner(this));
+    if (this._tab !== "overview") top.append(scbBanner(this, this._tab, { compact: true }));
     content.append(top);
     if (this._config.yaml && this._tab !== "overview") content.append(this._el("div", "banner info", this._t("yaml")));
     render();
     const body = this._el("div", "shbody");
     while (top.nextElementSibling?.matches(".banner.info, .summary, .section-help, .discover, .start")) body.append(top.nextElementSibling);
     if (body.childElementCount) top.append(body);
+    if (!top.childElementCount) top.remove();
   }
 
   /** Everything Smart Comfort did and why, live, by day, with filters: drawn by the panel, not by a card. */
@@ -5418,67 +5559,112 @@ class SmartComfortPanel extends HTMLElement {
 
     // The comfort score, the points to watch and the outdoor temperature are in the tab's header (scbBanner)
 
-    const summary = this._el("div", "summary");
-    const tile = (icon, label, value, onClick, active) => {
-      const t = this._el(onClick ? "button" : "div", `tile${active === false ? " off" : ""}`);
+    // Over the rest: the room filter (the rooms with alerts as chips, the fine ones behind "+ N OK"), the
+    // notifications / device control / lighting switches as pills, then four tiles of the chart.
+    const summary = this._el("div", "summary ov");
+    const annex = new Set((s.rooms || []).filter((r) => r.is_annex).map((r) => r.room_id));
+    const open = (s.alerts || []).filter((a) => !annex.has(a.room));
+    const rooms = s.rooms || [];
+    // A room by its id (its name in an older status), an alert in it by the same
+    const keyOf = (room) => room.room_id ?? room.name;
+    const inRoom = (a, room) => (room.room_id !== undefined ? a.room === room.room_id : a.room_name === room.name);
+    this._room = rooms.some((r) => keyOf(r) === this._room) ? this._room : "";
+    const countOf = (room) => s.alerts.filter((a) => inRoom(a, room)).length;
+    const watched = rooms.filter((r) => countOf(r) > 0).sort((x, y) => countOf(y) - countOf(x) || x.name.localeCompare(y.name));
+    const fine = rooms.filter((r) => countOf(r) === 0);
+    const filters = this._el("div", "filters");
+    const chip = (id, label, n, tone) => {
+      const c = this._el("button", `fchip${(this._room || "") === id ? " on" : ""}`);
+      c.dataset.room = id;
+      c.setAttribute("aria-pressed", String((this._room || "") === id));
+      if (tone) c.append(this._el("i", `dot ${tone}`));
+      c.append(document.createTextNode(label));
+      if (n) c.append(this._el("span", "cnt", String(n)));
+      c.addEventListener("click", () => {
+        this._room = this._room === id ? "" : id;
+        this._renderTab();
+      });
+      return c;
+    };
+    filters.append(chip("", this._t("all_rooms"), s.alerts.length));
+    const toneOf = (room) => (s.alerts.some((x) => inRoom(x, room) && x.severity === "critical") ? "bad" : "warn");
+    for (const r of watched) filters.append(chip(keyOf(r), r.name, countOf(r), toneOf(r)));
+    // The fine rooms: one chip when chosen, otherwise grouped in a popover (there can be many)
+    const chosenFine = this._room ? fine.find((r) => keyOf(r) === this._room) : null;
+    if (chosenFine) filters.append(chip(keyOf(chosenFine), chosenFine.name, 0, "good"));
+    const others = fine.filter((r) => r !== chosenFine);
+    if (others.length) {
+      const more = this._el("details", "more");
+      const sum = this._el("summary", "fchip", this._t("n_ok_rooms", { n: others.length }));
+      const pop = this._el("div", "pop");
+      for (const r of others) pop.append(chip(keyOf(r), r.name, 0, "good"));
+      more.append(sum, pop);
+      filters.append(more);
+    }
+    const spacer = this._el("span", "grow");
+    filters.append(spacer);
+    const toggle = (on, onIcon, offIcon, onKey, offKey, key) => {
+      const b = this._el("button", `pill${on ? " on" : ""}`);
+      const i = document.createElement("ha-icon");
+      i.icon = on ? onIcon : offIcon;
+      b.append(i, document.createTextNode(this._t(on ? onKey : offKey)));
+      b.addEventListener("click", () =>
+        this._hass.callService("switch", on ? "turn_off" : "turn_on", { entity_id: this._switch(key) })
+      );
+      return b;
+    };
+    filters.append(
+      toggle(s.notifications_enabled, "mdi:bell", "mdi:bell-off", "notifications_on", "notifications_off", "notifications"),
+      toggle(s.control_enabled, "mdi:air-conditioner", "mdi:hand-back-right-off", "control_on", "control_off", "control"),
+      ...(rooms.some((r) => Object.keys(r.lights || {}).length)
+        ? [toggle(s.lighting_enabled, "mdi:lightbulb-auto", "mdi:lightbulb-off-outline", "lighting_on", "lighting_off", "lighting")]
+        : [])
+    );
+    summary.append(filters);
+    const otile = (tone, icon, label, state, count) => {
+      const t = this._el("div", `otile ${count || tone !== "warn" ? tone : "rest"}`);
+      const past = this._el("span", "pastille");
       const i = document.createElement("ha-icon");
       i.icon = icon;
-      t.append(i, this._el("div", "tile-value", value), this._el("div", "tile-label", label));
-      if (onClick) t.addEventListener("click", onClick);
+      past.append(i);
+      if (count) past.append(this._el("span", "pbadge", String(count)));
+      const tl = this._el("span", "tl");
+      tl.append(this._el("span", "tn", label), this._el("span", "ts", state));
+      t.append(past, tl);
       return t;
     };
-    summary.append(
-      tile("mdi:alert-circle-outline", this._t("active_alerts"), String(s.alerts.length)),
-      tile("mdi:home-thermometer-outline", this._t("outdoor"), `${this._format(s.outdoor_temperature)} °C`),
-      ...(typeof s.outdoor_noise === "number"
-        ? [tile("mdi:volume-medium", this._t("outdoor_noise"), `${this._format(s.outdoor_noise, 0)} dB`)]
-        : []),
+    const handled = open.filter((a) => a.handled).length;
+    const c = this._comfort(s);
+    const tiles = this._el("div", "otiles");
+    tiles.append(
+      otile(c.tone === "good" ? "good" : c.tone, "mdi:alert-circle-outline", this._t("active_alerts"), open.length ? this._t("n_handled", { n: handled }) : this._t("no_alerts"), open.length),
+      otile("info", "mdi:home-thermometer-outline", this._t("outdoor"), `${this._format(s.outdoor_temperature)} °C`, 0),
       ...(typeof s.outdoor_air === "number"
-        ? [tile("mdi:weather-hazy", this._t("outdoor_air"), `${this._format(s.outdoor_air, 0)}/6`)]
+        ? [otile(s.outdoor_air >= 4 ? "warn" : "good", "mdi:weather-hazy", this._t("outdoor_air"), `${this._format(s.outdoor_air, 0)}/6`, 0)]
         : []),
-      ...(s.night ? [tile("mdi:weather-night", this._t("quiet_night"), "")] : []),
-      tile(
-        s.notifications_enabled ? "mdi:bell" : "mdi:bell-off",
-        this._t(s.notifications_enabled ? "notifications_on" : "notifications_off"),
-        "",
-        () =>
-          this._hass.callService("switch", s.notifications_enabled ? "turn_off" : "turn_on", {
-            entity_id: this._switch("notifications"),
-          }),
-        s.notifications_enabled
-      ),
-      tile(
-        s.control_enabled ? "mdi:air-conditioner" : "mdi:hand-back-right-off",
-        this._t(s.control_enabled ? "control_on" : "control_off"),
-        "",
-        () =>
-          this._hass.callService("switch", s.control_enabled ? "turn_off" : "turn_on", {
-            entity_id: this._switch("control"),
-          }),
-        s.control_enabled
-      ),
-      ...(s.rooms.some((r) => Object.keys(r.lights || {}).length)
+      ...(typeof s.outdoor_noise === "number" || s.night
         ? [
-            tile(
-              s.lighting_enabled ? "mdi:lightbulb-auto" : "mdi:lightbulb-off-outline",
-              this._t(s.lighting_enabled ? "lighting_on" : "lighting_off"),
-              "",
-              () =>
-                this._hass.callService("switch", s.lighting_enabled ? "turn_off" : "turn_on", {
-                  entity_id: this._switch("lighting"),
-                }),
-              s.lighting_enabled
+            otile(
+              "night",
+              s.night ? "mdi:weather-night" : "mdi:volume-medium",
+              this._t(typeof s.outdoor_noise === "number" ? "outdoor_noise" : "quiet_night"),
+              [typeof s.outdoor_noise === "number" ? `${this._format(s.outdoor_noise, 0)} dB` : "", s.night && typeof s.outdoor_noise === "number" ? this._t("quiet_night") : ""].filter(Boolean).join(" · ") || this._t("quiet_night"),
+              0
             ),
           ]
         : [])
     );
+    summary.append(tiles);
     content.append(summary);
 
-    const alerts = this._card(this._t("active_alerts"), "mdi:bell-ring-outline");
-    if (!s.alerts.length) {
+    // To handle: the active alerts (of the room chosen), snooze and acknowledge on each, Notify now under them
+    const alerts = this._card(this._t("to_handle"), "mdi:bell-ring-outline");
+    const chosen = rooms.find((r) => keyOf(r) === this._room);
+    const shown = s.alerts.filter((a) => !chosen || inRoom(a, chosen));
+    if (!shown.length) {
       alerts.append(this._el("div", "empty", this._t("no_alerts")));
     }
-    for (const a of s.alerts) {
+    for (const a of shown) {
       const row = this._el("div", "alert");
       const i = document.createElement("ha-icon");
       i.icon = KIND_ICONS[a.kind] || "mdi:alert";
@@ -5518,7 +5704,7 @@ class SmartComfortPanel extends HTMLElement {
     content.append(alerts);
 
     const grid = this._el("div", "grid");
-    for (const room of s.rooms) {
+    for (const room of s.rooms.filter((r) => !chosen || r === chosen)) {
       const conf = (this._config.options.rooms || []).find((r) => r.name === room.name);
       const card = this._card(room.name, this._roomIcon(conf || room));
       card.classList.add(room.alerts.length ? "has-alert" : "is-ok");
@@ -5559,7 +5745,7 @@ class SmartComfortPanel extends HTMLElement {
       }
       grid.append(card);
     }
-    for (const place of s.outdoors || []) grid.append(this._outdoorStatus(place));
+    if (!chosen) for (const place of s.outdoors || []) grid.append(this._outdoorStatus(place));
     content.append(grid);
 
     if (s.last_notification) {
@@ -7179,8 +7365,7 @@ function scbRoomTone(room) {
 }
 
 /** The tab's header: its banner (title, pill, subtitle, scene), in a card the tab's first blocks are moved into. */
-function scbBanner(panel) {
-  const tab = panel._tab;
+function scbBanner(panel, tab = panel._tab, opts = {}) {
   const s = panel._status || null;
   const night = Boolean(panel._hass?.themes?.darkMode);
   let tone = "idle";
@@ -7198,6 +7383,14 @@ function scbBanner(panel) {
     const tones = (s.rooms || []).filter((r) => !r.is_annex).map(scbRoomTone);
     const worst = (list) => (list.includes("bad") ? "bad" : list.includes("warn") ? "warn" : "good");
     extra = { score: c.score, lines: [worst(tones.slice(0, 2)), worst(tones.slice(2, 4)), worst(tones.slice(4))], mood: scbMood(s.alerts || [], s.rooms || []) };
+    // The panel's top bar: Smart Comfort, the points to watch as its pill, the comfort score first on the line under it
+    if (opts.head) {
+      sub = `${pill} · ${sub}`;
+      pill = title;
+      title = "Smart Comfort";
+    }
+  } else if (opts.head) {
+    title = "Smart Comfort";
   } else if (s && tab === "alerts") {
     const c = panel._comfort(s);
     tone = c.tone;
@@ -7226,12 +7419,14 @@ function scbBanner(panel) {
   if (tab === "overview" && tone !== "good" && tone !== "idle") wall = `color-mix(in srgb, ${SCB_TONES[tone]} ${night ? 14 : 9}%, ${wall})`;
   const furniture = decor === "E" ? scbGarden(night) : scbDecor(decor, night);
   const el = document.createElement("div");
-  el.className = `shbanner ${tone}${night ? " night" : ""}`;
+  el.className = `shbanner ${tone}${night ? " night" : ""}${opts.compact ? " compact" : ""}${opts.head ? " head" : ""}`;
   el.style.setProperty("--sh-wall", wall);
   const esc = (v) => String(v).replace(/[&<>"]/g, (ch) => `&#${ch.charCodeAt(0)};`);
-  el.innerHTML = `<svg class="shscene" viewBox="0 0 360 80" preserveAspectRatio="xMaxYMax slice" aria-hidden="true" focusable="false">${furniture}<g transform="translate(160 0)">${scbScene(tab, tone, night, extra)}</g></svg>
-    <div class="shground g-${floor}"></div>
-    <div class="shhead"><span class="shbadge" aria-hidden="true"><ha-icon icon="${SCB_ICONS[tab] || SCB_ICONS.overview}"></ha-icon></span>
+  const scene = opts.compact
+    ? ""
+    : `<svg class="shscene" viewBox="0 0 360 80" preserveAspectRatio="xMaxYMax slice" aria-hidden="true" focusable="false">${furniture}<g transform="translate(160 0)">${scbScene(tab, tone, night, extra)}</g></svg>
+    <div class="shground g-${floor}"></div>`;
+  el.innerHTML = `${scene}<div class="shhead"><span class="shbadge" aria-hidden="true"><ha-icon icon="${SCB_ICONS[tab] || SCB_ICONS.overview}"></ha-icon></span>
       <div class="shtitles"><div class="shtrow"><span class="shtitle">${esc(title)}</span>${pill ? `<span class="shpill">${esc(pill)}</span>` : ""}</div>
         ${sub ? `<span class="shsub" title="${esc(sub)}">${esc(sub)}</span>` : ""}</div></div>`;
   return el;
@@ -7245,46 +7440,88 @@ const STYLE = `
     color: var(--primary-text-color);
     font-family: var(--paper-font-body1_-_font-family, Roboto, sans-serif);
   }
-  .toolbar {
+  /* The top bar: the living room across the page (as on the ENT ONE panel); the tabs under it on the page background,
+     sticky, with the unsaved-changes actions at their right */
+  :host { --sc-accent: #21b7b6; }
+  .topbar .shbanner { height: 90px; }
+  .topbar .shhead { padding-left: 4px; right: calc(min(360px, 46%) + 96px); }
+  .topbar .shscene { right: 96px; }
+  .topbar .shtitle { font-size: 20px; }
+  .hmenu { flex: none; color: inherit; }
+  .hacts { position: absolute; z-index: 2; top: calc((100% - 10px) / 2 - 17px); right: 12px; display: flex; gap: 6px; }
+  .hacts .icon-btn { width: 34px; height: 34px; padding: 0; border-radius: 50%; display: grid; place-items: center; box-sizing: border-box; text-decoration: none;
+    color: #33506b; background: rgba(255, 255, 255, 0.55); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.7); --mdc-icon-size: 20px; }
+  .hacts .icon-btn:hover { background: rgba(255, 255, 255, 0.82); }
+  .night .hacts .icon-btn { color: #fff; background: rgba(255, 255, 255, 0.12); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2); }
+  :host([bare]) .topbar { display: none; }
+  .tabs {
     display: flex;
     align-items: center;
-    gap: 8px;
-    height: var(--header-height, 56px);
+    gap: 4px;
     padding: 0 12px;
-    background: var(--app-header-background-color, var(--primary-color));
-    color: var(--app-header-text-color, #fff);
-    border-bottom: var(--app-header-border-bottom, none);
-    box-sizing: border-box;
+    overflow-x: auto;
+    background: var(--primary-background-color);
+    border-bottom: 1px solid var(--divider-color, rgba(0, 0, 0, 0.12));
     position: sticky;
     top: 0;
     z-index: 2;
   }
-  .title { flex: 1; font-size: 20px; font-weight: 400; margin-left: 8px; }
-  .actions { display: flex; align-items: center; gap: 8px; }
-  .dirty { font-size: 13px; opacity: 0.85; margin-right: 4px; }
-  .tabs {
-    display: flex;
-    gap: 4px;
-    padding: 0 12px;
-    overflow-x: auto;
-    background: var(--app-header-background-color, var(--primary-color));
-    position: sticky;
-    top: var(--header-height, 56px);
-    z-index: 2;
-  }
+  .tablist { display: flex; gap: 4px; flex: 1; min-width: 0; }
+  .tabmenu { display: none; color: var(--primary-text-color); }
+  :host([bare]) .tabmenu { display: flex; }
   .tab {
     background: none;
     border: none;
     border-bottom: 2px solid transparent;
-    color: var(--app-header-text-color, #fff);
-    opacity: 0.75;
-    padding: 12px 14px;
+    color: var(--secondary-text-color);
+    padding: 12px 12px 10px;
     font: inherit;
     font-size: 14px;
+    font-weight: 500;
     cursor: pointer;
     white-space: nowrap;
   }
-  .tab.active { opacity: 1; border-bottom-color: var(--app-header-text-color, #fff); }
+  .tab:hover { color: var(--primary-text-color); }
+  .tab.active { color: var(--primary-text-color); border-bottom-color: var(--sc-accent); }
+  .tab .cnt { display: inline-block; min-width: 18px; padding: 1px 5px; margin-left: 5px; border-radius: 9px; font-size: 11px; text-align: center; box-sizing: border-box;
+    color: color-mix(in srgb, #f5a623 60%, var(--primary-text-color)); background: color-mix(in srgb, #f5a623 18%, transparent); }
+  .actions { display: flex; align-items: center; gap: 8px; flex: none; }
+  .dirty { font-size: 13px; color: var(--secondary-text-color); margin-right: 4px; }
+  /* A tab's compact header (the picture is in the top bar) */
+  .shbanner.compact { height: auto; background: none; color: inherit; --sh-sub: var(--secondary-text-color); }
+  .shbanner.compact .shhead { position: static; padding: 12px 16px 0; }
+  .shbanner.compact.night { color: inherit; }
+  /* Overview: room filter, switches, tiles of the chart */
+  .summary.ov { display: flex; flex-direction: column; gap: 12px; }
+  .filters { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+  .filters .grow { flex: 1; }
+  .fchip, .pill { display: inline-flex; align-items: center; gap: 6px; min-height: 30px; padding: 0 12px; border-radius: 16px; font: inherit; font-size: 13px; box-sizing: border-box; cursor: pointer;
+    color: var(--secondary-text-color); background: var(--card-background-color, #fff); border: 1px solid var(--divider-color, #e0e0e0); }
+  .fchip.on { color: var(--primary-text-color); border: 1.5px solid var(--sc-accent); }
+  .fchip .dot { width: 7px; height: 7px; border-radius: 50%; }
+  .fchip .dot.warn { background: #f5a623; } .fchip .dot.bad { background: var(--error-color, #db4437); } .fchip .dot.good { background: var(--success-color, #43a047); }
+  .fchip .cnt { font-size: 11px; padding: 0 6px; border-radius: 8px; background: color-mix(in srgb, var(--sc-accent) 16%, transparent); color: color-mix(in srgb, var(--sc-accent) 55%, var(--primary-text-color)); }
+  .more { position: relative; }
+  .more > summary { list-style: none; border-style: dashed; } .more > summary::-webkit-details-marker { display: none; }
+  .more .pop { position: absolute; z-index: 3; top: calc(100% + 6px); left: 0; min-width: 200px; max-height: 300px; overflow: auto; padding: 8px; box-sizing: border-box;
+    display: flex; flex-direction: column; gap: 4px; background: var(--card-background-color, #fff); border: 1px solid var(--divider-color, rgba(127,127,127,.3));
+    border-radius: 12px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14); }
+  .pill { --mdc-icon-size: 16px; }
+  .pill.on { color: color-mix(in srgb, var(--success-color, #43a047) 60%, var(--primary-text-color)); background: color-mix(in srgb, var(--success-color, #43a047) 14%, transparent); border-color: transparent; }
+  .otiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; }
+  .otile { display: flex; align-items: center; gap: 12px; min-width: 0; padding: 12px 14px; border-radius: 12px; box-sizing: border-box;
+    background: var(--secondary-background-color, rgba(127,127,127,.08)); --c: #8a96a3; }
+  .otile.warn { --c: #f5a623; } .otile.bad { --c: var(--error-color, #db4437); } .otile.good { --c: var(--success-color, #43a047); }
+  .otile.info { --c: #2f80ed; } .otile.night { --c: #7f77dd; }
+  .otile .pastille { position: relative; flex: none; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; --mdc-icon-size: 22px;
+    color: var(--c); background: color-mix(in srgb, var(--c) 16%, transparent); }
+  .otile .pbadge { position: absolute; top: -3px; right: -5px; min-width: 18px; height: 18px; padding: 0 4px; box-sizing: border-box; border-radius: 9px; font-size: 11px; font-weight: 600;
+    line-height: 18px; text-align: center; color: #fff; background: var(--c); box-shadow: 0 0 0 2px var(--card-background-color, #fff); }
+  .otile .tl { display: flex; flex-direction: column; min-width: 0; }
+  .otile .tn { font-size: 14px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .otile .ts { font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: color-mix(in srgb, var(--c) 65%, var(--primary-text-color)); }
+  .otile.rest .ts { color: var(--secondary-text-color); }
+  @media (max-width: 600px) { .topbar .shscene { display: none; } .topbar .shhead { right: 96px; } .topbar .shbadge { display: none; } }
   .content { max-width: 1040px; margin: 0 auto; padding: 16px; display: flex; flex-direction: column; gap: 16px; }
   .card {
     background: var(--ha-card-background, var(--card-background-color, #fff));
@@ -7335,8 +7572,6 @@ const STYLE = `
     color: var(--primary-color);
     cursor: pointer;
   }
-  .toolbar .btn { color: var(--app-header-text-color, #fff); border-color: currentColor; }
-  .toolbar .btn.primary { background: rgba(255, 255, 255, 0.15); }
   .btn:hover { background: rgba(var(--rgb-primary-color, 3, 169, 244), 0.08); }
   .btn:disabled { opacity: 0.6; cursor: default; }
   .btn.add { align-self: flex-start; }
