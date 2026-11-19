@@ -4,11 +4,14 @@ from __future__ import annotations
 
 import asyncio
 from datetime import UTC, timedelta
+from unittest.mock import patch
 
 import pytest
 from homeassistant.config_entries import ConfigEntryState
 from homeassistant.core import HomeAssistant
+from homeassistant.exceptions import ServiceValidationError
 from homeassistant.helpers import entity_registry as er
+from homeassistant.helpers import issue_registry as ir
 from homeassistant.setup import async_setup_component
 from homeassistant.util import dt as dt_util
 from pytest_homeassistant_custom_component.common import (
@@ -236,9 +239,58 @@ async def test_yaml_reimport_only_when_changed(hass: HomeAssistant) -> None:
     await hass.async_block_till_done()
     await import_(yaml)
     assert len(entry.options["rooms"]) == 2
-    # YAML changed: it wins.
+    # YAML changed: only its changes apply (A removed, C added), the room added in the UI stays.
     await import_({"rooms": [{"name": "C"}]})
-    assert entry.options["rooms"] == [{"name": "C"}]
+    assert entry.options["rooms"] == [{"name": "B"}, {"name": "C"}]
+    assert entry.data["yaml"] == {"rooms": [{"name": "C"}]}
+
+
+async def test_yaml_change_replacing_a_ui_change_is_reported(hass: HomeAssistant) -> None:
+    async_import_yaml(hass, {"digest_window": 5})
+    await hass.async_block_till_done()
+    entry = hass.config_entries.async_entries(DOMAIN)[0]
+    hass.config_entries.async_update_entry(entry, options={"digest_window": 10, "quiet_start": "22:00:00"})
+    await hass.async_block_till_done()
+    assert async_import_yaml(hass, {"digest_window": 3}) == ["digest_window"]
+    await hass.async_block_till_done()
+    assert entry.options == {"digest_window": 3, "quiet_start": "22:00:00"}
+    assert ir.async_get(hass).async_get_issue(DOMAIN, "yaml_conflicts") is not None
+    # A later change without conflict clears the repair.
+    assert async_import_yaml(hass, {"digest_window": 4}) == []
+    await hass.async_block_till_done()
+    assert ir.async_get(hass).async_get_issue(DOMAIN, "yaml_conflicts") is None
+
+
+async def test_yaml_from_before_the_merge(hass: HomeAssistant) -> None:
+    """An entry with only the hash keeps its UI changes while the YAML is the same, and records that YAML."""
+    yaml = {"rooms": [{"name": "A"}]}
+    entry = MockConfigEntry(
+        domain=DOMAIN, data={"yaml_hash": yaml_hash(yaml)}, options={"rooms": [{"name": "A"}, {"name": "B"}]}
+    )
+    entry.add_to_hass(hass)
+    assert async_import_yaml(hass, yaml) is None
+    assert entry.data["yaml"] == yaml
+    assert len(entry.options["rooms"]) == 2
+
+
+async def test_reload_action(hass: HomeAssistant) -> None:
+    yaml = {"digest_window": 5}
+    with patch("custom_components.smart_comfort.async_integration_yaml_config", return_value={DOMAIN: yaml}) as conf:
+        assert await async_setup_component(hass, DOMAIN, {DOMAIN: yaml})
+        await hass.async_block_till_done()
+        entry = hass.config_entries.async_entries(DOMAIN)[0]
+        hass.config_entries.async_update_entry(entry, options={"digest_window": 5, "reminder": 30})
+        await hass.async_block_till_done()
+        result = await hass.services.async_call(DOMAIN, "reload", blocking=True, return_response=True)
+        assert result == {"applied": False, "conflicts": []}
+        conf.return_value = {DOMAIN: {"digest_window": 7}}
+        result = await hass.services.async_call(DOMAIN, "reload", blocking=True, return_response=True)
+        await hass.async_block_till_done()
+        assert result == {"applied": True, "conflicts": []}
+        assert entry.options == {"digest_window": 7, "reminder": 30}
+        conf.return_value = None
+        with pytest.raises(ServiceValidationError):
+            await hass.services.async_call(DOMAIN, "reload", blocking=True, return_response=True)
 
 
 async def test_failed_notification_is_sent_again(hass: HomeAssistant, fan_calls) -> None:

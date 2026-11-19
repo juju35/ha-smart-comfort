@@ -502,6 +502,10 @@
     "get_config": {
       "name": "Configuratie ophalen",
       "description": "Geeft de gebruikte opties terug (kamers, waarschuwingen, bediening, verlichting), om in de YAML te kopiëren of te controleren wat er is ingesteld."
+    },
+    "reload": {
+      "name": "YAML opnieuw laden",
+      "description": "Leest smart_comfort: in configuration.yaml opnieuw en past alleen toe wat er sinds de laatste import is veranderd; wijzigingen in het paneel aan andere instellingen blijven. Geeft de instellingen terug waar de YAML een wijziging uit het paneel heeft vervangen."
     }
   },
   "common": {
@@ -535,6 +539,15 @@
     },
     "unknown_room": {
       "message": "Onbekende kamer: {room}."
+    },
+    "invalid_yaml": {
+      "message": "De YAML-configuratie van Smart Comfort is ongeldig: bekijk de logboeken."
+    }
+  },
+  "issues": {
+    "yaml_conflicts": {
+      "title": "De YAML heeft wijzigingen uit het paneel vervangen",
+      "description": "De YAML van Smart Comfort heeft instellingen gewijzigd die ook in het paneel waren gewijzigd. De waarde uit de YAML is behouden voor:\n\n{paths}\n\nStel ze opnieuw in het paneel in, of wijzig ze in de YAML, om een andere waarde te houden."
     }
   }
 }

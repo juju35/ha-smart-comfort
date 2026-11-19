@@ -502,6 +502,10 @@
     "get_config": {
       "name": "Konfiguration abrufen",
       "description": "Gibt die aktuellen Optionen zurück (Räume, Warnungen, Steuerung, Beleuchtung), zum Kopieren ins YAML oder zur Kontrolle."
+    },
+    "reload": {
+      "name": "YAML neu laden",
+      "description": "Liest smart_comfort: in configuration.yaml erneut und übernimmt nur, was sich seit dem letzten Import geändert hat; im Panel geänderte andere Einstellungen bleiben. Gibt die Einstellungen zurück, bei denen das YAML eine Änderung aus dem Panel ersetzt hat."
     }
   },
   "common": {
@@ -535,6 +539,15 @@
     },
     "unknown_room": {
       "message": "Unbekannter Raum: {room}."
+    },
+    "invalid_yaml": {
+      "message": "Die YAML-Konfiguration von Smart Comfort ist ungültig: siehe Protokolle."
+    }
+  },
+  "issues": {
+    "yaml_conflicts": {
+      "title": "Das YAML hat Änderungen aus dem Panel ersetzt",
+      "description": "Das YAML von Smart Comfort hat Einstellungen geändert, die auch im Panel geändert worden waren. Der Wert aus dem YAML wurde behalten für:\n\n{paths}\n\nStelle sie im Panel erneut ein oder ändere sie im YAML, um einen anderen Wert zu behalten."
     }
   }
 }

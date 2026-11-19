@@ -502,6 +502,10 @@
     "get_config": {
       "name": "Lire la configuration",
       "description": "Renvoie les options en vigueur (pièces, alertes, pilotage, éclairage), à copier dans le YAML ou pour vérifier ce qui est réglé."
+    },
+    "reload": {
+      "name": "Recharger le YAML",
+      "description": "Relit smart_comfort: dans configuration.yaml et n'applique que ce qui y a changé depuis le dernier import ; les modifications faites dans le panneau sur les autres réglages restent. Renvoie les réglages où le YAML a remplacé une modification du panneau."
     }
   },
   "common": {
@@ -535,6 +539,15 @@
     },
     "unknown_room": {
       "message": "Pièce inconnue : {room}."
+    },
+    "invalid_yaml": {
+      "message": "La configuration YAML de Smart Comfort est invalide : consultez les journaux."
+    }
+  },
+  "issues": {
+    "yaml_conflicts": {
+      "title": "Le YAML a remplacé des modifications faites dans le panneau",
+      "description": "Le YAML de Smart Comfort a changé des réglages qui avaient aussi été modifiés dans le panneau. La valeur du YAML a été gardée pour :\n\n{paths}\n\nRéglez-les de nouveau dans le panneau, ou changez-les dans le YAML, pour garder une autre valeur."
     }
   }
 }

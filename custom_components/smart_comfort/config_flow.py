@@ -421,7 +421,9 @@ class SmartComfortConfigFlow(ConfigFlow, domain=k.DOMAIN):
         await self.async_set_unique_id(k.DOMAIN)
         self._abort_if_unique_id_configured()
         return self.async_create_entry(
-            title=k.TITLE, data={"yaml_hash": import_data["yaml_hash"]}, options=import_data["options"]
+            title=k.TITLE,
+            data={"yaml_hash": import_data["yaml_hash"], "yaml": import_data.get("yaml")},
+            options=import_data["options"],
         )
 
     @staticmethod

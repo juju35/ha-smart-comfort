@@ -502,6 +502,10 @@
     "get_config": {
       "name": "Získat konfiguraci",
       "description": "Vrátí používané možnosti (místnosti, upozornění, ovládání, osvětlení) ke zkopírování do YAML nebo ke kontrole nastavení."
+    },
+    "reload": {
+      "name": "Znovu načíst YAML",
+      "description": "Znovu načte smart_comfort: v configuration.yaml a použije jen to, co se změnilo od posledního importu; změny ostatních nastavení provedené v panelu zůstanou. Vrátí nastavení, ve kterých YAML nahradil změnu z panelu."
     }
   },
   "common": {
@@ -535,6 +539,15 @@
     },
     "unknown_room": {
       "message": "Neznámá místnost: {room}."
+    },
+    "invalid_yaml": {
+      "message": "Konfigurace YAML Smart Comfort je neplatná: zkontrolujte protokoly."
+    }
+  },
+  "issues": {
+    "yaml_conflicts": {
+      "title": "YAML nahradil změny provedené v panelu",
+      "description": "YAML Smart Comfort změnil nastavení, která byla změněna i v panelu. Zachována byla hodnota z YAML pro:\n\n{paths}\n\nNastavte je znovu v panelu nebo je změňte v YAML, chcete-li zachovat jinou hodnotu."
     }
   }
 }

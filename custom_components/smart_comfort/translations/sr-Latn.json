@@ -502,6 +502,10 @@
     "get_config": {
       "name": "Preuzmi konfiguraciju",
       "description": "Vraća opcije koje se koriste (sobe, upozorenja, kontrola, osvetljenje), za kopiranje u YAML ili za proveru onoga što je podešeno."
+    },
+    "reload": {
+      "name": "Ponovo učitaj YAML",
+      "description": "Ponovo čita smart_comfort: u configuration.yaml i primenjuje samo ono što se promenilo od poslednjeg uvoza; izmene ostalih podešavanja napravljene u panelu ostaju. Vraća podešavanja u kojima je YAML zamenio izmenu iz panela."
     }
   },
   "common": {
@@ -535,6 +539,15 @@
     },
     "unknown_room": {
       "message": "Nepoznata soba: {room}."
+    },
+    "invalid_yaml": {
+      "message": "YAML konfiguracija za Smart Comfort nije ispravna: pogledajte zapise."
+    }
+  },
+  "issues": {
+    "yaml_conflicts": {
+      "title": "YAML je zamenio izmene napravljene u panelu",
+      "description": "YAML za Smart Comfort je promenio podešavanja koja su izmenjena i u panelu. Zadržana je vrednost iz YAML-a za:\n\n{paths}\n\nPonovo ih podesite u panelu ili ih promenite u YAML-u da biste zadržali drugu vrednost."
     }
   }
 }

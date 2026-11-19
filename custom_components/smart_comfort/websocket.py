@@ -87,7 +87,7 @@ def ws_get_config(hass: HomeAssistant, connection: websocket_api.ActiveConnectio
     )
 
 
-def _check_rooms(options: dict[str, Any]) -> str | None:
+def check_rooms(options: dict[str, Any]) -> str | None:
     seen: set[str] = set()
     for room in options.get(k.CONF_ROOMS) or []:
         key = str(room.get("id") or slugify(room[k.CONF_NAME]))
@@ -111,7 +111,7 @@ def ws_save_config(hass: HomeAssistant, connection: websocket_api.ActiveConnecti
     except vol.Invalid as err:
         connection.send_error(msg["id"], "invalid_format", humanize_error(msg["options"], err))
         return
-    if (problem := _check_rooms(options)) is not None:
+    if (problem := check_rooms(options)) is not None:
         connection.send_error(msg["id"], "invalid_format", problem)
         return
     hass.config_entries.async_update_entry(entry, options=options)

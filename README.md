@@ -81,7 +81,7 @@ Copy `custom_components/smart_comfort/` to `/config/custom_components/smart_comf
 
 Both ways can be used together:
 
-- **YAML**: add a `smart_comfort:` section (below). At startup it creates the integration, or replaces its options **if the YAML changed** since the last import. While the YAML stays the same, changes made in the UI are kept
+- **YAML**: add a `smart_comfort:` section (below) — in `configuration.yaml`, or in its own file with `smart_comfort: !include smart_comfort.yaml` or a [package](https://www.home-assistant.io/docs/configuration/packages/). At startup it creates the integration; afterwards the configuration stays editable in the panel. When the YAML changes (at a restart, or with **Reload the YAML** — the panel's button, `smart_comfort.reload`, or Developer tools → YAML), **only what changed in it is applied**: the changes made in the UI to the other settings stay. Rooms, places and devices are matched by room (name or id) and by entity, so a room added in the UI stays when the YAML changes another one. When the YAML and the UI changed the same setting, the YAML wins, and a repair lists the settings concerned
 - **UI**: [![Add integration](https://my.home-assistant.io/badges/config_flow_start.svg)](https://my.home-assistant.io/redirect/config_flow_start/?domain=smart_comfort) — **Settings → Devices & services → Add integration → Smart Comfort**, then the **Smart Comfort** panel in the sidebar (below), or **Configure** for the same settings as forms
 
 ### Configuration panel
@@ -97,7 +97,7 @@ Once set up, Smart Comfort adds a **Smart Comfort** page to the sidebar, for adm
 - **Settings**: notifications (where, presence, grouping, reminder; the rest under **Advanced**), device control (with the air conditioner, fan and purifier defaults folded) and adaptive lighting (the brightness of each moment on one row, the warmth only when it is on)
 - **YAML**: the configuration of Smart Comfort only, as it goes under `smart_comfort:` in `configuration.yaml` (the defaults are not repeated), with a **Copy** button — to move to YAML or keep a copy. Unsaved changes are included
 
-Changes are checked and saved with **Save** (or dropped with **Discard**); the integration reloads with them, and the page keeps following its status. Only the settings that differ from the defaults are stored. When the configuration comes from YAML, the page says so: what is saved there stays until the YAML changes.
+Changes are checked and saved with **Save** (or dropped with **Discard**); the integration reloads with them, and the page keeps following its status. Only the settings that differ from the defaults are stored. When the configuration comes from YAML, the page says so, with a **Reload the YAML** button: only what changed in the YAML is applied, and the page tells which settings changed here it replaced.
 
 Each tab has its own address, e.g. `/smart-comfort/rooms` (the addresses of earlier versions, `/notifications` and `/control`, open **Settings**).
 
@@ -550,6 +550,7 @@ The activity (the last 300 entries) is kept across restarts. It is also availabl
 | `smart_comfort.acknowledge` | `rooms`, `kinds` | No reminder nor escalation for the current problems until they end |
 | `smart_comfort.notify_now` | | Send a summary now; returns `sent` |
 | `smart_comfort.get_config` | | Returns the options in use (response only), to copy into the YAML or check what is set |
+| `smart_comfort.reload` | | Reads `smart_comfort:` again and applies only what changed since the last import; returns `applied` and `conflicts` (the settings where the YAML replaced a UI change) |
 
 Rooms are given by name or id (`Living room` or `living_room`).
 
