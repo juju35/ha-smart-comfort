@@ -552,6 +552,10 @@
     "file_invalid": {
       "title": "Smart Comfort: {file} ist ungültig",
       "description": "{file} im Konfigurationsordner kann nicht übernommen werden: die aktuelle Konfiguration bleibt, und das Panel schreibt nicht in die Datei, bis sie korrigiert ist:\n\n`{error}`"
+    },
+    "presence_moved": {
+      "title": "Smart Comfort: Licht bei Anwesenheit ist jetzt in House Rules",
+      "description": "Licht bei Anwesenheit gehört nicht mehr zu Smart Comfort (2.0) und wird nicht mehr angewendet für:\n\n{rooms}\n\nUm es zu behalten, installiere [House Rules]({url}) (1.3.0 oder neuer) und öffne dessen Panel: **Einstellungen → Import → Analysieren** schlägt eine Regel pro Raum vor, mit denselben Sensoren, Lichtern, Verzögerungen, Zeitfenstern und Mittagsschläfen. Entferne danach `presence:` aus diesen Räumen hier. Ein Licht, dessen Zeitfenster Helligkeit oder Farbe zu jeder Stunde festlegen, kann auch die `lights` des Raums verlassen, damit die adaptive Beleuchtung es nicht ändert."
     }
   }
 }

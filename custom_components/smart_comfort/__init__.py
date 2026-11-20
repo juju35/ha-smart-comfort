@@ -23,11 +23,13 @@ from homeassistant.helpers.storage import Store
 from homeassistant.helpers.typing import ConfigType
 
 from . import websocket
-from .config import build_settings, slugify
+from .config import Settings, build_settings, slugify
 from .const import (
     CONF_FILE_WATCH,
     CONF_FILE_WRITE,
     DOMAIN,
+    HOUSE_RULES_URL,
+    ISSUE_PRESENCE_MOVED,
     KINDS,
     MAX_MINUTES,
     SERVICE_ACKNOWLEDGE,
@@ -252,8 +254,29 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
     return True
 
 
+def _presence_moved_issue(hass: HomeAssistant, settings: Settings) -> None:
+    """Lights on presence moved to House Rules (2.0): a repair lists the rooms that still have some."""
+    rooms = [room.name for room in settings.rooms if room.presence_moved]
+    if not rooms:
+        ir.async_delete_issue(hass, DOMAIN, ISSUE_PRESENCE_MOVED)
+        return
+    _LOGGER.warning("Lights on presence are no longer applied (moved to House Rules): %s", ", ".join(rooms))
+    ir.async_create_issue(
+        hass,
+        DOMAIN,
+        ISSUE_PRESENCE_MOVED,
+        is_fixable=False,
+        severity=ir.IssueSeverity.WARNING,
+        learn_more_url=HOUSE_RULES_URL,
+        translation_key=ISSUE_PRESENCE_MOVED,
+        translation_placeholders={"rooms": "\n".join(f"- {name}" for name in rooms), "url": HOUSE_RULES_URL},
+    )
+
+
 async def async_setup_entry(hass: HomeAssistant, entry: SmartComfortConfigEntry) -> bool:
-    manager = SmartComfort(hass, build_settings(dict(entry.options)))
+    settings = build_settings(dict(entry.options))
+    _presence_moved_issue(hass, settings)
+    manager = SmartComfort(hass, settings)
     await manager.async_start(starting=hass.state is not CoreState.running)
     entry.runtime_data = manager
     entry.async_on_unload(manager.async_stop)
@@ -285,6 +308,7 @@ async def async_remove_entry(hass: HomeAssistant, entry: SmartComfortConfigEntry
     async_remove_panel(hass)
     await async_remove_card(hass)
     ir.async_delete_issue(hass, DOMAIN, ISSUE_YAML_CONFLICTS)
+    ir.async_delete_issue(hass, DOMAIN, ISSUE_PRESENCE_MOVED)
     hass.data.get(DOMAIN, {}).pop("state", None)
     await Store(hass, STORAGE_VERSION, STORAGE_KEY).async_remove()
 

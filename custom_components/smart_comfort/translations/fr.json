@@ -552,6 +552,10 @@
     "file_invalid": {
       "title": "Smart Comfort : {file} est invalide",
       "description": "{file}, dans le dossier de configuration, ne peut pas être appliqué : la configuration en vigueur reste la même, et le panneau n'écrit plus dans le fichier tant qu'il n'est pas corrigé :\n\n`{error}`"
+    },
+    "presence_moved": {
+      "title": "Smart Comfort : les lumières sur présence passent dans House Rules",
+      "description": "Les lumières sur présence ne font plus partie de Smart Comfort (2.0) : elles ne sont plus appliquées pour :\n\n{rooms}\n\nPour les garder, installez [House Rules]({url}) (1.3.0 ou plus), puis ouvrez son panneau : **Réglages → Import → Analyser** propose une règle par pièce, avec les mêmes capteurs, lumières, délais, créneaux et siestes. Retirez ensuite `presence:` de ces pièces ici. Une lumière dont les créneaux fixent l'intensité ou la couleur à toute heure peut aussi quitter les `lights` de la pièce, pour que l'éclairage adaptatif ne la change pas."
     }
   }
 }

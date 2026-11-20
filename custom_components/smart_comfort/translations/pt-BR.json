@@ -552,6 +552,10 @@
     "file_invalid": {
       "title": "Smart Comfort: {file} é inválido",
       "description": "{file}, na pasta de configuração, não pode ser aplicado: a configuração em uso mantém-se e o painel não escreve no ficheiro até ser corrigido:\n\n`{error}`"
+    },
+    "presence_moved": {
+      "title": "Smart Comfort: as luzes por presença passam para o House Rules",
+      "description": "As luzes por presença deixaram de fazer parte do Smart Comfort (2.0): já não são aplicadas para:\n\n{rooms}\n\nPara as manter, instale o [House Rules]({url}) (1.3.0 ou posterior) e abra o seu painel: **Definições → Importar → Analisar** propõe uma regra por divisão, com os mesmos sensores, luzes, atrasos, horários e sestas. Depois remova `presence:` destas divisões aqui. Uma luz cujos horários fixam o brilho ou a cor a qualquer hora pode também sair das `lights` da divisão, para que a iluminação adaptativa não a altere."
     }
   }
 }

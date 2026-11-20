@@ -552,6 +552,10 @@
     "file_invalid": {
       "title": "Smart Comfort: {file} nije ispravan",
       "description": "{file} u fascikli konfiguracije ne može da se primeni: trenutna konfiguracija ostaje ista, a panel ne upisuje u datoteku dok se ne ispravi:\n\n`{error}`"
+    },
+    "presence_moved": {
+      "title": "Smart Comfort: svetla na prisustvo prelaze u House Rules",
+      "description": "Svetla na prisustvo više nisu deo Smart Comfort-a (2.0): više se ne primenjuju za:\n\n{rooms}\n\nDa biste ih zadržali, instalirajte [House Rules]({url}) (1.3.0 ili noviji), pa otvorite njegov panel: **Podešavanja → Uvoz → Analiziraj** predlaže po jedno pravilo po prostoriji, sa istim senzorima, svetlima, kašnjenjima, terminima i dremkama. Zatim ovde uklonite `presence:` iz tih prostorija. Svetlo čiji termini u svako doba određuju jačinu ili boju može i da izađe iz `lights` prostorije, da ga prilagodljivo osvetljenje ne menja."
     }
   }
 }

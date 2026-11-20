@@ -38,7 +38,7 @@ Comfort automations built with a cooldown keep notifying every couple of hours a
   - **back to normal at a set time**, per device (`reset_at`): the purifier back to its automatic mode at 20:40, even after a change by hand
   - **quiet night**: in the night hours (22:00–07:00 by default), devices with night settings run quieter — a fan at a lower speed or a sleep preset, a purifier in its sleep preset or mode, an air conditioner in its silent fan mode — and get no window boost; the day settings (or the state before the night) come back in the morning
 - **Adaptive lighting**: the dimmable lights of each room that are on get the brightness of the moment — day with the sun up, evening once it is down, night in the quiet night hours — at once when turned on, then gradually; optionally the warmth too (color temperature, can be turned off). Smart Comfort never turns a light on or off, night lights are only set at night, and a light changed by hand is left alone until it is turned off
-- **Lights on presence**, per room: lights turned on when someone comes in (only when the room is dark enough, with a light level sensor) at the brightness of the moment, and off once nobody is left for a while; slots keep some lights off (weekday mornings…) or set their brightness (a dim entrance at night), lights chosen to stay off during the naps of the house, night lights only at night, a color per slot (a blue night light), a presence that must last a few seconds (someone passing by doesn't count), and a light turned off by hand stays off until the room is empty
+- **Lights on presence** moved to [House Rules](https://github.com/juju35/ha-house-rules) in 2.0: its import brings them over as they were — see [Lights on presence: moved to House Rules](#lights-on-presence-moved-to-house-rules)
 - **Outdoors**: outdoor places (garden, terrace…) with their temperature, air quality and noise sensors, plus sensors in no area (weather entity, a city air quality index such as Atmo France)
 - **Noise**: a sound level sensor per room (noisy room alert), and outdoor noise sensors: no suggestion to open the windows while it is noisy outside, and an alert to close them when they are open in the noise
 - **Indoor air quality**: PM2.5, PM10 and air quality index sensors per room — those of the air purifiers too (`sensor.*_pm2_5_density`, a HomeKit air quality from 1 excellent to 5 poor…), the worst counts — for a **polluted air** alert with its value ("PM2.5 47 µg/m³, above 25 µg/m³"), and the purifiers of the room boosted until the air is clean again
@@ -90,7 +90,7 @@ Both ways can be used together:
 Once set up, Smart Comfort adds a **Smart Comfort** page to the sidebar, for administrators. Its top bar is the living room across the page (as on the ENT ONE panel): **Smart Comfort**, the points to watch as a pill, the comfort score, the outdoor temperature and the quiet night under it, the picture showing the worst state, with **Notify now** and the integration as round buttons. The tabs sit under it, Alerts with the number of active alerts; unsaved changes are saved or discarded at the right of the tabs. **Hide the top bar** (`hide_header`) hides this banner too, the tabs staying.
 
 - **Overview**: while nothing is set up (no room nor outdoor place), a **Discover** button that runs the discovery and opens its result in the Rooms tab; a room filter (the rooms with alerts as chips, the busiest first, the fine ones behind **+ N OK**) with the notifications, device control and adaptive lighting switches beside it, tiles for the alerts (and how many are handled), the outdoor temperature, the outdoor air and the noise; **To handle**: the active alerts with their state (notified, snoozed, acknowledged, handled by a running device) and **Snooze** / **Got it** buttons, the readings and devices of each room with their targets and manual overrides, the last notification, and switches for the notifications and the device control
-- **Activity**: what Smart Comfort did and why, live and by day — devices (cooling, window boost, night mode, back to normal…), lights (brightness of the moment, on with presence, off with nobody), indicator lights, notifications sent and cleared, changes by hand that pause a device or a light, reset times, commands that failed — drawn by the panel itself, at once, with filters (devices, lights, notifications, by hand) and a room filter; a line opens its entity
+- **Activity**: what Smart Comfort did and why, live and by day — devices (cooling, window boost, night mode, back to normal…), lights (brightness of the moment), indicator lights, notifications sent and cleared, changes by hand that pause a device or a light, reset times, commands that failed — drawn by the panel itself, at once, with filters (devices, lights, notifications, by hand) and a room filter; a line opens its entity
 - **Rooms**: **Discover** adds a room for every Home Assistant area with something to follow (a comfort sensor, an air conditioner, a fan, a purifier or a dimmable light — not a hallway with only its door) and sets it up: temperature, CO₂, humidity and noise sensors (a weather station preferred over a device's own sensor; never the temperatures of machines — NAS, internet box, server, UPS, printer, fridge…), PM2.5, PM10 and air quality index sensors (those of the purifiers too), windows and doors (an appliance's own door, light or extractor fan is left out — fridge, freezer, dishwasher, oven, range hood, washer, dryer; recognised by integration such as Home Connect or Miele, by name, or by a program / operation-state entity on the device), air conditioner (only one that can cool), fans with their natural / direct presets, purifiers with their auto / manual mode select or presets, dimmable lights (not the indicators of devices nor the floodlights of cameras; night lights flagged as such), the quiet morning of the bedrooms, and the night settings from their quiet presets and fan modes. Areas, bedrooms, night lights, indicators and machines are recognised by their names in English, French, German, Spanish, Italian, Dutch, Portuguese, Polish and Serbian (Garden, Jardin, Giardino, Tuin, Jardim, Ogród, Bašta / Башта…). The outdoor areas (garden, terrace, balcony…) with a sensor become outdoor places (an outdoor module counts by its device's area); outdoor sensors in no area — a sensor named outdoor, a city air quality index (Atmo France, WAQI…), and the weather entity when there is no outdoor temperature sensor — go to the other outdoor sensors. What is already set is kept, and running it again only adds what is new. Nothing is saved until **Save**. Each room shows the icon of its area (or one from its name), a **Type** (living space or annex — cellar, garage, workshop…), and folds into sections — **Sensors**, **Windows and doors**, **Devices**, **Lighting** (lights, quiet morning, naps), **Alerts** — each with a one-line summary; only what the room has is shown, and **+** buttons add the rest (a CO₂ sensor, a fan, a light, a nap, a customized alert…). Device settings stay folded under each device. Discover suggests the annex type from the area name (cellar, garage, atelier, grenier, Keller, Werkstatt…)
 - **Outdoors**: the outdoor places (garden, terrace…) with their temperature, air quality and noise sensors, and the other outdoor sensors (weather entity, city air quality index) with how the temperatures are combined
 - **Alerts**: one line per alert with its state, threshold and severity; open it to change them (hysteresis, delay and escalation under **Advanced**). A second group, **Annex defaults**, holds the same fields for the annex rooms, tuned once for every annex
@@ -148,10 +148,6 @@ Each tab has its own address, e.g. `/smart-comfort/rooms` (the addresses of earl
 | Quiet morning and naps of a bedroom | Dark mode |
 |---|---|
 | <img src="https://raw.githubusercontent.com/juju35/ha-smart-comfort/main/screenshots/panel-naps.png" alt="Quiet morning and nap slots of a bedroom" width="700"> | <img src="https://raw.githubusercontent.com/juju35/ha-smart-comfort/main/screenshots/panel-naps-dark.png" alt="Quiet morning and nap slots of a bedroom, dark mode" width="700"> |
-
-| Lights on presence of the entrance | Dark mode |
-|---|---|
-| <img src="https://raw.githubusercontent.com/juju35/ha-smart-comfort/main/screenshots/panel-presence.png" alt="Lights on presence: sensors, lights, light level, naps and slots" width="591"> | <img src="https://raw.githubusercontent.com/juju35/ha-smart-comfort/main/screenshots/panel-presence-dark.png" alt="Lights on presence, dark mode" width="591"> |
 
 | The YAML tab: the configuration as it goes in `configuration.yaml` | Dark mode |
 |---|---|
@@ -398,52 +394,16 @@ smart_comfort:
         - schedule.kids_nap          # shared with House Rules
 ```
 
-### Lights on presence
+### Lights on presence: moved to House Rules
 
-Set per room under `rooms[].presence:` (in the panel: room → Lighting → Lights on presence). Discover never adds it: an existing presence automation would do the same.
+Since 2.0, Smart Comfort no longer turns lights on and off with presence: [House Rules](https://github.com/juju35/ha-house-rules) does it (`presence_light`), with everything it did here — several sensors, a light level sensor, a presence that must last, slots with their brightness, color and delay, slots during the naps, lights kept off during the naps. Smart Comfort keeps the adaptive lighting, the naps and the displays.
 
-| Option | Default | Description |
-|---|---|---|
-| `sensors` | required | Presence, occupancy or motion `binary_sensor`s: someone is there while one of them is on |
-| `lights` | the room's | The lights turned on and off; any light can be added (the hallway's from the entrance) |
-| `lux` / `max_lux` | none | A light level sensor, and the level above which no light is turned on |
-| `on_after` | 0 s | Seconds a presence must last before the lights are turned on |
-| `off_after` | 2 min | Minutes with nobody before the lights are turned off (decimals allowed) |
-| `transition` | none | Seconds of the fade when the lights are turned on and off |
-| `not_during_naps` | none | Lights not turned on while a room of the house has its nap (`rooms[].naps`) |
-| `slots` | none | `start` and `end` — or `during_naps: true`: while a room of the house has its nap, its hours following the naps (a `schedule` helper included) — optional `days` and `lights` (all when none), then `off: true` (not turned on) or `brightness` (in %) and `color` (RGB, for the color lights), and optionally `off_after` (minutes with nobody before off while the slot applies: longer in the evening for a bathroom). The first slot that applies to a light decides |
+A room that still has `presence:` keeps working for everything else: its lights on presence are no longer applied, and a repair lists the rooms. To move them:
 
-A light is turned on only when none of the presence lights is already on, at the brightness of the moment (adaptive lighting) unless a slot sets one; a night light only at night and during the naps. Every presence light that is on is turned off once nobody is left. A presence light turned off by hand while someone is there is not turned back on until the room is empty. A light that is a presence light of two rooms (the hallway's, from the entrance and the hallway) stays on while someone is in either of them, and a light on because of the other room doesn't stop this room from turning its own on.
-
-```yaml
-    - name: Entrance
-      lights: [light.entrance]
-      presence:
-        sensors: [binary_sensor.entrance_occupancy]
-        lights: [light.entrance, light.hallway]
-        lux: sensor.entrance_illuminance
-        max_lux: 10
-        off_after: 2
-        not_during_naps: [light.hallway]
-        slots:
-          - { start: "06:30", end: "08:00", days: [mon, tue, wed, thu, fri], off: true }
-          - { start: "20:00", end: "09:00", lights: [light.entrance], brightness: 20 }
-          - { start: "20:00", end: "09:00", lights: [light.hallway], off: true }
-          - { during_naps: true, lights: [light.entrance], brightness: 40 }   # dimmer during the naps
-    - name: Hallway
-      lights: [light.hallway, { entity_id: light.hallway_night_light, night_only: true }]
-      presence:
-        sensors: [binary_sensor.hallway_occupancy]
-        on_after: 5                  # someone passing by doesn't count
-        off_after: 0.2
-        slots:
-          - { start: "20:00", end: "10:00", lights: [light.hallway_night_light], brightness: 30, color: [0, 0, 255] }
-          - { start: "20:00", end: "10:00", lights: [light.hallway], off: true }
-          - { start: "10:00", end: "20:00", lights: [light.hallway_night_light], off: true }
-          - { start: "13:30", end: "17:00", off: true }
-```
-
-A slot color, like a slot brightness, is kept until the light is turned off (the adaptive lighting leaves it alone).
+1. Install House Rules (1.3.0 or later) from the Marketplace.
+2. In its panel, **Settings → Import → Analyze**: a `presence_light` rule per room, read from Smart Comfort's configuration, with the room's sensors, light level sensor and lights, and the naps of every room (a `schedule` helper keeps them shared by both integrations). Pick them and **Import**.
+3. Remove `presence:` from these rooms in Smart Comfort (in the panel: room → Lighting → the bin next to *Lights on presence*). The repair goes.
+4. A light whose House Rules slots set its brightness or color at every hour can leave the room's `lights` here: the adaptive lighting would otherwise give it the brightness of the moment as soon as it is turned on.
 
 ### Cards
 
@@ -529,7 +489,7 @@ show_title: false           # optional: no title (shown by default)
 illustration: false         # optional: the classic header instead of the illustrated one (default: true)
 illustration_theme: night   # optional: auto (default: follows the Home Assistant theme), day or night
 limit: 10                   # entries shown (10 by default)
-kinds: [device, presence]   # optional: device, lighting, presence, display, notified, manual, reset, failed
+kinds: [device, lighting]   # optional: device, lighting, presence (before 2.0), display, notified, manual, reset, failed
 room: Living room           # optional: one room only, its name as shown in the panel
 ```
 

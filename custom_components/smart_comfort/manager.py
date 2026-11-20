@@ -46,7 +46,7 @@ from .const import (
 from .control import Command, Controller, DeviceState, RoomContext
 from .displays import DisplayController, DisplayState
 from .engine import Clear, Digest, Engine, Gates, RoomReading
-from .lighting import LightController, LightState, PresenceController
+from .lighting import LightController, LightState
 from .message import format_text, render
 
 _LOGGER = logging.getLogger(__name__)
@@ -188,7 +188,6 @@ class SmartComfort:
         self.engine = Engine(settings)
         self.controller = Controller(settings)
         self.lights = LightController(settings)
-        self.presence = PresenceController(settings)
         self.displays = DisplayController(settings)
         self.activity = Activity(settings)
         self.store: Store[dict[str, Any]] = Store(hass, STORAGE_VERSION, STORAGE_KEY)
@@ -201,8 +200,6 @@ class SmartComfort:
         self._texts: dict[str, str] = {}
         self._listeners: list[Callable[[], None]] = []
         self._unsubs: list[CALLBACK_TYPE] = []
-        # Presence checks to come (on_after, off delay): each one forgets itself once done.
-        self._presence_checks: set[CALLBACK_TYPE] = set()
         self._debounce: CALLBACK_TYPE | None = None
         self._lock = asyncio.Lock()
         # Notifications go out after the evaluation lock, one at a time; while one is on its way,
@@ -247,9 +244,6 @@ class SmartComfort:
         for unsub in self._unsubs:
             unsub()
         self._unsubs.clear()
-        for cancel in self._presence_checks:
-            cancel()
-        self._presence_checks.clear()
         if self._debounce:
             self._debounce()
             self._debounce = None
@@ -264,8 +258,6 @@ class SmartComfort:
         if s.presence:
             sensors.add(s.presence)
         devices = {e for r in s.rooms for e in r.devices} | {light.entity_id for r in s.rooms for light in r.lights}
-        devices |= {e for r in s.rooms for e in r.presence_lights()}
-        devices |= {e for r in s.rooms if r.presence for e in (*r.presence.sensors, r.presence.lux) if e}
         selects = {p.mode_select for r in s.rooms for p in r.purifiers if p.mode_select}
         naps = {e for r in s.rooms for e in r.nap_entities}
         if entities := sorted(sensors | devices | selects | naps):
@@ -341,8 +333,6 @@ class SmartComfort:
             # Just turned on: its brightness at once, not after the debounce.
             self.hass.async_create_task(self.async_evaluate())
             return
-        if self._presence_changed(entity_id, event.data.get("new_state")):
-            return
         if self._debounce is None and not self._stopped:
             self._debounce = async_call_later(self.hass, DEBOUNCE, self._debounced)
 
@@ -380,10 +370,6 @@ class SmartComfort:
             return False
         if new.state == "off":
             self.lights.turned_off(entity_id)
-            if old is not None and old.state == "on" and new.context.id not in self._contexts:
-                for room in self.settings.rooms:
-                    if entity_id in room.presence_lights() and self.room_present(room):
-                        self.presence.turned_off_by_hand(room)
             return False
         if old is None or old.state != "on":
             return new.context.id not in self._contexts
@@ -401,48 +387,9 @@ class SmartComfort:
             self._log(now, MANUAL, entity_id, until=_iso(self.lights.overrides.get(entity_id)))
         return False
 
-    @callback
-    def _presence_changed(self, entity_id: str, new: State | None) -> bool:
-        """Presence: its lights at once; once it ends, a check when the off delay is over. True when handled."""
-        rooms = [r for r in self.settings.rooms if r.presence and entity_id in r.presence.sensors]
-        if not rooms or self._stopped:
-            return False
-        self.hass.async_create_task(self.async_evaluate())
-        if new is not None and new.state == "on":
-            for room in rooms:
-                if room.presence.on_after > 0:
-                    self._presence_check(room.presence.on_after + 0.5)
-        if new is not None and new.state == "off":
-            local = dt_util.as_local(dt_util.utcnow())
-            self.refresh_naps()
-            napping = any(r.napping(local) for r in self.settings.rooms)
-            for room in rooms:
-                delay = room.presence.off_delay(local, room.presence_lights(), napping) * 60 + 1
-                self._presence_check(delay)
-        return True
-
-    @callback
-    def _presence_check(self, delay: float) -> None:
-        """An evaluation in `delay` seconds, cancelled on stop and forgotten once done."""
-
-        async def check(_now: datetime) -> None:
-            self._presence_checks.discard(cancel)
-            await self.async_evaluate()
-
-        cancel = async_call_later(self.hass, delay, check)
-        self._presence_checks.add(cancel)
-
-    def room_present(self, room: Room) -> bool | None:
-        """Someone in the room by its presence sensors; None when none of them is known."""
-        if room.presence is None:
-            return None
-        states = [self.hass.states.get(e) for e in room.presence.sensors]
-        known = [s for s in states if s is not None and s.state in ("on", "off")]
-        return any(s.state == "on" for s in known) if known else None
-
     def light_states(self, room: Room) -> dict[str, LightState]:
         out: dict[str, LightState] = {}
-        for entity_id in dict.fromkeys([light.entity_id for light in room.lights] + list(room.presence_lights())):
+        for entity_id in dict.fromkeys(light.entity_id for light in room.lights):
             state = self.hass.states.get(entity_id)
             if state is None or state.state in BAD_STATES:
                 continue
@@ -454,7 +401,6 @@ class SmartComfort:
                 brightness=round(raw * 100 / 255) if isinstance(raw, (int, float)) else None,
                 kelvin=state.attributes.get("color_temp_kelvin"),
                 dimmable=bool(modes - {"onoff"}) if modes else raw is not None,
-                colored=bool(modes & {"hs", "rgb", "rgbw", "rgbww", "xy"}),
                 min_kelvin=state.attributes.get("min_color_temp_kelvin") if warm else None,
                 max_kelvin=state.attributes.get("max_color_temp_kelvin") if warm else None,
             )
@@ -654,7 +600,6 @@ class SmartComfort:
                 _LOGGER.debug("Back to the normal state: %s", ", ".join(reset))
                 for entity_id in reset:
                     self._log(now, RESET, entity_id)
-            occupied = {r.id for r in self.settings.rooms if r.presence and self.room_present(r)}
             # The alerts first: the purifiers of a room whose air is polluted are boosted in the same evaluation.
             contexts: dict[str, RoomContext] = {}
             for room in self.settings.rooms:
@@ -664,20 +609,6 @@ class SmartComfort:
                 if lighting and room.lights:
                     commands += self.lights.evaluate(
                         now, dt_util.as_local(now), elevation, room, self.light_states(room)
-                    )
-                if room.presence is not None:
-                    # After the adaptive lighting, which forgets the lights it sees off.
-                    commands += self.presence.evaluate(
-                        now,
-                        dt_util.as_local(now),
-                        elevation,
-                        room,
-                        self.room_present(room),
-                        _float(self.hass.states.get(room.presence.lux)) if room.presence.lux else None,
-                        self.light_states(room),
-                        self.lights,
-                        adaptive=lighting,
-                        kept=self.presence.kept(room, occupied),
                     )
                 ctx = contexts[room.id]
                 ctx.polluted = self.engine.alerting(room.id, KIND_POLLUTED)

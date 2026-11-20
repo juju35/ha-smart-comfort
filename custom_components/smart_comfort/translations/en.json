@@ -552,6 +552,10 @@
     "file_invalid": {
       "title": "Smart Comfort: {file} is invalid",
       "description": "{file} in the configuration folder can't be applied, the configuration in use stays the same, and the panel doesn't write to the file until it is fixed:\n\n`{error}`"
+    },
+    "presence_moved": {
+      "title": "Smart Comfort: lights on presence moved to House Rules",
+      "description": "Lights on presence are no longer part of Smart Comfort (2.0): they are no longer applied for:\n\n{rooms}\n\nTo keep them, install [House Rules]({url}) (1.3.0 or later), then open its panel: **Settings → Import → Analyze** proposes a rule per room, with the same sensors, lights, delays, slots and naps. Then remove `presence:` from these rooms here. A light whose slots set its brightness or color at every hour can also leave the room's `lights`, so that the adaptive lighting doesn't change it."
     }
   }
 }

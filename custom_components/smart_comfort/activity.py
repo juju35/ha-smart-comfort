@@ -19,6 +19,7 @@ from .control import Command
 # Kinds of entries.
 DEVICE = "device"  # A climate, fan or purifier to its target (cool, boost, night…).
 LIGHTING = "lighting"  # A light to the brightness of the moment.
+# Lights on presence (moved to House Rules in 2.0): kept for the entries logged before.
 PRESENCE_ON = "presence_on"
 PRESENCE_OFF = "presence_off"
 DISPLAY = "display"  # An indicator light or display off / on.
@@ -37,7 +38,6 @@ def rooms_of(settings: Settings) -> dict[str, str]:
         for entity_id in (
             *room.devices,
             *(light.entity_id for light in room.lights),
-            *room.presence_lights(),
             *room.displays,
         ):
             out.setdefault(entity_id, room.name)
@@ -48,9 +48,7 @@ def kind_of(cmd: Command) -> str:
     if cmd.target in ("display_off", "display_on"):
         return DISPLAY
     if cmd.domain == "light":
-        if cmd.target == "presence":
-            return PRESENCE_ON
-        return PRESENCE_OFF if cmd.service == "turn_off" else LIGHTING
+        return LIGHTING
     return DEVICE
 
 

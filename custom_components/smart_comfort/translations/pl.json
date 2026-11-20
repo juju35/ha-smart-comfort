@@ -552,6 +552,10 @@
     "file_invalid": {
       "title": "Smart Comfort: {file} jest nieprawidłowy",
       "description": "Nie można zastosować {file} z folderu konfiguracji: bieżąca konfiguracja pozostaje bez zmian, a panel nie zapisuje do pliku, dopóki nie zostanie poprawiony:\n\n`{error}`"
+    },
+    "presence_moved": {
+      "title": "Smart Comfort: światła przy obecności przeniesione do House Rules",
+      "description": "Światła przy obecności nie są już częścią Smart Comfort (2.0): nie są już stosowane dla:\n\n{rooms}\n\nAby je zachować, zainstaluj [House Rules]({url}) (1.3.0 lub nowszy) i otwórz jego panel: **Ustawienia → Import → Analizuj** proponuje regułę dla każdego pokoju, z tymi samymi czujnikami, światłami, opóźnieniami, przedziałami i drzemkami. Następnie usuń tutaj `presence:` z tych pokoi. Światło, którego przedziały ustalają jasność lub kolor o każdej porze, może też opuścić `lights` pokoju, aby oświetlenie adaptacyjne go nie zmieniało."
     }
   }
 }

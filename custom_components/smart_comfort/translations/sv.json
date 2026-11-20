@@ -552,6 +552,10 @@
     "file_invalid": {
       "title": "Smart Comfort: {file} är ogiltig",
       "description": "{file} i konfigurationsmappen kan inte tillämpas: den aktuella konfigurationen är oförändrad, och panelen skriver inte till filen förrän den är rättad:\n\n`{error}`"
+    },
+    "presence_moved": {
+      "title": "Smart Comfort: lampor vid närvaro har flyttat till House Rules",
+      "description": "Lampor vid närvaro ingår inte längre i Smart Comfort (2.0): de tillämpas inte längre för:\n\n{rooms}\n\nFör att behålla dem, installera [House Rules]({url}) (1.3.0 eller senare) och öppna dess panel: **Inställningar → Import → Analysera** föreslår en regel per rum, med samma sensorer, lampor, fördröjningar, tidsluckor och tupplurar. Ta sedan bort `presence:` från dessa rum här. En lampa vars tidsluckor bestämmer ljusstyrka eller färg dygnet runt kan också lämna rummets `lights`, så att den adaptiva belysningen inte ändrar den."
     }
   }
 }

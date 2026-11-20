@@ -417,7 +417,6 @@ ENTITIES = {
     "sensor.office_temperature": ("Office temperature", "mdi:thermometer", "office", "16.2"),
     "light.entrance": ("Entrance", "mdi:ceiling-light", "entrance", "off"),
     "light.hallway": ("Hallway", "mdi:ceiling-light", "entrance", "off"),
-    "binary_sensor.entrance_presence": ("Entrance presence", "mdi:motion-sensor", "entrance", "off"),
     "sensor.entrance_light_level": ("Entrance light level", "mdi:brightness-5", "entrance", "3"),
     "sensor.garden_temperature": ("Outdoor temperature", "mdi:thermometer", "garden", "22.4"),
     "sensor.garden_air_quality": ("Garden air quality", "mdi:air-filter", "garden", "4"),
@@ -471,17 +470,6 @@ ROOMS = {
     "Office": {"temperature": "sensor.office_temperature"},
     "Entrance": {
         "lights": ["light.entrance"],
-        "presence": {
-            "sensors": ["binary_sensor.entrance_presence"],
-            "lights": ["light.entrance", "light.hallway"],
-            "lux": "sensor.entrance_light_level",
-            "max_lux": 10,
-            "not_during_naps": ["light.hallway"],
-            "slots": [
-                {"start": "06:30:00", "end": "08:00:00", "days": ["mon", "tue", "wed", "thu", "fri"], "off": True},
-                {"start": "20:00:00", "end": "09:00:00", "lights": ["light.entrance"], "brightness": 20},
-            ],
-        },
     },
 }
 GARDEN = {
@@ -708,21 +696,6 @@ ACTIVITY = [
         "target": "display_on",
     },
     {
-        "at": "2026-10-24T08:12:00+00:00",
-        "kind": "presence_off",
-        "entity_id": "light.entrance",
-        "room": "Entrance",
-        "target": "off",
-    },
-    {
-        "at": "2026-10-24T08:09:00+00:00",
-        "kind": "presence_on",
-        "entity_id": "light.entrance",
-        "room": "Entrance",
-        "target": "presence",
-        "data": {"brightness_pct": 20},
-    },
-    {
         "at": "2026-10-24T07:30:00+00:00",
         "kind": "lighting",
         "entity_id": "light.living_room",
@@ -887,15 +860,6 @@ SHOTS = [
         "tab": "alerts",
         "clicks": [(".section-head", "Polluted air")],
         "height": 1100,
-    },
-    {
-        "file": "panel-presence",
-        "options": SAVED,
-        "status": STATUS,
-        "tab": "rooms",
-        "clicks": [(".room-toggle", "Entrance"), (".section-head", "Lighting")],
-        "scroll": (".subheader", "Lights on presence"),
-        "height": 1300,
     },
     {"file": "panel-schedule", "options": SAVED, "status": STATUS, "tab": "schedule", "height": 1100},
     {"file": "panel-activity", "options": SAVED, "status": STATUS, "tab": "activity", "height": 900},

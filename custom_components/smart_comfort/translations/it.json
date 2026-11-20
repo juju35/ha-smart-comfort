@@ -552,6 +552,10 @@
     "file_invalid": {
       "title": "Smart Comfort: {file} non è valido",
       "description": "{file}, nella cartella di configurazione, non può essere applicato: la configurazione in uso resta la stessa e il pannello non scrive nel file finché non è corretto:\n\n`{error}`"
+    },
+    "presence_moved": {
+      "title": "Smart Comfort: le luci a presenza passano a House Rules",
+      "description": "Le luci a presenza non fanno più parte di Smart Comfort (2.0): non vengono più applicate per:\n\n{rooms}\n\nPer mantenerle, installa [House Rules]({url}) (1.3.0 o successivo) e apri il suo pannello: **Impostazioni → Importa → Analizza** propone una regola per stanza, con gli stessi sensori, luci, ritardi, fasce e riposini. Poi rimuovi `presence:` da queste stanze qui. Una luce le cui fasce fissano luminosità o colore a ogni ora può anche uscire dalle `lights` della stanza, così l'illuminazione adattiva non la cambia."
     }
   }
 }

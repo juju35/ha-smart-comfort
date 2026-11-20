@@ -552,6 +552,10 @@
     "file_invalid": {
       "title": "Smart Comfort: {file} er ugyldig",
       "description": "{file} i konfigurationsmappen kan ikke anvendes: den aktuelle konfiguration forbliver den samme, og panelet skriver ikke i filen, før den er rettet:\n\n`{error}`"
+    },
+    "presence_moved": {
+      "title": "Smart Comfort: lys ved tilstedeværelse er flyttet til House Rules",
+      "description": "Lys ved tilstedeværelse er ikke længere en del af Smart Comfort (2.0): det anvendes ikke længere for:\n\n{rooms}\n\nFor at beholde det, installer [House Rules]({url}) (1.3.0 eller nyere) og åbn dets panel: **Indstillinger → Import → Analysér** foreslår en regel pr. rum med de samme sensorer, lys, forsinkelser, tidsrum og lure. Fjern derefter `presence:` fra disse rum her. Et lys, hvis tidsrum fastsætter lysstyrke eller farve hele døgnet, kan også forlade rummets `lights`, så den adaptive belysning ikke ændrer det."
     }
   }
 }

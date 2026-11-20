@@ -552,6 +552,10 @@
     "file_invalid": {
       "title": "Smart Comfort: {file} je neplatný",
       "description": "{file} ve složce konfigurace nelze použít: aktuální konfigurace zůstává stejná a panel do souboru nezapisuje, dokud nebude opraven:\n\n`{error}`"
+    },
+    "presence_moved": {
+      "title": "Smart Comfort: světla při přítomnosti se přesouvají do House Rules",
+      "description": "Světla při přítomnosti už nejsou součástí Smart Comfort (2.0): už se neuplatňují pro:\n\n{rooms}\n\nChcete-li je zachovat, nainstalujte [House Rules]({url}) (1.3.0 nebo novější) a otevřete jeho panel: **Nastavení → Import → Analyzovat** navrhne pravidlo pro každou místnost se stejnými senzory, světly, zpožděními, časovými úseky a zdřímnutími. Poté zde z těchto místností odstraňte `presence:`. Světlo, jehož úseky určují jas nebo barvu v každou dobu, může také opustit `lights` místnosti, aby ho adaptivní osvětlení neměnilo."
     }
   }
 }

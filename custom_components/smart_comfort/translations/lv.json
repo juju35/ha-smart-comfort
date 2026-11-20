@@ -552,6 +552,10 @@
     "file_invalid": {
       "title": "Smart Comfort: {file} nav derīgs",
       "description": "Failu {file} konfigurācijas mapē nevar piemērot: pašreizējā konfigurācija paliek nemainīga, un panelis neraksta failā, kamēr tas nav izlabots:\n\n`{error}`"
+    },
+    "presence_moved": {
+      "title": "Smart Comfort: klātbūtnes gaismas pārceltas uz House Rules",
+      "description": "Klātbūtnes gaismas vairs nav Smart Comfort (2.0) daļa: tās vairs netiek piemērotas:\n\n{rooms}\n\nLai tās saglabātu, instalējiet [House Rules]({url}) (1.3.0 vai jaunāku) un atveriet tā paneli: **Iestatījumi → Imports → Analizēt** piedāvā pa noteikumam katrai telpai ar tiem pašiem sensoriem, gaismām, aizturēm, laika logiem un diendusām. Pēc tam šeit noņemiet `presence:` no šīm telpām. Gaisma, kuras laika logi jebkurā laikā nosaka spilgtumu vai krāsu, var arī pamest telpas `lights`, lai adaptīvais apgaismojums to nemainītu."
     }
   }
 }
