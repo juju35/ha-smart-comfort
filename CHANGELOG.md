@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.0.2 - 2026-11-20
+
+### Performance
+- Dashboards' top bar module: its check every second is skipped while the page is in the background (a hidden tab, the companion app in the background), like the sidebar badge.
+
 ## 2.0.1 - 2026-11-20
 
 ### Fixes
