@@ -279,6 +279,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: SmartComfortConfigEntry)
     manager = SmartComfort(hass, settings)
     await manager.async_start(starting=hass.state is not CoreState.running)
     entry.runtime_data = manager
+    # Stops the manager when a later step of the setup fails; a normal unload stops it first (async_unload_entry),
+    # and async_stop does nothing the second time.
     entry.async_on_unload(manager.async_stop)
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
 

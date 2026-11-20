@@ -192,7 +192,11 @@ def ws_subscribe(hass: HomeAssistant, connection: websocket_api.ActiveConnection
 @websocket_api.websocket_command({vol.Required("type"): f"{k.DOMAIN}/discover", vol.Required("options"): dict})
 @callback
 def ws_discover(hass: HomeAssistant, connection: websocket_api.ActiveConnection, msg: dict[str, Any]) -> None:
-    """The options being edited, with the rooms found in the areas merged in (not saved)."""
+    """The options being edited, with the rooms found in the areas merged in (not saved).
+
+    Runs on the event loop on purpose: it reads the area, device and entity registries and the states, which are
+    not safe to read from an executor thread (a pass over the registries, asked by an admin from the panel).
+    """
     options, report = merge(msg["options"], discover_rooms(hass))
     connection.send_result(msg["id"], {"options": options, "report": report.as_dict()})
 
