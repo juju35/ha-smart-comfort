@@ -5243,12 +5243,13 @@ class SmartComfortPanel extends HTMLElement {
 
   _render() {
     const root = this.shadowRoot;
-    // The top bar is the living room across the page (as on the ENT ONE panel); the tabs under it, with the
-    // unsaved-changes actions at their right so they stay in reach while scrolling.
+    // The top bar is the living room across the page (as on the ENT ONE panel); the tabs under it. The unsaved
+    // changes get a bar of their own under the content, sticky at the bottom so it stays in reach (as on System Hub).
     root.innerHTML = `<style>${STYLE}</style>
       <div class="topbar"></div>
-      <div class="tabs"><span class="tabmenu"></span><div class="tablist" role="tablist"></div><div class="actions"></div></div>
-      <div class="content"></div>`;
+      <div class="tabs"><span class="tabmenu"></span><div class="tablist" role="tablist"></div></div>
+      <div class="content"></div>
+      <div class="savebar" role="region" hidden></div>`;
     const menu = document.createElement("ha-menu-button");
     menu.hass = this._hass;
     menu.narrow = this._narrow;
@@ -5319,9 +5320,11 @@ class SmartComfortPanel extends HTMLElement {
   }
 
   _renderToolbar() {
-    const actions = this.shadowRoot.querySelector(".actions");
+    const actions = this.shadowRoot.querySelector(".savebar");
     if (!actions) return;
     actions.innerHTML = "";
+    actions.hidden = !this._dirty;
+    actions.setAttribute("aria-label", this._t("unsaved"));
     if (this._dirty) {
       const note = document.createElement("span");
       note.className = "dirty";
@@ -7684,7 +7687,7 @@ const STYLE = `
     font-family: var(--paper-font-body1_-_font-family, Roboto, sans-serif);
   }
   /* The top bar: the living room across the page (as on the ENT ONE panel); the tabs under it on the page background,
-     sticky, with the unsaved-changes actions at their right */
+     sticky; the unsaved changes in a bar sticky at the bottom of the page */
   :host { --sc-accent: #21b7b6; }
   .topbar .shbanner { height: 90px; }
   .topbar .shhead { padding-left: 4px; right: calc(min(360px, 46%) + 96px); }
@@ -7728,8 +7731,26 @@ const STYLE = `
   .tab.active { color: var(--primary-text-color); border-bottom-color: var(--sc-accent); }
   .tab .cnt { display: inline-block; min-width: 18px; padding: 1px 5px; margin-left: 5px; border-radius: 9px; font-size: 11px; text-align: center; box-sizing: border-box;
     color: color-mix(in srgb, #f5a623 60%, var(--primary-text-color)); background: color-mix(in srgb, #f5a623 18%, transparent); }
-  .actions { display: flex; align-items: center; gap: 8px; flex: none; }
-  .dirty { font-size: 13px; color: var(--secondary-text-color); margin-right: 4px; }
+  .savebar {
+    position: sticky;
+    bottom: 12px;
+    z-index: 2;
+    box-sizing: border-box;
+    width: calc(100% - 32px);
+    max-width: 1008px;
+    margin: 0 auto 12px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    border-radius: 12px;
+    background: var(--ha-card-background, var(--card-background-color, #fff));
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+    border: 1px solid color-mix(in srgb, var(--primary-color) 40%, transparent);
+  }
+  .savebar[hidden] { display: none; }
+  .dirty { flex: 1; min-width: 0; font-size: 14px; font-weight: 500; }
   /* A tab's compact header (the picture is in the top bar) */
   .shbanner.compact { height: auto; background: none; color: inherit; --sh-sub: var(--secondary-text-color); }
   .shbanner.compact .shhead { position: static; padding: 12px 16px 0; }
@@ -7994,7 +8015,6 @@ const STYLE = `
     /* A room's or outdoor place's name and its actions on the first line, what it holds on the next one. */
     .room-header { flex-wrap: wrap; row-gap: 6px; }
     .room-summary { order: 3; flex-basis: 100%; }
-    .dirty { display: none; }
     .section-body { padding-left: 4px; }
     .section-summary { display: none; }
     .section-name { flex: 1; }
