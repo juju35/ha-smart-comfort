@@ -1,7 +1,7 @@
 // Icon set "smart-comfort": the integration's emblem (a house with a thermometer and a bell), for the panel's sidebar
 // entry (smart-comfort:comfort) and anywhere an icon name is accepted. A single monochrome path on the 24 grid, so it
 // needs no view box. Registered in both the current and the older frontend icon APIs, like the sidebar's own icons,
-// so it resolves whenever Home Assistant rebuilds the sidebar (no redraw needed). Loaded on every page, since the
+// so it resolves whenever Home Assistant rebuilds the sidebar. Loaded on every page, since the
 // sidebar shows before any dashboard. The active-alerts badge (smart-comfort-badge.js) carries the state.
 (() => {
   const COMFORT =
@@ -16,4 +16,34 @@
   // Older frontends: window.customIconsets[prefix] = async (name) => ({ path }).
   window.customIconsets = window.customIconsets || {};
   window.customIconsets['smart-comfort'] = async (name) => ({ path: icons[name] || COMFORT });
+
+  // Home Assistant draws an icon whose set is not registered yet as a legacy <iron-icon>, and that ha-icon keeps the
+  // legacy mode for good (the flag is only cleared for MDI icons): a sidebar drawn before this module ran — the first
+  // load of a page, the module not cached yet — showed the emblem blank until the page was reloaded. Those icons are
+  // reset and drawn again: at once, then every 250 ms until the sidebar has drawn the entry (up to 15 s).
+  const PREFIX = 'smart-comfort:';
+  const redraw = (root, depth = 0) => {
+    if (!root || depth > 8) return 0;
+    let found = 0;
+    for (const el of root.querySelectorAll('*')) {
+      if (el.localName === 'ha-icon' && String(el.icon || '').startsWith(PREFIX)) {
+        found += 1;
+        if (el._legacy) {
+          const icon = el.icon;
+          el._legacy = false;
+          el.icon = '';
+          requestAnimationFrame(() => {
+            el.icon = icon;
+          });
+        }
+      }
+      if (el.shadowRoot) found += redraw(el.shadowRoot, depth + 1);
+    }
+    return found;
+  };
+  const redrawSoon = (tries = 60) => {
+    if (redraw(document.querySelector('home-assistant')?.shadowRoot) || tries <= 1) return;
+    setTimeout(() => redrawSoon(tries - 1), 250);
+  };
+  redrawSoon();
 })();
