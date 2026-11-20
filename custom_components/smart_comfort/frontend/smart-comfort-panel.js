@@ -260,6 +260,8 @@ const STRINGS = {
     slot_brightness: "Brightness",
     slot_off_after: "Off after nobody for",
     slot_color: "Color",
+    slot_during_naps: "During the naps",
+    slot_during_naps_help: "Applies while a room of the house has its nap (its hours follow the naps).",
     a_empty: "Nothing yet.",
     a_not_loaded: "Smart Comfort is not loaded.",
     a_all: "All",
@@ -496,6 +498,8 @@ const STRINGS = {
     slot_brightness: "Intensité",
     slot_off_after: "Extinction après personne pendant",
     slot_color: "Couleur",
+    slot_during_naps: "Pendant les siestes",
+    slot_during_naps_help: "S'applique pendant la sieste d'une pièce de la maison (les heures suivent les siestes).",
     a_empty: "Rien pour l'instant.",
     a_not_loaded: "Smart Comfort n'est pas chargé.",
     a_all: "Tout",
@@ -732,6 +736,8 @@ const STRINGS = {
     slot_brightness: "Helligkeit",
     slot_off_after: "Aus nach niemand seit",
     slot_color: "Farbe",
+    slot_during_naps: "Während des Mittagsschlafs",
+    slot_during_naps_help: "Gilt, solange ein Raum des Hauses Mittagsschlaf hält (die Zeiten folgen dem Mittagsschlaf).",
     a_empty: "Noch nichts.",
     a_not_loaded: "Smart Comfort ist nicht geladen.",
     a_all: "Alle",
@@ -968,6 +974,8 @@ const STRINGS = {
     slot_brightness: "Brillo",
     slot_off_after: "Apagado tras nadie durante",
     slot_color: "Color",
+    slot_during_naps: "Durante las siestas",
+    slot_during_naps_help: "Se aplica mientras una estancia de la casa está en siesta (las horas siguen a las siestas).",
     a_empty: "Nada por ahora.",
     a_not_loaded: "Smart Comfort no está cargado.",
     a_all: "Todo",
@@ -1204,6 +1212,8 @@ const STRINGS = {
     slot_brightness: "Јачина светла",
     slot_off_after: "Искључи кад нема никога током",
     slot_color: "Боја",
+    slot_during_naps: "Током дремке",
+    slot_during_naps_help: "Важи док нека просторија у кући има дремку (време прати дремке).",
     a_empty: "Још ништа.",
     a_not_loaded: "Smart Comfort није учитан.",
     a_all: "Све",
@@ -1440,6 +1450,8 @@ const STRINGS = {
     slot_brightness: "Jačina svetla",
     slot_off_after: "Isključi kad nema nikoga tokom",
     slot_color: "Boja",
+    slot_during_naps: "Tokom dremke",
+    slot_during_naps_help: "Važi dok neka prostorija u kući ima dremku (vreme prati dremke).",
     a_empty: "Još ništa.",
     a_not_loaded: "Smart Comfort nije učitan.",
     a_all: "Sve",
@@ -1676,6 +1688,8 @@ const STRINGS = {
     slot_brightness: "Luminosità",
     slot_off_after: "Spegnimento dopo nessuno per",
     slot_color: "Colore",
+    slot_during_naps: "Durante i riposini",
+    slot_during_naps_help: "Si applica mentre una stanza della casa fa il riposino (gli orari seguono i riposini).",
     a_empty: "Ancora niente.",
     a_not_loaded: "Smart Comfort non è caricato.",
     a_all: "Tutto",
@@ -1912,6 +1926,8 @@ const STRINGS = {
     slot_brightness: "Helderheid",
     slot_off_after: "Uit na niemand gedurende",
     slot_color: "Kleur",
+    slot_during_naps: "Tijdens de dutjes",
+    slot_during_naps_help: "Geldt zolang een kamer van het huis een dutje doet (de tijden volgen de dutjes).",
     a_empty: "Nog niets.",
     a_not_loaded: "Smart Comfort is niet geladen.",
     a_all: "Alles",
@@ -2148,6 +2164,8 @@ const STRINGS = {
     slot_brightness: "Brilho",
     slot_off_after: "Desligar após ninguém durante",
     slot_color: "Cor",
+    slot_during_naps: "Durante as sestas",
+    slot_during_naps_help: "Aplica-se enquanto uma divisão da casa está em sesta (as horas seguem as sestas).",
     a_empty: "Ainda nada.",
     a_not_loaded: "O Smart Comfort não está carregado.",
     a_all: "Tudo",
@@ -2384,6 +2402,8 @@ const STRINGS = {
     slot_brightness: "Jasność",
     slot_off_after: "Wyłącz po braku obecności przez",
     slot_color: "Kolor",
+    slot_during_naps: "Podczas drzemek",
+    slot_during_naps_help: "Obowiązuje, gdy w którymś pokoju domu trwa drzemka (godziny podążają za drzemkami).",
     a_empty: "Jeszcze nic.",
     a_not_loaded: "Smart Comfort nie jest załadowany.",
     a_all: "Wszystko",
@@ -2620,6 +2640,8 @@ const STRINGS = {
     slot_brightness: "Luminozitate",
     slot_off_after: "Stinse după o absență de",
     slot_color: "Culoare",
+    slot_during_naps: "În timpul somnului de prânz",
+    slot_during_naps_help: "Se aplică cât timp o cameră a casei are somn de prânz (orele urmează somnul).",
     a_empty: "Încă nimic.",
     a_not_loaded: "Smart Comfort nu este încărcat.",
     a_all: "Toate",
@@ -2856,6 +2878,8 @@ const STRINGS = {
     slot_brightness: "Lysstyrke",
     slot_off_after: "Sluk efter ingen i",
     slot_color: "Farve",
+    slot_during_naps: "Under lurene",
+    slot_during_naps_help: "Gælder, mens et rum i huset holder lur (tiderne følger lurene).",
     a_empty: "Intet endnu.",
     a_not_loaded: "Smart Comfort er ikke indlæst.",
     a_all: "Alle",
@@ -3092,6 +3116,8 @@ const STRINGS = {
     slot_brightness: "Ljusstyrka",
     slot_off_after: "Av efter ingen i",
     slot_color: "Färg",
+    slot_during_naps: "Under tupplurerna",
+    slot_during_naps_help: "Gäller medan ett rum i huset har tupplur (tiderna följer tupplurerna).",
     a_empty: "Inget än.",
     a_not_loaded: "Smart Comfort är inte inläst.",
     a_all: "Alla",
@@ -3328,6 +3354,8 @@ const STRINGS = {
     slot_brightness: "Яркост",
     slot_off_after: "Изкл. след отсъствие от",
     slot_color: "Цвят",
+    slot_during_naps: "По време на дрямката",
+    slot_during_naps_help: "Важи, докато стая в къщата има дрямка (часовете следват дрямките).",
     a_empty: "Все още нищо.",
     a_not_loaded: "Smart Comfort не е зареден.",
     a_all: "Всички",
@@ -3564,6 +3592,8 @@ const STRINGS = {
     slot_brightness: "Яркость",
     slot_off_after: "Выкл. после отсутствия",
     slot_color: "Цвет",
+    slot_during_naps: "Во время дневного сна",
+    slot_during_naps_help: "Действует, пока в комнате дома дневной сон (время следует за дневным сном).",
     a_empty: "Пока ничего.",
     a_not_loaded: "Smart Comfort не загружен.",
     a_all: "Всё",
@@ -3800,6 +3830,8 @@ const STRINGS = {
     slot_brightness: "Яскравість",
     slot_off_after: "Вимк. після відсутності",
     slot_color: "Колір",
+    slot_during_naps: "Під час денного сну",
+    slot_during_naps_help: "Діє, поки в кімнаті будинку денний сон (час слідує за денним сном).",
     a_empty: "Поки нічого.",
     a_not_loaded: "Smart Comfort не завантажено.",
     a_all: "Усе",
@@ -4036,6 +4068,8 @@ const STRINGS = {
     slot_brightness: "Fényerő",
     slot_off_after: "Kikapcsolás távollét után",
     slot_color: "Szín",
+    slot_during_naps: "Szundi alatt",
+    slot_during_naps_help: "Akkor érvényes, amikor a ház egyik szobájában szundi van (az idő a szundit követi).",
     a_empty: "Még semmi.",
     a_not_loaded: "A Smart Comfort nincs betöltve.",
     a_all: "Mind",
@@ -4272,6 +4306,8 @@ const STRINGS = {
     slot_brightness: "Jas",
     slot_off_after: "Zhasnúť po neprítomnosti",
     slot_color: "Farba",
+    slot_during_naps: "Počas zdriemnutia",
+    slot_during_naps_help: "Platí, kým má niektorá miestnosť domu zdriemnutie (časy sa riadia zdriemnutím).",
     a_empty: "Zatiaľ nič.",
     a_not_loaded: "Smart Comfort nie je načítaný.",
     a_all: "Všetko",
@@ -4508,6 +4544,8 @@ const STRINGS = {
     slot_brightness: "Jas",
     slot_off_after: "Zhasnout po nepřítomnosti",
     slot_color: "Barva",
+    slot_during_naps: "Během zdřímnutí",
+    slot_during_naps_help: "Platí, dokud má některá místnost domu zdřímnutí (časy se řídí zdřímnutím).",
     a_empty: "Zatím nic.",
     a_not_loaded: "Smart Comfort není načten.",
     a_all: "Vše",
@@ -4744,6 +4782,8 @@ const STRINGS = {
     slot_brightness: "Svetlost",
     slot_off_after: "Ugasni po odsotnosti",
     slot_color: "Barva",
+    slot_during_naps: "Med dremežem",
+    slot_during_naps_help: "Velja, dokler ima prostor v hiši dremež (ure sledijo dremežu).",
     a_empty: "Še nič.",
     a_not_loaded: "Smart Comfort ni naložen.",
     a_all: "Vse",
@@ -4980,6 +5020,8 @@ const STRINGS = {
     slot_brightness: "Spilgtums",
     slot_off_after: "Izslēgt pēc prombūtnes",
     slot_color: "Krāsa",
+    slot_during_naps: "Diendusas laikā",
+    slot_during_naps_help: "Darbojas, kamēr kādā mājas telpā ir diendusa (laiks seko diendusai).",
     a_empty: "Vēl nekā.",
     a_not_loaded: "Smart Comfort nav ielādēts.",
     a_all: "Visi",
@@ -5216,6 +5258,8 @@ const STRINGS = {
     slot_brightness: "Φωτεινότητα",
     slot_off_after: "Σβήσιμο μετά από απουσία",
     slot_color: "Χρώμα",
+    slot_during_naps: "Κατά τον μεσημεριανό ύπνο",
+    slot_during_naps_help: "Ισχύει όσο ένα δωμάτιο του σπιτιού έχει μεσημεριανό ύπνο (οι ώρες ακολουθούν τον ύπνο).",
     a_empty: "Τίποτα ακόμα.",
     a_not_loaded: "Το Smart Comfort δεν έχει φορτωθεί.",
     a_all: "Όλα",
@@ -7723,16 +7767,22 @@ class SmartComfortPanel extends HTMLElement {
     const slots = Array.isArray(presence.slots) ? presence.slots : [];
     const days = { select: { multiple: true, mode: "list", options: WEEKDAYS.map((d) => ({ value: d, label: this._t(`day_${d}`) })) } };
     const slotSchema = (slot) => [
-      grid([
-        { name: "start", required: true, selector: time },
-        { name: "end", required: true, selector: time },
-      ]),
+      { name: "during_naps", selector: bool },
+      ...(slot.during_naps
+        ? []
+        : [
+            grid([
+              { name: "start", required: true, selector: time },
+              { name: "end", required: true, selector: time },
+            ]),
+          ]),
       { name: "days", selector: days },
       { name: "lights", selector: entity("light", { multiple: true }) },
       { name: "off", selector: bool },
       ...(slot.off ? [] : [{ name: "brightness", selector: level }, { name: "color", selector: { color_rgb: {} } }]),
       { name: "off_after", selector: { number: { mode: "box", step: 0.5, min: 0, max: 1440, unit_of_measurement: "min" } } },
     ];
+    const slotHelp = { lights: "slot_lights_help", days: "nap_days_help", during_naps: "slot_during_naps_help" };
     if (slots.length) body.append(this._el("div", "help", this._t("slots_help")));
     slots.forEach((slot, i) => {
       const row = this._el("div", "device-item slot");
@@ -7742,11 +7792,20 @@ class SmartComfortPanel extends HTMLElement {
         (value) => {
           slots[i] = prune(value);
           if (!slots[i].off) delete slots[i].off;
+          if (slots[i].during_naps) {
+            delete slots[i].start;
+            delete slots[i].end;
+          } else {
+            delete slots[i].during_naps;
+            slots[i].start ??= "13:30:00";
+            slots[i].end ??= "17:00:00";
+          }
           presence.slots = slots;
-          form.schema = slotSchema(value);
+          form.data = slots[i];
+          form.schema = slotSchema(slots[i]);
         },
         (f) => this._t({ start: "sched_from", end: "sched_to", days: "nap_days" }[f.name] || `slot_${f.name}`),
-        (f) => (f.name === "lights" ? this._t("slot_lights_help") : f.name === "days" ? this._t("nap_days_help") : undefined)
+        (f) => (slotHelp[f.name] ? this._t(slotHelp[f.name]) : undefined)
       );
       row.append(
         form,

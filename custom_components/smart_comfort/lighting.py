@@ -225,10 +225,11 @@ class PresenceController:
         if p is None or present is None:
             return []
         managed = room.presence_lights()
+        napping = any(r.napping(local) for r in self.settings.rooms)
         if not present:
             self.present_since.pop(room.id, None)
             seen = self.last_seen.setdefault(room.id, now)
-            if now - seen < timedelta(minutes=p.off_delay(local, managed)):
+            if now - seen < timedelta(minutes=p.off_delay(local, managed, napping)):
                 return []
             self.suppressed.discard(room.id)
             off = {"transition": p.transition} if p.transition else {}
@@ -247,14 +248,13 @@ class PresenceController:
         if p.max_lux is not None and lux is not None and lux > p.max_lux:
             return []
         moment = phase(self.settings, local, elevation, room)
-        napping = any(r.napping(local) for r in self.settings.rooms)
         devices = {light.entity_id: light for light in room.lights}
         commands = []
         for entity_id in managed:
             state = states.get(entity_id)
             if state is None or state.on or (napping and entity_id in p.not_during_naps):
                 continue
-            slot = p.slot(entity_id, local)
+            slot = p.slot(entity_id, local, napping)
             if slot is not None and slot.off:
                 continue
             device = devices.get(entity_id)

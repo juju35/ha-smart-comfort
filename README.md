@@ -411,7 +411,7 @@ Set per room under `rooms[].presence:` (in the panel: room → Lighting → Ligh
 | `off_after` | 2 min | Minutes with nobody before the lights are turned off (decimals allowed) |
 | `transition` | none | Seconds of the fade when the lights are turned on and off |
 | `not_during_naps` | none | Lights not turned on while a room of the house has its nap (`rooms[].naps`) |
-| `slots` | none | `start`, `end`, optional `days` and `lights` (all when none), then `off: true` (not turned on) or `brightness` (in %) and `color` (RGB, for the color lights), and optionally `off_after` (minutes with nobody before off while the slot applies: longer in the evening for a bathroom). The first slot that applies to a light decides |
+| `slots` | none | `start` and `end` — or `during_naps: true`: while a room of the house has its nap, its hours following the naps (a `schedule` helper included) — optional `days` and `lights` (all when none), then `off: true` (not turned on) or `brightness` (in %) and `color` (RGB, for the color lights), and optionally `off_after` (minutes with nobody before off while the slot applies: longer in the evening for a bathroom). The first slot that applies to a light decides |
 
 A light is turned on only when none of the presence lights is already on, at the brightness of the moment (adaptive lighting) unless a slot sets one; a night light only at night and during the naps. Every presence light that is on is turned off once nobody is left. A presence light turned off by hand while someone is there is not turned back on until the room is empty. A light that is a presence light of two rooms (the hallway's, from the entrance and the hallway) stays on while someone is in either of them, and a light on because of the other room doesn't stop this room from turning its own on.
 
@@ -429,6 +429,7 @@ A light is turned on only when none of the presence lights is already on, at the
           - { start: "06:30", end: "08:00", days: [mon, tue, wed, thu, fri], off: true }
           - { start: "20:00", end: "09:00", lights: [light.entrance], brightness: 20 }
           - { start: "20:00", end: "09:00", lights: [light.hallway], off: true }
+          - { during_naps: true, lights: [light.entrance], brightness: 40 }   # dimmer during the naps
     - name: Hallway
       lights: [light.hallway, { entity_id: light.hallway_night_light, night_only: true }]
       presence:

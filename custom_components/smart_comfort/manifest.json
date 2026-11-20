@@ -10,5 +10,5 @@
   "issue_tracker": "https://github.com/juju35/ha-smart-comfort/issues",
   "requirements": ["ruamel.yaml==0.19.1"],
   "single_config_entry": true,
-  "version": "1.29.0"
+  "version": "1.30.0"
 }
