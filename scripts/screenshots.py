@@ -1078,6 +1078,7 @@ def write_gif(page, clip, name, seconds):
         subprocess.run([*cmd, "-vf", palette, "-loop", "0", out], check=True)
         gif = Path(out).read_bytes()
     path = ROOT / "screenshots" / f"{name}.gif"
+    PRODUCED.add(path.name)
     written = not path.exists() or path.read_bytes() != gif
     if written:
         path.write_bytes(gif)
@@ -1161,10 +1162,22 @@ def render(browser, shot, theme):
     context.close()
 
 
+# The files this run renders: any other image in screenshots/ is no longer produced, and goes.
+PRODUCED: set[str] = set()
+
+
+def remove_orphans() -> None:
+    for path in sorted((ROOT / "screenshots").glob("*")):
+        if path.suffix in {".png", ".gif"} and path.name not in PRODUCED:
+            path.unlink()
+            print(path.relative_to(ROOT), "(removed: no longer rendered)")
+
+
 def save_if_changed(path: Path, png: bytes) -> bool:
     """Write `png` to `path` unless the file there already has the same pixels. True when written."""
     from PIL import Image, UnidentifiedImageError
 
+    PRODUCED.add(path.name)
     if path.exists():
         try:
             with Image.open(path) as old_image, Image.open(io.BytesIO(png)) as new_image:
@@ -1193,6 +1206,7 @@ def main():
                 render_gif(browser, scene, seconds, theme)
                 render_panel_gif(browser, scene, seconds, theme)
         browser.close()
+    remove_orphans()
 
 
 if __name__ == "__main__":

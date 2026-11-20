@@ -48,3 +48,16 @@ def test_other_pixels_or_new_file_is_written(tmp_path: Path) -> None:
     broken = tmp_path / "broken.png"
     broken.write_bytes(b"not a png")
     assert save(broken, new) is True
+
+
+def test_orphans_removed(tmp_path, monkeypatch) -> None:
+    # A screenshot no longer rendered (its shot removed from the script) goes; the others and other files stay.
+    script = _script()
+    shots = tmp_path / "screenshots"
+    shots.mkdir()
+    for name in ("panel-rooms.png", "panel-presence.png", "header-cool.gif", "notes.txt"):
+        (shots / name).write_bytes(b"x")
+    monkeypatch.setattr(script, "ROOT", tmp_path)
+    monkeypatch.setattr(script, "PRODUCED", {"panel-rooms.png", "header-cool.gif"})
+    script.remove_orphans()
+    assert sorted(p.name for p in shots.iterdir()) == ["header-cool.gif", "notes.txt", "panel-rooms.png"]
