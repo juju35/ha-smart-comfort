@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.0.2 - 2026-11-20
+
+### Performance
+- Dashboards' top bar module: its check every second is skipped while the page is in the background (a hidden tab, the companion app in the background), like the sidebar badge.
+
+### Maintenance
+- `brand/logo.png` (and `logo@2x.png`) in the common style, next to the icon, as in the other juju35 integrations.
+
 ## 2.0.1 - 2026-11-20
 
 ### Fixes

@@ -132,7 +132,11 @@ if (!window.__smartComfortHeader_init) {
   window.addEventListener('location-changed', () => setTimeout(schApply, 0));
   customElements.whenDefined('hui-root').then(schPatchDashboard);
   // A fallback, should Home Assistant's dashboard element change: the check is cheap, made every second.
-  setInterval(schApply, SCH_EVERY_MS);
+  // Not while the page is in the background (a tab or the companion app hidden): it is applied again within a second
+  // once shown.
+  setInterval(() => {
+    if (!document.hidden) schApply();
+  }, SCH_EVERY_MS);
   schApply();
   schFetch();
   setInterval(schFetch, SCH_FETCH_MS);
