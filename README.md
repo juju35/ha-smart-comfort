@@ -81,7 +81,8 @@ Copy `custom_components/smart_comfort/` to `/config/custom_components/smart_comf
 
 Both ways can be used together:
 
-- **YAML**: add a `smart_comfort:` section (below) — in `configuration.yaml`, or in its own file with `smart_comfort: !include smart_comfort.yaml` or a [package](https://www.home-assistant.io/docs/configuration/packages/). At startup it creates the integration; afterwards the configuration stays editable in the panel. When the YAML changes (at a restart, or with **Reload the YAML** — the panel's button, `smart_comfort.reload`, or Developer tools → YAML), **only what changed in it is applied**: the changes made in the UI to the other settings stay. Rooms, places and devices are matched by room (name or id) and by entity, so a room added in the UI stays when the YAML changes another one. When the YAML and the UI changed the same setting, the YAML wins, and a repair lists the settings concerned
+- **YAML file** (recommended for YAML users): create `smart_comfort.yaml` in the configuration folder — empty, or with the same content as a `smart_comfort:` section (below), or with **Settings → Create smart_comfort.yaml** in the panel. Nothing goes in `configuration.yaml`. The file and the panel stay in sync both ways: what is saved in the panel is written to the file, **only what changed** (comments, layout and the other settings kept, previous version in `smart_comfort.yaml.bak`), and changes made to the file are applied within seconds. `!include`, `!include_dir_merge_list` / `!include_dir_list` and `!secret` work: a room is rewritten in the file it comes from. If both the panel and the file changed, the panel shows both and lets you choose. `file_write: false` / `file_watch: false` turn off one direction
+- **YAML in `configuration.yaml`**: add a `smart_comfort:` section (below) — directly, with `!include` or a [package](https://www.home-assistant.io/docs/configuration/packages/). At startup it creates the integration; afterwards the configuration stays editable in the panel. When the YAML changes (at a restart, or with **Reload the YAML** — the panel's button, `smart_comfort.reload`, or Developer tools → YAML), **only what changed in it is applied**: the changes made in the UI to the other settings stay. When the YAML and the UI changed the same setting, the YAML wins, and a repair lists the settings concerned. This section is left out while `smart_comfort.yaml` exists
 - **UI**: [![Add integration](https://my.home-assistant.io/badges/config_flow_start.svg)](https://my.home-assistant.io/redirect/config_flow_start/?domain=smart_comfort) — **Settings → Devices & services → Add integration → Smart Comfort**, then the **Smart Comfort** panel in the sidebar (below), or **Configure** for the same settings as forms
 
 ### Configuration panel
@@ -155,6 +156,14 @@ Each tab has its own address, e.g. `/smart-comfort/rooms` (the addresses of earl
 | The YAML tab: the configuration as it goes in `configuration.yaml` | Dark mode |
 |---|---|
 | <img src="https://raw.githubusercontent.com/juju35/ha-smart-comfort/main/screenshots/panel-yaml.png" alt="The YAML tab" width="698"> | <img src="https://raw.githubusercontent.com/juju35/ha-smart-comfort/main/screenshots/panel-yaml-dark.png" alt="The YAML tab, dark mode" width="698"> |
+
+| Settings: the configuration kept in `smart_comfort.yaml` | Dark mode |
+|---|---|
+| <img src="https://raw.githubusercontent.com/juju35/ha-smart-comfort/main/screenshots/panel-settings-file.png" alt="The configuration source card: smart_comfort.yaml, included files, editing and monitoring switches" width="698"> | <img src="https://raw.githubusercontent.com/juju35/ha-smart-comfort/main/screenshots/panel-settings-file-dark.png" alt="The configuration source card, dark mode" width="698"> |
+
+| The YAML tab with `smart_comfort.yaml` | Dark mode |
+|---|---|
+| <img src="https://raw.githubusercontent.com/juju35/ha-smart-comfort/main/screenshots/panel-yaml-file.png" alt="The YAML tab showing the content of smart_comfort.yaml" width="698"> | <img src="https://raw.githubusercontent.com/juju35/ha-smart-comfort/main/screenshots/panel-yaml-file-dark.png" alt="The YAML tab with smart_comfort.yaml, dark mode" width="698"> |
 
 </details>
 
@@ -550,7 +559,7 @@ The activity (the last 300 entries) is kept across restarts. It is also availabl
 | `smart_comfort.acknowledge` | `rooms`, `kinds` | No reminder nor escalation for the current problems until they end |
 | `smart_comfort.notify_now` | | Send a summary now; returns `sent` |
 | `smart_comfort.get_config` | | Returns the options in use (response only), to copy into the YAML or check what is set |
-| `smart_comfort.reload` | | Reads `smart_comfort:` again and applies only what changed since the last import; returns `applied` and `conflicts` (the settings where the YAML replaced a UI change) |
+| `smart_comfort.reload` | | Reads `smart_comfort.yaml` (or `smart_comfort:`) again and applies only what changed since the last import; returns `applied` and `conflicts` (the settings where the YAML replaced a UI change) |
 
 Rooms are given by name or id (`Living room` or `living_room`).
 

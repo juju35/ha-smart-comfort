@@ -548,6 +548,10 @@
     "yaml_conflicts": {
       "title": "YAML aizstāja panelī veiktās izmaiņas",
       "description": "Smart Comfort YAML mainīja iestatījumus, kas bija mainīti arī panelī. Saglabāta YAML vērtība šiem:\n\n{paths}\n\nIestatiet tos vēlreiz panelī vai mainiet YAML, lai saglabātu citu vērtību."
+    },
+    "file_invalid": {
+      "title": "Smart Comfort: {file} nav derīgs",
+      "description": "Failu {file} konfigurācijas mapē nevar piemērot: pašreizējā konfigurācija paliek nemainīga, un panelis neraksta failā, kamēr tas nav izlabots:\n\n`{error}`"
     }
   }
 }

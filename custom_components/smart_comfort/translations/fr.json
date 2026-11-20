@@ -548,6 +548,10 @@
     "yaml_conflicts": {
       "title": "Le YAML a remplacé des modifications faites dans le panneau",
       "description": "Le YAML de Smart Comfort a changé des réglages qui avaient aussi été modifiés dans le panneau. La valeur du YAML a été gardée pour :\n\n{paths}\n\nRéglez-les de nouveau dans le panneau, ou changez-les dans le YAML, pour garder une autre valeur."
+    },
+    "file_invalid": {
+      "title": "Smart Comfort : {file} est invalide",
+      "description": "{file}, dans le dossier de configuration, ne peut pas être appliqué : la configuration en vigueur reste la même, et le panneau n'écrit plus dans le fichier tant qu'il n'est pas corrigé :\n\n`{error}`"
     }
   }
 }

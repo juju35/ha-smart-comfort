@@ -3,10 +3,12 @@
 from __future__ import annotations
 
 import asyncio
+import os
 from datetime import UTC, timedelta
 from unittest.mock import patch
 
 import pytest
+import yaml
 from homeassistant.config_entries import ConfigEntryState
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ServiceValidationError
@@ -1050,3 +1052,155 @@ def test_indoor_air_level() -> None:
     assert indoor_air_level(homekit) == 1.0  # A US AQI of 4: good.
     assert indoor_air_level(State("sensor.x", "0", {}), homekit=True) is None
     assert indoor_air_level(State("sensor.x", "160", {"device_class": "aqi"})) == 4.0
+
+
+async def _file_setup(hass: HomeAssistant, tmp_path, text: str | None, config: dict | None = None):
+    hass.config.config_dir = str(tmp_path)
+    path = tmp_path / "smart_comfort.yaml"
+    if text is not None:
+        path.write_text(text)
+    assert await async_setup_component(hass, DOMAIN, config or {})
+    await hass.async_block_till_done()
+    return path
+
+
+def _edit(path, text: str) -> None:
+    """Write the file with a later modification time than the last one seen."""
+    mtime = path.stat().st_mtime
+    path.write_text(text)
+    os.utime(path, (mtime + 10, mtime + 10))
+
+
+async def _poll(hass: HomeAssistant) -> None:
+    async_fire_time_changed(hass, dt_util.utcnow() + timedelta(seconds=6))
+    await hass.async_block_till_done(wait_background_tasks=True)
+
+
+async def test_file_both_ways(hass: HomeAssistant, tmp_path) -> None:
+    original = "# My comfort\ndigest_window: 5  # five minutes\nreminder: 30\n"
+    path = await _file_setup(hass, tmp_path, original, {DOMAIN: {"digest_window": 9}})
+    entry = hass.config_entries.async_entries(DOMAIN)[0]
+    # The file is the configuration: the block of configuration.yaml is left out.
+    assert entry.options == {"digest_window": 5, "reminder": 30}
+    # Saved in the UI: only what changed is written, comments and the rest kept; the previous file in .bak.
+    hass.config_entries.async_update_entry(
+        entry, options={"digest_window": 7, "reminder": 30, "quiet_start": "22:00:00", "rooms": [{"name": "Séjour"}]}
+    )
+    await hass.async_block_till_done()
+    text = path.read_text()
+    assert text.startswith("# My comfort\ndigest_window: 7  # five minutes\nreminder: 30\n")
+    assert yaml.safe_load(text)["quiet_start"] == "22:00:00"  # Quoted: YAML 1.1 would read a number.
+    assert (tmp_path / "smart_comfort.yaml.bak").read_text() == original
+    # Edited file: applied at the next check, unless the watch is off.
+    _edit(path, "smart_comfort:\n  digest_window: 3\n")
+    await _poll(hass)
+    assert entry.options == {"digest_window": 3}
+    hass.config_entries.async_update_entry(entry, options={"digest_window": 3, "file_watch": False})
+    await hass.async_block_till_done()
+    _edit(path, path.read_text().replace("digest_window: 3", "digest_window: 2"))
+    await _poll(hass)
+    assert entry.options["digest_window"] == 3
+    # Removed: the options stay, the file is not written again.
+    path.unlink()
+    await _poll(hass)
+    hass.config_entries.async_update_entry(entry, options={"digest_window": 4})
+    await hass.async_block_till_done()
+    assert not path.exists()
+
+
+async def test_file_write_off(hass: HomeAssistant, tmp_path) -> None:
+    path = await _file_setup(hass, tmp_path, "digest_window: 5\nfile_write: false\n")
+    entry = hass.config_entries.async_entries(DOMAIN)[0]
+    hass.config_entries.async_update_entry(entry, options={"digest_window": 8, "file_write": False})
+    await hass.async_block_till_done()
+    assert path.read_text() == "digest_window: 5\nfile_write: false\n"
+
+
+async def test_empty_file_gets_the_options(hass: HomeAssistant, tmp_path) -> None:
+    path = await _file_setup(hass, tmp_path, None, {DOMAIN: {"digest_window": 6}})
+    path.write_text("")
+    await _poll(hass)
+    text = path.read_text()
+    assert text.startswith("# Smart Comfort configuration")
+    assert yaml.safe_load(text) == {"digest_window": 6}
+
+
+async def test_invalid_file_is_left_alone(hass: HomeAssistant, tmp_path) -> None:
+    path = await _file_setup(hass, tmp_path, "digest_window: 5\n")
+    entry = hass.config_entries.async_entries(DOMAIN)[0]
+    _edit(path, "digest_window: [oops\n")
+    await _poll(hass)
+    assert entry.options == {"digest_window": 5}
+    assert ir.async_get(hass).async_get_issue(DOMAIN, "file_invalid") is not None
+    # A UI save doesn't overwrite the file being edited.
+    hass.config_entries.async_update_entry(entry, options={"digest_window": 8})
+    await hass.async_block_till_done()
+    assert path.read_text() == "digest_window: [oops\n"
+    with pytest.raises(ServiceValidationError):
+        await hass.services.async_call(DOMAIN, "reload", blocking=True, return_response=True)
+    _edit(path, "digest_window: 2\n")
+    result = await hass.services.async_call(DOMAIN, "reload", blocking=True, return_response=True)
+    await hass.async_block_till_done()
+    assert result == {"applied": True, "conflicts": []}
+    assert entry.options == {"digest_window": 2}
+    assert ir.async_get(hass).async_get_issue(DOMAIN, "file_invalid") is None
+
+
+async def test_file_secret_and_includes(hass: HomeAssistant, tmp_path) -> None:
+    (tmp_path / "secrets.yaml").write_text("phone: notify.phone\n")
+    rooms = tmp_path / "comfort_rooms"
+    rooms.mkdir()
+    (rooms / "living.yaml").write_text("# Living room\n- name: Séjour  # main room\n  temperature: sensor.t1\n")
+    (rooms / "office.yaml").write_text("- name: Bureau\n")
+    (tmp_path / "alerts.yaml").write_text("too_hot:\n  threshold: 27  # summer\n")
+    path = await _file_setup(
+        hass,
+        tmp_path,
+        "notify:\n  - !secret phone\nalerts: !include alerts.yaml\nrooms: !include_dir_merge_list comfort_rooms/\n",
+    )
+    entry = hass.config_entries.async_entries(DOMAIN)[0]
+    assert entry.options["notify"] == ["notify.phone"]
+    assert [r["name"] for r in entry.options["rooms"]] == ["Séjour", "Bureau"]
+    options = {
+        "notify": ["notify.phone"],
+        "alerts": {"too_hot": {"threshold": 28}},
+        "rooms": [{"name": "Séjour", "temperature": "sensor.t2"}, {"name": "Cuisine"}],
+    }
+    hass.config_entries.async_update_entry(entry, options=options)
+    await hass.async_block_till_done()
+    # The main file keeps its tags; each change lands in the file it comes from.
+    assert path.read_text() == (
+        "notify:\n  - !secret phone\nalerts: !include alerts.yaml\nrooms: !include_dir_merge_list comfort_rooms/\n"
+    )
+    assert (tmp_path / "alerts.yaml").read_text() == "too_hot:\n  threshold: 28  # summer\n"
+    assert (
+        rooms / "living.yaml"
+    ).read_text() == "# Living room\n- name: Séjour  # main room\n  temperature: sensor.t2\n"
+    assert (rooms / "office.yaml").read_text() == ""
+    assert yaml.safe_load((rooms / "cuisine.yaml").read_text()) == [{"name": "Cuisine"}]
+    # Read back: the same options, nothing applied.
+    await _poll(hass)
+    assert entry.options == options
+
+
+async def test_panel_conflict_and_file_creation(hass: HomeAssistant, tmp_path, hass_ws_client) -> None:
+    path = await _file_setup(hass, tmp_path, None, {DOMAIN: {"digest_window": 6}})
+    client = await hass_ws_client(hass)
+    await client.send_json_auto_id({"type": f"{DOMAIN}/file/create"})
+    result = (await client.receive_json())["result"]
+    assert result["file"]["name"] == "smart_comfort.yaml"
+    assert yaml.safe_load(path.read_text()) == {"digest_window": 6}
+    await client.send_json_auto_id({"type": f"{DOMAIN}/config"})
+    config = (await client.receive_json())["result"]
+    assert config["file"]["name"] == "smart_comfort.yaml"
+    # The file changes while the panel edits: saving shows a conflict, until forced.
+    _edit(path, "digest_window: 9\n")
+    await _poll(hass)
+    save = {"type": f"{DOMAIN}/config/save", "options": {"digest_window": 1}, "revision": config["revision"]}
+    await client.send_json_auto_id(save)
+    conflict = (await client.receive_json())["result"]["conflict"]
+    assert conflict["options"] == {"digest_window": 9}
+    await client.send_json_auto_id({**save, "force": True})
+    assert (await client.receive_json())["result"]["options"] == {"digest_window": 1}
+    await hass.async_block_till_done()
+    assert yaml.safe_load(path.read_text()) == {"digest_window": 1}

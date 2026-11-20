@@ -16,6 +16,7 @@ from homeassistant.exceptions import ServiceValidationError
 from homeassistant.helpers import config_validation as cv
 from homeassistant.helpers import issue_registry as ir
 from homeassistant.helpers.dispatcher import async_dispatcher_send
+from homeassistant.helpers.event import async_track_time_interval
 from homeassistant.helpers.reload import async_integration_yaml_config
 from homeassistant.helpers.start import async_at_started
 from homeassistant.helpers.storage import Store
@@ -24,6 +25,8 @@ from homeassistant.helpers.typing import ConfigType
 from . import websocket
 from .config import build_settings, slugify
 from .const import (
+    CONF_FILE_WATCH,
+    CONF_FILE_WRITE,
     DOMAIN,
     KINDS,
     MAX_MINUTES,
@@ -42,6 +45,7 @@ from .merge import merge
 from .panel import async_register_panel, async_remove_card, async_remove_panel
 from .schema import CONFIG_SCHEMA as _CONFIG_SCHEMA
 from .schema import OPTIONS
+from .yaml_file import FILE_POLL, ConfigFile
 
 _LOGGER = logging.getLogger(__name__)
 ISSUE_YAML_CONFLICTS = "yaml_conflicts"
@@ -113,6 +117,29 @@ def async_import_yaml(hass: HomeAssistant, options: dict[str, Any]) -> list[str]
     return conflicts
 
 
+async def _async_sync_file(hass: HomeAssistant, file: ConfigFile, force: bool = False) -> bool:
+    """Apply the configuration file when it changed. Returns whether the options were changed (or created)."""
+    if (read := await file.async_check(force)) is None or read.status in ("missing", "invalid"):
+        return False
+    entries = hass.config_entries.async_entries(DOMAIN, include_ignore=False)
+    if read.status == "empty":  # Just created: it gets the options in use.
+        if entries:
+            await file.async_write(dict(entries[0].options))
+        return False
+    if not entries:
+        # Not awaited: during async_setup, the entry can only be set up once it returns.
+        hass.async_create_task(
+            hass.config_entries.flow.async_init(
+                DOMAIN, context={"source": SOURCE_IMPORT}, data={"options": read.options, "yaml_hash": None}
+            )
+        )
+        return True
+    if read.options == dict(entries[0].options):
+        return False
+    hass.config_entries.async_update_entry(entries[0], options=read.options)
+    return True
+
+
 def _manager(hass: HomeAssistant) -> SmartComfort:
     for entry in hass.config_entries.async_entries(DOMAIN):
         if entry.state is ConfigEntryState.LOADED:
@@ -140,8 +167,20 @@ def _rooms(manager: SmartComfort, raw: list[str] | None) -> list[str] | None:
 
 async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
     """Import the YAML configuration and register the actions."""
+    file = hass.data.setdefault(DOMAIN, {})["file"] = ConfigFile(hass)
+    await _async_sync_file(hass, file, force=True)
     if (options := config.get(DOMAIN)) is not None:
-        async_import_yaml(hass, options)
+        if file.active:
+            _LOGGER.warning("smart_comfort: in configuration.yaml is left out: %s is the configuration", file.path)
+        else:
+            async_import_yaml(hass, options)
+
+    async def poll(_now: Any) -> None:
+        entries = hass.config_entries.async_entries(DOMAIN, include_ignore=False)
+        if not entries or entries[0].options.get(CONF_FILE_WATCH, True):
+            await _async_sync_file(hass, file)
+
+    async_track_time_interval(hass, poll, FILE_POLL, cancel_on_shutdown=True)
     websocket.async_register(hass)
 
     async def snooze(call: ServiceCall) -> None:
@@ -195,6 +234,11 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
 
     async def reload(call: ServiceCall) -> dict[str, Any]:
         """Read `smart_comfort:` again and apply what changed, without a restart (also listed in Developer tools)."""
+        if file.active:
+            applied = await _async_sync_file(hass, file, force=True)
+            if file.invalid:
+                raise ServiceValidationError(translation_domain=DOMAIN, translation_key="invalid_yaml")
+            return {"applied": applied, "conflicts": []}
         if (conf := await async_integration_yaml_config(hass, DOMAIN)) is None:
             raise ServiceValidationError(translation_domain=DOMAIN, translation_key="invalid_yaml")
         if (options := conf.get(DOMAIN)) is None:
@@ -220,6 +264,9 @@ async def async_setup_entry(hass: HomeAssistant, entry: SmartComfortConfigEntry)
 
     entry.async_on_unload(async_at_started(hass, first))
     entry.async_on_unload(entry.add_update_listener(_async_reload))
+    file = hass.data.get(DOMAIN, {}).get("file")
+    if file is not None and entry.options.get(CONF_FILE_WRITE, True):
+        await file.async_write(dict(entry.options))  # Saved in the panel or the options flow: into the file too.
     await async_register_panel(hass)
     async_dispatcher_send(hass, SIGNAL_UPDATE)
     return True
