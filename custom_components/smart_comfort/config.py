@@ -442,6 +442,10 @@ class Room:
     alerts: dict[str, AlertSettings] = field(default_factory=dict)
     lights: tuple[LightDevice, ...] = ()
     naps: tuple[Nap, ...] = ()
+    # Nap entities (a `schedule` helper shared with House Rules, an input_boolean…): a nap while one is on. Those on
+    # now are refreshed by the manager before each evaluation (`naps_on`).
+    nap_entities: tuple[str, ...] = ()
+    naps_on: set[str] = field(default_factory=set, compare=False, repr=False)
     presence: Presence | None = None
 
     @property
@@ -456,7 +460,7 @@ class Room:
         return self.presence.lights or tuple(light.entity_id for light in self.lights)
 
     def napping(self, local: datetime) -> bool:
-        return any(nap.active(local) for nap in self.naps)
+        return bool(self.naps_on) or any(nap.active(local) for nap in self.naps)
 
     def equipment(self) -> list[ClimateDevice | FanDevice | PurifierDevice]:
         """The air conditioner, fans and purifiers of the room."""
@@ -679,7 +683,9 @@ def _room(
                 days=_slot_days(n),
             )
             for n in raw.get(CONF_NAPS) or []
+            if isinstance(n, dict)
         ),
+        nap_entities=tuple(n for n in raw.get(CONF_NAPS) or [] if isinstance(n, str)),
         presence=_presence(raw.get(CONF_PRESENCE_LIGHTS)),
         alerts={kind: AlertSettings.from_dict(_merge(alerts[kind], room_alerts.get(kind))) for kind in KINDS},
     )

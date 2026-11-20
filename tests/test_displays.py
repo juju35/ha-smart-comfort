@@ -168,3 +168,40 @@ async def test_in_home_assistant(hass: HomeAssistant, freezer) -> None:
     await manager.async_evaluate()
     await hass.async_block_till_done()
     assert [c.data for c in preset] == [{"entity_id": "fan.chambre_purif", "preset_mode": "Auto"}]
+
+
+async def test_nap_entity(hass: HomeAssistant, freezer) -> None:
+    # A nap entity (a `schedule` helper shared with House Rules): its displays off while it is on.
+    freezer.move_to("2026-10-31 11:00:00+00:00")  # 12:00 in Paris: no slot, no display hours.
+    await hass.config.async_set_time_zone("Europe/Paris")
+    hass.states.async_set("schedule.sieste_chambre", "off")
+    hass.states.async_set("fan.purif", "on")
+    hass.states.async_set("light.purif_voyant", "on", {"supported_color_modes": ["onoff"]})
+    off = async_mock_service(hass, "light", "turn_off")
+    async_mock_service(hass, "light", "turn_on")
+    options = {
+        "startup_grace": 0,
+        "control": OPTIONS["control"],
+        "rooms": [
+            {
+                "name": "Chambre",
+                "purifiers": [{"entity_id": "fan.purif", "display": "light.purif_voyant"}],
+                "naps": ["schedule.sieste_chambre"],
+            }
+        ],
+    }
+    entry = MockConfigEntry(domain=DOMAIN, title="Smart Comfort", data={}, options=options)
+    entry.add_to_hass(hass)
+    assert await hass.config_entries.async_setup(entry.entry_id)
+    await hass.async_block_till_done()
+    manager = entry.runtime_data
+    await manager.async_evaluate()
+    room = manager.settings.rooms[0]
+    assert room.nap_entities == ("schedule.sieste_chambre",)
+    assert off == []
+    hass.states.async_set("schedule.sieste_chambre", "on")
+    await hass.async_block_till_done()
+    await manager.async_evaluate()
+    await hass.async_block_till_done()
+    assert room.napping(datetime(2026, 10, 31, 12))
+    assert [c.data["entity_id"] for c in off] == ["light.purif_voyant"]

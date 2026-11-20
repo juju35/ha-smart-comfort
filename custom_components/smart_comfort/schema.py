@@ -145,7 +145,8 @@ TIME_SLOT = {
     vol.Required("end"): time_string,
     vol.Optional(k.CONF_DAYS): vol.All(cv.ensure_list, [vol.In(k.WEEKDAYS)]),
 }
-NAP = vol.Schema(TIME_SLOT)
+# A nap: a slot, or an on/off entity (a `schedule` helper shared with House Rules, an input_boolean…): a nap while on.
+NAP = vol.Any(cv.entity_id, vol.Schema(TIME_SLOT))
 LIGHTING = vol.Schema(
     {
         vol.Optional(k.CONF_ENABLED): cv.boolean,
