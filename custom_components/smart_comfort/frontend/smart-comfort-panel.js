@@ -94,7 +94,11 @@ const STRINGS = {
     saved: "Saved",
     saving: "Saving…",
     unsaved: "Unsaved changes",
-    yaml: "This configuration comes from YAML. Changes saved here stay until the YAML changes: then the YAML replaces them at the next restart.",
+    yaml: "This configuration comes from YAML and can be edited here. When the YAML changes (at a restart or with Reload the YAML), only what changed in it is applied: your changes to the other settings stay.",
+    yaml_reload: "Reload the YAML",
+    yaml_reloaded: "YAML applied: only what changed in it was updated.",
+    yaml_unchanged: "The YAML hasn't changed: nothing to apply.",
+    yaml_conflicts: "YAML applied. It replaced what had been changed here for: {paths}",
     not_loaded: "Smart Comfort is not loaded. Check the logs.",
     not_setup: "Smart Comfort is not set up yet: add it in Settings → Devices & services.",
     retry: "Retry",
@@ -302,7 +306,11 @@ const STRINGS = {
     saved: "Enregistré",
     saving: "Enregistrement…",
     unsaved: "Modifications non enregistrées",
-    yaml: "Cette configuration vient du YAML. Ce qui est enregistré ici reste jusqu'à ce que le YAML change : il le remplace alors au prochain redémarrage.",
+    yaml: "Cette configuration vient du YAML et reste modifiable ici. Quand le YAML change (au redémarrage ou avec Recharger le YAML), seul ce qui y a changé est appliqué : vos modifications des autres réglages restent.",
+    yaml_reload: "Recharger le YAML",
+    yaml_reloaded: "YAML appliqué : seul ce qui y a changé a été mis à jour.",
+    yaml_unchanged: "Le YAML n'a pas changé : rien à appliquer.",
+    yaml_conflicts: "YAML appliqué. Il a remplacé ce qui avait été modifié ici pour : {paths}",
     not_loaded: "Smart Comfort n'est pas chargé. Consultez les journaux.",
     not_setup: "Smart Comfort n'est pas encore configuré : ajoutez-le dans Paramètres → Appareils et services.",
     retry: "Réessayer",
@@ -510,7 +518,11 @@ const STRINGS = {
     saved: "Gespeichert",
     saving: "Speichern…",
     unsaved: "Ungespeicherte Änderungen",
-    yaml: "Diese Konfiguration stammt aus YAML. Hier gespeicherte Änderungen bleiben, bis sich das YAML ändert: dann ersetzt es sie beim nächsten Neustart.",
+    yaml: "Diese Konfiguration stammt aus YAML und kann hier bearbeitet werden. Ändert sich das YAML (beim Neustart oder mit YAML neu laden), wird nur das Geänderte übernommen: deine Änderungen an den anderen Einstellungen bleiben.",
+    yaml_reload: "YAML neu laden",
+    yaml_reloaded: "YAML übernommen: nur das Geänderte wurde aktualisiert.",
+    yaml_unchanged: "Das YAML hat sich nicht geändert: nichts zu übernehmen.",
+    yaml_conflicts: "YAML übernommen. Es hat hier Geändertes ersetzt bei: {paths}",
     not_loaded: "Smart Comfort ist nicht geladen. Prüfen Sie die Protokolle.",
     not_setup: "Smart Comfort ist noch nicht eingerichtet: unter Einstellungen → Geräte & Dienste hinzufügen.",
     retry: "Erneut versuchen",
@@ -718,7 +730,11 @@ const STRINGS = {
     saved: "Guardado",
     saving: "Guardando…",
     unsaved: "Cambios sin guardar",
-    yaml: "Esta configuración viene de YAML. Lo guardado aquí se mantiene hasta que cambie el YAML: entonces lo sustituye en el próximo reinicio.",
+    yaml: "Esta configuración viene de YAML y se puede editar aquí. Cuando cambia el YAML (al reiniciar o con Recargar el YAML), solo se aplica lo que ha cambiado: tus cambios en los demás ajustes se mantienen.",
+    yaml_reload: "Recargar el YAML",
+    yaml_reloaded: "YAML aplicado: solo se ha actualizado lo que ha cambiado.",
+    yaml_unchanged: "El YAML no ha cambiado: nada que aplicar.",
+    yaml_conflicts: "YAML aplicado. Ha sustituido lo cambiado aquí en: {paths}",
     not_loaded: "Smart Comfort no está cargado. Revise los registros.",
     not_setup: "Smart Comfort aún no está configurado: añádalo en Ajustes → Dispositivos y servicios.",
     retry: "Reintentar",
@@ -926,7 +942,11 @@ const STRINGS = {
     saved: "Сачувано",
     saving: "Чување…",
     unsaved: "Несачуване измене",
-    yaml: "Ова конфигурација долази из YAML-а. Измене сачуване овде остају док се YAML не промени: тада их YAML замењује при следећем поновном покретању.",
+    yaml: "Ова конфигурација долази из YAML-а и може се мењати овде. Када се YAML промени (при поновном покретању или помоћу Поново учитај YAML), примењује се само оно што се променило: ваше измене осталих подешавања остају.",
+    yaml_reload: "Поново учитај YAML",
+    yaml_reloaded: "YAML је примењен: ажурирано је само оно што се променило.",
+    yaml_unchanged: "YAML се није променио: нема шта да се примени.",
+    yaml_conflicts: "YAML је примењен. Заменио је оно што је овде измењено за: {paths}",
     not_loaded: "Smart Comfort није учитан. Проверите дневнике логова.",
     not_setup: "Smart Comfort још увек није подешен: додајте га у Подешавања → Уређаји и услуге.",
     retry: "Покушај поново",
@@ -1134,7 +1154,11 @@ const STRINGS = {
     saved: "Sačuvano",
     saving: "Čuvanje…",
     unsaved: "Nesačuvane izmene",
-    yaml: "Ova konfiguracija dolazi iz YAML-a. Izmene sačuvane ovde ostaju dok se YAML ne promeni: tada ih YAML zamenjuje pri sledećem ponovnom pokretanju.",
+    yaml: "Ova konfiguracija dolazi iz YAML-a i može se menjati ovde. Kada se YAML promeni (pri ponovnom pokretanju ili pomoću Ponovo učitaj YAML), primenjuje se samo ono što se promenilo: vaše izmene ostalih podešavanja ostaju.",
+    yaml_reload: "Ponovo učitaj YAML",
+    yaml_reloaded: "YAML je primenjen: ažurirano je samo ono što se promenilo.",
+    yaml_unchanged: "YAML se nije promenio: nema šta da se primeni.",
+    yaml_conflicts: "YAML je primenjen. Zamenio je ono što je ovde izmenjeno za: {paths}",
     not_loaded: "Smart Comfort nije učitan. Proverite dnevnike logova.",
     not_setup: "Smart Comfort još uvek nije podešen: dodajte ga u Podešavanja → Uređaji i usluge.",
     retry: "Pokušaj ponovo",
@@ -1342,7 +1366,11 @@ const STRINGS = {
     saved: "Salvato",
     saving: "Salvataggio…",
     unsaved: "Modifiche non salvate",
-    yaml: "Questa configurazione proviene dal YAML. Le modifiche salvate qui restano finché il YAML non cambia: allora il YAML le sostituisce al riavvio successivo.",
+    yaml: "Questa configurazione viene dallo YAML e si può modificare qui. Quando lo YAML cambia (al riavvio o con Ricarica lo YAML), viene applicato solo ciò che è cambiato: le tue modifiche alle altre impostazioni restano.",
+    yaml_reload: "Ricarica lo YAML",
+    yaml_reloaded: "YAML applicato: è stato aggiornato solo ciò che è cambiato.",
+    yaml_unchanged: "Lo YAML non è cambiato: niente da applicare.",
+    yaml_conflicts: "YAML applicato. Ha sostituito ciò che era stato modificato qui per: {paths}",
     not_loaded: "Smart Comfort non è caricato. Controlla i log.",
     not_setup: "Smart Comfort non è ancora configurato: aggiungilo in Impostazioni → Dispositivi e servizi.",
     retry: "Riprova",
@@ -1550,7 +1578,11 @@ const STRINGS = {
     saved: "Opgeslagen",
     saving: "Opslaan…",
     unsaved: "Niet-opgeslagen wijzigingen",
-    yaml: "Deze configuratie komt uit YAML. Wijzigingen die hier worden opgeslagen, blijven tot de YAML verandert: dan vervangt de YAML ze bij de volgende herstart.",
+    yaml: "Deze configuratie komt uit YAML en kan hier worden bewerkt. Als de YAML verandert (bij een herstart of met YAML opnieuw laden), wordt alleen het gewijzigde toegepast: je wijzigingen aan de andere instellingen blijven.",
+    yaml_reload: "YAML opnieuw laden",
+    yaml_reloaded: "YAML toegepast: alleen wat veranderd is, is bijgewerkt.",
+    yaml_unchanged: "De YAML is niet veranderd: niets toe te passen.",
+    yaml_conflicts: "YAML toegepast. Het heeft hier gewijzigde waarden vervangen voor: {paths}",
     not_loaded: "Smart Comfort is niet geladen. Controleer de logboeken.",
     not_setup: "Smart Comfort is nog niet ingesteld: voeg het toe via Instellingen → Apparaten & diensten.",
     retry: "Opnieuw proberen",
@@ -1758,7 +1790,11 @@ const STRINGS = {
     saved: "Guardado",
     saving: "A guardar…",
     unsaved: "Alterações não guardadas",
-    yaml: "Esta configuração vem do YAML. As alterações guardadas aqui mantêm-se até o YAML mudar: nessa altura o YAML substitui-as no próximo reinício.",
+    yaml: "Esta configuração vem do YAML e pode ser editada aqui. Quando o YAML muda (ao reiniciar ou com Recarregar o YAML), só é aplicado o que mudou: as suas alterações às outras definições mantêm-se.",
+    yaml_reload: "Recarregar o YAML",
+    yaml_reloaded: "YAML aplicado: só foi atualizado o que mudou.",
+    yaml_unchanged: "O YAML não mudou: nada a aplicar.",
+    yaml_conflicts: "YAML aplicado. Substituiu o que tinha sido alterado aqui em: {paths}",
     not_loaded: "O Smart Comfort não está carregado. Consulte os registos.",
     not_setup: "O Smart Comfort ainda não está configurado: adicione-o em Definições → Dispositivos e serviços.",
     retry: "Tentar novamente",
@@ -1966,7 +2002,11 @@ const STRINGS = {
     saved: "Zapisano",
     saving: "Zapisywanie…",
     unsaved: "Niezapisane zmiany",
-    yaml: "Ta konfiguracja pochodzi z YAML. Zmiany zapisane tutaj obowiązują do czasu zmiany YAML: wtedy YAML zastępuje je przy następnym ponownym uruchomieniu.",
+    yaml: "Ta konfiguracja pochodzi z YAML i można ją tu edytować. Gdy YAML się zmieni (przy ponownym uruchomieniu lub przez Przeładuj YAML), stosowane jest tylko to, co się zmieniło: twoje zmiany pozostałych ustawień pozostają.",
+    yaml_reload: "Przeładuj YAML",
+    yaml_reloaded: "Zastosowano YAML: zaktualizowano tylko to, co się zmieniło.",
+    yaml_unchanged: "YAML się nie zmienił: nie ma czego stosować.",
+    yaml_conflicts: "Zastosowano YAML. Zastąpił zmiany wprowadzone tutaj w: {paths}",
     not_loaded: "Smart Comfort nie jest załadowany. Sprawdź logi.",
     not_setup: "Smart Comfort nie jest jeszcze skonfigurowany: dodaj go w Ustawienia → Urządzenia oraz usługi.",
     retry: "Spróbuj ponownie",
@@ -2174,7 +2214,11 @@ const STRINGS = {
     saved: "Salvat",
     saving: "Se salvează…",
     unsaved: "Modificări nesalvate",
-    yaml: "Această configurație provine din YAML. Modificările salvate aici rămân până se schimbă YAML-ul: atunci YAML-ul le înlocuiește la următoarea repornire.",
+    yaml: "Această configurație vine din YAML și poate fi editată aici. Când YAML se schimbă (la repornire sau cu Reîncarcă YAML), se aplică doar ce s-a schimbat: modificările dvs. la celelalte setări rămân.",
+    yaml_reload: "Reîncarcă YAML",
+    yaml_reloaded: "YAML aplicat: s-a actualizat doar ce s-a schimbat.",
+    yaml_unchanged: "YAML nu s-a schimbat: nimic de aplicat.",
+    yaml_conflicts: "YAML aplicat. A înlocuit ce fusese modificat aici pentru: {paths}",
     not_loaded: "Smart Comfort nu este încărcat. Verificați jurnalele.",
     not_setup: "Smart Comfort nu este încă configurat: adăugați-l din Setări → Dispozitive și servicii.",
     retry: "Reîncearcă",
@@ -2382,7 +2426,11 @@ const STRINGS = {
     saved: "Gemt",
     saving: "Gemmer…",
     unsaved: "Ikke-gemte ændringer",
-    yaml: "Denne konfiguration kommer fra YAML. Ændringer gemt her bliver, indtil YAML ændres: så erstatter YAML dem ved næste genstart.",
+    yaml: "Denne konfiguration kommer fra YAML og kan redigeres her. Når YAML ændres (ved genstart eller med Genindlæs YAML), anvendes kun det ændrede: dine ændringer af de andre indstillinger bevares.",
+    yaml_reload: "Genindlæs YAML",
+    yaml_reloaded: "YAML anvendt: kun det ændrede er opdateret.",
+    yaml_unchanged: "YAML er ikke ændret: intet at anvende.",
+    yaml_conflicts: "YAML anvendt. Det erstattede det, der var ændret her, for: {paths}",
     not_loaded: "Smart Comfort er ikke indlæst. Tjek logfilerne.",
     not_setup: "Smart Comfort er ikke sat op endnu: tilføj det under Indstillinger → Enheder og tjenester.",
     retry: "Prøv igen",
@@ -2590,7 +2638,11 @@ const STRINGS = {
     saved: "Sparat",
     saving: "Sparar…",
     unsaved: "Osparade ändringar",
-    yaml: "Denna konfiguration kommer från YAML. Ändringar som sparas här gäller tills YAML ändras: då ersätter YAML dem vid nästa omstart.",
+    yaml: "Den här konfigurationen kommer från YAML och kan redigeras här. När YAML ändras (vid omstart eller med Läs in YAML igen) tillämpas bara det som ändrats: dina ändringar av de andra inställningarna behålls.",
+    yaml_reload: "Läs in YAML igen",
+    yaml_reloaded: "YAML tillämpad: bara det som ändrats uppdaterades.",
+    yaml_unchanged: "YAML har inte ändrats: inget att tillämpa.",
+    yaml_conflicts: "YAML tillämpad. Den ersatte det som ändrats här för: {paths}",
     not_loaded: "Smart Comfort är inte inläst. Kontrollera loggarna.",
     not_setup: "Smart Comfort är inte konfigurerat än: lägg till det under Inställningar → Enheter och tjänster.",
     retry: "Försök igen",
@@ -2798,7 +2850,11 @@ const STRINGS = {
     saved: "Запазено",
     saving: "Запазване…",
     unsaved: "Незапазени промени",
-    yaml: "Тази конфигурация идва от YAML. Промените, запазени тук, остават, докато YAML не се промени: тогава YAML ги замества при следващото рестартиране.",
+    yaml: "Тази конфигурация идва от YAML и може да се редактира тук. Когато YAML се промени (при рестарт или с Презареждане на YAML), се прилага само промененото: вашите промени в другите настройки остават.",
+    yaml_reload: "Презареждане на YAML",
+    yaml_reloaded: "YAML е приложен: обновено е само промененото.",
+    yaml_unchanged: "YAML не е променен: няма какво да се приложи.",
+    yaml_conflicts: "YAML е приложен. Замени промененото тук за: {paths}",
     not_loaded: "Smart Comfort не е зареден. Проверете журналите.",
     not_setup: "Smart Comfort все още не е настроен: добавете го от Настройки → Устройства и услуги.",
     retry: "Опитай отново",
@@ -3006,7 +3062,11 @@ const STRINGS = {
     saved: "Сохранено",
     saving: "Сохранение…",
     unsaved: "Несохранённые изменения",
-    yaml: "Эта конфигурация взята из YAML. Изменения, сохранённые здесь, действуют, пока не изменится YAML: тогда YAML заменит их при следующем перезапуске.",
+    yaml: "Эта конфигурация взята из YAML и может редактироваться здесь. Когда YAML меняется (при перезапуске или через «Перезагрузить YAML»), применяется только изменённое: ваши изменения других настроек сохраняются.",
+    yaml_reload: "Перезагрузить YAML",
+    yaml_reloaded: "YAML применён: обновлено только изменённое.",
+    yaml_unchanged: "YAML не изменился: применять нечего.",
+    yaml_conflicts: "YAML применён. Он заменил изменённое здесь для: {paths}",
     not_loaded: "Smart Comfort не загружен. Проверьте журналы.",
     not_setup: "Smart Comfort ещё не настроен: добавьте его в Настройки → Устройства и службы.",
     retry: "Повторить",
@@ -3214,7 +3274,11 @@ const STRINGS = {
     saved: "Збережено",
     saving: "Збереження…",
     unsaved: "Незбережені зміни",
-    yaml: "Ця конфігурація походить з YAML. Зміни, збережені тут, діють, доки не зміниться YAML: тоді YAML замінить їх під час наступного перезапуску.",
+    yaml: "Ця конфігурація взята з YAML і може редагуватися тут. Коли YAML змінюється (під час перезапуску або через «Перезавантажити YAML»), застосовується лише змінене: ваші зміни інших налаштувань зберігаються.",
+    yaml_reload: "Перезавантажити YAML",
+    yaml_reloaded: "YAML застосовано: оновлено лише змінене.",
+    yaml_unchanged: "YAML не змінився: нічого застосовувати.",
+    yaml_conflicts: "YAML застосовано. Він замінив змінене тут для: {paths}",
     not_loaded: "Smart Comfort не завантажено. Перевірте журнали.",
     not_setup: "Smart Comfort ще не налаштовано: додайте його в Налаштування → Пристрої та служби.",
     retry: "Повторити",
@@ -3422,7 +3486,11 @@ const STRINGS = {
     saved: "Mentve",
     saving: "Mentés…",
     unsaved: "Nem mentett módosítások",
-    yaml: "Ez a konfiguráció YAML-ből származik. Az itt mentett módosítások addig maradnak, amíg a YAML nem változik: akkor a YAML a következő újraindításkor felülírja őket.",
+    yaml: "Ez a konfiguráció YAML-ből származik, és itt szerkeszthető. Ha a YAML változik (újraindításkor vagy a YAML újratöltése gombbal), csak a változás kerül alkalmazásra: a többi beállításon végzett módosításai megmaradnak.",
+    yaml_reload: "YAML újratöltése",
+    yaml_reloaded: "YAML alkalmazva: csak a változások frissültek.",
+    yaml_unchanged: "A YAML nem változott: nincs mit alkalmazni.",
+    yaml_conflicts: "YAML alkalmazva. Felülírta az itt módosítottakat ezeknél: {paths}",
     not_loaded: "A Smart Comfort nincs betöltve. Nézze meg a naplókat.",
     not_setup: "A Smart Comfort még nincs beállítva: adja hozzá a Beállítások → Eszközök és szolgáltatások menüben.",
     retry: "Újra",
@@ -3630,7 +3698,11 @@ const STRINGS = {
     saved: "Uložené",
     saving: "Ukladá sa…",
     unsaved: "Neuložené zmeny",
-    yaml: "Táto konfigurácia pochádza z YAML. Zmeny uložené tu platia, kým sa YAML nezmení: potom ich YAML pri ďalšom reštarte nahradí.",
+    yaml: "Táto konfigurácia pochádza z YAML a dá sa tu upravovať. Keď sa YAML zmení (pri reštarte alebo cez Znova načítať YAML), použije sa len to, čo sa zmenilo: vaše zmeny ostatných nastavení zostanú.",
+    yaml_reload: "Znova načítať YAML",
+    yaml_reloaded: "YAML použitý: aktualizovalo sa len to, čo sa zmenilo.",
+    yaml_unchanged: "YAML sa nezmenil: nie je čo použiť.",
+    yaml_conflicts: "YAML použitý. Nahradil to, čo bolo tu zmenené, pre: {paths}",
     not_loaded: "Smart Comfort nie je načítaný. Skontrolujte záznamy.",
     not_setup: "Smart Comfort ešte nie je nastavený: pridajte ho v Nastavenia → Zariadenia a služby.",
     retry: "Skúsiť znova",
@@ -3838,7 +3910,11 @@ const STRINGS = {
     saved: "Uloženo",
     saving: "Ukládání…",
     unsaved: "Neuložené změny",
-    yaml: "Tato konfigurace pochází z YAML. Změny uložené zde platí, dokud se YAML nezmění: pak je YAML při příštím restartu nahradí.",
+    yaml: "Tato konfigurace pochází z YAML a lze ji zde upravovat. Když se YAML změní (při restartu nebo přes Znovu načíst YAML), použije se jen to, co se změnilo: vaše změny ostatních nastavení zůstanou.",
+    yaml_reload: "Znovu načíst YAML",
+    yaml_reloaded: "YAML použit: aktualizovalo se jen to, co se změnilo.",
+    yaml_unchanged: "YAML se nezměnil: není co použít.",
+    yaml_conflicts: "YAML použit. Nahradil to, co bylo změněno zde, pro: {paths}",
     not_loaded: "Smart Comfort není načten. Zkontrolujte protokoly.",
     not_setup: "Smart Comfort zatím není nastaven: přidejte ho v Nastavení → Zařízení a služby.",
     retry: "Zkusit znovu",
@@ -4046,7 +4122,11 @@ const STRINGS = {
     saved: "Shranjeno",
     saving: "Shranjevanje…",
     unsaved: "Neshranjene spremembe",
-    yaml: "Ta konfiguracija prihaja iz YAML. Spremembe, shranjene tukaj, veljajo, dokler se YAML ne spremeni: takrat jih YAML ob naslednjem ponovnem zagonu nadomesti.",
+    yaml: "Ta konfiguracija prihaja iz YAML in jo lahko urejate tukaj. Ko se YAML spremeni (ob ponovnem zagonu ali z Znova naloži YAML), se uveljavi le spremenjeno: vaše spremembe drugih nastavitev ostanejo.",
+    yaml_reload: "Znova naloži YAML",
+    yaml_reloaded: "YAML uveljavljen: posodobljeno je le spremenjeno.",
+    yaml_unchanged: "YAML se ni spremenil: ni česa uveljaviti.",
+    yaml_conflicts: "YAML uveljavljen. Zamenjal je, kar je bilo tukaj spremenjeno, za: {paths}",
     not_loaded: "Smart Comfort ni naložen. Preverite dnevnike.",
     not_setup: "Smart Comfort še ni nastavljen: dodajte ga v Nastavitve → Naprave in storitve.",
     retry: "Poskusi znova",
@@ -4254,7 +4334,11 @@ const STRINGS = {
     saved: "Saglabāts",
     saving: "Saglabā…",
     unsaved: "Nesaglabātas izmaiņas",
-    yaml: "Šī konfigurācija nāk no YAML. Šeit saglabātās izmaiņas paliek spēkā, līdz mainās YAML: tad YAML tās aizstāj nākamajā restartēšanā.",
+    yaml: "Šī konfigurācija nāk no YAML, un to var rediģēt šeit. Kad YAML mainās (pārstartējot vai ar Pārlādēt YAML), tiek piemērots tikai mainītais: jūsu citu iestatījumu izmaiņas paliek.",
+    yaml_reload: "Pārlādēt YAML",
+    yaml_reloaded: "YAML piemērots: atjaunināts tikai mainītais.",
+    yaml_unchanged: "YAML nav mainījies: nav ko piemērot.",
+    yaml_conflicts: "YAML piemērots. Tas aizstāja šeit mainīto šiem: {paths}",
     not_loaded: "Smart Comfort nav ielādēts. Pārbaudiet žurnālus.",
     not_setup: "Smart Comfort vēl nav iestatīts: pievienojiet to sadaļā Iestatījumi → Ierīces un pakalpojumi.",
     retry: "Mēģināt vēlreiz",
@@ -4462,7 +4546,11 @@ const STRINGS = {
     saved: "Αποθηκεύτηκε",
     saving: "Αποθήκευση…",
     unsaved: "Μη αποθηκευμένες αλλαγές",
-    yaml: "Αυτή η διαμόρφωση προέρχεται από YAML. Οι αλλαγές που αποθηκεύονται εδώ ισχύουν μέχρι να αλλάξει το YAML: τότε το YAML τις αντικαθιστά στην επόμενη επανεκκίνηση.",
+    yaml: "Αυτή η διαμόρφωση προέρχεται από YAML και μπορεί να επεξεργαστεί εδώ. Όταν αλλάζει το YAML (σε επανεκκίνηση ή με Επαναφόρτωση YAML), εφαρμόζεται μόνο ό,τι άλλαξε: οι αλλαγές σας στις άλλες ρυθμίσεις παραμένουν.",
+    yaml_reload: "Επαναφόρτωση YAML",
+    yaml_reloaded: "Το YAML εφαρμόστηκε: ενημερώθηκε μόνο ό,τι άλλαξε.",
+    yaml_unchanged: "Το YAML δεν άλλαξε: τίποτα προς εφαρμογή.",
+    yaml_conflicts: "Το YAML εφαρμόστηκε. Αντικατέστησε ό,τι είχε αλλάξει εδώ για: {paths}",
     not_loaded: "Το Smart Comfort δεν έχει φορτωθεί. Ελέγξτε τα αρχεία καταγραφής.",
     not_setup: "Το Smart Comfort δεν έχει ρυθμιστεί ακόμα: προσθέστε το στις Ρυθμίσεις → Συσκευές και υπηρεσίες.",
     retry: "Δοκιμή ξανά",
@@ -5265,7 +5353,7 @@ class SmartComfortPanel extends HTMLElement {
     const top = this._el("div", "card shtop");
     if (this._tab !== "overview") top.append(scbBanner(this, this._tab, { compact: true }));
     content.append(top);
-    if (this._config.yaml && this._tab !== "overview") content.append(this._el("div", "banner info", this._t("yaml")));
+    if (this._config.yaml && this._tab !== "overview") content.append(this._yamlBanner());
     render();
     const body = this._el("div", "shbody");
     while (top.nextElementSibling?.matches(".banner.info, .summary, .section-help, .discover, .start")) body.append(top.nextElementSibling);
@@ -5492,6 +5580,37 @@ class SmartComfortPanel extends HTMLElement {
     return today
       ? d.toLocaleTimeString(intlLocale(this._hass), { hour: "2-digit", minute: "2-digit" })
       : d.toLocaleString(intlLocale(this._hass), { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
+  }
+
+  /** The configuration comes from YAML: what that means, and Reload the YAML (the result stays shown until the next one). */
+  _yamlBanner() {
+    const banner = this._el("div", "banner info", this._t("yaml"));
+    const reload = this._el("button", "retry", this._t("yaml_reload"));
+    reload.type = "button";
+    reload.disabled = !!this._reloadingYaml;
+    reload.addEventListener("click", () => this._reloadYaml());
+    banner.append(reload);
+    if (this._yamlNote) banner.append(this._el("div", "note", this._yamlNote));
+    return banner;
+  }
+
+  async _reloadYaml() {
+    this._reloadingYaml = true;
+    this._render();
+    let applied = false;
+    try {
+      const { response } = await this._hass.callService(DOMAIN, "reload", {}, undefined, true, true);
+      applied = response.applied;
+      if (!applied) this._yamlNote = this._t("yaml_unchanged");
+      else if (response.conflicts.length) this._yamlNote = this._t("yaml_conflicts", { paths: response.conflicts.join(", ") });
+      else this._yamlNote = this._t("yaml_reloaded");
+    } catch (err) {
+      this._yamlNote = err.message;
+    }
+    this._reloadingYaml = false;
+    // Applied: the options changed, load them again; otherwise the unsaved edits stay.
+    if (applied) this._reload();
+    else this._render();
   }
 
   _service(service, data = {}) {
@@ -7592,6 +7711,7 @@ const STYLE = `
   .banner.info { background: rgba(var(--rgb-info-color, 3, 155, 229), 0.12); }
   .banner.error { background: rgba(var(--rgb-error-color, 219, 68, 55), 0.14); color: var(--error-color); }
   .banner.success { background: rgba(var(--rgb-success-color, 67, 160, 71), 0.14); }
+  .banner .note { margin-top: 6px; font-weight: 500; }
   .banner .retry { margin-left: 8px; font: inherit; font-weight: 500; color: var(--primary-color); background: none; border: 1px solid currentColor; border-radius: 16px; padding: 2px 12px; cursor: pointer; }
   .summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; }
   .tile {

@@ -502,6 +502,10 @@
     "get_config": {
       "name": "Obter a configuração",
       "description": "Devolve as opções em uso (divisões, alertas, controlo, iluminação), para copiar para o YAML ou verificar o que está definido."
+    },
+    "reload": {
+      "name": "Recarregar o YAML",
+      "description": "Volta a ler smart_comfort: em configuration.yaml e aplica apenas o que mudou desde a última importação; as alterações feitas no painel às outras definições mantêm-se. Devolve as definições em que o YAML substituiu uma alteração do painel."
     }
   },
   "common": {
@@ -535,6 +539,15 @@
     },
     "unknown_room": {
       "message": "Divisão desconhecida: {room}."
+    },
+    "invalid_yaml": {
+      "message": "A configuração YAML do Smart Comfort é inválida: consulte os registos."
+    }
+  },
+  "issues": {
+    "yaml_conflicts": {
+      "title": "O YAML substituiu alterações feitas no painel",
+      "description": "O YAML do Smart Comfort alterou definições que também tinham sido alteradas no painel. Foi mantido o valor do YAML para:\n\n{paths}\n\nVolte a defini-las no painel, ou altere-as no YAML, para manter outro valor."
     }
   }
 }

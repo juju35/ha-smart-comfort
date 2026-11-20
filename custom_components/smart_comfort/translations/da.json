@@ -502,6 +502,10 @@
     "get_config": {
       "name": "Hent konfigurationen",
       "description": "Returnerer de anvendte indstillinger (rum, advarsler, styring, belysning) til at kopiere ind i YAML eller til at kontrollere, hvad der er sat."
+    },
+    "reload": {
+      "name": "Genindlæs YAML",
+      "description": "Læser smart_comfort: i configuration.yaml igen og anvender kun det, der er ændret siden sidste import; ændringer af andre indstillinger foretaget i panelet bevares. Returnerer de indstillinger, hvor YAML erstattede en ændring fra panelet."
     }
   },
   "common": {
@@ -535,6 +539,15 @@
     },
     "unknown_room": {
       "message": "Ukendt rum: {room}."
+    },
+    "invalid_yaml": {
+      "message": "Smart Comforts YAML-konfiguration er ugyldig: se logfilerne."
+    }
+  },
+  "issues": {
+    "yaml_conflicts": {
+      "title": "YAML har erstattet ændringer foretaget i panelet",
+      "description": "Smart Comforts YAML har ændret indstillinger, som også var ændret i panelet. Værdien fra YAML blev beholdt for:\n\n{paths}\n\nIndstil dem igen i panelet, eller ændr dem i YAML, for at beholde en anden værdi."
     }
   }
 }

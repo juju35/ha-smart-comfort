@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.27.0 - 2026-11-20
+
+### Features
+- **YAML and UI together**: when the YAML changes, only what changed in it is applied to the options — the changes made in the panel to the other settings stay (they used to be all replaced). Rooms, outdoor places and devices are matched by room (name or id) and by entity, so a room added in the panel stays when the YAML changes another one. Where the YAML and the panel changed the same setting, the YAML wins and a repair lists the settings concerned. The YAML imported last is kept with the entry for that; an entry set up before keeps its panel changes and records its YAML at the first start, unless the YAML changed meanwhile (then it is replaced once, as before).
+- **Reload the YAML without restarting**: action `smart_comfort.reload` (also in Developer tools → YAML), returning `applied` and `conflicts`, and a **Reload the YAML** button in the panel's YAML notice, which shows the result. Works with `!include` and packages. Translated in every language.
+
 ## 1.26.1 - 2026-11-19
 
 ### Fixes

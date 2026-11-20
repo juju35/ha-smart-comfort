@@ -502,6 +502,10 @@
     "get_config": {
       "name": "Get the configuration",
       "description": "Returns the options in use (rooms, alerts, control, lighting), to copy into the YAML or to check what is set."
+    },
+    "reload": {
+      "name": "Reload the YAML",
+      "description": "Reads smart_comfort: in configuration.yaml again and applies only what changed in it since the last import; the changes made in the panel to other settings stay. Returns the settings where the YAML replaced a change made in the panel."
     }
   },
   "common": {
@@ -535,6 +539,15 @@
     },
     "unknown_room": {
       "message": "Unknown room: {room}."
+    },
+    "invalid_yaml": {
+      "message": "The Smart Comfort YAML configuration is invalid: check the logs."
+    }
+  },
+  "issues": {
+    "yaml_conflicts": {
+      "title": "The YAML replaced changes made in the panel",
+      "description": "The Smart Comfort YAML changed settings that had also been changed in the panel. The YAML's value was kept for:\n\n{paths}\n\nSet them again in the panel, or change them in the YAML, to keep another value."
     }
   }
 }

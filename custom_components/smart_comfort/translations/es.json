@@ -502,6 +502,10 @@
     "get_config": {
       "name": "Obtener la configuración",
       "description": "Devuelve las opciones en uso (habitaciones, alertas, control, iluminación), para copiarlas al YAML o comprobar lo configurado."
+    },
+    "reload": {
+      "name": "Recargar el YAML",
+      "description": "Vuelve a leer smart_comfort: en configuration.yaml y aplica solo lo que ha cambiado desde la última importación; los cambios hechos en el panel en los demás ajustes se mantienen. Devuelve los ajustes en los que el YAML sustituyó un cambio del panel."
     }
   },
   "common": {
@@ -535,6 +539,15 @@
     },
     "unknown_room": {
       "message": "Estancia desconocida: {room}."
+    },
+    "invalid_yaml": {
+      "message": "La configuración YAML de Smart Comfort no es válida: revisa los registros."
+    }
+  },
+  "issues": {
+    "yaml_conflicts": {
+      "title": "El YAML ha sustituido cambios hechos en el panel",
+      "description": "El YAML de Smart Comfort ha cambiado ajustes que también se habían modificado en el panel. Se ha mantenido el valor del YAML para:\n\n{paths}\n\nVuelve a ajustarlos en el panel, o cámbialos en el YAML, para mantener otro valor."
     }
   }
 }

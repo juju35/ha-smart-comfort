@@ -2,8 +2,10 @@
 
 from __future__ import annotations
 
+import copy
 import hashlib
 import json
+import logging
 from typing import Any
 
 import voluptuous as vol
@@ -12,7 +14,9 @@ from homeassistant.const import Platform
 from homeassistant.core import CoreState, HomeAssistant, ServiceCall, SupportsResponse, callback
 from homeassistant.exceptions import ServiceValidationError
 from homeassistant.helpers import config_validation as cv
+from homeassistant.helpers import issue_registry as ir
 from homeassistant.helpers.dispatcher import async_dispatcher_send
+from homeassistant.helpers.reload import async_integration_yaml_config
 from homeassistant.helpers.start import async_at_started
 from homeassistant.helpers.storage import Store
 from homeassistant.helpers.typing import ConfigType
@@ -26,6 +30,7 @@ from .const import (
     SERVICE_ACKNOWLEDGE,
     SERVICE_GET_CONFIG,
     SERVICE_NOTIFY_NOW,
+    SERVICE_RELOAD,
     SERVICE_SNOOZE,
     SERVICE_UNSNOOZE,
     SIGNAL_UPDATE,
@@ -33,8 +38,13 @@ from .const import (
     STORAGE_VERSION,
 )
 from .manager import SmartComfort
+from .merge import merge
 from .panel import async_register_panel, async_remove_card, async_remove_panel
 from .schema import CONFIG_SCHEMA as _CONFIG_SCHEMA
+from .schema import OPTIONS
+
+_LOGGER = logging.getLogger(__name__)
+ISSUE_YAML_CONFLICTS = "yaml_conflicts"
 
 PLATFORMS = [Platform.BUTTON, Platform.CALENDAR, Platform.SENSOR, Platform.SWITCH]
 CONFIG_SCHEMA = _CONFIG_SCHEMA
@@ -50,23 +60,57 @@ def yaml_hash(options: dict[str, Any]) -> str:
 
 
 @callback
-def async_import_yaml(hass: HomeAssistant, options: dict[str, Any]) -> None:
-    """Create the entry from the YAML, or replace its options when the YAML changed since the last import.
+def async_import_yaml(hass: HomeAssistant, options: dict[str, Any]) -> list[str] | None:
+    """Create the entry from the YAML, or apply to its options what changed in the YAML since the last import.
 
-    Unchanged YAML leaves the options alone, so changes made in the UI stay until the YAML changes.
+    The YAML imported last is kept in `entry.data["yaml"]`: a changed YAML is merged into the options (merge.py), so
+    the UI changes to what the YAML left alone stay. Unchanged YAML (same hash) leaves the options alone. An entry
+    from before 1.27.0 has only the hash: its options are replaced once, as they were then.
     The import flow only creates: a single-entry integration can't run a flow once its entry exists.
+    Returns the paths where the YAML replaced a UI change, None when nothing was applied.
     """
     digest = yaml_hash(options)
-    if entries := hass.config_entries.async_entries(DOMAIN, include_ignore=False):
-        entry = entries[0]
-        if entry.data.get("yaml_hash") != digest:
-            hass.config_entries.async_update_entry(entry, data={**entry.data, "yaml_hash": digest}, options=options)
-        return
-    hass.async_create_task(
-        hass.config_entries.flow.async_init(
-            DOMAIN, context={"source": SOURCE_IMPORT}, data={"options": options, "yaml_hash": digest}
+    if not (entries := hass.config_entries.async_entries(DOMAIN, include_ignore=False)):
+        hass.async_create_task(
+            hass.config_entries.flow.async_init(
+                DOMAIN,
+                context={"source": SOURCE_IMPORT},
+                data={"options": options, "yaml_hash": digest, "yaml": copy.deepcopy(options)},
+            )
         )
+        return []
+    entry = entries[0]
+    base = entry.data.get("yaml")
+    if entry.data.get("yaml_hash") == digest:
+        if base is None:  # The hash proves this is the YAML imported last: keep it for the next merge.
+            hass.config_entries.async_update_entry(entry, data={**entry.data, "yaml": copy.deepcopy(options)})
+        return None
+    merged, conflicts = (copy.deepcopy(options), []) if base is None else merge(base, dict(entry.options), options)
+    if base is not None:
+        try:
+            merged = OPTIONS(merged)
+            if problem := websocket.check_rooms(merged):
+                raise vol.Invalid(problem)
+        except vol.Invalid as err:
+            _LOGGER.warning("The YAML merged into the UI changes is invalid (%s): the YAML replaces them", err)
+            merged, conflicts = copy.deepcopy(options), ["*"]
+    hass.config_entries.async_update_entry(
+        entry, data={**entry.data, "yaml_hash": digest, "yaml": copy.deepcopy(options)}, options=merged
     )
+    if conflicts:
+        _LOGGER.warning("The YAML replaced settings also changed in the UI: %s", ", ".join(conflicts))
+        ir.async_create_issue(
+            hass,
+            DOMAIN,
+            ISSUE_YAML_CONFLICTS,
+            is_fixable=False,
+            severity=ir.IssueSeverity.WARNING,
+            translation_key=ISSUE_YAML_CONFLICTS,
+            translation_placeholders={"paths": "\n".join(f"- `{path}`" for path in conflicts)},
+        )
+    else:
+        ir.async_delete_issue(hass, DOMAIN, ISSUE_YAML_CONFLICTS)
+    return conflicts
 
 
 def _manager(hass: HomeAssistant) -> SmartComfort:
@@ -148,6 +192,19 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
     hass.services.async_register(
         DOMAIN, SERVICE_GET_CONFIG, get_config, vol.Schema({}), supports_response=SupportsResponse.ONLY
     )
+
+    async def reload(call: ServiceCall) -> dict[str, Any]:
+        """Read `smart_comfort:` again and apply what changed, without a restart (also listed in Developer tools)."""
+        if (conf := await async_integration_yaml_config(hass, DOMAIN)) is None:
+            raise ServiceValidationError(translation_domain=DOMAIN, translation_key="invalid_yaml")
+        if (options := conf.get(DOMAIN)) is None:
+            return {"applied": False, "conflicts": []}
+        conflicts = async_import_yaml(hass, options)
+        return {"applied": conflicts is not None, "conflicts": conflicts or []}
+
+    hass.services.async_register(
+        DOMAIN, SERVICE_RELOAD, reload, vol.Schema({}), supports_response=SupportsResponse.OPTIONAL
+    )
     return True
 
 
@@ -180,6 +237,7 @@ async def async_remove_entry(hass: HomeAssistant, entry: SmartComfortConfigEntry
     """Forget the episodes, snoozes and targets: a new entry starts afresh. The panel goes too."""
     async_remove_panel(hass)
     await async_remove_card(hass)
+    ir.async_delete_issue(hass, DOMAIN, ISSUE_YAML_CONFLICTS)
     hass.data.get(DOMAIN, {}).pop("state", None)
     await Store(hass, STORAGE_VERSION, STORAGE_KEY).async_remove()
 

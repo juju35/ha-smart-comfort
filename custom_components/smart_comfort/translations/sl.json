@@ -502,6 +502,10 @@
     "get_config": {
       "name": "Pridobi konfiguracijo",
       "description": "Vrne uporabljene možnosti (prostori, opozorila, upravljanje, razsvetljava) za kopiranje v YAML ali za preverjanje nastavitev."
+    },
+    "reload": {
+      "name": "Znova naloži YAML",
+      "description": "Znova prebere smart_comfort: v configuration.yaml in uveljavi le to, kar se je spremenilo od zadnjega uvoza; spremembe drugih nastavitev, narejene v plošči, ostanejo. Vrne nastavitve, pri katerih je YAML zamenjal spremembo iz plošče."
     }
   },
   "common": {
@@ -535,6 +539,15 @@
     },
     "unknown_room": {
       "message": "Neznan prostor: {room}."
+    },
+    "invalid_yaml": {
+      "message": "Konfiguracija YAML za Smart Comfort ni veljavna: preverite dnevnike."
+    }
+  },
+  "issues": {
+    "yaml_conflicts": {
+      "title": "YAML je zamenjal spremembe, narejene v plošči",
+      "description": "YAML za Smart Comfort je spremenil nastavitve, ki so bile spremenjene tudi v plošči. Ohranjena je vrednost iz YAML za:\n\n{paths}\n\nZnova jih nastavite v plošči ali jih spremenite v YAML, če želite ohraniti drugo vrednost."
     }
   }
 }

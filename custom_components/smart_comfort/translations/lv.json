@@ -502,6 +502,10 @@
     "get_config": {
       "name": "Iegūt konfigurāciju",
       "description": "Atgriež izmantotās opcijas (telpas, brīdinājumi, vadība, apgaismojums), lai kopētu tās YAML vai pārbaudītu iestatīto."
+    },
+    "reload": {
+      "name": "Pārlādēt YAML",
+      "description": "Vēlreiz nolasa smart_comfort: failā configuration.yaml un piemēro tikai to, kas mainījies kopš pēdējā importa; panelī veiktās citu iestatījumu izmaiņas paliek. Atgriež iestatījumus, kuros YAML aizstāja paneļa izmaiņu."
     }
   },
   "common": {
@@ -535,6 +539,15 @@
     },
     "unknown_room": {
       "message": "Nezināma telpa: {room}."
+    },
+    "invalid_yaml": {
+      "message": "Smart Comfort YAML konfigurācija nav derīga: pārbaudiet žurnālus."
+    }
+  },
+  "issues": {
+    "yaml_conflicts": {
+      "title": "YAML aizstāja panelī veiktās izmaiņas",
+      "description": "Smart Comfort YAML mainīja iestatījumus, kas bija mainīti arī panelī. Saglabāta YAML vērtība šiem:\n\n{paths}\n\nIestatiet tos vēlreiz panelī vai mainiet YAML, lai saglabātu citu vērtību."
     }
   }
 }

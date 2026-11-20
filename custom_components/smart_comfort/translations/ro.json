@@ -502,6 +502,10 @@
     "get_config": {
       "name": "Obține configurația",
       "description": "Returnează opțiunile în uz (camere, alerte, control, iluminare), de copiat în YAML sau pentru a verifica ce e setat."
+    },
+    "reload": {
+      "name": "Reîncarcă YAML",
+      "description": "Recitește smart_comfort: din configuration.yaml și aplică doar ce s-a schimbat de la ultimul import; modificările făcute în panou la celelalte setări rămân. Returnează setările în care YAML a înlocuit o modificare din panou."
     }
   },
   "common": {
@@ -535,6 +539,15 @@
     },
     "unknown_room": {
       "message": "Cameră necunoscută: {room}."
+    },
+    "invalid_yaml": {
+      "message": "Configurația YAML Smart Comfort nu este validă: verificați jurnalele."
+    }
+  },
+  "issues": {
+    "yaml_conflicts": {
+      "title": "YAML a înlocuit modificări făcute în panou",
+      "description": "YAML-ul Smart Comfort a schimbat setări care fuseseră modificate și în panou. S-a păstrat valoarea din YAML pentru:\n\n{paths}\n\nSetați-le din nou în panou sau schimbați-le în YAML pentru a păstra altă valoare."
     }
   }
 }

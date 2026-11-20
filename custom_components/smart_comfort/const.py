@@ -436,6 +436,7 @@ SERVICE_UNSNOOZE: Final = "unsnooze"
 SERVICE_ACKNOWLEDGE: Final = "acknowledge"
 SERVICE_NOTIFY_NOW: Final = "notify_now"
 SERVICE_GET_CONFIG: Final = "get_config"
+SERVICE_RELOAD: Final = "reload"
 
 EVENT_NOTIFIED: Final = f"{DOMAIN}_notified"
 EVENT_CONTROL: Final = f"{DOMAIN}_control"

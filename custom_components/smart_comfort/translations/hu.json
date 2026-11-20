@@ -502,6 +502,10 @@
     "get_config": {
       "name": "Konfiguráció lekérése",
       "description": "Visszaadja a használt beállításokat (helyiségek, riasztások, vezérlés, világítás), YAML-be másoláshoz vagy annak ellenőrzéséhez, mi van beállítva."
+    },
+    "reload": {
+      "name": "YAML újratöltése",
+      "description": "Újra beolvassa a configuration.yaml smart_comfort: részét, és csak az utolsó importálás óta változottakat alkalmazza; a panelen más beállításokon végzett módosítások megmaradnak. Visszaadja azokat a beállításokat, ahol a YAML felülírt egy panelen végzett módosítást."
     }
   },
   "common": {
@@ -535,6 +539,15 @@
     },
     "unknown_room": {
       "message": "Ismeretlen helyiség: {room}."
+    },
+    "invalid_yaml": {
+      "message": "A Smart Comfort YAML-konfigurációja érvénytelen: nézze meg a naplókat."
+    }
+  },
+  "issues": {
+    "yaml_conflicts": {
+      "title": "A YAML felülírta a panelen végzett módosításokat",
+      "description": "A Smart Comfort YAML-je olyan beállításokat módosított, amelyeket a panelen is módosítottak. A YAML értéke maradt meg ezeknél:\n\n{paths}\n\nÁllítsa be őket újra a panelen, vagy módosítsa a YAML-ben, ha más értéket szeretne."
     }
   }
 }
