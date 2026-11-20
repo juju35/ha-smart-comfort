@@ -4,12 +4,15 @@ from __future__ import annotations
 
 from datetime import UTC, datetime, timedelta
 
+import pytest
+import voluptuous as vol
 from homeassistant.core import Context, HomeAssistant
 from pytest_homeassistant_custom_component.common import MockConfigEntry, async_fire_time_changed, async_mock_service
 
 from custom_components.smart_comfort.config import build_settings
 from custom_components.smart_comfort.const import DOMAIN
 from custom_components.smart_comfort.lighting import LightController, LightState, PresenceController
+from custom_components.smart_comfort.schema import PRESENCE_SLOT
 
 T0 = datetime(2026, 10, 31, 12, 0, tzinfo=UTC)
 WEEKDAY = datetime(2026, 11, 2, 7, 0)  # Monday 7:00 (local).
@@ -380,3 +383,42 @@ async def test_presence_checks_do_not_pile_up(hass: HomeAssistant, freezer) -> N
     assert await hass.config_entries.async_unload(entry.entry_id)
     await hass.async_block_till_done()
     assert _timers(manager) == 0
+
+
+def test_slot_during_naps():
+    # A slot that follows the naps of the house (here a nap entity): the entrance at 40 % while one is on.
+    options = {
+        **OPTIONS,
+        "rooms": [
+            {
+                **OPTIONS["rooms"][0],
+                "presence": {
+                    **OPTIONS["rooms"][0]["presence"],
+                    "slots": [{"during_naps": True, "lights": ["light.entree"], "brightness": 40, "off_after": 5}],
+                },
+            },
+            {"name": "Chambre", "naps": ["schedule.sieste_chambre"]},
+        ],
+    }
+    s = build_settings(options)
+    lights = LightController(s)
+    p = s.rooms[0].presence
+    assert p.slots[0].during_naps
+    # No nap: the slot doesn't apply.
+    assert run(PresenceController(s), lights, local(14), True) == {
+        "light.entree": ("turn_on", {"transition": 1, "brightness_pct": 100}),
+        "light.couloir": ("turn_on", {"transition": 1}),
+    }
+    assert p.off_delay(local(14), ("light.entree",)) == 2
+    # The nap entity on: the entrance at 40 %, the hallway kept off, the slot's delay.
+    s.rooms[1].naps_on.add("schedule.sieste_chambre")
+    assert run(PresenceController(s), lights, local(14), True) == {
+        "light.entree": ("turn_on", {"transition": 1, "brightness_pct": 40})
+    }
+    assert p.off_delay(local(14), ("light.entree",), napping=True) == 5
+
+
+def test_slot_needs_hours_or_naps():
+    assert PRESENCE_SLOT({"during_naps": True, "brightness": 40})["during_naps"] is True
+    with pytest.raises(vol.Invalid):
+        PRESENCE_SLOT({"brightness": 40})

@@ -38,6 +38,7 @@ from .const import (
     CONF_DISPLAY,
     CONF_DISPLAY_OFF,
     CONF_DISPLAY_ON,
+    CONF_DURING_NAPS,
     CONF_ENABLED,
     CONF_END,
     CONF_ENTITY_ID,
@@ -335,9 +336,15 @@ class PresenceSlot(TimeSlot):
     off: bool = False
     color: tuple[int, int, int] | None = None  # RGB.
     off_after: float | None = None  # Minutes with nobody before off, in this slot (else the presence's).
+    during_naps: bool = False  # Applies while a room of the house has its nap, instead of its hours.
 
     def covers(self, entity_id: str) -> bool:
         return not self.lights or entity_id in self.lights
+
+    def applies(self, local: datetime, napping: bool) -> bool:
+        if not self.during_naps:
+            return self.active(local)
+        return napping and (not self.days or local.weekday() in self.days)
 
 
 @dataclass(frozen=True)
@@ -354,14 +361,16 @@ class Presence:
     not_during_naps: tuple[str, ...] = ()
     slots: tuple[PresenceSlot, ...] = ()
 
-    def off_delay(self, local: datetime, lights: tuple[str, ...]) -> float:
+    def off_delay(self, local: datetime, lights: tuple[str, ...], napping: bool = False) -> float:
         """Minutes with nobody before the lights are turned off now: the longest of their slots, else off_after."""
-        delays = [s.off_after for e in lights if (s := self.slot(e, local)) is not None and s.off_after is not None]
+        delays = [
+            s.off_after for e in lights if (s := self.slot(e, local, napping)) is not None and s.off_after is not None
+        ]
         return max(delays) if delays else self.off_after
 
-    def slot(self, entity_id: str, local: datetime) -> PresenceSlot | None:
-        """The first slot that applies to the light now."""
-        return next((s for s in self.slots if s.covers(entity_id) and s.active(local)), None)
+    def slot(self, entity_id: str, local: datetime, napping: bool = False) -> PresenceSlot | None:
+        """The first slot that applies to the light now (`napping`: a room of the house has its nap)."""
+        return next((s for s in self.slots if s.covers(entity_id) and s.applies(local, napping)), None)
 
 
 def _slot_days(raw: dict[str, Any]) -> tuple[int, ...]:
@@ -388,9 +397,10 @@ def _presence(raw: dict[str, Any] | None) -> Presence | None:
         not_during_naps=_ids(raw.get(CONF_NOT_DURING_NAPS)),
         slots=tuple(
             PresenceSlot(
-                start=parse_time(s["start"]) or time(0),
-                end=parse_time(s["end"]) or time(0),
+                start=parse_time(s.get("start") or "") or time(0),
+                end=parse_time(s.get("end") or "") or time(0),
                 days=_slot_days(s),
+                during_naps=bool(s.get(CONF_DURING_NAPS, False)),
                 lights=_ids(s.get(CONF_LIGHTS)),
                 brightness=_int(s.get(CONF_BRIGHTNESS)),
                 off=bool(s.get(CONF_OFF, False)),

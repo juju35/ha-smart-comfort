@@ -413,8 +413,11 @@ class SmartComfort:
                 if room.presence.on_after > 0:
                     self._presence_check(room.presence.on_after + 0.5)
         if new is not None and new.state == "off":
+            local = dt_util.as_local(dt_util.utcnow())
+            self.refresh_naps()
+            napping = any(r.napping(local) for r in self.settings.rooms)
             for room in rooms:
-                delay = room.presence.off_delay(dt_util.as_local(dt_util.utcnow()), room.presence_lights()) * 60 + 1
+                delay = room.presence.off_delay(local, room.presence_lights(), napping) * 60 + 1
                 self._presence_check(delay)
         return True
 

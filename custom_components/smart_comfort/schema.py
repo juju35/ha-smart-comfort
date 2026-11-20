@@ -165,11 +165,21 @@ def _off_key(value: Any) -> Any:
     return value
 
 
+def _when(value: dict[str, Any]) -> dict[str, Any]:
+    """A presence slot has its hours, or applies during the naps of the house (`during_naps`)."""
+    if not value.get(k.CONF_DURING_NAPS) and not ("start" in value and "end" in value):
+        raise vol.Invalid("a slot needs start and end, or during_naps: true")
+    return value
+
+
 PRESENCE_SLOT = vol.All(
     _off_key,
     vol.Schema(
         {
-            **TIME_SLOT,
+            vol.Optional("start"): time_string,
+            vol.Optional("end"): time_string,
+            vol.Optional(k.CONF_DAYS): vol.All(cv.ensure_list, [vol.In(k.WEEKDAYS)]),
+            vol.Optional(k.CONF_DURING_NAPS): cv.boolean,
             vol.Optional(k.CONF_LIGHTS): cv.entity_ids,
             vol.Optional(k.CONF_BRIGHTNESS): vol.Any(None, vol.All(vol.Coerce(int), vol.Range(min=1, max=100))),
             vol.Optional(k.CONF_OFF): cv.boolean,
@@ -179,6 +189,7 @@ PRESENCE_SLOT = vol.All(
             ),
         }
     ),
+    _when,
 )
 PRESENCE = vol.Schema(
     {

@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.30.0 - 2026-11-20
+
+### Features
+- **Presence slots during the naps**: `during_naps: true` instead of `start` / `end` makes a slot apply while a room of the house has its nap — a dimmer entrance during the nap — so its hours follow the naps (their slots or a `schedule` helper) instead of being written twice. In the panel: **During the naps** on a slot hides its hours.
+
 ## 1.29.0 - 2026-11-20
 
 ### Features
