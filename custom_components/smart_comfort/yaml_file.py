@@ -172,7 +172,7 @@ class ConfigFile:
             return False  # Edited since it was read: the file is applied at the next check instead.
         try:
             self.mtime = await self.hass.async_add_executor_job(self._write, self.synced, options)
-        except (OSError, HomeAssistantError, pyyaml.YAMLError, ValueError):
+        except (OSError, ImportError, HomeAssistantError, pyyaml.YAMLError, ValueError):
             _LOGGER.exception("Can't write %s", self.path)
             return False
         self.synced = dict(options)
