@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.29.0 - 2026-11-20
+
+### Features
+- **Nap entities**: a nap of `rooms[].naps` may also be an on/off entity — a nap while it is on. A core `schedule` helper is shared with House Rules, so the naps are defined once for both integrations; an `input_boolean` covers an unplanned nap. In the panel: room → Lighting → **Nap schedule**. The slots stay as they are.
+
 ## 1.28.0 - 2026-11-20
 
 ### Features

@@ -376,7 +376,7 @@ Set under `lighting:` for every light, under `rooms[].lighting:` for the lights 
 | `morning_kelvin` / `nap_kelvin` | 3000 / 2200 K | Color temperature of the quiet morning and of the naps |
 | `night_only` | `false` | On a light item: a night light, set only in the night hours and the naps, left alone by day |
 
-Naps are set per room under `rooms[].naps:` — `start`, `end` and optionally `days` (`mon` … `sun`, every day when none). Discover never adds any. Order of precedence: night, nap, quiet morning, then day / evening.
+Naps are set per room under `rooms[].naps:` — slots (`start`, `end` and optionally `days`, `mon` … `sun`, every day when none) and/or on/off entities: a nap while one is on (a core `schedule` helper, an `input_boolean` for an unplanned nap…). A `schedule` helper lets [House Rules](https://github.com/juju35/ha-house-rules) read the same naps: they are defined once for both integrations. In the panel: room → Lighting → **Nap** (a slot) or **Nap schedule** (an entity). Discover never adds any. Order of precedence: night, nap, quiet morning, then day / evening.
 
 Only the lights that are on are set: Smart Comfort never turns a light on or off. A brightness or warmth changed by hand pauses the light until it is turned off, or for `control.manual_override` minutes. On/off-only lights are left alone.
 
@@ -395,6 +395,7 @@ smart_comfort:
       lighting: { quiet_morning: true }   # dimmer until morning_end (09:30)
       naps:
         - { start: "13:30", end: "15:30", days: [sat, sun] }
+        - schedule.kids_nap          # shared with House Rules
 ```
 
 ### Lights on presence

@@ -267,7 +267,8 @@ class SmartComfort:
         devices |= {e for r in s.rooms for e in r.presence_lights()}
         devices |= {e for r in s.rooms if r.presence for e in (*r.presence.sensors, r.presence.lux) if e}
         selects = {p.mode_select for r in s.rooms for p in r.purifiers if p.mode_select}
-        if entities := sorted(sensors | devices | selects):
+        naps = {e for r in s.rooms for e in r.nap_entities}
+        if entities := sorted(sensors | devices | selects | naps):
             self._unsubs.append(async_track_state_change_event(self.hass, entities, self._state_changed))
 
     @property
@@ -616,6 +617,14 @@ class SmartComfort:
 
     # Evaluation.
 
+    def refresh_naps(self) -> None:
+        """The nap entities on now, for `Room.napping`."""
+        for room in self.settings.rooms:
+            room.naps_on.clear()
+            room.naps_on.update(
+                e for e in room.nap_entities if (s := self.hass.states.get(e)) is not None and s.state == "on"
+            )
+
     def gates(self, now: datetime) -> Gates:
         s = self.settings
         starting = self.started_at is not None and now - self.started_at < timedelta(minutes=s.startup_grace)
@@ -632,6 +641,7 @@ class SmartComfort:
                 return
             now = dt_util.utcnow()
             local = dt_util.as_local(now).time()
+            self.refresh_naps()
             readings: dict[str, RoomReading] = {}
             commands: list[Command] = []
             handled: set[str] = set()

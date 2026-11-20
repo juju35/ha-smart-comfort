@@ -179,6 +179,8 @@ const STRINGS = {
     nap_end: "Until",
     nap_days: "Days",
     nap_days_help: "None: every day.",
+    nap_entity: "Nap schedule",
+    nap_entity_help: "On: a nap (a schedule helper shared with House Rules, an input boolean…).",
     day_mon: "Mon",
     day_tue: "Tue",
     day_wed: "Wed",
@@ -413,6 +415,8 @@ const STRINGS = {
     nap_end: "Jusqu'à",
     nap_days: "Jours",
     nap_days_help: "Aucun : tous les jours.",
+    nap_entity: "Planning de sieste",
+    nap_entity_help: "Allumé : sieste (un planning partagé avec House Rules, un interrupteur virtuel…).",
     day_mon: "Lun",
     day_tue: "Mar",
     day_wed: "Mer",
@@ -647,6 +651,8 @@ const STRINGS = {
     nap_end: "Bis",
     nap_days: "Tage",
     nap_days_help: "Keine: jeden Tag.",
+    nap_entity: "Mittagsschlaf-Zeitplan",
+    nap_entity_help: "Ein: Mittagsschlaf (ein mit House Rules geteilter Zeitplan, ein Eingabe-Schalter…).",
     day_mon: "Mo",
     day_tue: "Di",
     day_wed: "Mi",
@@ -881,6 +887,8 @@ const STRINGS = {
     nap_end: "Hasta",
     nap_days: "Días",
     nap_days_help: "Ninguno: todos los días.",
+    nap_entity: "Horario de siesta",
+    nap_entity_help: "Encendido: siesta (un horario compartido con House Rules, un interruptor virtual…).",
     day_mon: "Lun",
     day_tue: "Mar",
     day_wed: "Mié",
@@ -1115,6 +1123,8 @@ const STRINGS = {
     nap_end: "До",
     nap_days: "Дани",
     nap_days_help: "Ништа: сваки дан.",
+    nap_entity: "Распоред дремке",
+    nap_entity_help: "Укључено: дремка (распоред дељен са House Rules, виртуелни прекидач…).",
     day_mon: "Пон",
     day_tue: "Уто",
     day_wed: "Сре",
@@ -1349,6 +1359,8 @@ const STRINGS = {
     nap_end: "Do",
     nap_days: "Dani",
     nap_days_help: "Ništa: svaki dan.",
+    nap_entity: "Raspored dremke",
+    nap_entity_help: "Uključeno: dremka (raspored deljen sa House Rules, virtuelni prekidač…).",
     day_mon: "Pon",
     day_tue: "Uto",
     day_wed: "Sre",
@@ -1583,6 +1595,8 @@ const STRINGS = {
     nap_end: "Fino alle",
     nap_days: "Giorni",
     nap_days_help: "Nessuno: tutti i giorni.",
+    nap_entity: "Programma del riposino",
+    nap_entity_help: "Acceso: riposino (un programma condiviso con House Rules, un interruttore virtuale…).",
     day_mon: "Lun",
     day_tue: "Mar",
     day_wed: "Mer",
@@ -1817,6 +1831,8 @@ const STRINGS = {
     nap_end: "Tot",
     nap_days: "Dagen",
     nap_days_help: "Geen: elke dag.",
+    nap_entity: "Dutjesschema",
+    nap_entity_help: "Aan: een dutje (een schema gedeeld met House Rules, een virtuele schakelaar…).",
     day_mon: "Ma",
     day_tue: "Di",
     day_wed: "Wo",
@@ -2051,6 +2067,8 @@ const STRINGS = {
     nap_end: "Até às",
     nap_days: "Dias",
     nap_days_help: "Nenhum: todos os dias.",
+    nap_entity: "Horário da sesta",
+    nap_entity_help: "Ligado: sesta (um horário partilhado com o House Rules, um interruptor virtual…).",
     day_mon: "Seg",
     day_tue: "Ter",
     day_wed: "Qua",
@@ -2285,6 +2303,8 @@ const STRINGS = {
     nap_end: "Do",
     nap_days: "Dni",
     nap_days_help: "Brak: codziennie.",
+    nap_entity: "Harmonogram drzemki",
+    nap_entity_help: "Włączone: drzemka (harmonogram wspólny z House Rules, przełącznik wirtualny…).",
     day_mon: "Pn",
     day_tue: "Wt",
     day_wed: "Śr",
@@ -2519,6 +2539,8 @@ const STRINGS = {
     nap_end: "Până la",
     nap_days: "Zile",
     nap_days_help: "Niciuna: în fiecare zi.",
+    nap_entity: "Program de somn",
+    nap_entity_help: "Pornit: somn de prânz (un program comun cu House Rules, un comutator virtual…).",
     day_mon: "Lun",
     day_tue: "Mar",
     day_wed: "Mie",
@@ -2753,6 +2775,8 @@ const STRINGS = {
     nap_end: "Indtil",
     nap_days: "Dage",
     nap_days_help: "Ingen: hver dag.",
+    nap_entity: "Lur-tidsplan",
+    nap_entity_help: "Til: en lur (en tidsplan delt med House Rules, en virtuel kontakt…).",
     day_mon: "man",
     day_tue: "tir",
     day_wed: "ons",
@@ -2987,6 +3011,8 @@ const STRINGS = {
     nap_end: "Till",
     nap_days: "Dagar",
     nap_days_help: "Ingen: varje dag.",
+    nap_entity: "Tupplursschema",
+    nap_entity_help: "På: tupplur (ett schema delat med House Rules, en virtuell brytare…).",
     day_mon: "mån",
     day_tue: "tis",
     day_wed: "ons",
@@ -3221,6 +3247,8 @@ const STRINGS = {
     nap_end: "До",
     nap_days: "Дни",
     nap_days_help: "Няма: всеки ден.",
+    nap_entity: "График за дрямка",
+    nap_entity_help: "Включено: дрямка (график, споделен с House Rules, виртуален превключвател…).",
     day_mon: "пн",
     day_tue: "вт",
     day_wed: "ср",
@@ -3455,6 +3483,8 @@ const STRINGS = {
     nap_end: "До",
     nap_days: "Дни",
     nap_days_help: "Не выбрано: каждый день.",
+    nap_entity: "Расписание дневного сна",
+    nap_entity_help: "Включено: дневной сон (расписание, общее с House Rules, виртуальный переключатель…).",
     day_mon: "Пн",
     day_tue: "Вт",
     day_wed: "Ср",
@@ -3689,6 +3719,8 @@ const STRINGS = {
     nap_end: "До",
     nap_days: "Дні",
     nap_days_help: "Не вибрано: щодня.",
+    nap_entity: "Розклад денного сну",
+    nap_entity_help: "Увімкнено: денний сон (розклад, спільний з House Rules, віртуальний перемикач…).",
     day_mon: "Пн",
     day_tue: "Вт",
     day_wed: "Ср",
@@ -3923,6 +3955,8 @@ const STRINGS = {
     nap_end: "Eddig",
     nap_days: "Napok",
     nap_days_help: "Egyik sem: minden nap.",
+    nap_entity: "Szundi ütemezés",
+    nap_entity_help: "Be: szundi (a House Rules-szal közös ütemezés, virtuális kapcsoló…).",
     day_mon: "H",
     day_tue: "K",
     day_wed: "Sze",
@@ -4157,6 +4191,8 @@ const STRINGS = {
     nap_end: "Do",
     nap_days: "Dni",
     nap_days_help: "Žiadny: každý deň.",
+    nap_entity: "Plán zdriemnutia",
+    nap_entity_help: "Zapnuté: zdriemnutie (plán zdieľaný s House Rules, virtuálny prepínač…).",
     day_mon: "po",
     day_tue: "ut",
     day_wed: "st",
@@ -4391,6 +4427,8 @@ const STRINGS = {
     nap_end: "Do",
     nap_days: "Dny",
     nap_days_help: "Žádný: každý den.",
+    nap_entity: "Plán zdřímnutí",
+    nap_entity_help: "Zapnuto: zdřímnutí (plán sdílený s House Rules, virtuální přepínač…).",
     day_mon: "po",
     day_tue: "út",
     day_wed: "st",
@@ -4625,6 +4663,8 @@ const STRINGS = {
     nap_end: "Do",
     nap_days: "Dnevi",
     nap_days_help: "Noben: vsak dan.",
+    nap_entity: "Urnik dremeža",
+    nap_entity_help: "Vklopljeno: dremež (urnik, deljen s House Rules, navidezno stikalo…).",
     day_mon: "pon",
     day_tue: "tor",
     day_wed: "sre",
@@ -4859,6 +4899,8 @@ const STRINGS = {
     nap_end: "Līdz",
     nap_days: "Dienas",
     nap_days_help: "Nav: katru dienu.",
+    nap_entity: "Diendusas grafiks",
+    nap_entity_help: "Ieslēgts: diendusa (grafiks, kopīgs ar House Rules, virtuāls slēdzis…).",
     day_mon: "P",
     day_tue: "O",
     day_wed: "T",
@@ -5093,6 +5135,8 @@ const STRINGS = {
     nap_end: "Έως",
     nap_days: "Ημέρες",
     nap_days_help: "Καμία: κάθε μέρα.",
+    nap_entity: "Πρόγραμμα μεσημεριανού ύπνου",
+    nap_entity_help: "Ενεργό: μεσημεριανός ύπνος (πρόγραμμα κοινό με το House Rules, εικονικός διακόπτης…).",
     day_mon: "Δευ",
     day_tue: "Τρί",
     day_wed: "Τετ",
@@ -7551,8 +7595,34 @@ class SmartComfortPanel extends HTMLElement {
     const naps = Array.isArray(room.naps) ? room.naps : [];
     const days = { select: { multiple: true, mode: "list", options: WEEKDAYS.map((d) => ({ value: d, label: this._t(`day_${d}`) })) } };
     if (!naps.length) body.append(this._el("div", "help", this._t("no_naps")));
+    const remove = (i) =>
+      this._iconButton("mdi:delete-outline", this._t("remove"), () => {
+        naps.splice(i, 1);
+        if (naps.length) room.naps = naps;
+        else delete room.naps;
+        this._changed();
+        this._renderTab();
+      });
     naps.forEach((nap, i) => {
       const line = this._el("div", "device-item");
+      if (typeof nap === "string") {
+        // A nap entity (a schedule helper shared with House Rules…): a nap while it is on.
+        line.append(
+          this._form(
+            [{ name: "entity", required: true, selector: entity(["schedule", "input_boolean", "binary_sensor", "switch"]) }],
+            { entity: nap },
+            (value) => {
+              naps[i] = value.entity || nap;
+              room.naps = naps;
+            },
+            () => this._t("nap_entity"),
+            () => this._t("nap_entity_help")
+          ),
+          remove(i)
+        );
+        body.append(line);
+        return;
+      }
       line.append(
         this._form(
           [
@@ -7570,13 +7640,7 @@ class SmartComfortPanel extends HTMLElement {
           (f) => this._t(`nap_${f.name}`),
           (f) => (f.name === "days" ? this._t("nap_days_help") : undefined)
         ),
-        this._iconButton("mdi:delete-outline", this._t("remove"), () => {
-          naps.splice(i, 1);
-          if (naps.length) room.naps = naps;
-          else delete room.naps;
-          this._changed();
-          this._renderTab();
-        })
+        remove(i)
       );
       body.append(line);
     });
@@ -7585,6 +7649,14 @@ class SmartComfortPanel extends HTMLElement {
         this._t("nap"),
         () => {
           room.naps = [...naps, { start: "13:30:00", end: "15:30:00" }];
+          this._changed();
+          this._renderTab();
+        },
+      ],
+      [
+        this._t("nap_entity"),
+        () => {
+          room.naps = [...naps, ""];
           this._changed();
           this._renderTab();
         },
