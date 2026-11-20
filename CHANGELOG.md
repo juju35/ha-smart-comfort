@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.0.1 - 2026-11-20
+
+### Fixes
+- `smart_comfort.yaml` rewritten from the panel: only the lines that change are written, the others stay as they
+  were, byte for byte. ruamel used to redraw the whole file — another indentation (its guess read the sequence indent
+  as the mapping one), `{ a: 1 }` becoming `{a: 1}`, blank lines after a changed list dropped.
+- A key removed from the file no longer takes the comments written under it: they move to the key before (or the
+  top of the file).
+
 ## 2.0.0 - 2026-11-20
 
 ### Breaking changes

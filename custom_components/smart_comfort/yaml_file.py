@@ -13,6 +13,7 @@ An empty file is filled with the options in use. An invalid file is left alone (
 from __future__ import annotations
 
 import io
+import itertools
 import logging
 import os
 import re
@@ -203,7 +204,9 @@ class Writer:
         self.yaml.width = 4096
         self.docs: dict[Path, Any] = {}
         self.texts: dict[Path, str] = {}
-        self.indents: dict[Path, tuple[int, int]] = {}  # Each file's own (indent, sequence dash offset).
+        # Each file as read, to tell the lines that changed from those ruamel only redraws.
+        self.pristine: dict[Path, Any] = {}
+        self.indents: dict[Path, tuple[int, int, int]] = {}  # Each file's own (mapping, sequence, dash offset).
 
     def load(self, path: Path) -> Any:
         if path not in self.docs:
@@ -214,10 +217,8 @@ class Writer:
             self.texts[path] = text
             self.docs[path] = self.yaml.load(text) if text.strip() else None
             if text.strip():
-                from ruamel.yaml.util import load_yaml_guess_indent  # noqa: PLC0415
-
-                _, indent, offset = load_yaml_guess_indent(text)
-                self.indents[path] = (indent or 2, 0 if offset is None else offset)
+                self.pristine[path] = self.yaml.load(text)
+                self.indents[path] = guess_indents(text)
         return self.docs[path]
 
     def write(self, path: Path, old: dict[str, Any], new: dict[str, Any]) -> None:
@@ -234,14 +235,19 @@ class Writer:
         self.docs[path] = doc
         self.save()
 
+    def dump(self, path: Path, doc: Any) -> str:
+        stream = io.StringIO()
+        if doc is not None:
+            mapping, sequence, offset = self.indents.get(path, (2, 4, 2))
+            self.yaml.indent(mapping=mapping, sequence=sequence, offset=offset)
+            self.yaml.dump(doc, stream)
+        return stream.getvalue()
+
     def save(self) -> None:
         for path, doc in self.docs.items():
-            stream = io.StringIO()
-            if doc is not None:
-                indent, offset = self.indents.get(path, (2, 2))
-                self.yaml.indent(mapping=indent, sequence=indent + offset, offset=offset)
-                self.yaml.dump(doc, stream)
-            text = stream.getvalue()
+            text = self.dump(path, doc)
+            if path in self.pristine and doc is not None:
+                text = keep_unchanged(self.texts[path], self.dump(path, self.pristine[path]), text)
             if text == self.texts[path]:
                 continue
             if path.exists():
@@ -268,6 +274,7 @@ class Writer:
         if isinstance(node, CommentedMap) and isinstance(new, dict):
             old = old if isinstance(old, dict) else {}
             for key in [key for key in node if key not in new]:
+                _keep_comments(node, key)
                 del node[key]
             for key, value in new.items():
                 node[key] = self.apply(node[key], old.get(key, MISSING), value, here) if key in node else plain(value)
@@ -282,8 +289,12 @@ class Writer:
                     self.apply(nodes[key], olds.get(key, MISSING), value, here) if key in nodes else plain(value)
                     for key, value in news.items()
                 ]
+                # What follows the last item (a blank line, a comment) stays after the last item.
+                last = node.ca.items.pop(len(node) - 1, None) if node else None
                 del node[:]
                 node.extend(items)
+                if last is not None and node:
+                    node.ca.items[len(node) - 1] = last
                 return node
         return plain(new)
 
@@ -316,6 +327,73 @@ class Writer:
                 path, n = folder / f"{slugify(str(key))}_{n}.yaml", n + 1
             self.texts[path] = ""
             self.docs[path] = plain([item] if merge else item)
+
+
+def guess_indents(text: str) -> tuple[int, int, int]:
+    """A file's (mapping indent, sequence indent, dash offset), so that what is rewritten looks like the rest.
+
+    ruamel's guess gives the sequence indent (the column of an item's keys) and the dash offset, not the mapping
+    indent: that one is read from the first key whose value is a mapping on the next lines."""
+    from ruamel.yaml.util import load_yaml_guess_indent  # noqa: PLC0415
+
+    _, sequence, offset = load_yaml_guess_indent(text)
+    mapping = 2
+    lines = [line for line in text.splitlines() if line.strip() and not line.lstrip().startswith("#")]
+    for line, after in itertools.pairwise(lines):
+        head, rest = len(line) - len(line.lstrip()), line.strip()
+        deeper = len(after) - len(after.lstrip()) - head
+        if not rest.startswith("-") and rest.endswith(":") and not after.lstrip().startswith("-") and deeper > 0:
+            mapping = deeper
+            break
+    if offset is None:  # No block sequence yet: dashes under their key's indent.
+        return mapping, mapping + 2, mapping
+    return mapping, sequence or mapping + offset, offset
+
+
+def keep_unchanged(original: str, before: str, after: str) -> str:
+    """The original text with only the lines that differ between `before` (the file as ruamel redraws it) and `after`
+    (the new content, drawn the same way) replaced: comments, spacing and flow mappings stay as written elsewhere.
+    When ruamel's drawing doesn't line up with the file (a line count that differs), the new drawing is used."""
+    from difflib import SequenceMatcher  # noqa: PLC0415
+
+    lines = original.splitlines(keepends=True)
+    base, new = before.splitlines(keepends=True), after.splitlines(keepends=True)
+    if len(lines) != len(base):
+        return after
+    out: list[str] = []
+    for op, i1, i2, j1, j2 in SequenceMatcher(None, base, new, autojunk=False).get_opcodes():
+        out.extend(lines[i1:i2] if op == "equal" else new[j1:j2])
+    text = "".join(out)
+    return text if text.endswith("\n") or not text else text + "\n"
+
+
+def _keep_comments(node: Any, key: Any) -> None:
+    """A key about to be removed: the full-line comments written after it go to the key before (or to the top of the
+    map), instead of going with it. Its own end-of-line comment goes."""
+    from ruamel.yaml.tokens import CommentToken  # noqa: PLC0415
+
+    slot = node.ca.items.get(key)
+    token = slot[2] if slot and len(slot) > 2 else None
+    if not isinstance(token, CommentToken) or "\n" not in token.value:
+        return
+    kept = token.value.split("\n", 1)[1]
+    if not kept.strip():
+        return
+    keys = list(node)
+    at = keys.index(key)
+    if at == 0:
+        node.yaml_set_start_comment(
+            "\n".join(line.strip().removeprefix("#").removeprefix(" ") for line in kept.splitlines() if line.strip()),
+            indent=token.column,
+        )
+        return
+    before = node.ca.items.setdefault(keys[at - 1], [None, None, None, None])
+    while len(before) < 4:
+        before.append(None)
+    if isinstance(before[2], CommentToken):
+        before[2].value += kept
+    else:
+        before[2] = CommentToken("\n" + kept, token.start_mark, None)
 
 
 def _key(item: Any) -> str | None:
