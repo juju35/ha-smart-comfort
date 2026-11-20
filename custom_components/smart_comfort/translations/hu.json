@@ -552,6 +552,10 @@
     "file_invalid": {
       "title": "Smart Comfort: {file} érvénytelen",
       "description": "A konfigurációs mappa {file} fájlja nem alkalmazható: a használt konfiguráció változatlan marad, és a panel nem ír a fájlba, amíg nincs javítva:\n\n`{error}`"
+    },
+    "presence_moved": {
+      "title": "Smart Comfort: a jelenlétre kapcsoló lámpák a House Rulesba kerültek",
+      "description": "A jelenlétre kapcsoló lámpák már nem részei a Smart Comfortnak (2.0): többé nem érvényesek ezekben:\n\n{rooms}\n\nA megtartásukhoz telepítsd a [House Rules]({url}) integrációt (1.3.0 vagy újabb), majd nyisd meg a paneljét: a **Beállítások → Importálás → Elemzés** szobánként egy szabályt javasol ugyanazokkal az érzékelőkkel, lámpákkal, késleltetésekkel, idősávokkal és szundikkal. Ezután töröld itt a `presence:` részt ezekből a szobákból. Az a lámpa, amelynek idősávjai minden órában megadják a fényerejét vagy színét, a szoba `lights` listájából is kikerülhet, hogy az adaptív világítás ne változtassa."
     }
   }
 }

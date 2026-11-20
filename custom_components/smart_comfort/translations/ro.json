@@ -552,6 +552,10 @@
     "file_invalid": {
       "title": "Smart Comfort: {file} nu este valid",
       "description": "{file}, din folderul de configurare, nu poate fi aplicat: configurația în uz rămâne aceeași, iar panoul nu scrie în fișier până nu este corectat:\n\n`{error}`"
+    },
+    "presence_moved": {
+      "title": "Smart Comfort: luminile la prezență trec în House Rules",
+      "description": "Luminile la prezență nu mai fac parte din Smart Comfort (2.0): nu mai sunt aplicate pentru:\n\n{rooms}\n\nPentru a le păstra, instalează [House Rules]({url}) (1.3.0 sau mai nou), apoi deschide-i panoul: **Setări → Import → Analizează** propune câte o regulă pe cameră, cu aceiași senzori, lumini, întârzieri, intervale și somnuri de prânz. Apoi elimină aici `presence:` din aceste camere. O lumină ale cărei intervale îi fixează luminozitatea sau culoarea la orice oră poate ieși și din `lights` ale camerei, ca iluminarea adaptivă să nu o schimbe."
     }
   }
 }

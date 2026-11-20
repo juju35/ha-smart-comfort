@@ -552,6 +552,10 @@
     "file_invalid": {
       "title": "Smart Comfort: {file} no es válido",
       "description": "{file}, en la carpeta de configuración, no se puede aplicar: la configuración en uso sigue igual y el panel no escribe en el archivo hasta que se corrija:\n\n`{error}`"
+    },
+    "presence_moved": {
+      "title": "Smart Comfort: las luces por presencia pasan a House Rules",
+      "description": "Las luces por presencia ya no forman parte de Smart Comfort (2.0): ya no se aplican para:\n\n{rooms}\n\nPara conservarlas, instala [House Rules]({url}) (1.3.0 o posterior) y abre su panel: **Ajustes → Importar → Analizar** propone una regla por estancia, con los mismos sensores, luces, retardos, franjas y siestas. Después quita `presence:` de estas estancias aquí. Una luz cuyas franjas fijan su brillo o color a cualquier hora también puede salir de las `lights` de la estancia, para que la iluminación adaptativa no la cambie."
     }
   }
 }

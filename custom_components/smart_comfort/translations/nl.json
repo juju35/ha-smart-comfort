@@ -552,6 +552,10 @@
     "file_invalid": {
       "title": "Smart Comfort: {file} is ongeldig",
       "description": "{file} in de configuratiemap kan niet worden toegepast: de huidige configuratie blijft, en het paneel schrijft niet naar het bestand tot het is hersteld:\n\n`{error}`"
+    },
+    "presence_moved": {
+      "title": "Smart Comfort: lampen bij aanwezigheid zijn verhuisd naar House Rules",
+      "description": "Lampen bij aanwezigheid horen niet meer bij Smart Comfort (2.0): ze worden niet meer toegepast voor:\n\n{rooms}\n\nOm ze te houden, installeer [House Rules]({url}) (1.3.0 of nieuwer) en open het paneel: **Instellingen → Importeren → Analyseren** stelt een regel per kamer voor, met dezelfde sensoren, lampen, vertragingen, tijdvakken en dutjes. Verwijder daarna `presence:` uit deze kamers hier. Een lamp waarvan de tijdvakken op elk uur helderheid of kleur vastleggen, kan ook uit de `lights` van de kamer, zodat de adaptieve verlichting hem niet verandert."
     }
   }
 }

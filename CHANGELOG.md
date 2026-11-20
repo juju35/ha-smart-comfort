@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.0.0 - 2026-11-20
+
+### Breaking changes
+- **Lights on presence moved to [House Rules](https://github.com/juju35/ha-house-rules)**: Smart Comfort no longer turns lights on and off with presence. A room's `presence:` is still read, so the configuration keeps working, but no longer applied; a repair lists the rooms and proposes the migration — House Rules (1.3.0 or later) imports them as they were from **Settings → Import → Analyze**, naps included. Then remove `presence:` from these rooms. The adaptive lighting, the naps (slots or a shared `schedule` helper) and the displays stay here.
+- The panel shows a room's lights on presence as moved, with a button to remove them; the activity keeps the presence entries logged before.
+
+### Fixes
+- Panel: the unsaved changes (Discard / Save) leave the tabs bar, where they covered the tabs on a narrow screen, for a
+  bar of their own sticky at the bottom of the page, as on System Hub.
+
 ## 1.30.0 - 2026-11-20
 
 ### Features

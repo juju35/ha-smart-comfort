@@ -1204,3 +1204,31 @@ async def test_panel_conflict_and_file_creation(hass: HomeAssistant, tmp_path, h
     assert (await client.receive_json())["result"]["options"] == {"digest_window": 1}
     await hass.async_block_till_done()
     assert yaml.safe_load(path.read_text()) == {"digest_window": 1}
+
+
+async def test_presence_moved_to_house_rules(hass: HomeAssistant) -> None:
+    # Lights on presence (2.0): still read, no longer applied, and a repair proposes the migration to House Rules.
+    hass.states.async_set("binary_sensor.entrance", "on")
+    hass.states.async_set("light.entrance", "off", {"supported_color_modes": ["brightness"]})
+    turn_on = async_mock_service(hass, "light", "turn_on")
+    options = {
+        "startup_grace": 0,
+        "rooms": [
+            {"name": "Entrance", "presence": {"sensors": ["binary_sensor.entrance"], "lights": ["light.entrance"]}},
+            {"name": "Office"},
+        ],
+    }
+    entry = MockConfigEntry(domain=DOMAIN, title="Smart Comfort", data={}, options=options)
+    entry.add_to_hass(hass)
+    assert await hass.config_entries.async_setup(entry.entry_id)
+    await hass.async_block_till_done()
+    await entry.runtime_data.async_evaluate()
+    await hass.async_block_till_done()
+    assert turn_on == []
+    assert [room.presence_moved for room in entry.runtime_data.settings.rooms] == [True, False]
+    issue = ir.async_get(hass).async_get_issue(DOMAIN, "presence_moved")
+    assert issue is not None and issue.translation_placeholders["rooms"] == "- Entrance"
+    # Removed from the room: the repair goes.
+    hass.config_entries.async_update_entry(entry, options={**options, "rooms": [{"name": "Entrance"}]})
+    await hass.async_block_till_done()
+    assert ir.async_get(hass).async_get_issue(DOMAIN, "presence_moved") is None

@@ -552,6 +552,10 @@
     "file_invalid": {
       "title": "Smart Comfort: {file} ni veljaven",
       "description": "{file} v mapi konfiguracije ni mogoče uveljaviti: trenutna konfiguracija ostane enaka, plošča pa v datoteko ne piše, dokler ni popravljena:\n\n`{error}`"
+    },
+    "presence_moved": {
+      "title": "Smart Comfort: luči ob prisotnosti so se preselile v House Rules",
+      "description": "Luči ob prisotnosti niso več del Smart Comfort (2.0): ne veljajo več za:\n\n{rooms}\n\nČe jih želite obdržati, namestite [House Rules]({url}) (1.3.0 ali novejši) in odprite njegovo ploščo: **Nastavitve → Uvoz → Analiziraj** predlaga pravilo za vsak prostor z enakimi senzorji, lučmi, zakasnitvami, časovnimi okni in dremeži. Nato tukaj iz teh prostorov odstranite `presence:`. Luč, katere okna ob vsaki uri določajo svetlost ali barvo, lahko zapusti tudi `lights` prostora, da je prilagodljiva osvetlitev ne spreminja."
     }
   }
 }
