@@ -8178,7 +8178,7 @@ const STYLE = `
   .otile .tn { font-size: 14px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .otile .ts { font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: color-mix(in srgb, var(--c) 65%, var(--primary-text-color)); }
   .otile.rest .ts { color: var(--secondary-text-color); }
-  @media (max-width: 600px) { .topbar .shscene { display: none; } .topbar .shhead { right: 96px; } .topbar .shbadge { display: none; } }
+  @media (max-width: 600px) { .topbar .shscene { display: none; } .topbar .shhead { right: 96px; } }
   .content { max-width: 1040px; margin: 0 auto; padding: 16px; display: flex; flex-direction: column; gap: 16px; }
   .card {
     background: var(--ha-card-background, var(--card-background-color, #fff));
