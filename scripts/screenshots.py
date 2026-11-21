@@ -798,12 +798,13 @@ CLICK = """async ([selector, text]) => {
     await new Promise((r) => setTimeout(r, 200));
 }"""
 
-# Scrolls the page so the element sits just under the sticky tabs (the top bar scrolls away with the page).
+# Scrolls the page so the element sits just under the folded top bar (past 24 px the top bar folds into one sticky
+# bar of 65 px, the tabs as pills in it).
 SCROLL = """([selector, text]) => {
     const root = document.querySelector("smart-comfort-panel").shadowRoot;
     const all = [...root.querySelectorAll(selector)];
     const target = all.find((b) => b.textContent.trim() === text) || all.find((b) => b.textContent.trim().startsWith(text));
-    const bar = root.querySelector(".tabs").offsetHeight;
+    const bar = root.querySelector(".pf-fold") ? 65 : root.querySelector(".tabs").offsetHeight;
     window.scrollTo(0, target.getBoundingClientRect().top + window.scrollY - bar - 10);
 }"""
 
