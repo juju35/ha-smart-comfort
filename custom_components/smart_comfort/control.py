@@ -321,6 +321,10 @@ class Controller:
 
     def _fan(self, dev: FanDevice, ctx: RoomContext, boost_hours: bool, night: bool = False) -> Any:
         current = self.targets.get(dev.entity_id)
+        retry = self.retry.get(dev.entity_id)
+        # Boosted by Smart Comfort, even when a boost command failed (target forgotten, held for a retry):
+        # the fan was turned on all the same (slow cloud device timing out…) and must go off on closing.
+        boosted = current == TARGET_BOOST or (retry is not None and retry[0] == TARGET_BOOST)
         temp = ctx.temperature
         boost = bool(ctx.any_open) and boost_hours and (dev.open_percentage is not None or dev.open_preset)
         if ctx.has_openings and ctx.any_open is None:
@@ -329,12 +333,12 @@ class Controller:
         if boost:
             target = TARGET_BOOST
         elif not temperature_control:
-            target = TARGET_OFF if current == TARGET_BOOST else None
+            target = TARGET_OFF if boosted else None
         elif temp is None:
             return None
         elif temp >= dev.on_above:
             target = TARGET_ON
-        elif temp <= dev.off_below or current == TARGET_BOOST:
+        elif temp <= dev.off_below or boosted:
             target = TARGET_OFF
         else:
             target = current

@@ -316,6 +316,40 @@ def test_fan_without_temperature_control():
     assert c.evaluate(T0, NOON, room, ctx(30.0, opened=True), off) != []
 
 
+def test_fan_turned_off_on_closing_after_a_failed_boost():
+    """A boost command timing out (slow cloud fan) must not leave the fan on once the window closes."""
+    # 95 % on a fan in steps of 25 %: it reports 100 %, so the boost is never seen as applied.
+    fan = {"entity_id": "fan.f", "preset": "Naturel", "open_preset": "Standard", "off_preset": "Naturel"}
+    s = room_settings(fans=[{**fan, "open_percentage": 95}])
+    c, room = Controller(s), s.rooms[0]
+    off = {"fan.f": DeviceState(on=False, preset="Naturel")}
+    cmds = c.evaluate(T0, NOON, room, ctx(22.6, opened=True), off)
+    assert cmds
+    c.command_failed(cmds[-1], T0)
+    # The fan came on anyway. Opened again during the retry delay: held back.
+    on = {"fan.f": DeviceState(on=True, preset="Standard", percentage=100)}
+    assert c.evaluate(T0 + timedelta(seconds=10), NOON, room, ctx(22.6, opened=True), on) == []
+    # Closed, temperature in the band: off, right away.
+    assert calls(c.evaluate(T0 + timedelta(seconds=20), NOON, room, ctx(22.6), on)) == [
+        ("fan.f", "fan.set_preset_mode", {"preset_mode": "Naturel"}),
+        ("fan.f", "fan.turn_off", {}),
+    ]
+
+
+def test_fan_without_temperature_control_turned_off_after_a_failed_boost():
+    s = build_settings(
+        {
+            "control": {"fans": {"on_above": None, "off_below": None}},
+            "rooms": [{"name": "A", "temperature": "sensor.t", "openings": ["binary_sensor.w"], "fans": ["fan.f"]}],
+        }
+    )
+    c, room = Controller(s), s.rooms[0]
+    for cmd in c.evaluate(T0, NOON, room, ctx(20.0, opened=True), {"fan.f": DeviceState(on=False)}):
+        c.command_failed(cmd, T0)
+    on = {"fan.f": DeviceState(on=True, percentage=100)}
+    assert calls(c.evaluate(T0 + timedelta(seconds=20), NOON, room, ctx(20.0), on)) == [("fan.f", "fan.turn_off", {})]
+
+
 MORNING = time(7, 30)
 
 
