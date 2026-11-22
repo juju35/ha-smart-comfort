@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.1.4 - 2026-11-22
+
+### Fixes
+- Fans: a fan boosted for an open window is turned off again when it closes, even when a boost command failed (a cloud fan answering after the 15 s timeout, or a boost percentage the fan rounds, such as 95 % on a fan in steps of 25 %). The failed boost made Smart Comfort forget it had boosted the fan, so closing the window left it on.
+
 ## 2.1.3 - 2026-11-22
 
 ### Performance
