@@ -1632,7 +1632,7 @@ if (!customElements.get("smart-comfort-card")) {
     type: "smart-comfort-card",
     name: "Smart Comfort",
     description: "Every alert of Smart Comfort, a tile per room, its switches and its latest activity.",
-    preview: true,
+    preview: false,
   });
 }
 
@@ -1643,6 +1643,6 @@ if (!customElements.get("smart-comfort-mini-card")) {
     type: "smart-comfort-mini-card",
     name: "Smart Comfort mini",
     description: "The alerts of the moment and the switches of Smart Comfort; its button opens the full card.",
-    preview: true,
+    preview: false,
   });
 }
