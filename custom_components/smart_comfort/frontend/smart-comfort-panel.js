@@ -6957,6 +6957,7 @@ class SmartComfortPanel extends HTMLElement {
         { name: "setpoint", selector: num("°C", { step: 0.5 }) },
         { name: "closed_for", selector: minutes() },
         { name: "off_on_open", selector: minutes() },
+        { name: "min_outdoor", selector: num("°C") },
       ]),
       sec("fans", [
         { name: "on_above", selector: num("°C") },
@@ -7842,6 +7843,7 @@ class SmartComfortPanel extends HTMLElement {
                 { name: "fan_mode", selector: this._choice(this._attr(entityId, "fan_modes")) },
                 { name: "closed_for", selector: minutes() },
                 { name: "off_on_open", selector: minutes() },
+                { name: "min_outdoor", selector: num("°C") },
                 { name: "night_fan_mode", selector: this._choice(this._attr(entityId, "fan_modes")) },
                 ...EQUIPMENT,
               ],

@@ -151,7 +151,11 @@
               "fan_mode": "Ventilátormód",
               "closed_for": "Nyílászárók zárva ennyi ideje (perc)",
               "off_on_open": "Kikapcsolás, ha nyitva ennyi ideje (perc)",
+              "min_outdoor": "Min. külső hőmérséklet",
               "night_fan_mode": "Ventilátormód éjjel"
+            },
+            "data_description": {
+              "min_outdoor": "Nincs hűtés, amíg kint hűvösebb ennél: inkább nyissa ki az ablakot. Üres: mindig."
             }
           },
           "fans": {

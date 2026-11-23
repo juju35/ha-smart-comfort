@@ -151,7 +151,11 @@
               "fan_mode": "Tryb wentylatora",
               "closed_for": "Okna i drzwi zamknięte od (min)",
               "off_on_open": "Wyłączony, gdy otwarte od (min)",
+              "min_outdoor": "Min. temperatura zewnętrzna",
               "night_fan_mode": "Tryb wentylatora w nocy"
+            },
+            "data_description": {
+              "min_outdoor": "Bez chłodzenia, dopóki na zewnątrz jest chłodniej: otwórz raczej okna. Puste: zawsze."
             }
           },
           "fans": {

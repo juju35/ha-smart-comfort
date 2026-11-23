@@ -151,7 +151,11 @@
               "fan_mode": "Fläktläge",
               "closed_for": "Öppningar stängda i (min)",
               "off_on_open": "Av när öppen i (min)",
+              "min_outdoor": "Min. utomhustemperatur",
               "night_fan_mode": "Fläktläge på natten"
+            },
+            "data_description": {
+              "min_outdoor": "Ingen kylning så länge det är svalare ute: öppna hellre fönstren. Tomt: alltid."
             }
           },
           "fans": {

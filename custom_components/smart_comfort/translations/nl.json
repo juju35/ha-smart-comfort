@@ -151,7 +151,11 @@
               "fan_mode": "Ventilatormodus",
               "closed_for": "Openingen dicht sinds (min)",
               "off_on_open": "Uit als open sinds (min)",
+              "min_outdoor": "Min. buitentemperatuur",
               "night_fan_mode": "Ventilatormodus 's nachts"
+            },
+            "data_description": {
+              "min_outdoor": "Niet koelen zolang het buiten koeler is dan dit: open liever de ramen. Leeg: altijd."
             }
           },
           "fans": {

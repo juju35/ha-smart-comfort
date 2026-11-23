@@ -151,7 +151,11 @@
               "fan_mode": "Modo del ventilador",
               "closed_for": "Aberturas cerradas durante (min)",
               "off_on_open": "Apagar si abierta durante (min)",
+              "min_outdoor": "Temperatura exterior mín.",
               "night_fan_mode": "Modo del ventilador de noche"
+            },
+            "data_description": {
+              "min_outdoor": "Sin refrigeración mientras fuera haga más fresco que esto: abra las ventanas. Vacío: siempre."
             }
           },
           "fans": {

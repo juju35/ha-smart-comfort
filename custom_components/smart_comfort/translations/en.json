@@ -151,7 +151,11 @@
               "fan_mode": "Fan mode",
               "closed_for": "Openings closed for (min)",
               "off_on_open": "Off when open for (min)",
+              "min_outdoor": "Min. outdoor temperature",
               "night_fan_mode": "Fan mode at night"
+            },
+            "data_description": {
+              "min_outdoor": "No cooling while it is cooler than this outdoors: open the windows instead. Empty: always."
             }
           },
           "fans": {

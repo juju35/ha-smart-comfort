@@ -230,6 +230,7 @@ def _control_schema(c: dict[str, Any]) -> vol.Schema:
                         _opt(k.CONF_FAN_MODE, cl[k.CONF_FAN_MODE]): TEXT,
                         vol.Required(k.CONF_CLOSED_FOR, default=cl[k.CONF_CLOSED_FOR]): _minutes(),
                         vol.Required(k.CONF_OFF_ON_OPEN, default=cl[k.CONF_OFF_ON_OPEN]): _minutes(),
+                        _opt(k.CONF_MIN_OUTDOOR, cl[k.CONF_MIN_OUTDOOR]): _number("°C"),
                         _opt(k.CONF_NIGHT_FAN_MODE, cl[k.CONF_NIGHT_FAN_MODE]): TEXT,
                     }
                 ),

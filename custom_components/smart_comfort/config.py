@@ -227,6 +227,7 @@ class ClimateDevice:
     night_fan_mode: str | None = None
     display: str | None = None
     reset_at: time | None = None
+    min_outdoor: float | None = None
 
 
 @dataclass(frozen=True)
@@ -543,6 +544,7 @@ def _room(
             night_fan_mode=c[CONF_NIGHT_FAN_MODE] or None,
             display=c[CONF_DISPLAY] or None,
             reset_at=parse_time(c[CONF_RESET_AT]),
+            min_outdoor=_float(c.get(CONF_MIN_OUTDOOR)),
         )
     fans = []
     for entity_id, own in _device_items(raw.get(CONF_FANS)):

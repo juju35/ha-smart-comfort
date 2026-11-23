@@ -151,7 +151,11 @@
               "fan_mode": "Režim ventilatora",
               "closed_for": "Prozori/vrata zatvoreni (min)",
               "off_on_open": "Isključi kada je otvoreno (min)",
+              "min_outdoor": "Min. spoljna temperatura",
               "night_fan_mode": "Režim ventilatora noću"
+            },
+            "data_description": {
+              "min_outdoor": "Bez hlađenja dok je napolju hladnije od ovoga: otvorite prozore. Prazno: uvek."
             }
           },
           "fans": {

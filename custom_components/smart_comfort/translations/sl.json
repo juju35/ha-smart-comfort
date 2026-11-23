@@ -151,7 +151,11 @@
               "fan_mode": "Način ventilatorja",
               "closed_for": "Odprtine zaprte (min)",
               "off_on_open": "Izklop, ko je odprto (min)",
+              "min_outdoor": "Min. zunanja temperatura",
               "night_fan_mode": "Način ventilatorja ponoči"
+            },
+            "data_description": {
+              "min_outdoor": "Brez hlajenja, dokler je zunaj hladneje: raje odprite okna. Prazno: vedno."
             }
           },
           "fans": {
