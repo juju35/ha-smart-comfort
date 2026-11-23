@@ -104,6 +104,10 @@ const STRINGS = {
     sw_notifications: "Notifications",
     sw_control: "Devices",
     sw_lighting: "Lighting",
+    sw_partial: "partial, left alone: {families}",
+    fam_climate: "air conditioners",
+    fam_fans: "fans",
+    fam_purifiers: "air purifiers",
     on: "on",
     off: "off",
     zoom_in: "Full card",
@@ -144,6 +148,10 @@ const STRINGS = {
     sw_notifications: "Notifications",
     sw_control: "Appareils",
     sw_lighting: "Éclairage",
+    sw_partial: "partiel, laissés tranquilles : {families}",
+    fam_climate: "climatiseurs",
+    fam_fans: "ventilateurs",
+    fam_purifiers: "purificateurs d'air",
     on: "activé",
     off: "désactivé",
     zoom_in: "Carte complète",
@@ -184,6 +192,10 @@ const STRINGS = {
     sw_notifications: "Benachrichtigungen",
     sw_control: "Geräte",
     sw_lighting: "Beleuchtung",
+    sw_partial: "teilweise, nicht gesteuert: {families}",
+    fam_climate: "Klimageräte",
+    fam_fans: "Ventilatoren",
+    fam_purifiers: "Luftreiniger",
     on: "an",
     off: "aus",
     zoom_in: "Vollständige Karte",
@@ -224,6 +236,10 @@ const STRINGS = {
     sw_notifications: "Notificaciones",
     sw_control: "Aparatos",
     sw_lighting: "Iluminación",
+    sw_partial: "parcial, sin controlar: {families}",
+    fam_climate: "aires acondicionados",
+    fam_fans: "ventiladores",
+    fam_purifiers: "purificadores de aire",
     on: "activado",
     off: "desactivado",
     zoom_in: "Tarjeta completa",
@@ -265,6 +281,10 @@ const STRINGS = {
     sw_notifications: "Обавештења",
     sw_control: "Уређаји",
     sw_lighting: "Осветљење",
+    sw_partial: "делимично, без контроле: {families}",
+    fam_climate: "клима уређаји",
+    fam_fans: "вентилатори",
+    fam_purifiers: "пречишћивачи ваздуха",
     on: "укључено",
     off: "искључено",
     zoom_in: "Пуна картица",
@@ -306,6 +326,10 @@ const STRINGS = {
     sw_notifications: "Obaveštenja",
     sw_control: "Uređaji",
     sw_lighting: "Osvetljenje",
+    sw_partial: "delimično, bez kontrole: {families}",
+    fam_climate: "klima uređaji",
+    fam_fans: "ventilatori",
+    fam_purifiers: "prečišćivači vazduha",
     on: "uključeno",
     off: "isključeno",
     zoom_in: "Puna kartica",
@@ -346,6 +370,10 @@ const STRINGS = {
     sw_notifications: "Notifiche",
     sw_control: "Dispositivi",
     sw_lighting: "Illuminazione",
+    sw_partial: "parziale, non controllati: {families}",
+    fam_climate: "condizionatori",
+    fam_fans: "ventilatori",
+    fam_purifiers: "purificatori d'aria",
     on: "attivo",
     off: "disattivo",
     zoom_in: "Scheda completa",
@@ -386,6 +414,10 @@ const STRINGS = {
     sw_notifications: "Meldingen",
     sw_control: "Apparaten",
     sw_lighting: "Verlichting",
+    sw_partial: "gedeeltelijk, niet bediend: {families}",
+    fam_climate: "airco's",
+    fam_fans: "ventilatoren",
+    fam_purifiers: "luchtreinigers",
     on: "aan",
     off: "uit",
     zoom_in: "Volledige kaart",
@@ -426,6 +458,10 @@ const STRINGS = {
     sw_notifications: "Notificações",
     sw_control: "Dispositivos",
     sw_lighting: "Iluminação",
+    sw_partial: "parcial, sem controlo: {families}",
+    fam_climate: "ar condicionados",
+    fam_fans: "ventoinhas",
+    fam_purifiers: "purificadores de ar",
     on: "ligado",
     off: "desligado",
     zoom_in: "Cartão completo",
@@ -468,6 +504,10 @@ const STRINGS = {
     sw_notifications: "Powiadomienia",
     sw_control: "Urządzenia",
     sw_lighting: "Oświetlenie",
+    sw_partial: "częściowo, bez sterowania: {families}",
+    fam_climate: "klimatyzatory",
+    fam_fans: "wentylatory",
+    fam_purifiers: "oczyszczacze powietrza",
     on: "włączone",
     off: "wyłączone",
     zoom_in: "Pełna karta",
@@ -509,6 +549,10 @@ const STRINGS = {
     sw_notifications: "Notificări",
     sw_control: "Aparate",
     sw_lighting: "Iluminare",
+    sw_partial: "parțial, necontrolate: {families}",
+    fam_climate: "aparate de aer condiționat",
+    fam_fans: "ventilatoare",
+    fam_purifiers: "purificatoare de aer",
     on: "activat",
     off: "dezactivat",
     zoom_in: "Card complet",
@@ -549,6 +593,10 @@ const STRINGS = {
     sw_notifications: "Notifikationer",
     sw_control: "Enheder",
     sw_lighting: "Belysning",
+    sw_partial: "delvis, ikke styret: {families}",
+    fam_climate: "aircondition",
+    fam_fans: "ventilatorer",
+    fam_purifiers: "luftrensere",
     on: "til",
     off: "fra",
     zoom_in: "Fuldt kort",
@@ -589,6 +637,10 @@ const STRINGS = {
     sw_notifications: "Aviseringar",
     sw_control: "Enheter",
     sw_lighting: "Belysning",
+    sw_partial: "delvis, inte styrda: {families}",
+    fam_climate: "luftkonditionering",
+    fam_fans: "fläktar",
+    fam_purifiers: "luftrenare",
     on: "på",
     off: "av",
     zoom_in: "Fullständigt kort",
@@ -629,6 +681,10 @@ const STRINGS = {
     sw_notifications: "Известия",
     sw_control: "Устройства",
     sw_lighting: "Осветление",
+    sw_partial: "частично, без управление: {families}",
+    fam_climate: "климатици",
+    fam_fans: "вентилатори",
+    fam_purifiers: "пречистватели на въздух",
     on: "вкл.",
     off: "изкл.",
     zoom_in: "Пълна карта",
@@ -671,6 +727,10 @@ const STRINGS = {
     sw_notifications: "Уведомления",
     sw_control: "Устройства",
     sw_lighting: "Освещение",
+    sw_partial: "частично, без управления: {families}",
+    fam_climate: "кондиционеры",
+    fam_fans: "вентиляторы",
+    fam_purifiers: "очистители воздуха",
     on: "вкл.",
     off: "выкл.",
     zoom_in: "Полная карточка",
@@ -713,6 +773,10 @@ const STRINGS = {
     sw_notifications: "Сповіщення",
     sw_control: "Пристрої",
     sw_lighting: "Освітлення",
+    sw_partial: "частково, без керування: {families}",
+    fam_climate: "кондиціонери",
+    fam_fans: "вентилятори",
+    fam_purifiers: "очищувачі повітря",
     on: "увімк.",
     off: "вимк.",
     zoom_in: "Повна картка",
@@ -753,6 +817,10 @@ const STRINGS = {
     sw_notifications: "Értesítések",
     sw_control: "Eszközök",
     sw_lighting: "Világítás",
+    sw_partial: "részleges, nem vezérelt: {families}",
+    fam_climate: "klímák",
+    fam_fans: "ventilátorok",
+    fam_purifiers: "légtisztítók",
     on: "be",
     off: "ki",
     zoom_in: "Teljes kártya",
@@ -795,6 +863,10 @@ const STRINGS = {
     sw_notifications: "Oznámenia",
     sw_control: "Zariadenia",
     sw_lighting: "Osvetlenie",
+    sw_partial: "čiastočne, bez ovládania: {families}",
+    fam_climate: "klimatizácie",
+    fam_fans: "ventilátory",
+    fam_purifiers: "čističky vzduchu",
     on: "zap.",
     off: "vyp.",
     zoom_in: "Celá karta",
@@ -835,6 +907,10 @@ const STRINGS = {
     sw_notifications: "Oznámení",
     sw_control: "Zařízení",
     sw_lighting: "Osvětlení",
+    sw_partial: "částečně, bez ovládání: {families}",
+    fam_climate: "klimatizace",
+    fam_fans: "ventilátory",
+    fam_purifiers: "čističky vzduchu",
     on: "zap.",
     off: "vyp.",
     zoom_in: "Celá karta",
@@ -877,6 +953,10 @@ const STRINGS = {
     sw_notifications: "Obvestila",
     sw_control: "Naprave",
     sw_lighting: "Razsvetljava",
+    sw_partial: "delno, brez upravljanja: {families}",
+    fam_climate: "klimatske naprave",
+    fam_fans: "ventilatorji",
+    fam_purifiers: "čistilniki zraka",
     on: "vklop",
     off: "izklop",
     zoom_in: "Polna kartica",
@@ -918,6 +998,10 @@ const STRINGS = {
     sw_notifications: "Paziņojumi",
     sw_control: "Ierīces",
     sw_lighting: "Apgaismojums",
+    sw_partial: "daļēji, bez vadības: {families}",
+    fam_climate: "kondicionieri",
+    fam_fans: "ventilatori",
+    fam_purifiers: "gaisa attīrītāji",
     on: "ieslēgts",
     off: "izslēgts",
     zoom_in: "Pilna kartīte",
@@ -958,6 +1042,10 @@ const STRINGS = {
     sw_notifications: "Ειδοποιήσεις",
     sw_control: "Συσκευές",
     sw_lighting: "Φωτισμός",
+    sw_partial: "μερικώς, χωρίς έλεγχο: {families}",
+    fam_climate: "κλιματιστικά",
+    fam_fans: "ανεμιστήρες",
+    fam_purifiers: "καθαριστές αέρα",
     on: "ενεργό",
     off: "ανενεργό",
     zoom_in: "Πλήρης κάρτα",
@@ -1273,7 +1361,7 @@ class SmartComfortMiniCard extends HTMLElement {
   /** What the card depends on: the language, the zoom, the states of the entities it shows. */
   _signature() {
     const found = findEntities(this._hass);
-    const ids = [found.alerts, ...found.rooms, ...Object.values(found.switches)];
+    const ids = [found.alerts, ...found.rooms, ...Object.values(found.switches), ...Object.values(found.families)];
     const states = ids.map((id) => {
       const s = this._state(id);
       return s ? [s.state, s.last_updated, s.attributes] : null;
@@ -1547,9 +1635,18 @@ class SmartComfortMiniCard extends HTMLElement {
       if (!state) continue;
       const on = state.state === "on";
       const name = this._t(`sw_${key}`);
-      const button = this._el("button", `switch${on ? " on" : ""}`);
+      // Device control on with a family left alone (air conditioners…): partial, the families named in the title.
+      const alone =
+        key === "control" && on
+          ? Object.entries(found.families)
+              .filter(([, familyId]) => this._state(familyId)?.state === "off")
+              .map(([family]) => this._t(`fam_${family}`))
+          : [];
+      const button = this._el("button", `switch${on ? " on" : ""}${alone.length ? " part" : ""}`);
       button.dataset.key = `switch:${key}`;
-      button.title = `${name} — ${this._t(on ? "on" : "off")}`;
+      button.title = alone.length
+        ? `${name} — ${this._t("sw_partial", { families: alone.join(", ") })}`
+        : `${name} — ${this._t(on ? "on" : "off")}`;
       button.setAttribute("aria-pressed", String(on));
       button.setAttribute("aria-label", name);
       button.disabled = state.state === "unavailable";
@@ -1646,6 +1743,8 @@ const STYLE = `
   .switch.on { background: rgba(var(--rgb-primary-color, 3, 169, 244), 0.12); border-color: var(--primary-color);
     color: color-mix(in srgb, var(--primary-color) 60%, var(--primary-text-color)); }
   .switch.on ha-icon { color: var(--primary-color); }
+  .switch.on.part { background: color-mix(in srgb, #f5a623 14%, transparent); border-color: #f5a623; }
+  .switch.on.part ha-icon { color: #f5a623; }
   .switch:disabled { opacity: 0.5; cursor: default; }
   .switch:focus-visible { outline: 2px solid var(--primary-color, #03a9f4); outline-offset: 2px; }
   .slabel { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }

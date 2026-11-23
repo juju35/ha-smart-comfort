@@ -434,6 +434,15 @@
       "control": {
         "name": "Eszközvezérlés"
       },
+      "control_climate": {
+        "name": "Klímák vezérlése"
+      },
+      "control_fans": {
+        "name": "Ventilátorok vezérlése"
+      },
+      "control_purifiers": {
+        "name": "Légtisztítók vezérlése"
+      },
       "lighting": {
         "name": "Adaptív világítás"
       }

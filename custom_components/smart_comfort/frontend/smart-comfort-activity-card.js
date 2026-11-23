@@ -1710,9 +1710,12 @@ export const SWITCHES = [
   ["lighting", "mdi:lightbulb-auto-outline", "mdi:lightbulb-auto-outline"],
 ];
 
-/** The integration's entities: its alerts sensor, its room sensors and its switches. */
+// The device families, each with its own switch under the device control one (control_climate…).
+export const FAMILIES = ["climate", "fans", "purifiers"];
+
+/** The integration's entities: its alerts sensor, its room sensors, its switches and the device family ones. */
 export function findEntities(hass) {
-  const found = { alerts: null, rooms: [], switches: {} };
+  const found = { alerts: null, rooms: [], switches: {}, families: {} };
   for (const entry of Object.values(hass?.entities || {})) {
     if (entry.platform !== DOMAIN) continue;
     const id = entry.entity_id;
@@ -1720,6 +1723,7 @@ export function findEntities(hass) {
     if (id.startsWith("sensor.") && key === "alerts") found.alerts = id;
     else if (id.startsWith("sensor.") && key === "room") found.rooms.push(id);
     else if (id.startsWith("switch.") && SWITCHES.some(([k]) => k === key)) found.switches[key] = id;
+    else if (id.startsWith("switch.") && FAMILIES.some((f) => key === `control_${f}`)) found.families[key.slice(8)] = id;
   }
   return found;
 }

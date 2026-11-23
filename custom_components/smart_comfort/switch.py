@@ -1,4 +1,4 @@
-"""Switches: notifications, automatic control and adaptive lighting, restored after a restart."""
+"""Switches: notifications, device control (and per device family) and adaptive lighting, restored after a restart."""
 
 from __future__ import annotations
 
@@ -10,7 +10,9 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.restore_state import RestoreEntity
 
 from . import SmartComfortConfigEntry
+from .const import FAMILIES
 from .entity import SmartComfortEntity
+from .manager import SmartComfort
 
 
 async def async_setup_entry(
@@ -23,6 +25,7 @@ async def async_setup_entry(
         [
             NotificationsSwitch(m, entry.entry_id, "notifications"),
             ControlSwitch(m, entry.entry_id, "control"),
+            *(FamilySwitch(m, entry.entry_id, f"control_{family}", family) for family in FAMILIES),
             LightingSwitch(m, entry.entry_id, "lighting"),
         ]
     )
@@ -64,6 +67,21 @@ class ControlSwitch(_RestoredSwitch):
 
     def _set(self, enabled: bool) -> None:
         self.manager.set_control(enabled)
+
+
+class FamilySwitch(_RestoredSwitch):
+    """Control one device family (air conditioners, fans or purifiers), under the device control switch."""
+
+    def __init__(self, manager: SmartComfort, entry_id: str, key: str, family: str) -> None:
+        super().__init__(manager, entry_id, key)
+        self._family = family
+
+    @property
+    def is_on(self) -> bool:
+        return self.manager.families.get(self._family, True)
+
+    def _set(self, enabled: bool) -> None:
+        self.manager.set_family(self._family, enabled)
 
 
 class LightingSwitch(_RestoredSwitch):

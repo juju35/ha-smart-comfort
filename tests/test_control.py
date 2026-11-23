@@ -507,3 +507,71 @@ def test_purifier_polluted_air_left_alone_after_a_change_by_hand_and_quiet_at_ni
     assert calls(c2.evaluate(T0, NIGHT, room, polluted(), on)) == [
         ("fan.p", "fan.set_preset_mode", {"preset_mode": "Sleep"}),
     ]
+
+
+def test_family_left_alone():
+    s = room_settings(climate="climate.ac", fans=["fan.f"], purifiers=["fan.p"])
+    c, room = Controller(s), s.rooms[0]
+    states = {
+        "climate.ac": DeviceState(on=False, hvac_mode="off"),
+        "fan.f": DeviceState(on=False),
+        "fan.p": DeviceState(on=False),
+    }
+    families = {"climate": False, "fans": True, "purifiers": False}
+    devices = {cmd.entity_id for cmd in c.evaluate(T0, NOON, room, ctx(24.0), states, families)}
+    assert devices == {"fan.f"}
+    # The displays of the families left alone are left alone too.
+    assert [d.entity_id for d in room.controlled(families)] == ["fan.f"]
+
+
+def test_forget_drops_the_target():
+    s = room_settings(climate="climate.ac")
+    c, room = Controller(s), s.rooms[0]
+    cooling = {"climate.ac": DeviceState(on=True, hvac_mode="cool")}
+    c.targets["climate.ac"] = "cool"
+    assert c.handled(room, cooling)
+    c.forget(["climate.ac"])
+    # No longer counted as handling the room, applied again from scratch once controlled.
+    assert not c.handled(room, cooling)
+
+
+def test_reset_skips_a_family_left_alone():
+    s = room_settings(purifiers=[{"entity_id": "fan.p", "reset_at": "03:00"}])
+    c = Controller(s)
+    c.targets["fan.p"] = "closed"
+    c.reset_due(datetime(2026, 11, 23, 2, 59))
+    assert c.reset_due(datetime(2026, 11, 23, 3, 1), {"purifiers": False}) == []
+    assert c.targets["fan.p"] == "closed", "untouched: nothing would be applied to it"
+
+
+def test_rest_puts_back_what_smart_comfort_was_driving():
+    s = room_settings(
+        climate="climate.ac",
+        fans=[{"entity_id": "fan.f", "off_preset": "Naturel"}],
+        purifiers=[{"entity_id": "fan.p", "closed_preset": "Auto", "open_preset": "Turbo"}],
+    )
+    c, room = Controller(s), s.rooms[0]
+    states = {
+        "climate.ac": DeviceState(on=True, hvac_mode="cool"),
+        "fan.f": DeviceState(on=True, preset="Standard"),
+        "fan.p": DeviceState(on=True, preset="Turbo"),
+    }
+    c.targets.update({"climate.ac": "cool", "fan.f": "on", "fan.p": "boost"})
+    assert calls(c.rest(T0, room, "climate", states)) == [("climate.ac", "climate.turn_off", {})]
+    assert calls(c.rest(T0, room, "fans", states)) == [
+        ("fan.f", "fan.set_preset_mode", {"preset_mode": "Naturel"}),
+        ("fan.f", "fan.turn_off", {}),
+    ]
+    assert calls(c.rest(T0, room, "purifiers", states)) == [("fan.p", "fan.set_preset_mode", {"preset_mode": "Auto"})]
+
+
+def test_rest_leaves_what_it_did_not_start_or_was_changed_by_hand():
+    s = room_settings(climate="climate.ac", fans=["fan.f"])
+    c, room = Controller(s), s.rooms[0]
+    states = {"climate.ac": DeviceState(on=True, hvac_mode="cool"), "fan.f": DeviceState(on=True)}
+    # Cooling started by hand: no target of Smart Comfort's.
+    assert c.rest(T0, room, "climate", states) == []
+    # Turned on by Smart Comfort, then changed by hand: paused, left as it is.
+    c.targets["fan.f"] = "on"
+    c.manual_change("fan.f", T0)
+    assert c.rest(T0, room, "fans", states) == []

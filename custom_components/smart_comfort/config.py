@@ -7,7 +7,7 @@ from __future__ import annotations
 
 import re
 import unicodedata
-from collections.abc import Callable
+from collections.abc import Callable, Mapping
 from dataclasses import dataclass, field
 from datetime import datetime, time
 from typing import Any
@@ -338,6 +338,9 @@ def _int(value: Any) -> int | None:
     return None if value is None else int(value)
 
 
+Device = ClimateDevice | FanDevice | PurifierDevice
+
+
 @dataclass(frozen=True)
 class Room:
     id: str
@@ -374,14 +377,23 @@ class Room:
     def napping(self, local: datetime) -> bool:
         return bool(self.naps_on) or any(nap.active(local) for nap in self.naps)
 
-    def equipment(self) -> list[ClimateDevice | FanDevice | PurifierDevice]:
-        """The air conditioner, fans and purifiers of the room."""
-        return ([self.climate] if self.climate else []) + list(self.fans) + list(self.purifiers)
+    def controlled(self, families: Mapping[str, bool] | None = None) -> list[Device]:
+        """The equipment of the families controlled (every family when not given)."""
+        on = families or {}
+        return (
+            ([self.climate] if self.climate and on.get("climate", True) else [])
+            + (list(self.fans) if on.get("fans", True) else [])
+            + (list(self.purifiers) if on.get("purifiers", True) else [])
+        )
 
     @property
     def displays(self) -> dict[str, str]:
         """Indicator light or display of each device that has one: {display: device}."""
-        return {d.display: d.entity_id for d in self.equipment() if d.display}
+        return self.displays_of()
+
+    def displays_of(self, families: Mapping[str, bool] | None = None) -> dict[str, str]:
+        """Indicator light or display of each device of the families controlled: {display: device}."""
+        return {d.display: d.entity_id for d in self.controlled(families) if d.display}
 
     @property
     def devices(self) -> list[str]:

@@ -434,6 +434,15 @@
       "control": {
         "name": "Controlo dos dispositivos"
       },
+      "control_climate": {
+        "name": "Controlo dos ar condicionados"
+      },
+      "control_fans": {
+        "name": "Controlo das ventoinhas"
+      },
+      "control_purifiers": {
+        "name": "Controlo dos purificadores"
+      },
       "lighting": {
         "name": "Iluminação adaptativa"
       }

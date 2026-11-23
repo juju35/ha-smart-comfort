@@ -434,6 +434,15 @@
       "control": {
         "name": "Upravljanje naprav"
       },
+      "control_climate": {
+        "name": "Upravljanje klimatskih naprav"
+      },
+      "control_fans": {
+        "name": "Upravljanje ventilatorjev"
+      },
+      "control_purifiers": {
+        "name": "Upravljanje čistilnikov"
+      },
       "lighting": {
         "name": "Prilagodljiva razsvetljava"
       }

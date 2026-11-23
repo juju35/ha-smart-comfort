@@ -51,6 +51,8 @@ CONF_OPENINGS: Final = "openings"
 CONF_CLIMATE: Final = "climate"
 CONF_FANS: Final = "fans"
 CONF_PURIFIERS: Final = "purifiers"
+# Device families, each controlled or left alone with its own switch (under the device control one).
+FAMILIES: Final = ("climate", "fans", "purifiers")
 CONF_ENTITY_ID: Final = "entity_id"
 CONF_AIR_QUALITY: Final = "air_quality"
 # Indoor air of a room: fine particles (µg/m³), from an air purifier or a monitor.

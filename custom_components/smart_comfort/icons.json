@@ -28,6 +28,9 @@
     "switch": {
       "notifications": { "default": "mdi:bell", "state": { "off": "mdi:bell-off" } },
       "control": { "default": "mdi:air-conditioner", "state": { "off": "mdi:hand-back-right-off" } },
+      "control_climate": { "default": "mdi:air-conditioner", "state": { "off": "mdi:snowflake-off" } },
+      "control_fans": { "default": "mdi:fan", "state": { "off": "mdi:fan-off" } },
+      "control_purifiers": { "default": "mdi:air-purifier", "state": { "off": "mdi:air-purifier-off" } },
       "lighting": { "default": "mdi:lightbulb-auto", "state": { "off": "mdi:lightbulb-off-outline" } }
     },
     "button": {

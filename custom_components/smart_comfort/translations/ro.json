@@ -434,6 +434,15 @@
       "control": {
         "name": "Controlul aparatelor"
       },
+      "control_climate": {
+        "name": "Controlul aparatelor de aer condiționat"
+      },
+      "control_fans": {
+        "name": "Controlul ventilatoarelor"
+      },
+      "control_purifiers": {
+        "name": "Controlul purificatoarelor"
+      },
       "lighting": {
         "name": "Iluminare adaptivă"
       }

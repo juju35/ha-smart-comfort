@@ -434,6 +434,15 @@
       "control": {
         "name": "Apparaatbediening"
       },
+      "control_climate": {
+        "name": "Airco-bediening"
+      },
+      "control_fans": {
+        "name": "Ventilatorbediening"
+      },
+      "control_purifiers": {
+        "name": "Luchtreinigerbediening"
+      },
       "lighting": {
         "name": "Adaptieve verlichting"
       }

@@ -98,6 +98,12 @@ def status(manager: SmartComfort, now: datetime) -> dict[str, Any]:
         ],
         "notifications_enabled": manager.notifications_enabled,
         "control_enabled": manager.control_enabled,
+        # Each device family set up in a room (air conditioners, fans, purifiers): controlled or left alone.
+        "control_families": {
+            family: on
+            for family, on in manager.families.items()
+            if any(getattr(r, family) for r in manager.settings.rooms)
+        },
         "lighting_enabled": manager.lighting_enabled,
         "lighting_phase": phase(manager.settings, dt_util.as_local(now), manager.sun_elevation()),
         "last_notification": manager.last_notification,

@@ -434,6 +434,15 @@
       "control": {
         "name": "Ovládanie zariadení"
       },
+      "control_climate": {
+        "name": "Ovládanie klimatizácií"
+      },
+      "control_fans": {
+        "name": "Ovládanie ventilátorov"
+      },
+      "control_purifiers": {
+        "name": "Ovládanie čističiek"
+      },
       "lighting": {
         "name": "Adaptívne osvetlenie"
       }

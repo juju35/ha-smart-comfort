@@ -31,6 +31,7 @@ from .const import (
     EVALUATE_INTERVAL,
     EVENT_CONTROL,
     EVENT_NOTIFIED,
+    FAMILIES,
     KIND_POLLUTED,
     NOTIFY_TIMEOUT,
     OPENING_UNAVAILABLE,
@@ -193,6 +194,8 @@ class SmartComfort:
         self.store: Store[dict[str, Any]] = Store(hass, STORAGE_VERSION, STORAGE_KEY)
         self.notifications_enabled = True
         self.control_enabled = True
+        # Each device family (air conditioners, fans, purifiers), controlled or left alone, under control_enabled.
+        self.families: dict[str, bool] = dict.fromkeys(FAMILIES, True)
         self.lighting_enabled = True
         self.started_at: datetime | None = None
         self.last_notification: dict[str, Any] | None = None
@@ -227,6 +230,8 @@ class SmartComfort:
         # Switches: known before the first evaluation, not only once the switch entities are restored.
         self.notifications_enabled = bool(data.get("notifications_enabled", True))
         self.control_enabled = bool(data.get("control_enabled", True))
+        families = data.get("families") or {}
+        self.families = {family: bool(families.get(family, True)) for family in FAMILIES}
         self.lighting_enabled = bool(data.get("lighting_enabled", True))
         self._saved = self._hash()
         await self._load_texts()
@@ -317,6 +322,7 @@ class SmartComfort:
             "last_notification": self.last_notification,
             "notifications_enabled": self.notifications_enabled,
             "control_enabled": self.control_enabled,
+            "families": self.families,
             "lighting_enabled": self.lighting_enabled,
         }
 
@@ -596,7 +602,7 @@ class SmartComfort:
             handled: set[str] = set()
             lighting = self.lighting_enabled and self.settings.lighting_enabled
             elevation = self.sun_elevation()
-            if reset := self.controller.reset_due(dt_util.as_local(now)):
+            if reset := self.controller.reset_due(dt_util.as_local(now), self.families):
                 _LOGGER.debug("Back to the normal state: %s", ", ".join(reset))
                 for entity_id in reset:
                     self._log(now, RESET, entity_id)
@@ -614,9 +620,11 @@ class SmartComfort:
                 ctx.polluted = self.engine.alerting(room.id, KIND_POLLUTED)
                 states = self.device_states(room)
                 if self.control_enabled:
-                    commands += self.controller.evaluate(now, local, room, ctx, states)
+                    commands += self.controller.evaluate(now, local, room, ctx, states, self.families)
                     if room.displays:
-                        commands += self.displays.evaluate(dt_util.as_local(now), room, self.display_states(room))
+                        commands += self.displays.evaluate(
+                            dt_util.as_local(now), room, self.display_states(room), self.families
+                        )
                 if self.controller.handled(room, states):
                     handled.add(room.id)
                 if ctx.polluted and self.controller.purifying(room, states):
@@ -868,6 +876,44 @@ class SmartComfort:
         self.control_enabled = enabled
         self.save()
         self._update_listeners()
+
+    @callback
+    def set_family(self, family: str, enabled: bool) -> None:
+        """Control a device family (climate, fans, purifiers) or leave it alone."""
+        if self.families.get(family) == enabled:
+            return
+        self.families[family] = enabled
+        self.save()
+        self._update_listeners()
+        if not self._stopped:
+            self.hass.async_create_task(self._family_changed(family, enabled))
+
+    async def _family_changed(self, family: str, enabled: bool) -> None:
+        """A family turned off is forgotten, then the rooms evaluated again at once (not at the next interval).
+
+        Forgotten under the evaluation lock: an evaluation running when the switch is turned off may still
+        send its commands, and the targets they set are dropped after it, not before.
+        """
+        if not enabled:
+            async with self._lock:
+                if not self.families.get(family) and not self._stopped:  # Not turned back on in the meantime.
+                    now = dt_util.utcnow()
+                    # The devices Smart Comfort was driving back to rest (the AC it started cooling turned off…),
+                    # the ones changed by hand left as they are: nothing it started keeps running unattended.
+                    commands: list[Command] = []
+                    if self.control_enabled:
+                        for room in self.settings.rooms:
+                            commands += self.controller.rest(now, room, family, self.device_states(room))
+                    if sent := await self._run(commands, now):
+                        async_dispatcher_send(self.hass, SIGNAL_ACTIVITY, self.activity.commands(now, sent))
+                    # Its targets dropped: no longer counted as handling an alert, applied again once back.
+                    on = dict.fromkeys(FAMILIES, False) | {family: True}
+                    for room in self.settings.rooms:
+                        self.controller.forget(d.entity_id for d in room.controlled(on))
+                        for display in room.displays_of(on):
+                            self.displays.wanted.pop(display, None)
+                    self.save()
+        await self.async_evaluate()  # The alerts no longer handled come back, the family turned on is applied.
 
     @callback
     def set_lighting(self, enabled: bool) -> None:

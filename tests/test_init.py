@@ -468,6 +468,35 @@ async def test_switch_states_restored_before_entities(hass: HomeAssistant, notif
     assert hass.data[DOMAIN]["state"]["control_enabled"] is False
 
 
+async def test_family_switch_restored_before_entities(hass: HomeAssistant, notify, fan_calls) -> None:
+    _states(hass)
+    entry = await _setup(hass)
+    await hass.services.async_call(
+        "switch", "turn_off", {"entity_id": "switch.smart_comfort_fan_control"}, blocking=True
+    )
+    assert entry.runtime_data.families == {"climate": True, "fans": False, "purifiers": True}
+    assert await hass.config_entries.async_unload(entry.entry_id)
+    await hass.async_block_till_done()
+    assert hass.data[DOMAIN]["state"]["families"]["fans"] is False
+
+
+async def test_family_off_puts_back_to_rest_what_it_started(hass: HomeAssistant, notify, fan_calls) -> None:
+    _states(hass, sejour=24.0)
+    entry = await _setup(hass)
+    assert fan_calls["turn_on"], "turned on by Smart Comfort: too warm"
+    hass.states.async_set("fan.sejour", "on", {"percentage": 50})
+    await hass.services.async_call(
+        "switch", "turn_off", {"entity_id": "switch.smart_comfort_fan_control"}, blocking=True
+    )
+    await hass.async_block_till_done()
+    assert [c.data["entity_id"] for c in fan_calls["turn_off"]] == ["fan.sejour"], "back to rest, once"
+    assert "fan.sejour" not in entry.runtime_data.controller.targets
+    # Left alone from now on: no command any more, even still too warm.
+    hass.states.async_set("fan.sejour", "off", {"percentage": 0})
+    await _evaluate(hass, entry)
+    assert len(fan_calls["turn_on"]) == 1
+
+
 async def test_remove_entry_forgets_the_state(hass: HomeAssistant, notify, fan_calls) -> None:
     _states(hass, chambre=28.0)
     entry = await _setup(hass)

@@ -434,6 +434,15 @@
       "control": {
         "name": "Pilotage des appareils"
       },
+      "control_climate": {
+        "name": "Pilotage des climatiseurs"
+      },
+      "control_fans": {
+        "name": "Pilotage des ventilateurs"
+      },
+      "control_purifiers": {
+        "name": "Pilotage des purificateurs"
+      },
       "lighting": {
         "name": "Éclairage adaptatif"
       }
