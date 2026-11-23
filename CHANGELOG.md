@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.2.1 - 2026-11-23
+
+### Fixes
+- Panel: the *Device control* menu of the overview was cut off by its card, hiding the fans and air purifiers switches (and part of the *+ N OK* menu). The card no longer clips them; the banner of the other tabs keeps its rounded corners.
+
 ## 2.2.0 - 2026-11-23
 
 ### Features
