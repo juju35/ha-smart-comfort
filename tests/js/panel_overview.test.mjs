@@ -134,3 +134,9 @@ test("device control: one pill opening a switch per family set up, partial while
   const plain = overview("", { ...STATUS, control_enabled: true, control_families: {} }).content;
   assert.equal(plain.all((e) => e.className === "more ctl").length, 0);
 });
+
+test("the overview's card does not clip its popovers (device control menu, + N OK)", () => {
+  // Every family switch must stay reachable: the card around the pills lets the menu open past it.
+  const rule = source.match(/\.shtop \{([^}]*)\}/)?.[1] || "";
+  assert.doesNotMatch(rule, /overflow:\s*(hidden|clip)/);
+});

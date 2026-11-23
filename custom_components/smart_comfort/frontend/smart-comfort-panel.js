@@ -8599,7 +8599,9 @@ const STYLE = `
     .tl-scale { display: none; }
     .tl-bar { margin-bottom: 8px; }
   }
-    .shtop { padding:0; overflow:hidden; }
+    /* Not clipped: the overview's popovers (device control, + N OK) open past the card; the banner rounds its own corners. */
+    .shtop { padding:0; overflow:visible; }
+    .shtop > .shbanner:first-child { border-top-left-radius:inherit; border-top-right-radius:inherit; }
     .shbanner { position:relative; height:90px; overflow:hidden; color:#1d2733; background:var(--sh-wall); --sh-sub:#4a5a6c; container-type:inline-size; }
     .shbanner.night { color:#fff; --sh-sub:rgba(255,255,255,.78); }
     .shscene { position:absolute; right:0; bottom:10px; height:80px; width:min(360px, 46%); }
