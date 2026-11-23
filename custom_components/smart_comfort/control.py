@@ -10,7 +10,7 @@ target is applied again.
 from __future__ import annotations
 
 from collections.abc import Iterable, Mapping
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from datetime import datetime, timedelta
 from typing import Any
 
@@ -181,6 +181,39 @@ class Controller:
                     self.retry.pop(device.entity_id, None)
                     reset.append(device.entity_id)
         return reset
+
+    def rest(self, now: datetime, room: Room, family: str, states: dict[str, DeviceState]) -> list[Command]:
+        """A family about to be left alone: its devices driven by Smart Comfort back to their rest state.
+
+        The air conditioner cooling turned off, the fan on or boosted turned off (its off_preset first), the
+        purifier boosted, purifying or quiet back to normal (closed preset or mode, or its state before) — what
+        the end of the alert would do. Only the devices with a target of Smart Comfort's other than rest; those
+        changed by hand (paused) and those already at rest are left as they are.
+        """
+        calm = RoomContext(temperature=None, any_open=False, closed_since=None, open_since=None, has_openings=False)
+        cmds: list[Command] = []
+        on = dict.fromkeys(("climate", "fans", "purifiers"), False) | {family: True}
+        for dev in room.controlled(on):
+            current = self.targets.get(dev.entity_id)
+            retry = self.retry.get(dev.entity_id)
+            driven = current or (retry[0] if retry else None)
+            if isinstance(dev, ClimateDevice):
+                if driven not in COOLING:
+                    continue
+                decision = self._climate(dev, replace(calm, temperature=dev.off_below), now)
+            elif isinstance(dev, FanDevice):
+                if driven not in (TARGET_ON, TARGET_ON_NIGHT, TARGET_BOOST):
+                    continue
+                # Off: below off_below with a temperature control, else as the end of its boost (on only
+                # with a temperature control, so a fan without one was boosted, read so by _fan).
+                temperature = dev.off_below if dev.on_above is not None and dev.off_below is not None else None
+                decision = self._fan(dev, replace(calm, temperature=temperature), False)
+            else:
+                if driven is None or driven == TARGET_NORMAL:
+                    continue
+                decision = self._purifier(dev, calm, False)
+            cmds += self._device(now, dev.entity_id, states, decision)
+        return cmds
 
     def forget(self, entity_ids: Iterable[str]) -> None:
         """Devices left alone from now on: their targets are dropped, applied again from scratch once controlled."""

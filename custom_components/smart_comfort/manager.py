@@ -896,7 +896,16 @@ class SmartComfort:
         """
         if not enabled:
             async with self._lock:
-                if not self.families.get(family):  # Not turned back on in the meantime.
+                if not self.families.get(family) and not self._stopped:  # Not turned back on in the meantime.
+                    now = dt_util.utcnow()
+                    # The devices Smart Comfort was driving back to rest (the AC it started cooling turned off…),
+                    # the ones changed by hand left as they are: nothing it started keeps running unattended.
+                    commands: list[Command] = []
+                    if self.control_enabled:
+                        for room in self.settings.rooms:
+                            commands += self.controller.rest(now, room, family, self.device_states(room))
+                    if sent := await self._run(commands, now):
+                        async_dispatcher_send(self.hass, SIGNAL_ACTIVITY, self.activity.commands(now, sent))
                     # Its targets dropped: no longer counted as handling an alert, applied again once back.
                     on = dict.fromkeys(FAMILIES, False) | {family: True}
                     for room in self.settings.rooms:

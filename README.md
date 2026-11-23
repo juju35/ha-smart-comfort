@@ -508,7 +508,7 @@ The activity (the last 300 entries) is kept across restarts. It is also availabl
 | `calendar.smart_comfort_comfort_alerts` | The alerts as events: one per alert, from its start to its end (the ones going on end a minute ahead, so the calendar is `on` while they last). Summary `🌡️ Bedroom: Too hot`, location the room, description its worst value. Finished alerts are kept 90 days (at most 1000) |
 | `switch.smart_comfort_notifications` | Send notifications (problems are still tracked when off) |
 | `switch.smart_comfort_device_control` | Control the devices |
-| `switch.smart_comfort_air_conditioner_control` | Control the air conditioners (under *Device control*: left alone when off, the other devices still controlled) |
+| `switch.smart_comfort_air_conditioner_control` | Control the air conditioners (under *Device control*). Turned off: the ones Smart Comfort was driving go back to rest (off), then all are left alone; the other devices are still controlled |
 | `switch.smart_comfort_fan_control` | Control the fans (same) |
 | `switch.smart_comfort_purifier_control` | Control the air purifiers (same) |
 | `switch.smart_comfort_adaptive_lighting` | Adapt the brightness of the lights |
