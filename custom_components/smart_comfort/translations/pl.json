@@ -434,6 +434,15 @@
       "control": {
         "name": "Sterowanie urządzeniami"
       },
+      "control_climate": {
+        "name": "Sterowanie klimatyzatorami"
+      },
+      "control_fans": {
+        "name": "Sterowanie wentylatorami"
+      },
+      "control_purifiers": {
+        "name": "Sterowanie oczyszczaczami"
+      },
       "lighting": {
         "name": "Oświetlenie adaptacyjne"
       }

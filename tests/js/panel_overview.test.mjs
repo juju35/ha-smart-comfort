@@ -67,11 +67,11 @@ const STATUS = {
   outdoors: [],
 };
 
-const overview = (selected = "") => {
+const overview = (selected = "", status = STATUS) => {
   const p = Object.create(SmartComfortPanel.prototype);
   p._hass = { language: "en", states: {}, entities: {} };
   p._config = { options: { rooms: [{ name: "Living" }] } };
-  p._status = STATUS;
+  p._status = status;
   p._room = selected;
   p._renderTab = () => {};
   const content = new El("div");
@@ -106,4 +106,31 @@ test("room filter: a room chosen keeps only its alerts and its room", () => {
   // A room that no longer exists: back to all rooms
   const gone = overview("cellar");
   assert.equal(gone.p._room, "");
+});
+
+test("device control: one pill opening a switch per family set up, partial while one is off", () => {
+  const status = { ...STATUS, control_enabled: true, control_families: { climate: false, fans: true } };
+  const { content } = overview("", status);
+  const menu = content.all((e) => e.className === "more ctl")[0];
+  assert.ok(menu, "a menu instead of a plain pill");
+  const pill = menu.children[0];
+  assert.equal(pill.className, "pill part");
+  assert.match(pill.textContent, /Device control partial/);
+  const rows = menu.all((e) => e.className.startsWith("crow"));
+  assert.deepEqual(
+    rows.map((r) => [r.textContent, r.attrs["aria-checked"]]),
+    [
+      ["All devices", "true"],
+      ["Air conditioners", "false"],
+      ["Fans", "true"],
+    ],
+    "the general switch, then the families set up (no purifier here)"
+  );
+  // The general switch off: the families greyed out, their own state kept.
+  const off = overview("", { ...status, control_enabled: false }).content;
+  const famRows = off.all((e) => e.className.startsWith("crow")).slice(1);
+  assert.ok(famRows.every((r) => r.disabled));
+  // No family set up: the plain pill as before.
+  const plain = overview("", { ...STATUS, control_enabled: true, control_families: {} }).content;
+  assert.equal(plain.all((e) => e.className === "more ctl").length, 0);
 });

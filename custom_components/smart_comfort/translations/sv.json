@@ -434,6 +434,15 @@
       "control": {
         "name": "Styrning av enheter"
       },
+      "control_climate": {
+        "name": "Styrning av luftkonditionering"
+      },
+      "control_fans": {
+        "name": "Styrning av fläktar"
+      },
+      "control_purifiers": {
+        "name": "Styrning av luftrenare"
+      },
       "lighting": {
         "name": "Adaptiv belysning"
       }

@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.2.0 - 2026-11-23
+
+### Features
+- Device control per family: the air conditioners, the fans and the air purifiers each have their own switch (`switch.smart_comfort_air_conditioner_control`, `…_fan_control`, `…_purifier_control`), under *Device control*. A family turned off is left alone (no command, its indicator lights and displays untouched, no longer counted as handling an alert); the others are still controlled. Turned back on, it is applied again at once. The switches are restored after a restart.
+- Panel: the *Device control* pill of the overview opens a menu with the general switch and one per family set up in a room; the pill shows *partial* while a family is off.
+
 ## 2.1.4 - 2026-11-22
 
 ### Fixes

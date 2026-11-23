@@ -8,6 +8,7 @@ change. Turned back on, a display gets the brightness or option it had before.
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Any
@@ -74,11 +75,20 @@ class DisplayController:
         """Displays off: in their hours, or during a nap of the room."""
         return self.settings.displays_off(local.time()) or room.napping(local)
 
-    def evaluate(self, local: datetime, room: Room, states: dict[str, DisplayState]) -> list[Command]:
-        """Commands for the displays of a room, when their wanted state changes."""
+    def evaluate(
+        self,
+        local: datetime,
+        room: Room,
+        states: dict[str, DisplayState],
+        families: Mapping[str, bool] | None = None,
+    ) -> list[Command]:
+        """Commands for the displays of a room, when their wanted state changes.
+
+        The displays of the device families left alone (`families`) are left alone too.
+        """
         off = self.off_now(room, local)
         commands = []
-        for entity_id in room.displays:
+        for entity_id in room.displays_of(families):
             state = states.get(entity_id)
             if state is None or state.off is None or self.wanted.get(entity_id) == off:
                 continue

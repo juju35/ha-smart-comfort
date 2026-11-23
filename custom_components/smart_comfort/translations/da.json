@@ -434,6 +434,15 @@
       "control": {
         "name": "Styring af enheder"
       },
+      "control_climate": {
+        "name": "Styring af aircondition"
+      },
+      "control_fans": {
+        "name": "Styring af ventilatorer"
+      },
+      "control_purifiers": {
+        "name": "Styring af luftrensere"
+      },
       "lighting": {
         "name": "Adaptiv belysning"
       }

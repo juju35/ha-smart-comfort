@@ -434,6 +434,15 @@
       "control": {
         "name": "Ierīču vadība"
       },
+      "control_climate": {
+        "name": "Kondicionieru vadība"
+      },
+      "control_fans": {
+        "name": "Ventilatoru vadība"
+      },
+      "control_purifiers": {
+        "name": "Gaisa attīrītāju vadība"
+      },
       "lighting": {
         "name": "Adaptīvais apgaismojums"
       }

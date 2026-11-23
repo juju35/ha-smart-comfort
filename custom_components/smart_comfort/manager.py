@@ -31,6 +31,7 @@ from .const import (
     EVALUATE_INTERVAL,
     EVENT_CONTROL,
     EVENT_NOTIFIED,
+    FAMILIES,
     KIND_POLLUTED,
     NOTIFY_TIMEOUT,
     OPENING_UNAVAILABLE,
@@ -193,6 +194,8 @@ class SmartComfort:
         self.store: Store[dict[str, Any]] = Store(hass, STORAGE_VERSION, STORAGE_KEY)
         self.notifications_enabled = True
         self.control_enabled = True
+        # Each device family (air conditioners, fans, purifiers), controlled or left alone, under control_enabled.
+        self.families: dict[str, bool] = dict.fromkeys(FAMILIES, True)
         self.lighting_enabled = True
         self.started_at: datetime | None = None
         self.last_notification: dict[str, Any] | None = None
@@ -227,6 +230,8 @@ class SmartComfort:
         # Switches: known before the first evaluation, not only once the switch entities are restored.
         self.notifications_enabled = bool(data.get("notifications_enabled", True))
         self.control_enabled = bool(data.get("control_enabled", True))
+        families = data.get("families") or {}
+        self.families = {family: bool(families.get(family, True)) for family in FAMILIES}
         self.lighting_enabled = bool(data.get("lighting_enabled", True))
         self._saved = self._hash()
         await self._load_texts()
@@ -317,6 +322,7 @@ class SmartComfort:
             "last_notification": self.last_notification,
             "notifications_enabled": self.notifications_enabled,
             "control_enabled": self.control_enabled,
+            "families": self.families,
             "lighting_enabled": self.lighting_enabled,
         }
 
@@ -614,9 +620,11 @@ class SmartComfort:
                 ctx.polluted = self.engine.alerting(room.id, KIND_POLLUTED)
                 states = self.device_states(room)
                 if self.control_enabled:
-                    commands += self.controller.evaluate(now, local, room, ctx, states)
+                    commands += self.controller.evaluate(now, local, room, ctx, states, self.families)
                     if room.displays:
-                        commands += self.displays.evaluate(dt_util.as_local(now), room, self.display_states(room))
+                        commands += self.displays.evaluate(
+                            dt_util.as_local(now), room, self.display_states(room), self.families
+                        )
                 if self.controller.handled(room, states):
                     handled.add(room.id)
                 if ctx.polluted and self.controller.purifying(room, states):
@@ -868,6 +876,25 @@ class SmartComfort:
         self.control_enabled = enabled
         self.save()
         self._update_listeners()
+
+    @callback
+    def set_family(self, family: str, enabled: bool) -> None:
+        """Control a device family (climate, fans, purifiers) or leave it alone."""
+        if self.families.get(family) == enabled:
+            return
+        self.families[family] = enabled
+        if not enabled:
+            # Left alone: its targets are dropped (no longer counted as handling an alert), applied again once back.
+            on = dict.fromkeys(FAMILIES, False) | {family: True}
+            for room in self.settings.rooms:
+                devices = room.controlled(on)
+                self.controller.forget(d.entity_id for d in devices)
+                for display in room.displays_of(on):
+                    self.displays.wanted.pop(display, None)
+        self.save()
+        self._update_listeners()
+        if enabled and not self._stopped:
+            self.hass.async_create_task(self.async_evaluate())  # Applied at once, not at the next interval.
 
     @callback
     def set_lighting(self, enabled: bool) -> None:

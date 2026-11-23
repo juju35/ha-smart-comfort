@@ -434,6 +434,15 @@
       "control": {
         "name": "Kontrola uređaja"
       },
+      "control_climate": {
+        "name": "Kontrola klima uređaja"
+      },
+      "control_fans": {
+        "name": "Kontrola ventilatora"
+      },
+      "control_purifiers": {
+        "name": "Kontrola prečišćivača"
+      },
       "lighting": {
         "name": "Prilagodljivo osvetljenje"
       }

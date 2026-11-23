@@ -507,3 +507,29 @@ def test_purifier_polluted_air_left_alone_after_a_change_by_hand_and_quiet_at_ni
     assert calls(c2.evaluate(T0, NIGHT, room, polluted(), on)) == [
         ("fan.p", "fan.set_preset_mode", {"preset_mode": "Sleep"}),
     ]
+
+
+def test_family_left_alone():
+    s = room_settings(climate="climate.ac", fans=["fan.f"], purifiers=["fan.p"])
+    c, room = Controller(s), s.rooms[0]
+    states = {
+        "climate.ac": DeviceState(on=False, hvac_mode="off"),
+        "fan.f": DeviceState(on=False),
+        "fan.p": DeviceState(on=False),
+    }
+    families = {"climate": False, "fans": True, "purifiers": False}
+    devices = {cmd.entity_id for cmd in c.evaluate(T0, NOON, room, ctx(24.0), states, families)}
+    assert devices == {"fan.f"}
+    # The displays of the families left alone are left alone too.
+    assert [d.entity_id for d in room.controlled(families)] == ["fan.f"]
+
+
+def test_forget_drops_the_target():
+    s = room_settings(climate="climate.ac")
+    c, room = Controller(s), s.rooms[0]
+    cooling = {"climate.ac": DeviceState(on=True, hvac_mode="cool")}
+    c.targets["climate.ac"] = "cool"
+    assert c.handled(room, cooling)
+    c.forget(["climate.ac"])
+    # No longer counted as handling the room, applied again from scratch once controlled.
+    assert not c.handled(room, cooling)

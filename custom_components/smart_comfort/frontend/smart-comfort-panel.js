@@ -131,6 +131,11 @@ const STRINGS = {
     notifications_off: "Notifications off",
     control_on: "Device control on",
     control_off: "Device control off",
+    control_partial: "Device control partial",
+    control_all: "All devices",
+    control_climate: "Air conditioners",
+    control_fans: "Fans",
+    control_purifiers: "Air purifiers",
     notify_now: "Notify now",
     unsnooze: "Cancel snoozes",
     snooze: "Snooze",
@@ -345,6 +350,11 @@ const STRINGS = {
     notifications_off: "Notifications coupées",
     control_on: "Pilotage activé",
     control_off: "Pilotage coupé",
+    control_partial: "Pilotage partiel",
+    control_all: "Tous les appareils",
+    control_climate: "Climatiseurs",
+    control_fans: "Ventilateurs",
+    control_purifiers: "Purificateurs d'air",
     notify_now: "Notifier maintenant",
     unsnooze: "Annuler les sourdines",
     snooze: "Ignorer",
@@ -559,6 +569,11 @@ const STRINGS = {
     notifications_off: "Benachrichtigungen aus",
     control_on: "Gerätesteuerung an",
     control_off: "Gerätesteuerung aus",
+    control_partial: "Gerätesteuerung teilweise",
+    control_all: "Alle Geräte",
+    control_climate: "Klimageräte",
+    control_fans: "Ventilatoren",
+    control_purifiers: "Luftreiniger",
     notify_now: "Jetzt benachrichtigen",
     unsnooze: "Stummschaltungen aufheben",
     snooze: "Stumm",
@@ -773,6 +788,11 @@ const STRINGS = {
     notifications_off: "Notificaciones desactivadas",
     control_on: "Control activado",
     control_off: "Control desactivado",
+    control_partial: "Control de aparatos parcial",
+    control_all: "Todos los aparatos",
+    control_climate: "Aires acondicionados",
+    control_fans: "Ventiladores",
+    control_purifiers: "Purificadores de aire",
     notify_now: "Notificar ahora",
     unsnooze: "Cancelar pausas",
     snooze: "Posponer",
@@ -987,6 +1007,11 @@ const STRINGS = {
     notifications_off: "Обавештења су искључена",
     control_on: "Контрола уређаја је укључена",
     control_off: "Контрола уређаја је искључена",
+    control_partial: "Контрола уређаја делимична",
+    control_all: "Сви уређаји",
+    control_climate: "Клима уређаји",
+    control_fans: "Вентилатори",
+    control_purifiers: "Пречишћивачи ваздуха",
     notify_now: "Обавести одмах",
     unsnooze: "Поништи одлагања",
     snooze: "Одложи",
@@ -1201,6 +1226,11 @@ const STRINGS = {
     notifications_off: "Obaveštenja su isključena",
     control_on: "Kontrola uređaja je uključena",
     control_off: "Kontrola uređaja je isključena",
+    control_partial: "Kontrola uređaja delimična",
+    control_all: "Svi uređaji",
+    control_climate: "Klima uređaji",
+    control_fans: "Ventilatori",
+    control_purifiers: "Prečišćivači vazduha",
     notify_now: "Obavesti odmah",
     unsnooze: "Poništi odlaganja",
     snooze: "Odloži",
@@ -1415,6 +1445,11 @@ const STRINGS = {
     notifications_off: "Notifiche disattivate",
     control_on: "Controllo dei dispositivi attivo",
     control_off: "Controllo dei dispositivi disattivato",
+    control_partial: "Controllo parziale",
+    control_all: "Tutti i dispositivi",
+    control_climate: "Condizionatori",
+    control_fans: "Ventilatori",
+    control_purifiers: "Purificatori d'aria",
     notify_now: "Notifica ora",
     unsnooze: "Annulla i posticipi",
     snooze: "Posticipa",
@@ -1629,6 +1664,11 @@ const STRINGS = {
     notifications_off: "Meldingen uit",
     control_on: "Apparaatbediening aan",
     control_off: "Apparaatbediening uit",
+    control_partial: "Apparaatbediening gedeeltelijk",
+    control_all: "Alle apparaten",
+    control_climate: "Airco's",
+    control_fans: "Ventilatoren",
+    control_purifiers: "Luchtreinigers",
     notify_now: "Nu melden",
     unsnooze: "Sluimeren annuleren",
     snooze: "Sluimeren",
@@ -1843,6 +1883,11 @@ const STRINGS = {
     notifications_off: "Notificações desativadas",
     control_on: "Controlo dos dispositivos ativado",
     control_off: "Controlo dos dispositivos desativado",
+    control_partial: "Controlo parcial",
+    control_all: "Todos os dispositivos",
+    control_climate: "Ar condicionados",
+    control_fans: "Ventoinhas",
+    control_purifiers: "Purificadores de ar",
     notify_now: "Notificar agora",
     unsnooze: "Cancelar os adiamentos",
     snooze: "Adiar",
@@ -2057,6 +2102,11 @@ const STRINGS = {
     notifications_off: "Powiadomienia wyłączone",
     control_on: "Sterowanie urządzeniami włączone",
     control_off: "Sterowanie urządzeniami wyłączone",
+    control_partial: "Sterowanie częściowe",
+    control_all: "Wszystkie urządzenia",
+    control_climate: "Klimatyzatory",
+    control_fans: "Wentylatory",
+    control_purifiers: "Oczyszczacze powietrza",
     notify_now: "Powiadom teraz",
     unsnooze: "Anuluj wyciszenia",
     snooze: "Wycisz",
@@ -2271,6 +2321,11 @@ const STRINGS = {
     notifications_off: "Notificări dezactivate",
     control_on: "Controlul aparatelor activat",
     control_off: "Controlul aparatelor dezactivat",
+    control_partial: "Control parțial",
+    control_all: "Toate aparatele",
+    control_climate: "Aparate de aer condiționat",
+    control_fans: "Ventilatoare",
+    control_purifiers: "Purificatoare de aer",
     notify_now: "Notifică acum",
     unsnooze: "Anulează amânările",
     snooze: "Amână",
@@ -2485,6 +2540,11 @@ const STRINGS = {
     notifications_off: "Notifikationer fra",
     control_on: "Styring af enheder til",
     control_off: "Styring af enheder fra",
+    control_partial: "Delvis styring",
+    control_all: "Alle enheder",
+    control_climate: "Aircondition",
+    control_fans: "Ventilatorer",
+    control_purifiers: "Luftrensere",
     notify_now: "Notificer nu",
     unsnooze: "Annuller udsættelser",
     snooze: "Udsæt",
@@ -2699,6 +2759,11 @@ const STRINGS = {
     notifications_off: "Aviseringar av",
     control_on: "Styrning av enheter på",
     control_off: "Styrning av enheter av",
+    control_partial: "Delvis styrning",
+    control_all: "Alla enheter",
+    control_climate: "Luftkonditionering",
+    control_fans: "Fläktar",
+    control_purifiers: "Luftrenare",
     notify_now: "Avisera nu",
     unsnooze: "Avbryt snooze",
     snooze: "Snooza",
@@ -2913,6 +2978,11 @@ const STRINGS = {
     notifications_off: "Известията са изключени",
     control_on: "Управлението на устройствата е включено",
     control_off: "Управлението на устройствата е изключено",
+    control_partial: "Частично управление",
+    control_all: "Всички устройства",
+    control_climate: "Климатици",
+    control_fans: "Вентилатори",
+    control_purifiers: "Пречистватели на въздух",
     notify_now: "Известяване сега",
     unsnooze: "Отмяна на отлаганията",
     snooze: "Отлагане",
@@ -3127,6 +3197,11 @@ const STRINGS = {
     notifications_off: "Уведомления выключены",
     control_on: "Управление устройствами включено",
     control_off: "Управление устройствами выключено",
+    control_partial: "Частичное управление",
+    control_all: "Все устройства",
+    control_climate: "Кондиционеры",
+    control_fans: "Вентиляторы",
+    control_purifiers: "Очистители воздуха",
     notify_now: "Уведомить сейчас",
     unsnooze: "Отменить откладывания",
     snooze: "Отложить",
@@ -3341,6 +3416,11 @@ const STRINGS = {
     notifications_off: "Сповіщення вимкнено",
     control_on: "Керування пристроями увімкнено",
     control_off: "Керування пристроями вимкнено",
+    control_partial: "Часткове керування",
+    control_all: "Усі пристрої",
+    control_climate: "Кондиціонери",
+    control_fans: "Вентилятори",
+    control_purifiers: "Очищувачі повітря",
     notify_now: "Сповістити зараз",
     unsnooze: "Скасувати відкладення",
     snooze: "Відкласти",
@@ -3555,6 +3635,11 @@ const STRINGS = {
     notifications_off: "Értesítések ki",
     control_on: "Eszközvezérlés be",
     control_off: "Eszközvezérlés ki",
+    control_partial: "Részleges vezérlés",
+    control_all: "Minden eszköz",
+    control_climate: "Klímák",
+    control_fans: "Ventilátorok",
+    control_purifiers: "Légtisztítók",
     notify_now: "Értesítés most",
     unsnooze: "Szundik törlése",
     snooze: "Szundi",
@@ -3769,6 +3854,11 @@ const STRINGS = {
     notifications_off: "Oznámenia vypnuté",
     control_on: "Ovládanie zariadení zapnuté",
     control_off: "Ovládanie zariadení vypnuté",
+    control_partial: "Čiastočné ovládanie",
+    control_all: "Všetky zariadenia",
+    control_climate: "Klimatizácie",
+    control_fans: "Ventilátory",
+    control_purifiers: "Čističky vzduchu",
     notify_now: "Oznámiť teraz",
     unsnooze: "Zrušiť odloženia",
     snooze: "Odložiť",
@@ -3983,6 +4073,11 @@ const STRINGS = {
     notifications_off: "Oznámení vypnuta",
     control_on: "Ovládání zařízení zapnuto",
     control_off: "Ovládání zařízení vypnuto",
+    control_partial: "Částečné ovládání",
+    control_all: "Všechna zařízení",
+    control_climate: "Klimatizace",
+    control_fans: "Ventilátory",
+    control_purifiers: "Čističky vzduchu",
     notify_now: "Oznámit nyní",
     unsnooze: "Zrušit odložení",
     snooze: "Odložit",
@@ -4197,6 +4292,11 @@ const STRINGS = {
     notifications_off: "Obvestila izklopljena",
     control_on: "Upravljanje naprav vklopljeno",
     control_off: "Upravljanje naprav izklopljeno",
+    control_partial: "Delno upravljanje",
+    control_all: "Vse naprave",
+    control_climate: "Klimatske naprave",
+    control_fans: "Ventilatorji",
+    control_purifiers: "Čistilniki zraka",
     notify_now: "Obvesti zdaj",
     unsnooze: "Prekliči odloge",
     snooze: "Odloži",
@@ -4411,6 +4511,11 @@ const STRINGS = {
     notifications_off: "Paziņojumi izslēgti",
     control_on: "Ierīču vadība ieslēgta",
     control_off: "Ierīču vadība izslēgta",
+    control_partial: "Daļēja vadība",
+    control_all: "Visas ierīces",
+    control_climate: "Kondicionieri",
+    control_fans: "Ventilatori",
+    control_purifiers: "Gaisa attīrītāji",
     notify_now: "Paziņot tagad",
     unsnooze: "Atcelt atlikšanas",
     snooze: "Atlikt",
@@ -4625,6 +4730,11 @@ const STRINGS = {
     notifications_off: "Ειδοποιήσεις ανενεργές",
     control_on: "Έλεγχος συσκευών ενεργός",
     control_off: "Έλεγχος συσκευών ανενεργός",
+    control_partial: "Μερικός έλεγχος",
+    control_all: "Όλες οι συσκευές",
+    control_climate: "Κλιματιστικά",
+    control_fans: "Ανεμιστήρες",
+    control_purifiers: "Καθαριστές αέρα",
     notify_now: "Ειδοποίηση τώρα",
     unsnooze: "Ακύρωση αναβολών",
     snooze: "Αναβολή",
@@ -6315,7 +6425,7 @@ class SmartComfortPanel extends HTMLElement {
     };
     filters.append(
       toggle(s.notifications_enabled, "mdi:bell", "mdi:bell-off", "notifications_on", "notifications_off", "notifications"),
-      toggle(s.control_enabled, "mdi:air-conditioner", "mdi:hand-back-right-off", "control_on", "control_off", "control"),
+      this._controlMenu(s, toggle),
       ...(rooms.some((r) => Object.keys(r.lights || {}).length)
         ? [toggle(s.lighting_enabled, "mdi:lightbulb-auto", "mdi:lightbulb-off-outline", "lighting_on", "lighting_off", "lighting")]
         : [])
@@ -6496,6 +6606,51 @@ class SmartComfortPanel extends HTMLElement {
     return card;
   }
 
+  // Device control: one pill opening a menu, the general switch and one per device family set up.
+  _controlMenu(s, toggle) {
+    const families = Object.entries(s.control_families || {});
+    if (!families.length) {
+      return toggle(s.control_enabled, "mdi:air-conditioner", "mdi:hand-back-right-off", "control_on", "control_off", "control");
+    }
+    const partial = s.control_enabled && families.some(([, on]) => !on);
+    const menu = this._el("details", "more ctl");
+    menu.open = !!this._controlOpen;
+    menu.addEventListener("toggle", () => (this._controlOpen = menu.open));
+    const sum = this._el("summary", `pill${s.control_enabled ? (partial ? " part" : " on") : ""}`);
+    const icon = document.createElement("ha-icon");
+    icon.icon = s.control_enabled ? "mdi:air-conditioner" : "mdi:hand-back-right-off";
+    const chevron = document.createElement("ha-icon");
+    chevron.icon = "mdi:chevron-down";
+    chevron.className = "chev";
+    sum.append(icon, document.createTextNode(this._t(s.control_enabled ? (partial ? "control_partial" : "control_on") : "control_off")), chevron);
+    const pop = this._el("div", "pop");
+    const row = (on, iconOn, iconOff, label, key, disabled) => {
+      const b = this._el("button", `crow${on ? " on" : ""}`);
+      b.disabled = !!disabled;
+      b.setAttribute("role", "switch");
+      b.setAttribute("aria-checked", String(on));
+      const i = document.createElement("ha-icon");
+      i.icon = on ? iconOn : iconOff;
+      b.append(i, this._el("span", "cl", label), this._el("span", `knob${on ? " on" : ""}`));
+      b.addEventListener("click", () =>
+        this._hass.callService("switch", on ? "turn_off" : "turn_on", { entity_id: this._switch(key) })
+      );
+      return b;
+    };
+    const icons = {
+      climate: ["mdi:air-conditioner", "mdi:snowflake-off"],
+      fans: ["mdi:fan", "mdi:fan-off"],
+      purifiers: ["mdi:air-purifier", "mdi:air-purifier-off"],
+    };
+    pop.append(row(s.control_enabled, "mdi:air-conditioner", "mdi:hand-back-right-off", this._t("control_all"), "control"));
+    for (const [family, on] of families) {
+      // Under the general switch: greyed out while it is off, its own state kept.
+      pop.append(row(on, ...icons[family], this._t(`control_${family}`), `control_${family}`, !s.control_enabled));
+    }
+    menu.append(sum, pop);
+    return menu;
+  }
+
   _switch(key) {
     const entries = Object.values(this._hass.entities || {}).filter(
       (e) => e.platform === DOMAIN && e.entity_id.startsWith("switch.")
@@ -6504,6 +6659,9 @@ class SmartComfortPanel extends HTMLElement {
     if (found) return found.entity_id;
     return {
       control: "switch.smart_comfort_device_control",
+      control_climate: "switch.smart_comfort_air_conditioner_control",
+      control_fans: "switch.smart_comfort_fan_control",
+      control_purifiers: "switch.smart_comfort_purifier_control",
       lighting: "switch.smart_comfort_adaptive_lighting",
     }[key] || "switch.smart_comfort_notifications";
   }
@@ -8164,6 +8322,20 @@ const STYLE = `
     display: flex; flex-direction: column; gap: 4px; background: var(--card-background-color, #fff); border: 1px solid var(--divider-color, rgba(127,127,127,.3));
     border-radius: 12px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14); }
   .pill { --mdc-icon-size: 16px; }
+  .ctl > summary.pill { border-style: solid; } .ctl > summary.pill.on, .ctl > summary.pill.part { border-color: transparent; }
+  .ctl .chev { --mdc-icon-size: 14px; margin-right: -4px; transition: transform .15s; } .ctl[open] .chev { transform: rotate(180deg); }
+  .pill.part { color: color-mix(in srgb, #f5a623 60%, var(--primary-text-color)); background: color-mix(in srgb, #f5a623 14%, transparent); }
+  .ctl .pop { left: auto; right: 0; min-width: 240px; }
+  .crow { display: flex; align-items: center; gap: 10px; width: 100%; padding: 8px 10px; border: 0; border-radius: 8px; background: none; font: inherit; font-size: 13px;
+    color: var(--primary-text-color); cursor: pointer; text-align: left; --mdc-icon-size: 18px; }
+  .crow:hover { background: var(--secondary-background-color, rgba(127,127,127,.08)); }
+  .crow > ha-icon { color: var(--secondary-text-color); } .crow.on > ha-icon { color: var(--success-color, #43a047); }
+  .crow:disabled { opacity: .45; cursor: default; } .crow:disabled:hover { background: none; }
+  .ctl .pop > .crow:first-child { margin-bottom: 2px; border-radius: 8px 8px 0 0; box-shadow: 0 1px 0 var(--divider-color, rgba(127,127,127,.3)); }
+  .crow .cl { flex: 1; }
+  .crow .knob { position: relative; width: 30px; height: 18px; border-radius: 9px; background: var(--divider-color, rgba(127,127,127,.35)); flex: none; transition: background .15s; }
+  .crow .knob::after { content: ""; position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; border-radius: 50%; background: #fff; transition: left .15s; box-shadow: 0 1px 2px rgba(0,0,0,.25); }
+  .crow .knob.on { background: var(--success-color, #43a047); } .crow .knob.on::after { left: 14px; }
   .pill.on { color: color-mix(in srgb, var(--success-color, #43a047) 60%, var(--primary-text-color)); background: color-mix(in srgb, var(--success-color, #43a047) 14%, transparent); border-color: transparent; }
   .otiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; }
   .otile { display: flex; align-items: center; gap: 12px; min-width: 0; padding: 12px 14px; border-radius: 12px; box-sizing: border-box;

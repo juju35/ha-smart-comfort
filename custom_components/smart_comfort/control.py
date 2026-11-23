@@ -9,6 +9,7 @@ target is applied again.
 
 from __future__ import annotations
 
+from collections.abc import Iterable, Mapping
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from typing import Any
@@ -180,6 +181,12 @@ class Controller:
                     reset.append(device.entity_id)
         return reset
 
+    def forget(self, entity_ids: Iterable[str]) -> None:
+        """Devices left alone from now on: their targets are dropped, applied again from scratch once controlled."""
+        for entity_id in entity_ids:
+            self.targets.pop(entity_id, None)
+            self.retry.pop(entity_id, None)
+
     def manual_change(self, entity_id: str, now: datetime) -> None:
         """A device was changed by someone else than Smart Comfort."""
         if self.settings.manual_override > 0:
@@ -219,21 +226,31 @@ class Controller:
     # Decisions.
 
     def evaluate(
-        self, now: datetime, local: Any, room: Room, ctx: RoomContext, states: dict[str, DeviceState]
+        self,
+        now: datetime,
+        local: Any,
+        room: Room,
+        ctx: RoomContext,
+        states: dict[str, DeviceState],
+        families: Mapping[str, bool] | None = None,
     ) -> list[Command]:
-        """Commands for the devices of a room. `local` is the local time of day."""
+        """Commands for the devices of a room. `local` is the local time of day.
+
+        `families`: the device families controlled (climate, fans, purifiers); the others are left alone.
+        """
         if not self.settings.control_enabled:
             return []
+        on = families or {}
         boost_hours = in_window(local, self.settings.control_start, self.settings.control_end)
         night = self.settings.night(local)
         cmds: list[Command] = []
-        if room.climate:
+        if room.climate and on.get("climate", True):
             cmds += self._device(now, room.climate.entity_id, states, self._climate(room.climate, ctx, now, night))
-        for fan in room.fans:
+        for fan in room.fans if on.get("fans", True) else ():
             # No window boost at night for a device that has night settings: it would be loud.
             boost = boost_hours and not (night and fan.quiet)
             cmds += self._device(now, fan.entity_id, states, self._fan(fan, ctx, boost, night))
-        for purifier in room.purifiers:
+        for purifier in room.purifiers if on.get("purifiers", True) else ():
             state = states.get(purifier.entity_id)
             boost = boost_hours and not (night and purifier.quiet)
             cmds += self._keep_on(now, purifier, state)
