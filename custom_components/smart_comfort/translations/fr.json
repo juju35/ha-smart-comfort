@@ -151,7 +151,11 @@
               "fan_mode": "Mode de ventilation",
               "closed_for": "Ouvertures fermées depuis (min)",
               "off_on_open": "Éteindre si ouvert depuis (min)",
+              "min_outdoor": "Température extérieure min.",
               "night_fan_mode": "Ventilation la nuit"
+            },
+            "data_description": {
+              "min_outdoor": "Pas de climatisation tant qu'il fait plus frais que cela dehors : ouvrez plutôt les fenêtres. Vide : toujours."
             }
           },
           "fans": {

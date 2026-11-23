@@ -151,7 +151,11 @@
               "fan_mode": "Mod ventilator",
               "closed_for": "Ferestre și uși închise de (min)",
               "off_on_open": "Oprit când e deschis de (min)",
+              "min_outdoor": "Temperatură exterioară min.",
               "night_fan_mode": "Mod ventilator noaptea"
+            },
+            "data_description": {
+              "min_outdoor": "Fără răcire cât timp afară e mai răcoare decât atât: deschideți ferestrele. Gol: mereu."
             }
           },
           "fans": {

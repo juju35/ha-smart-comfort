@@ -319,6 +319,7 @@ The first six rows (`enabled`, `start` / `end`, `manual_override`, `suppress_whe
 | `climate.cool_above` / `off_below` | 23 / 21 °C | Cool above, turn off below |
 | `climate.setpoint` / `fan_mode` | 22 °C / none | Setpoint and fan mode when cooling |
 | `climate.closed_for` / `off_on_open` | 2 / 1 min | Openings closed for this long before cooling; off when one stays open this long |
+| `climate.min_outdoor` | 18 °C | No cooling while the outdoor temperature is below this (Smart Comfort's own cooling stops 1 °C lower; a device cooled by hand is left alone). Empty: whatever the outdoor temperature; unknown outdoor temperature: cools |
 | `climate.night_fan_mode` | none | Fan mode when cooling at night (e.g. `silent`) |
 | `fans.on_above` / `off_below` | 23 / 22 °C | On above, off below. Leave both empty for fans driven by the windows only |
 | `fans.percentage` / `preset` | 50 % / none | When on |

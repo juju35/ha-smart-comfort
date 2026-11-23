@@ -151,7 +151,11 @@
               "fan_mode": "Režim ventilátora",
               "closed_for": "Okná a dvere zatvorené (min)",
               "off_on_open": "Vypnúť pri otvorení na (min)",
+              "min_outdoor": "Min. vonkajšia teplota",
               "night_fan_mode": "Režim ventilátora v noci"
+            },
+            "data_description": {
+              "min_outdoor": "Bez chladenia, kým je vonku chladnejšie: radšej otvorte okná. Prázdne: vždy."
             }
           },
           "fans": {

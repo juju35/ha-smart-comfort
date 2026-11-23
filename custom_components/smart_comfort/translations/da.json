@@ -151,7 +151,11 @@
               "fan_mode": "Ventilatortilstand",
               "closed_for": "Åbninger lukket i (min)",
               "off_on_open": "Sluk når åben i (min)",
+              "min_outdoor": "Min. udetemperatur",
               "night_fan_mode": "Ventilatortilstand om natten"
+            },
+            "data_description": {
+              "min_outdoor": "Ingen køling, så længe det er køligere udenfor: åbn hellere vinduerne. Tom: altid."
             }
           },
           "fans": {

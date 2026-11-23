@@ -341,6 +341,8 @@ DEFAULT_CONTROL: Final[dict] = {
         CONF_FAN_MODE: None,
         CONF_CLOSED_FOR: 2,
         CONF_OFF_ON_OPEN: 1,
+        # No cooling while it is cooler than this outdoors (opening the windows does it): None, always.
+        CONF_MIN_OUTDOOR: 18.0,
         CONF_NIGHT_FAN_MODE: None,
         CONF_DISPLAY: None,
         CONF_RESET_AT: None,

@@ -49,6 +49,10 @@ class DeviceState:
     off_since: datetime | None = None
 
 
+# How far below min_outdoor it must get outdoors for Smart Comfort's cooling to stop.
+OUTDOOR_HYSTERESIS = 1.0
+
+
 @dataclass
 class RoomContext:
     temperature: float | None
@@ -59,6 +63,8 @@ class RoomContext:
     has_openings: bool
     # The room's polluted air alert is on: its purifiers are boosted.
     polluted: bool = False
+    # Outdoor temperature (None when unknown).
+    outdoor: float | None = None
 
 
 @dataclass
@@ -337,6 +343,12 @@ class Controller:
             target = TARGET_OFF
         elif ctx.any_open:
             return None  # Opening just opened: wait for off_on_open.
+        if target in COOLING and self._cool_outdoors(dev, ctx, current in COOLING):
+            # Cool enough outdoors (autumn, winter…): no cooling. Smart Comfort's own cooling stops,
+            # a device cooled by hand is left alone.
+            if current not in COOLING:
+                return None
+            target = TARGET_OFF
         if target in COOLING:
             # Cooling, with the night fan mode in the night hours.
             target = TARGET_COOL_NIGHT if night and dev.night_fan_mode else TARGET_COOL
@@ -367,6 +379,13 @@ class Controller:
             return state.hvac_mode == "cool" and (not fan_mode or state.fan_mode is None or state.fan_mode == fan_mode)
 
         return target, commands, satisfied
+
+    @staticmethod
+    def _cool_outdoors(dev: ClimateDevice, ctx: RoomContext, cooling: bool) -> bool:
+        """Cooler than min_outdoor outdoors: no cooling (1 °C lower to stop, not to toggle around it)."""
+        if dev.min_outdoor is None or ctx.outdoor is None:
+            return False
+        return ctx.outdoor < dev.min_outdoor - (OUTDOOR_HYSTERESIS if cooling else 0)
 
     # Fan: boost (opening open, in the hours) / on (warm) / off.
 

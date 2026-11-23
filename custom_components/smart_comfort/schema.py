@@ -68,6 +68,7 @@ CLIMATE = {
     vol.Optional(k.CONF_FAN_MODE): OPT_STR,
     vol.Optional(k.CONF_CLOSED_FOR): MINUTES,
     vol.Optional(k.CONF_OFF_ON_OPEN): MINUTES,
+    vol.Optional(k.CONF_MIN_OUTDOOR): vol.Any(None, NUMBER),
     vol.Optional(k.CONF_NIGHT_FAN_MODE): OPT_STR,
     **EQUIPMENT,
 }

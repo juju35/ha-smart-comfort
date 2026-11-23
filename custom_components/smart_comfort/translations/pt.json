@@ -151,7 +151,11 @@
               "fan_mode": "Modo de ventilação",
               "closed_for": "Aberturas fechadas há (min)",
               "off_on_open": "Desligado se aberto há (min)",
+              "min_outdoor": "Temperatura exterior mín.",
               "night_fan_mode": "Modo de ventilação à noite"
+            },
+            "data_description": {
+              "min_outdoor": "Sem arrefecimento enquanto lá fora estiver mais fresco do que isto: abra as janelas. Vazio: sempre."
             }
           },
           "fans": {

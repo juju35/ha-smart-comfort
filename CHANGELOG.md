@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.2.2 - 2026-11-24
+
+### Fixes
+- Air conditioners: no cooling while it is cool outdoors. With the default 23 °C threshold, a warm living room switched the air conditioner on in November with 8 °C outside, and again an hour after each turn-off by hand. New `climate.min_outdoor` option (default 18 °C, from the outdoor temperature sensors): below it Smart Comfort doesn't start cooling, and stops its own cooling once it gets 1 °C cooler still; a device cooled by hand is left alone. Empty it to cool whatever the outdoor temperature, as before.
+
 ## 2.2.1 - 2026-11-23
 
 ### Fixes

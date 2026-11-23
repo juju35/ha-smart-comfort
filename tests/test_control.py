@@ -89,6 +89,34 @@ def test_climate_needs_closed_and_stops_on_open():
     ]
 
 
+def test_climate_not_when_cool_outdoors():
+    s = room_settings(climate="climate.ac")
+    c, room = Controller(s), s.rooms[0]
+    off = {"climate.ac": DeviceState(on=False, hvac_mode="off")}
+    cooling = {"climate.ac": DeviceState(on=True, hvac_mode="cool")}
+
+    def at(temp, outdoor):
+        context = ctx(temp)
+        context.outdoor = outdoor
+        return context
+
+    # 23 °C inside, 8 °C outside (November): no cooling.
+    assert c.evaluate(T0, NOON, room, at(23.5, 8.0), off) == []
+    # Unknown outdoor temperature: cools as before.
+    assert c.evaluate(T0, NOON, room, at(23.5, None), off) != []
+    # Cooled by hand while cool outdoors: left alone.
+    c = Controller(s)
+    assert c.evaluate(T0, NOON, room, at(23.5, 8.0), cooling) == []
+    # Smart Comfort's cooling: held down to 17 °C outdoors (1 °C hysteresis), then off.
+    c = Controller(s)
+    assert c.evaluate(T0, NOON, room, at(23.5, 19.0), off) != []
+    assert c.evaluate(T0, NOON, room, at(23.5, 17.5), cooling) == []
+    assert calls(c.evaluate(T0, NOON, room, at(23.5, 16.5), cooling)) == [("climate.ac", "climate.turn_off", {})]
+    # Emptied: always cools.
+    s = room_settings(climate={"entity_id": "climate.ac", "min_outdoor": None})
+    assert Controller(s).evaluate(T0, NOON, s.rooms[0], at(23.5, 8.0), off) != []
+
+
 def test_climate_heating_left_alone():
     s = room_settings(climate="climate.ac")
     c, room = Controller(s), s.rooms[0]

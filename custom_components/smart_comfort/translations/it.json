@@ -151,7 +151,11 @@
               "fan_mode": "Modalità ventola",
               "closed_for": "Aperture chiuse da (min)",
               "off_on_open": "Spento se aperto da (min)",
+              "min_outdoor": "Temperatura esterna min.",
               "night_fan_mode": "Modalità ventola di notte"
+            },
+            "data_description": {
+              "min_outdoor": "Nessun raffrescamento finché fuori fa più fresco di così: aprire le finestre. Vuoto: sempre."
             }
           },
           "fans": {

@@ -151,7 +151,11 @@
               "fan_mode": "Ventilatora režīms",
               "closed_for": "Atveres aizvērtas (min)",
               "off_on_open": "Izslēgt, ja atvērts (min)",
+              "min_outdoor": "Min. āra temperatūra",
               "night_fan_mode": "Ventilatora režīms naktī"
+            },
+            "data_description": {
+              "min_outdoor": "Bez dzesēšanas, kamēr ārā ir vēsāks: labāk atveriet logus. Tukšs: vienmēr."
             }
           },
           "fans": {

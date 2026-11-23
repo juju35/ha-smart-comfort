@@ -523,6 +523,7 @@ class SmartComfort:
             closed_since=closed_since,
             open_since=open_since,
             has_openings=bool(room.openings),
+            outdoor=self.outdoor(),
         )
         return reading, ctx
 

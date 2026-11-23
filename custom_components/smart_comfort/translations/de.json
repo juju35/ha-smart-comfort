@@ -151,7 +151,11 @@
               "fan_mode": "Lüftermodus",
               "closed_for": "Öffnungen geschlossen seit (min)",
               "off_on_open": "Aus, wenn offen seit (min)",
+              "min_outdoor": "Min. Außentemperatur",
               "night_fan_mode": "Lüftermodus nachts"
+            },
+            "data_description": {
+              "min_outdoor": "Keine Kühlung, solange es draußen kühler ist: lieber die Fenster öffnen. Leer: immer."
             }
           },
           "fans": {
