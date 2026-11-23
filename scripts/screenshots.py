@@ -586,6 +586,8 @@ STATUS = {
     ],
     "notifications_enabled": True,
     "control_enabled": True,
+    # The air conditioners left alone: the device control pill shows "partial".
+    "control_families": {"climate": False, "fans": True, "purifiers": True},
     "lighting_enabled": True,
     "lighting_phase": "day",
     "last_notification": None,

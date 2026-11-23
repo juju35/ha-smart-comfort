@@ -533,3 +533,12 @@ def test_forget_drops_the_target():
     c.forget(["climate.ac"])
     # No longer counted as handling the room, applied again from scratch once controlled.
     assert not c.handled(room, cooling)
+
+
+def test_reset_skips_a_family_left_alone():
+    s = room_settings(purifiers=[{"entity_id": "fan.p", "reset_at": "03:00"}])
+    c = Controller(s)
+    c.targets["fan.p"] = "closed"
+    c.reset_due(datetime(2026, 11, 23, 2, 59))
+    assert c.reset_due(datetime(2026, 11, 23, 3, 1), {"purifiers": False}) == []
+    assert c.targets["fan.p"] == "closed", "untouched: nothing would be applied to it"

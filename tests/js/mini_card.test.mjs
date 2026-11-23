@@ -243,6 +243,19 @@ test("switches: tinted when on, a tap turns them off or on", () => {
   ]);
 });
 
+test("switches: device control partial (amber) while a family is left alone, the families in its title", () => {
+  const switches = { notifications: "on", control: "on", lighting: "off", control_climate: "off", control_fans: "on" };
+  const { card } = make({}, { switches });
+  const all = byClass(card, "switch");
+  assert.equal(all.length, 3, "no button of its own per family");
+  const control = all.find((s) => s.dataset.key === "switch:control");
+  assert.ok(control.classList.contains("part"));
+  assert.equal(control.title, "Devices — partial, left alone: air conditioners");
+  // Every family on: the plain tint.
+  const plain = make({}, { switches: { ...switches, control_climate: "on" } }).card;
+  assert.ok(!byClass(plain, "switch").find((s) => s.dataset.key === "switch:control").classList.contains("part"));
+});
+
 test("rooms option: only those rooms' alerts and tiles, and their activity for one room", () => {
   const { card } = make({ rooms: ["Living room"] }, { alerts: ALERTS });
   assert.deepEqual(text(card, "hsub"), ["Outside 18.5 °C"]);

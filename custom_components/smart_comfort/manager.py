@@ -602,7 +602,7 @@ class SmartComfort:
             handled: set[str] = set()
             lighting = self.lighting_enabled and self.settings.lighting_enabled
             elevation = self.sun_elevation()
-            if reset := self.controller.reset_due(dt_util.as_local(now)):
+            if reset := self.controller.reset_due(dt_util.as_local(now), self.families):
                 _LOGGER.debug("Back to the normal state: %s", ", ".join(reset))
                 for entity_id in reset:
                     self._log(now, RESET, entity_id)
@@ -883,18 +883,28 @@ class SmartComfort:
         if self.families.get(family) == enabled:
             return
         self.families[family] = enabled
-        if not enabled:
-            # Left alone: its targets are dropped (no longer counted as handling an alert), applied again once back.
-            on = dict.fromkeys(FAMILIES, False) | {family: True}
-            for room in self.settings.rooms:
-                devices = room.controlled(on)
-                self.controller.forget(d.entity_id for d in devices)
-                for display in room.displays_of(on):
-                    self.displays.wanted.pop(display, None)
         self.save()
         self._update_listeners()
-        if enabled and not self._stopped:
-            self.hass.async_create_task(self.async_evaluate())  # Applied at once, not at the next interval.
+        if not self._stopped:
+            self.hass.async_create_task(self._family_changed(family, enabled))
+
+    async def _family_changed(self, family: str, enabled: bool) -> None:
+        """A family turned off is forgotten, then the rooms evaluated again at once (not at the next interval).
+
+        Forgotten under the evaluation lock: an evaluation running when the switch is turned off may still
+        send its commands, and the targets they set are dropped after it, not before.
+        """
+        if not enabled:
+            async with self._lock:
+                if not self.families.get(family):  # Not turned back on in the meantime.
+                    # Its targets dropped: no longer counted as handling an alert, applied again once back.
+                    on = dict.fromkeys(FAMILIES, False) | {family: True}
+                    for room in self.settings.rooms:
+                        self.controller.forget(d.entity_id for d in room.controlled(on))
+                        for display in room.displays_of(on):
+                            self.displays.wanted.pop(display, None)
+                    self.save()
+        await self.async_evaluate()  # The alerts no longer handled come back, the family turned on is applied.
 
     @callback
     def set_lighting(self, enabled: bool) -> None:

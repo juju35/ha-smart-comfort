@@ -377,10 +377,6 @@ class Room:
     def napping(self, local: datetime) -> bool:
         return bool(self.naps_on) or any(nap.active(local) for nap in self.naps)
 
-    def equipment(self) -> list[ClimateDevice | FanDevice | PurifierDevice]:
-        """The air conditioner, fans and purifiers of the room."""
-        return ([self.climate] if self.climate else []) + list(self.fans) + list(self.purifiers)
-
     def controlled(self, families: Mapping[str, bool] | None = None) -> list[Device]:
         """The equipment of the families controlled (every family when not given)."""
         on = families or {}

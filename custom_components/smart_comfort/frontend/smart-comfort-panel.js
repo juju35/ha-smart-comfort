@@ -5512,6 +5512,16 @@ class SmartComfortPanel extends HTMLElement {
     this._watchConnection(true);
     // Back on the panel after a failed load: try again now.
     if (this._hass && this._failed) this._reload();
+    // The popovers of the overview (device control, + N OK) close at a click elsewhere.
+    this._closePopovers ??= (ev) => {
+      const path = ev.composedPath();
+      for (const menu of this.shadowRoot?.querySelectorAll?.("details.more[open]") || []) {
+        if (path.includes(menu)) continue;
+        menu.open = false;
+        if (menu.classList.contains("ctl")) this._controlOpen = false;
+      }
+    };
+    this.shadowRoot?.addEventListener?.("click", this._closePopovers, true);
   }
 
   // Home Assistant creates the panel as soon as its file has run and sets narrow, route and hass right away. In the
@@ -5528,6 +5538,8 @@ class SmartComfortPanel extends HTMLElement {
   }
 
   disconnectedCallback() {
+    this.shadowRoot?.removeEventListener?.("click", this._closePopovers, true);
+    this._controlOpen = false;
     this._watchConnection(false);
     this._fold?.detach();
     this._fold = null;

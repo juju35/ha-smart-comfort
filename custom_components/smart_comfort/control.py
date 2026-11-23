@@ -152,18 +152,19 @@ class Controller:
         self.failures.pop(device, None)
         self.retry.pop(device, None)
 
-    def reset_due(self, local: datetime) -> list[str]:
+    def reset_due(self, local: datetime, families: Mapping[str, bool] | None = None) -> list[str]:
         """Devices whose reset time has come since the last check: pause and target forgotten.
 
         The target is then applied again at once (the purifier back to its closed preset or mode…), even
-        after a change by hand. `local`: the local date and time.
+        after a change by hand. `local`: the local date and time. The device families left alone
+        (`families`) are skipped: nothing would be applied to them.
         """
         last, self.last_local = self.last_local, local
         if last is None or local <= last:
             return []
         reset = []
         for room in self.settings.rooms:
-            for device in room.equipment():
+            for device in room.controlled(families):
                 if device.reset_at is None:
                     continue
                 at = local.replace(
