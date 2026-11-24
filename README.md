@@ -565,7 +565,10 @@ logger:
 
 ## Development
 
+The frontend's large files (the panel, the activity card and the mini card) are written as ES modules in `src/<file>/`, assembled at build by `scripts/build-frontend.mjs` into `custom_components/smart_comfort/frontend/` (not committed); the tests, the screenshots and the release build them first. Modules share one scope once assembled, so top-level names stay unique; a new module must be listed in its `index.js`.
+
 ```bash
+npm ci && npm run build          # assembles the panel and the cards from src/ (not committed)
 pip install -r requirements_test.txt && pytest
 ```
 

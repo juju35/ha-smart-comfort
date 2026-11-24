@@ -5,3 +5,7 @@ __pycache__/
 .venv/
 report/
 node_modules/
+# Assembled from src/<stem>/ by scripts/build-frontend.mjs (not committed)
+custom_components/smart_comfort/frontend/smart-comfort-panel.js
+custom_components/smart_comfort/frontend/smart-comfort-activity-card.js
+custom_components/smart_comfort/frontend/smart-comfort-mini-card.js

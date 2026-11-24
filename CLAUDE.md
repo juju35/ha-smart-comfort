@@ -19,6 +19,7 @@
 ## Before opening a PR — run the checks locally
 CI mirrors these; running them first avoids round-trips:
 ```sh
+npm ci && node scripts/build-frontend.mjs   # assembles the frontend files (not committed) the checks below read
 pre-commit run -a
 vulture custom_components .vulture_whitelist.py --min-confidence 60
 npx --yes jscpd@5.4.2 .
@@ -54,6 +55,27 @@ carries the new version, updated together in one commit:
 
 ## Supported integrations
 This is a **standalone integration** (its own integration, with its own card) — it talks to its device/service directly, not on top of other Home Assistant integrations — so it has **no** `## Supported integrations` section (that section is only for cards/integrations that sit on top of others). If it does build on external integrations, add the section (title verbatim).
+
+## Source layout
+- The large hand-written frontend files are split into ES modules: `src/smart-comfort-panel/`,
+  `src/smart-comfort-activity-card/`, `src/smart-comfort-mini-card/` (entry `src/<stem>/index.js`).
+  `scripts/build-frontend.mjs` (`scripts/bundle.mjs`) assembles each into `custom_components/smart_comfort/frontend/<stem>.js`:
+  modules concatenated in the order of the entry file, import lines removed, `export` keywords dropped. The assembled
+  files are **not committed** (`.gitignore`): build them before the tests, the screenshots and `scripts/split-frontend.mjs`.
+  Smaller frontend files (badge, header, icons) stay hand-written in `custom_components/smart_comfort/frontend/`.
+- Modules are cut by role: constants, language, configuration, form, the folded top bar, the panel, one module per
+  tab, the illustrated header, the styles, the registration; for the cards, helpers, card, shared, styles, register.
+  No number in a file name: a new module gets a name that says what it holds.
+- The panel class (`panel.js`) keeps its lifecycle, loading, saving and rendering; each tab's methods live in their own
+  class (`SmartComfortPanelRooms` in `rooms-tab.js`…), copied onto `SmartComfortPanel.prototype` by `register.js`
+  before the element is defined. A new tab method goes in its tab's class; a method used by several tabs stays in
+  `panel.js` (or `form-sections.js` for the form building blocks).
+- The activity card is loaded as an ES module and the mini card imports helpers from it: those keep their `export`,
+  listed in its entry (`export { … } from "./card.js";`). Any other `export` only links the modules and is dropped.
+- Modules share one scope once assembled, so keep top-level names unique across modules; a new module must be listed
+  in its `index.js`.
+- Translations: one file per language in `src/<stem>/i18n/<lang>.js` (`export default { … };`), gathered by
+  `i18n/strings.js` next to them and rebuilt into a single object literal at build for `scripts/i18n-split.mjs`.
 
 ## Translations
 - English is the source. Keep every language in sync when a user-facing string changes.
