@@ -1,5 +1,5 @@
-/* jscpd:ignore-start */
 // ── Card picker: light previews ──────────────────────────────────────────────
+/* jscpd:ignore-start */
 // Home Assistant's card picker builds a live preview of every card registered with `preview: true`, all at once and
 // with no lazy loading. A preview here is drawn only once it scrolls into view: the picker calls getStubConfig() right
 // before it creates the preview, which marks the next instance of that card; once connected under <hui-card-picker>,

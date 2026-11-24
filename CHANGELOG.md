@@ -3,7 +3,7 @@
 ## 2.2.3 - 2026-11-24
 
 ### Maintenance
-- The frontend source is split into ES modules: `src/smart-comfort-panel/`, `src/smart-comfort-activity-card/` and `src/smart-comfort-mini-card/` (entry `src/<stem>/index.js`), cut at their sections, with the translations in one file per language (`i18n/<lang>.js`). `scripts/build-frontend.mjs` assembles them, in their original order, into `custom_components/smart_comfort/frontend/`, no longer committed; the tests, the screenshots and the release build them first. The release zip is unchanged.
+- The frontend source is split into ES modules: `src/smart-comfort-panel/`, `src/smart-comfort-activity-card/` and `src/smart-comfort-mini-card/` (entry `src/<stem>/index.js`), cut by role (the panel's tabs each in their own module: their methods are copied onto the panel class at registration), with the translations in one file per language (`i18n/<lang>.js`). `scripts/build-frontend.mjs` assembles them, in their original order, into `custom_components/smart_comfort/frontend/`, no longer committed; the tests, the screenshots and the release build them first. The release zip is unchanged.
 
 ## 2.2.2 - 2026-11-24
 

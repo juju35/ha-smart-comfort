@@ -1,16 +1,4 @@
-/** The filter of an activity line. A failed command counts as what it was sent to: a light's with the lights. */
-import { ACTIVITY_GROUPS } from "./core.js";
-
-export const activityGroup = (entry) => {
-  if (entry.kind === "failed") {
-    if (String(entry.target || "").startsWith("display_")) return "devices";
-    return String(entry.action || entry.entity_id || "").startsWith("light.") ? "lights" : "devices";
-  }
-  return Object.entries(ACTIVITY_GROUPS).find(([, kinds]) => kinds.has(entry.kind))?.[0];
-};
-// Addresses of the tabs of earlier versions.
-export const OLD_TABS = { notifications: "settings", control: "settings" };
-
+// ── Configuration ──
 export const clone = (value) => (value === undefined ? undefined : JSON.parse(JSON.stringify(value)));
 /** YAML of the options (what goes under `smart_comfort:`), keys in their order. */
 export const YAML_PLAIN = /^[A-Za-z_][\w.\-/ ]*$/;
@@ -115,60 +103,4 @@ export function merged(defaults, values) {
     }
   }
   return out;
-}
-
-export const num = (unit, opts = {}) => ({
-  number: { mode: "box", step: opts.step ?? 0.1, min: opts.min ?? -50, max: opts.max ?? 5000, unit_of_measurement: unit },
-});
-export const minutes = (min = 0) => ({ number: { mode: "box", step: 1, min, max: 1440, unit_of_measurement: "min" } });
-export const percent = { number: { mode: "slider", step: 1, min: 0, max: 100, unit_of_measurement: "%" } };
-export const text = { text: {} };
-export const bool = { boolean: {} };
-export const time = { time: {} };
-export const entity = (domain, extra = {}) => ({ entity: { domain, ...extra } });
-// Every device: its indicator light or display, and a time to go back to its normal state.
-export const EQUIPMENT = [
-  { name: "display", selector: entity(["light", "switch", "number", "select"]) },
-  { name: "reset_at", selector: time },
-];
-export const WEEKDAYS = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
-export const kelvin = { number: { mode: "box", step: 100, min: 1500, max: 10000, unit_of_measurement: "K" } };
-export const level = { number: { mode: "box", step: 1, min: 1, max: 100, unit_of_measurement: "%" } };
-export const MOMENTS = ["day", "evening", "night", "morning", "nap"];
-export const grid = (schema) => ({ type: "grid", name: "", column_min_width: "110px", schema });
-/** Brightness by time of day on one row, then the warmth (its values only when it is on): global, and per light. */
-export const lightingLevels = (warm) => [
-  grid(MOMENTS.map((m) => ({ name: m, selector: level }))),
-  { name: "warmth", selector: bool },
-  ...(warm ? [grid(MOMENTS.map((m) => ({ name: `${m}_kelvin`, selector: kelvin })))] : []),
-];
-export const LEVEL_KEYS = MOMENTS.flatMap((m) => [m, `${m}_kelvin`]);
-/** The field names of a schema, through its grids and expandables. */
-export const schemaKeys = (schema) => schema.flatMap((f) => (f.schema ? schemaKeys(f.schema) : [f.name]));
-/** Instants of a day as minutes, from "HH:MM[:SS]". */
-export const minutesOf = (t) => {
-  if (typeof t !== "string" || !TIME.test(t)) return null;
-  const [h, m] = t.split(":").map(Number);
-  return h * 60 + m;
-};
-
-export let haFormLoading;
-/** ha-form and the entity pickers are lazy-loaded by Home Assistant: load them through a card editor. */
-export function loadHaForm() {
-  if (customElements.get("ha-form")) return Promise.resolve();
-  if (!haFormLoading) {
-    haFormLoading = (async () => {
-      if (window.loadCardHelpers) {
-        const helpers = await window.loadCardHelpers();
-        const card = await helpers.createCardElement({ type: "entities", entities: [] });
-        if (card?.constructor?.getConfigElement) await card.constructor.getConfigElement();
-      }
-      await customElements.whenDefined("ha-form");
-    })().catch((err) => {
-      // Tried again next time rather than failing for good.
-      haFormLoading = null;
-      throw err;
-    });
-  }
-  return haFormLoading;
 }

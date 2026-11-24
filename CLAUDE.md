@@ -63,6 +63,13 @@ This is a **standalone integration** (its own integration, with its own card) �
   modules concatenated in the order of the entry file, import lines removed, `export` keywords dropped. The assembled
   files are **not committed** (`.gitignore`): build them before the tests, the screenshots and `scripts/split-frontend.mjs`.
   Smaller frontend files (badge, header, icons) stay hand-written in `custom_components/smart_comfort/frontend/`.
+- Modules are cut by role: constants, language, configuration, form, the folded top bar, the panel, one module per
+  tab, the illustrated header, the styles, the registration; for the cards, helpers, card, shared, styles, register.
+  No number in a file name: a new module gets a name that says what it holds.
+- The panel class (`panel.js`) keeps its lifecycle, loading, saving and rendering; each tab's methods live in their own
+  class (`SmartComfortPanelRooms` in `rooms-tab.js`…), copied onto `SmartComfortPanel.prototype` by `register.js`
+  before the element is defined. A new tab method goes in its tab's class; a method used by several tabs stays in
+  `panel.js` (or `form-sections.js` for the form building blocks).
 - The activity card is loaded as an ES module and the mini card imports helpers from it: those keep their `export`,
   listed in its entry (`export { … } from "./card.js";`). Any other `export` only links the modules and is dropped.
 - Modules share one scope once assembled, so keep top-level names unique across modules; a new module must be listed
