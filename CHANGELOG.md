@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.2.4 - 2026-11-25
+
+### Fixes
+- Device commands: a light whose `light.turn_on` failed (such as *a coroutine was expected, got None*) was sent the command again at every evaluation, logging the same warning each time. A device whose command fails is now paused for 5 minutes (`FAILURE_PAUSE`): none of its commands are sent until then, its other commands of the same evaluation included, and it is tried again after. The warning says so and names the error type.
+- No command is sent to an unavailable device (or to a purifier whose mode select is unavailable): it is skipped without a log line, and applied as soon as the device is back, without a retry delay.
+- A command with no answer within the 15 s timeout (slow cloud devices, which often apply it anyway) is logged at debug level instead of a warning; the device is paused all the same.
+
 ## 2.2.3 - 2026-11-24
 
 ### Maintenance

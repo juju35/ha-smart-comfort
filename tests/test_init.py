@@ -369,6 +369,71 @@ async def test_failed_command_applied_anyway_follows_manual_changes(hass: HomeAs
     assert len(calls) == sent
 
 
+async def test_no_command_to_an_unavailable_device(hass: HomeAssistant, notify, fan_calls) -> None:
+    _states(hass, sejour=24.0)
+    hass.states.async_set("fan.sejour", "unavailable")
+    entry = await _setup(hass)
+    await _evaluate(hass, entry)
+    assert fan_calls["turn_on"] == []
+    assert "fan.sejour" not in entry.runtime_data.controller.targets
+    # Back: the command goes at once, without a retry delay.
+    hass.states.async_set("fan.sejour", "off", {"percentage": 0})
+    await _evaluate(hass, entry)
+    assert len(fan_calls["turn_on"]) == 1
+
+
+async def test_failed_device_paused(hass: HomeAssistant, notify, fan_calls, freezer, caplog) -> None:
+    from custom_components.smart_comfort.const import FAILURE_PAUSE
+    from custom_components.smart_comfort.control import Command
+
+    calls = []
+
+    async def broken(call) -> None:
+        calls.append(call)
+        raise TypeError("a coroutine was expected, got None")
+
+    hass.services.async_register("light", "turn_on", broken)
+    _states(hass)
+    entry = await _setup(hass)
+    m = entry.runtime_data
+    commands = [
+        Command("light.a", "light", "turn_on", {"brightness_pct": 40}),
+        Command("light.a", "light", "turn_on", {"color_temp_kelvin": 3000}),
+    ]
+    sent = await m._run(commands, dt_util.utcnow())
+    # The second command of the light is not sent after the first one failed.
+    assert [ok for _, ok in sent] == [False]
+    assert len(calls) == 1
+    assert "no command to it for" in caplog.text
+    caplog.clear()
+    # Paused: nothing sent, nothing logged.
+    freezer.tick(timedelta(minutes=FAILURE_PAUSE - 1))
+    assert await m._run(commands[:1], dt_util.utcnow()) == []
+    assert len(calls) == 1
+    assert "failed" not in caplog.text
+    freezer.tick(timedelta(minutes=1))
+    await m._run(commands[:1], dt_util.utcnow())
+    assert len(calls) == 2
+
+
+async def test_timeout_logged_at_debug(hass: HomeAssistant, notify, fan_calls, caplog) -> None:
+    import logging
+
+    from custom_components.smart_comfort.control import Command
+
+    async def slow(call) -> None:
+        raise TimeoutError
+
+    hass.services.async_register("light", "turn_on", slow)
+    _states(hass)
+    entry = await _setup(hass)
+    caplog.set_level(logging.DEBUG, logger="custom_components.smart_comfort")
+    sent = await entry.runtime_data._run([Command("light.a", "light", "turn_on")], dt_util.utcnow())
+    assert [ok for _, ok in sent] == [False]
+    records = [r for r in caplog.records if "light.a" in r.getMessage()]
+    assert records and all(r.levelno == logging.DEBUG for r in records)
+
+
 async def test_removed_outdoor_entity_ends_episodes(hass: HomeAssistant, notify, fan_calls) -> None:
     _states(hass, window="on")
     hass.states.async_set("sensor.out1", "5")

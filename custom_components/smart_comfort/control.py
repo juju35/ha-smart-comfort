@@ -153,6 +153,19 @@ class Controller:
         if cmd.restores is not None:
             self.before_boost.setdefault(device, cmd.restores)
 
+    def command_skipped(self, cmd: Command) -> None:
+        """A command not sent (device unavailable or paused): the target is forgotten, applied again later.
+
+        No retry delay: once the device is back, the next evaluation sends it.
+        """
+        if cmd.target == "keep_on" or cmd.target is None:
+            return
+        device = cmd.device or cmd.entity_id
+        if self.targets.get(device) == cmd.target:
+            self.targets.pop(device, None)
+        if cmd.restores is not None:
+            self.before_boost.setdefault(device, cmd.restores)
+
     def command_succeeded(self, device: str) -> None:
         """Every command of the device was sent: failures in a row start over."""
         self.failures.pop(device, None)
