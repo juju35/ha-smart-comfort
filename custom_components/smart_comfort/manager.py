@@ -31,6 +31,7 @@ from .const import (
     EVALUATE_INTERVAL,
     EVENT_CONTROL,
     EVENT_NOTIFIED,
+    FAILURE_PAUSE,
     FAMILIES,
     KIND_POLLUTED,
     NOTIFY_TIMEOUT,
@@ -211,6 +212,8 @@ class SmartComfort:
         self._deliveries = 0
         self._contexts: deque[str] = deque(maxlen=200)
         self._commanded: dict[str, datetime] = {}
+        # Device (or entity) whose command failed -> end of its pause: no command to it until then.
+        self._paused: dict[str, datetime] = {}
         self._stopped = False
         # Hash of the state last handed to the Store: an evaluation that changed nothing writes nothing.
         self._saved: int | None = None
@@ -633,7 +636,9 @@ class SmartComfort:
                 readings[room.id].handled = room.id in handled
             self.handled = handled
             sent = await self._run(commands, now)
-            failed = {c.device for c, ok in sent if not ok}
+            # A device fails when one of its commands failed or was not sent (unavailable, paused).
+            ok = {id(c) for c, done in sent if done}
+            failed = {c.device for c in commands if id(c) not in ok}
             if sent:
                 async_dispatcher_send(self.hass, SIGNAL_ACTIVITY, self.activity.commands(now, sent))
             for device in {c.device for c in commands if c.device} - failed:
@@ -651,16 +656,27 @@ class SmartComfort:
         """Run the commands, in their order: the lights first, then the other devices.
 
         The commands of different devices run at the same time, so a slow device doesn't hold the
-        others; those of one device stay in order (turn on, then set its speed).
+        others; those of one device stay in order (turn on, then set its speed). The commands of an
+        unavailable device, or of one paused after a failure, are not sent (nor returned).
         """
+        self._paused = {k: until for k, until in self._paused.items() if until > now}
         groups: dict[str, list[Command]] = {}
         for cmd in commands:
+            if (reason := self._held(cmd)) is not None:
+                _LOGGER.debug("%s.%s on %s not sent: %s", cmd.domain, cmd.service, cmd.entity_id, reason)
+                self._forget(cmd)
+                continue
             groups.setdefault(cmd.device or cmd.entity_id, []).append(cmd)
         done: dict[int, bool] = {}
 
         async def run(group: list[Command]) -> None:
-            for cmd in group:
+            for i, cmd in enumerate(group):
                 done[id(cmd)] = await self._command(cmd, now)
+                if not done[id(cmd)]:
+                    # The device is paused: the rest of its commands are not sent either.
+                    for rest in group[i + 1 :]:
+                        self._forget(rest)
+                    return
 
         lights: list[list[Command]] = []
         others: list[list[Command]] = []
@@ -669,7 +685,28 @@ class SmartComfort:
         for batch in (lights, others):
             # Eager: a command answered at once doesn't wait for the event loop.
             await asyncio.gather(*(create_eager_task(run(g)) for g in batch))
-        return [(cmd, done[id(cmd)]) for cmd in commands]
+        return [(cmd, done[id(cmd)]) for cmd in commands if id(cmd) in done]
+
+    def _held(self, cmd: Command) -> str | None:
+        """Why the command can't be sent now (None: it can)."""
+        for entity_id in dict.fromkeys((cmd.device, cmd.entity_id)):
+            if entity_id is None:
+                continue
+            if entity_id in self._paused:
+                return "paused after a failure"
+            if (state := self.hass.states.get(entity_id)) is not None and state.state == STATE_UNAVAILABLE:
+                return f"{entity_id} unavailable"
+        return None
+
+    def _forget(self, cmd: Command, failed_at: datetime | None = None) -> None:
+        """A command not applied (`failed_at`: failed, else not sent): what was wanted is sent again later."""
+        if failed_at is None:
+            self.controller.command_skipped(cmd)
+        else:
+            self.controller.command_failed(cmd, failed_at)
+        if cmd.domain == "light":
+            self.lights.targets.pop(cmd.entity_id, None)
+        self.displays.wanted.pop(cmd.entity_id, None)
 
     async def _command(self, cmd: Command, now: datetime) -> bool:
         context = Context()
@@ -682,12 +719,22 @@ class SmartComfort:
         try:
             async with asyncio.timeout(SERVICE_TIMEOUT):
                 await self.hass.services.async_call(cmd.domain, cmd.service, data, blocking=True, context=context)
+        except TimeoutError:
+            # Slow cloud devices often answer late (and apply the command anyway): not worth a warning.
+            _LOGGER.debug("%s.%s on %s: no answer within %s s", cmd.domain, cmd.service, cmd.entity_id, SERVICE_TIMEOUT)
+            self._failed(cmd, now)
+            return False
         except Exception as err:  # noqa: BLE001 - one failing device doesn't stop the others
-            _LOGGER.warning("%s.%s on %s failed: %s", cmd.domain, cmd.service, cmd.entity_id, err)
-            self.controller.command_failed(cmd, now)
-            if cmd.domain == "light":
-                self.lights.targets.pop(cmd.entity_id, None)  # Sent again at the next evaluation.
-            self.displays.wanted.pop(cmd.entity_id, None)
+            _LOGGER.warning(
+                "%s.%s on %s failed, no command to it for %s min: %s: %s",
+                cmd.domain,
+                cmd.service,
+                cmd.entity_id,
+                FAILURE_PAUSE,
+                type(err).__name__,
+                err,
+            )
+            self._failed(cmd, now)
             return False
         self.hass.bus.async_fire(
             EVENT_CONTROL,
@@ -700,6 +747,12 @@ class SmartComfort:
             context=context,
         )
         return True
+
+    def _failed(self, cmd: Command, now: datetime) -> None:
+        """A failed command: the device is paused (its next commands are not sent), then tried again."""
+        until = now + timedelta(minutes=FAILURE_PAUSE)
+        self._paused[cmd.device or cmd.entity_id] = until
+        self._forget(cmd, now)
 
     @callback
     def _log(self, now: datetime, kind: str, entity_id: str | None = None, **extra: Any) -> None:
