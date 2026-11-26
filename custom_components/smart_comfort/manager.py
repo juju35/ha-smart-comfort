@@ -58,6 +58,10 @@ from .moisture import absolute_humidity, dew_point, surface_temperature
 _LOGGER = logging.getLogger(__name__)
 
 BAD_STATES = (STATE_UNAVAILABLE, STATE_UNKNOWN, None, "")
+# Attributes of a device a change of which by someone else is a manual change; with hvac_action (a stove heating or
+# not), those a change of which is worth evaluating again.
+MANUAL_KEYS = ("preset_mode", "percentage", "hvac_mode", "temperature", "fan_mode", "mode", "humidity")
+DEVICE_KEYS = (*MANUAL_KEYS, "hvac_action")
 # A device change right after a command of ours is its answer, not a manual change (polled integrations).
 COMMAND_GRACE = timedelta(seconds=90)
 INTERRUPTION = {SEVERITY_INFO: "passive", SEVERITY_WARNING: "time-sensitive", SEVERITY_CRITICAL: "critical"}
@@ -350,7 +354,17 @@ class SmartComfort:
     def _state_changed(self, event: Event) -> None:
         entity_id: str = event.data["entity_id"]
         if any(entity_id in r.devices for r in self.settings.rooms):
-            self._device_changed(entity_id, event.data.get("old_state"), event.data.get("new_state"))
+            old, new = event.data.get("old_state"), event.data.get("new_state")
+            self._device_changed(entity_id, old, new)
+            if (
+                old is not None
+                and new is not None
+                and old.state == new.state
+                and all(old.attributes.get(key) == new.attributes.get(key) for key in DEVICE_KEYS)
+            ):
+                # Only what the device measures changed (a thermostat's current temperature, a dehumidifier's
+                # humidity): nothing to evaluate again.
+                return
         if entity_id.startswith("light.") and self._light_changed(
             entity_id, event.data.get("old_state"), event.data.get("new_state")
         ):
@@ -380,8 +394,7 @@ class SmartComfort:
             return
         if (sent := self._commanded.get(entity_id)) is not None and now - sent < COMMAND_GRACE:
             return
-        keys = ("preset_mode", "percentage", "hvac_mode", "temperature", "fan_mode", "mode", "humidity")
-        changed = old.state != new.state or any(old.attributes.get(k) != new.attributes.get(k) for k in keys)
+        changed = old.state != new.state or any(old.attributes.get(k) != new.attributes.get(k) for k in MANUAL_KEYS)
         if changed and entity_id in self.controller.targets:
             _LOGGER.debug("Manual change of %s, control paused", entity_id)
             self.controller.manual_change(entity_id, now)
@@ -711,8 +724,13 @@ class SmartComfort:
                     self._log(now, RESET, entity_id)
             # The alerts first: the purifiers of a room whose air is polluted are boosted in the same evaluation.
             contexts: dict[str, RoomContext] = {}
+            states_by_room: dict[str, dict[str, DeviceState]] = {}
             for room in self.settings.rooms:
                 readings[room.id], contexts[room.id] = self.reading(room, now)
+                states_by_room[room.id] = self.device_states(room)
+                if room.heating and self.control_enabled and self.families.get("heating", True):
+                    setpoints = self.controller.heater_setpoints(room, states_by_room[room.id])
+                    readings[room.id].heat_setpoint = max(setpoints, default=None)
             self.engine.evaluate(now, readings, self.outdoor())
             away = self.settings.presence is not None and not present(self.hass.states.get(self.settings.presence))
             stove = self.stove_heating()
@@ -736,7 +754,7 @@ class SmartComfort:
                     ]
                     ctx.airing_since = min(damp, default=None)
                 ctx.away, ctx.stove_heating, ctx.local = away, stove, dt_util.as_local(now)
-                states = self.device_states(room)
+                states = states_by_room[room.id]
                 if self.control_enabled:
                     commands += self.controller.evaluate(now, local, room, ctx, states, self.families)
                     if room.displays:

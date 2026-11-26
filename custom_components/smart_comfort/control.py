@@ -61,7 +61,7 @@ TARGET_OFF_NIGHT = "off_night"
 COOLING = frozenset({TARGET_COOL, TARGET_COOL_NIGHT})
 BLOWING = frozenset({TARGET_ON, TARGET_ON_NIGHT, TARGET_BOOST})
 BOOSTING = frozenset({TARGET_BOOST, TARGET_PURIFY})
-DRYING = frozenset({TARGET_DRY, TARGET_DRY_NIGHT, TARGET_BOOST})
+DRYING = frozenset({TARGET_DRY, TARGET_DRY_NIGHT, TARGET_SHOWER})
 # Heaters: "heat:<mode>:<setpoint>", or "heat:off". Modes: comfort, eco, away, frost, and frost_open (an opening open).
 HEAT_PREFIX = "heat:"
 HEAT_OFF = "heat:off"
@@ -364,7 +364,7 @@ class Controller:
                     continue
                 decision = self._climate(dev, replace(calm, temperature=dev.off_below), now)
             elif isinstance(dev, FanDevice):
-                if driven not in (TARGET_ON, TARGET_ON_NIGHT, TARGET_BOOST):
+                if driven not in (TARGET_ON, TARGET_ON_NIGHT, TARGET_BOOST, TARGET_SHOWER):
                     continue
                 # Off: below off_below with a temperature control, else as the end of its boost (on only
                 # with a temperature control, so a fan without one was boosted, read so by _fan).
@@ -858,16 +858,16 @@ class Controller:
                 return None  # Opening just opened: wait for off_on_open.
             target: str | None = TARGET_OFF_OPEN
         elif shower and not (night and dev.quiet):
-            target = TARGET_BOOST
+            target = TARGET_SHOWER
         elif hum is None and not ctx.damp:
             return None
         elif ctx.damp or (hum is not None and hum >= dev.on_above):
             target = TARGET_DRY
         elif hum is not None and hum <= dev.off_below:
             target = TARGET_OFF
-        elif current in (TARGET_BOOST, TARGET_OFF_OPEN):
-            # Boost or airing over, still between the thresholds: drying again after a boost, else off.
-            target = TARGET_DRY if current == TARGET_BOOST else TARGET_OFF
+        elif current in (TARGET_SHOWER, TARGET_OFF_OPEN):
+            # Shower boost or airing over, still between the thresholds: drying again after a boost, else off.
+            target = TARGET_DRY if current == TARGET_SHOWER else TARGET_OFF
         else:
             target = current  # In the hysteresis band: the previous target holds.
         if target in (TARGET_DRY, TARGET_DRY_NIGHT, TARGET_OFF_NIGHT) and night and dev.quiet:
@@ -892,7 +892,7 @@ class Controller:
         mode = {
             TARGET_DRY: dev.mode,
             TARGET_DRY_NIGHT: dev.night_mode or dev.mode,
-            TARGET_BOOST: dev.boost_mode or dev.mode,
+            TARGET_SHOWER: dev.boost_mode or dev.mode,
         }
         wanted_mode = mode.get(target) if domain == "humidifier" else None
         wanted_humidity = dev.target_humidity if domain == "humidifier" and target in DRYING else None

@@ -91,6 +91,8 @@ SOURCES: dict[str, tuple[str, ...]] = {
     KIND_BAD_AIR_OUTSIDE: ("outdoor_air",),
 }
 GLOBAL_SOURCES = frozenset({"outdoor", "outdoor_noise", "outdoor_air", "outdoor_humidity"})
+# How far below the setpoint of its heating a room is too cold.
+HEATED_MARGIN = 1.0
 # Kinds whose value gets worse when it goes down.
 DOWNWARD_KINDS = frozenset({KIND_TOO_COLD, KIND_WINDOW_OPEN_COLD, KIND_CONDENSATION, KIND_PELLETS_LOW})
 
@@ -120,6 +122,8 @@ class RoomReading:
     dew_point: float | None = None
     # How much less water (g/m³) the outdoor air holds than the room's (positive: airing dries).
     drier: float | None = None
+    # The setpoint the room is heated to on Smart Comfort's command (its heaters'), None when it isn't.
+    heat_setpoint: float | None = None
     # A dehumidifier's tank is full; the heating doesn't warm the room (its setpoint); the lowest pellet level (%).
     tank_full: bool | None = None
     heating_fault: float | None = None
@@ -182,7 +186,12 @@ def check(kind: str, s: AlertSettings, r: RoomReading, outdoor: float | None, ac
     if kind == KIND_TOO_HOT:
         return Check(_above(r.temperature, s.threshold, h), r.temperature, {"threshold": s.threshold})
     if kind == KIND_TOO_COLD:
-        return Check(_below(r.temperature, s.threshold, h), r.temperature, {"threshold": s.threshold})
+        # Heated by Smart Comfort to a lower setpoint (eco at night, away, frost protection): too cold only a degree
+        # below it, so that the eco night is no alert.
+        threshold = s.threshold
+        if threshold is not None and r.heat_setpoint is not None:
+            threshold = min(threshold, r.heat_setpoint - HEATED_MARGIN)
+        return Check(_below(r.temperature, threshold, h), r.temperature, {"threshold": threshold})
     if kind == KIND_CO2:
         return Check(_above(r.co2, s.threshold, h), r.co2, {"threshold": s.threshold})
     if kind == KIND_POLLUTED:

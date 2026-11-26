@@ -369,3 +369,27 @@ def test_pilot_wire_away_and_frost_fall_back_to_a_preset():
     assert (
         build_settings({"rooms": [{"name": "R", "heating": ["climate.r"]}]}).rooms[0].heating[0].preset("away") is None
     )
+
+
+def test_eco_night_is_not_too_cold():
+    s = settings(heating=["climate.r"]).rooms[0].alerts["too_cold"]
+    night = RoomReading(temperature=16.6, heat_setpoint=17.0)
+    assert check("too_cold", s, night, 5.0, False).state is False
+    assert check("too_cold", s, replace(night, temperature=15.9), 5.0, False).details == {"threshold": 16.0}
+    # Heated to comfort: the alert's own threshold.
+    assert check("too_cold", s, RoomReading(temperature=16.9, heat_setpoint=20.0), 5.0, False).state is True
+
+
+def test_dehumidifier_shower_target():
+    s = settings(dehumidifiers=["switch.plug"], fans=[{"entity_id": "fan.vmc", "shower_percentage": 80}])
+    c, room = Controller(s), s.rooms[0]
+    states = {"switch.plug": DeviceState(on=False), "fan.vmc": DeviceState(on=False)}
+    c.evaluate(T0, NOON, room, ctx(humidity=50), states)
+    c.evaluate(T0 + timedelta(minutes=3), NOON, room, ctx(humidity=62), states)
+    assert c.targets == {"switch.plug": "shower", "fan.vmc": "shower"}
+    # The fans family turned off: the extractor boosted for the shower goes back to rest too.
+    assert calls(c.rest(T0, room, "fans", {"fan.vmc": DeviceState(on=True, percentage=80)}))[-1] == (
+        "fan.vmc",
+        "fan.turn_off",
+        {},
+    )
