@@ -1467,3 +1467,26 @@ async def test_unchanged_status_not_sent_again(hass: HomeAssistant, hass_ws_clie
     await _evaluate(hass, entry)
     event = (await client.receive_json())["event"]
     assert next(r for r in event["status"]["rooms"] if r["room_id"] == "sejour")["temperature"] == 27.5
+
+
+async def test_heating_setpoints_in_fahrenheit(hass: HomeAssistant, notify) -> None:
+    """A °F system: setpoints sent in °F, the device's read back in °C, not sent again once applied."""
+    from homeassistant.util.unit_system import US_CUSTOMARY_SYSTEM
+
+    hass.config.units = US_CUSTOMARY_SYSTEM
+    hass.states.async_set("sensor.t", "62.6", {"unit_of_measurement": "°F"})  # 17 °C
+    hass.states.async_set("climate.r", "heat", {"hvac_modes": ["off", "heat"], "temperature": 60})
+    calls = async_mock_service(hass, "climate", "set_temperature")
+    entry = await _setup(
+        hass,
+        {
+            "startup_grace": 0,
+            "rooms": [{"name": "Bureau", "temperature": "sensor.t", "heating": ["climate.r"]}],
+        },
+    )
+    await _evaluate(hass, entry)
+    assert calls[-1].data == {"entity_id": "climate.r", "temperature": 68}  # 20 °C
+    hass.states.async_set("climate.r", "heat", {"hvac_modes": ["off", "heat"], "temperature": 68})
+    await _evaluate(hass, entry)
+    await _evaluate(hass, entry)
+    assert len(calls) == 1

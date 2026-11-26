@@ -70,6 +70,8 @@ MODE_ECO = "eco"
 MODE_AWAY = "away"
 MODE_FROST = "frost"
 MODE_FROST_OPEN = "frost_open"
+# A setpoint read back this close to the one sent is the same (a °F system rounds to whole degrees: 0.28 °C apart).
+SETPOINT_TOLERANCE = 0.3
 # How far below max_outdoor it must get outdoors for the heating to resume.
 SEASON_HYSTERESIS = 1.0
 # The room counts as warm this close to its setpoint (the warm-up rate is measured below it).
@@ -1018,7 +1020,7 @@ class Controller:
                 return False
             if preset:
                 return state.preset == preset
-            return state.setpoint is not None and abs(state.setpoint - setpoint) < 0.05
+            return state.setpoint is not None and abs(state.setpoint - setpoint) < SETPOINT_TOLERANCE
 
         return target, commands, satisfied
 

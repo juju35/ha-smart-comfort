@@ -667,7 +667,7 @@ class SmartComfort:
                 off_since=state.last_changed if not on else None,
                 mode=state.attributes.get("mode") if is_humidifier else None,
                 target_humidity=_number(state.attributes.get("humidity")) if is_humidifier else None,
-                setpoint=_number(state.attributes.get("temperature")) if is_climate else None,
+                setpoint=self._to_celsius(_number(state.attributes.get("temperature"))) if is_climate else None,
             )
         return out
 
@@ -843,6 +843,20 @@ class SmartComfort:
             self.lights.targets.pop(cmd.entity_id, None)
         self.displays.wanted.pop(cmd.entity_id, None)
 
+    def _to_celsius(self, value: float | None) -> float | None:
+        """A climate temperature attribute, in Home Assistant's unit, in °C (the controller works in °C)."""
+        unit = self.hass.config.units.temperature_unit
+        if value is None or unit == UnitOfTemperature.CELSIUS:
+            return value
+        return round(TemperatureConverter.convert(value, unit, UnitOfTemperature.CELSIUS), 1)
+
+    def _from_celsius(self, value: float) -> float:
+        """A setpoint in °C, in Home Assistant's unit (what climate.set_temperature takes): whole °F."""
+        unit = self.hass.config.units.temperature_unit
+        if unit == UnitOfTemperature.CELSIUS:
+            return value
+        return round(TemperatureConverter.convert(value, UnitOfTemperature.CELSIUS, unit))
+
     async def _command(self, cmd: Command, now: datetime) -> bool:
         context = Context()
         self._contexts.append(context.id)
@@ -851,6 +865,8 @@ class SmartComfort:
             # A purifier answers its mode select on its fan entity, in a context of its own.
             self._commanded[cmd.device] = now
         data = {"entity_id": cmd.entity_id, **cmd.data}
+        if cmd.domain == "climate" and cmd.service == "set_temperature" and "temperature" in data:
+            data["temperature"] = self._from_celsius(data["temperature"])
         try:
             async with asyncio.timeout(SERVICE_TIMEOUT):
                 await self.hass.services.async_call(cmd.domain, cmd.service, data, blocking=True, context=context)
