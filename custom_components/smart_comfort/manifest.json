@@ -2,6 +2,7 @@
   "domain": "smart_comfort",
   "name": "Smart Comfort",
   "after_dependencies": ["frontend", "http", "lovelace", "mobile_app", "notify", "websocket_api"],
+  "categories": ["climate"],
   "codeowners": ["@juju35"],
   "config_flow": true,
   "documentation": "https://github.com/juju35/ha-smart-comfort",
