@@ -222,7 +222,7 @@ export class SmartComfortPanelOverview {
           const name = state?.attributes?.friendly_name || entityId;
           line.append(this._el("span", "device-name", name));
           const info = [state ? this._hass.formatEntityState?.(state) ?? state.state : "–"];
-          if (d.target) info.push(`${this._t("target")} ${d.target}`);
+          if (d.target) info.push(`${this._t("target")} ${this._targetLabel(d.target) ?? d.target}`);
           if (d.override_until) info.push(`${this._t("manual")} ${this._time(d.override_until)}`);
           line.append(this._el("span", "device-state", info.join(" · ")));
           list.append(line);

@@ -109,7 +109,8 @@ export class SmartComfortPanelActivity {
     const data = entry.data || {};
     const pct = data.brightness_pct ?? data.value;
     const target = (t) => {
-      if (this._t(`a_t_${t}`) !== `a_t_${t}`) return this._t(`a_t_${t}`);
+      const label = this._targetLabel(t);
+      if (label !== null) return label;
       if (t === "presence") return this._t("a_presence_on");
       if (t === "display_off" || t === "display_on") return this._t(`a_${t}`);
       return `${this._t("a_lighting")} · ${t}`;
@@ -118,7 +119,11 @@ export class SmartComfortPanelActivity {
     let text;
     if (entry.kind === "device") {
       text = target(entry.target);
-      icon = { climate: "mdi:air-conditioner", fan: "mdi:fan" }[String(entry.entity_id).split(".")[0]] || icon;
+      icon = String(entry.target || "").startsWith("heat:")
+        ? "mdi:radiator"
+        : ["dry", "dry_night", "off_night", "shower"].includes(entry.target)
+          ? "mdi:air-humidifier"
+          : { climate: "mdi:air-conditioner", fan: "mdi:fan", humidifier: "mdi:air-humidifier" }[String(entry.entity_id).split(".")[0]] || icon;
       const setting = data.preset_mode ?? data.option ?? data.fan_mode;
       if (setting) text += ` · ${setting}`;
     } else if (entry.kind === "lighting" || entry.kind === "presence_on") {

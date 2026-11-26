@@ -164,6 +164,15 @@ export class SmartComfortPanel extends HTMLElement {
     return (section && r[`${base}.sections.${section}.data_description.${name}`]) || r[`${base}.data_description.${name}`];
   }
 
+  /** A device target in words: "heat:eco:17" -> "Heating: eco · 17 °C", "dry" -> "Drying"; null when unknown. */
+  _targetLabel(target) {
+    const [prefix, mode, setpoint] = String(target || "").split(":");
+    const key = prefix === "heat" && mode ? `a_t_heat_${mode}` : `a_t_${target}`;
+    const text = this._t(key);
+    if (text === key) return null;
+    return prefix === "heat" && setpoint ? `${text} · ${setpoint} °C` : text;
+  }
+
   _kindName(kind) {
     return this._selector?.[`component.${DOMAIN}.selector.kind.options.${kind}`] || kind;
   }

@@ -10,7 +10,7 @@
  * room: Séjour              # optional: only this room
  */
 import { el, intlLocale, stringsFor, translate } from "./helpers.js";
-import { DEVICE_ICONS, GROUPS, ICONS, KIND_OPTIONS, entryKey, groupOf, matches } from "./entries.js";
+import { DEVICE_ICONS, DRY_TARGETS, GROUPS, HEAT_ICON, ICONS, KIND_OPTIONS, entryKey, groupOf, matches, targetParts } from "./entries.js";
 import { comfortMood, comfortScene, findEntities, fitPill, statusPill } from "./shared.js";
 import { STYLE } from "./styles.js";
 import { STRINGS } from "./i18n/strings.js";
@@ -157,8 +157,12 @@ export class SmartComfortActivityCard extends HTMLElement {
     let icon = ICONS[entry.kind] || "mdi:information-outline";
     switch (entry.kind) {
       case "device":
-        text = this._t(`t_${entry.target}`);
-        icon = DEVICE_ICONS[(entry.entity_id || "").split(".")[0]] || icon;
+        text = this._target(entry.target);
+        icon = String(entry.target || "").startsWith("heat:")
+          ? HEAT_ICON
+          : DRY_TARGETS.has(entry.target)
+            ? DEVICE_ICONS.humidifier
+            : DEVICE_ICONS[(entry.entity_id || "").split(".")[0]] || icon;
         if (data.preset_mode) text += ` · ${data.preset_mode}`;
         else if (data.option) text += ` · ${data.option}`;
         else if (data.fan_mode) text += ` · ${data.fan_mode}`;
@@ -187,7 +191,8 @@ export class SmartComfortActivityCard extends HTMLElement {
 
   /** The target of a command: a device's, a presence light's, an indicator's or the brightness of a light. */
   _target(target) {
-    if (`t_${target}` in STRINGS.en) return this._t(`t_${target}`);
+    const [key, setpoint] = targetParts(target);
+    if (`t_${key}` in STRINGS.en) return this._t(`t_${key}`) + (setpoint ? ` · ${setpoint} °C` : "");
     if (target === "presence") return this._t("presence_on");
     if (target === "display_off" || target === "display_on") return this._t(target);
     return `${this._t("lighting")} · ${target}`;
