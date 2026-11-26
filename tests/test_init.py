@@ -1391,3 +1391,44 @@ async def test_dehumidifier_and_heating_in_home_assistant(hass: HomeAssistant, n
     status = hass.states.get("switch.smart_comfort_dehumidifier_control")
     assert status is not None and status.state == "on"
     assert hass.states.get("switch.smart_comfort_heating_control").state == "on"
+
+
+async def test_airing_wait_counts_from_the_damp_episode(hass: HomeAssistant, notify) -> None:
+    """Closing the windows after airing starts the suggestion again, not the dehumidifier's wait."""
+    hass.states.async_set("sensor.out", "8")
+    hass.states.async_set("sensor.out_h", "60")
+    hass.states.async_set("sensor.t", "18")
+    hass.states.async_set("sensor.h", "80")
+    hass.states.async_set("binary_sensor.w", "off")
+    hass.states.async_set("switch.dry", "off")
+    options = {
+        "notify": ["notify.phone"],
+        "outdoor_temperature": ["sensor.out"],
+        "outdoor_humidity": ["sensor.out_h"],
+        "startup_grace": 0,
+        "alerts": {"humidity_high": {"delay": 0}},
+        "rooms": [
+            {
+                "name": "Cave",
+                "temperature": "sensor.t",
+                "humidity": "sensor.h",
+                "openings": ["binary_sensor.w"],
+                "dehumidifiers": ["switch.dry"],
+            }
+        ],
+    }
+    entry = await _setup(hass, options)
+    # Mocked once set up: the integration's own switches load the real switch actions.
+    switch = {s: async_mock_service(hass, "switch", s) for s in ("turn_on", "turn_off")}
+    m = entry.runtime_data
+    await _evaluate(hass, entry)
+    assert not switch["turn_on"]  # Airing would dry the room: the dehumidifier waits.
+    damp = m.engine.episodes["cave|humidity_high"]
+    # 40 min later the windows were opened and closed again: the suggestion starts over, the wait is over all the same.
+    damp.since -= timedelta(minutes=40)
+    m.engine.episodes.pop("cave|air_to_dry")
+    await _evaluate(hass, entry)
+    assert switch["turn_on"][0].data == {"entity_id": "switch.dry"}
+    # The sensors read once per evaluation: the room's comfort and score from the same reading.
+    assert m.readings["cave"].humidity == 80
+    assert hass.states.get("sensor.smart_comfort_cave_comfort").attributes["humidity"] == 80

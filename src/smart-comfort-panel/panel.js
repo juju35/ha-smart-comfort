@@ -537,8 +537,9 @@ export class SmartComfortPanel extends HTMLElement {
     const rooms = (s.rooms || []).filter((r) => !r.is_annex);
     const alerts = (s.alerts || []).filter((a) => !annex.has(a.room));
     const points = alerts.length;
-    // Short of an alert: below the heating setpoint, humidity out of range (score_penalty of each room).
-    const gaps = rooms.reduce((sum, r) => sum + (Number(r.score_penalty) || 0), 0);
+    // Short of an alert (below the heating setpoint, humidity out of range): the mean of the rooms' score_penalty, so
+    // a whole home of dry winter air takes a few points off, not a few per room.
+    const gaps = rooms.length ? Math.round(rooms.reduce((sum, r) => sum + (Number(r.score_penalty) || 0), 0) / rooms.length) : 0;
     const penalty = gaps + alerts.reduce((sum, a) => sum + (SCORE_PENALTY[a.severity] ?? SCORE_PENALTY.info), 0);
     const score = Math.max(0, 100 - penalty);
     const tone = !points ? "good" : alerts.some((a) => a.severity === "critical") ? "bad" : "warn";
