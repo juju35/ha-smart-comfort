@@ -347,7 +347,9 @@ class DehumidifierDevice:
 
 
 # A mode without its own preset, on a radiator driven by presets: the presets tried instead, in order.
-PRESET_FALLBACK: dict[str, tuple[str, ...]] = {"away": ("eco", "frost"), "frost": ("eco",), "eco": ("frost",)}
+# Eco falls back on comfort (warmer), never on frost protection: a radiator without an eco preset is not left at 7 °C
+# for every eco slot of its schedule.
+PRESET_FALLBACK: dict[str, tuple[str, ...]] = {"away": ("eco", "frost"), "frost": ("eco",), "eco": ("comfort",)}
 
 
 @dataclass(frozen=True)

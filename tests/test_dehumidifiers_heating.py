@@ -393,3 +393,13 @@ def test_dehumidifier_shower_target():
         "fan.turn_off",
         {},
     )
+
+
+def test_eco_falls_back_on_comfort_not_frost():
+    dev = (
+        settings(heating=[{"entity_id": "climate.fp", "comfort_preset": "comfort", "frost_preset": "frost"}])
+        .rooms[0]
+        .heating[0]
+    )
+    assert dev.preset("eco") == "comfort"
+    assert dev.preset("away") == "frost"
