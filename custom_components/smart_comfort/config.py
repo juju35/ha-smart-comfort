@@ -10,6 +10,7 @@ import unicodedata
 from collections.abc import Callable, Mapping
 from dataclasses import dataclass, field
 from datetime import datetime, time
+from functools import cached_property
 from typing import Any
 
 from .const import (
@@ -345,6 +346,10 @@ class DehumidifierDevice:
         return self.night_off or bool(self.night_mode)
 
 
+# A mode without its own preset, on a radiator driven by presets: the presets tried instead, in order.
+PRESET_FALLBACK: dict[str, tuple[str, ...]] = {"away": ("eco", "frost"), "frost": ("eco",), "eco": ("frost",)}
+
+
 @dataclass(frozen=True)
 class HeatingDevice:
     """A heater (climate entity): thermostat, pilot wire radiator or pellet stove, by mode."""
@@ -382,8 +387,21 @@ class HeatingDevice:
     def setpoint(self, mode: str) -> float:
         return float(getattr(self, mode))
 
+    @property
+    def by_preset(self) -> bool:
+        """Driven by its presets (pilot wire): it may have no setpoint at all."""
+        return any((self.comfort_preset, self.eco_preset, self.frost_preset, self.away_preset))
+
     def preset(self, mode: str) -> str | None:
-        return getattr(self, f"{mode}_preset", None)
+        """The preset of a mode; for a radiator driven by presets, the nearest lower one when that mode has none
+        (away, frost protection: eco), so that it never gets a setpoint it may not take."""
+        own = getattr(self, f"{mode}_preset", None)
+        if own or not self.by_preset:
+            return own
+        for fallback in PRESET_FALLBACK.get(mode, ()):
+            if found := getattr(self, f"{fallback}_preset", None):
+                return found
+        return None
 
     @property
     def entities(self) -> tuple[str, ...]:
@@ -517,7 +535,7 @@ class Room:
         """Indicator light or display of each device of the families controlled: {display: device}."""
         return {d.display: d.entity_id for d in self.controlled(families) if d.display}
 
-    @property
+    @cached_property
     def devices(self) -> list[str]:
         devices = [self.climate.entity_id] if self.climate else []
         return (

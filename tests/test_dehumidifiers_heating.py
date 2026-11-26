@@ -353,3 +353,19 @@ def test_no_fault_for_a_preset_or_a_regulating_thermostat():
     for minutes in range(0, 120, 10):
         c.evaluate(T0 + timedelta(minutes=minutes), NOON, room, ctx(temp=19.5), state)
     assert c.faults == {}
+
+
+def test_pilot_wire_away_and_frost_fall_back_to_a_preset():
+    s = settings(heating=[{"entity_id": "climate.fp", "comfort_preset": "comfort", "eco_preset": "eco"}])
+    c, room = Controller(s), s.rooms[0]
+    on = {"climate.fp": DeviceState(on=True, hvac_mode="heat", preset="comfort")}
+    assert calls(c.evaluate(T0, NOON, room, ctx(away=True), on)) == [
+        ("climate.fp", "climate.set_preset_mode", {"preset_mode": "eco"})
+    ]
+    assert calls(c.evaluate(T0, NOON, room, ctx(opened=True, minutes=6), on)) == [
+        ("climate.fp", "climate.set_preset_mode", {"preset_mode": "eco"})
+    ]
+    # A thermostat (no preset) keeps its setpoints.
+    assert (
+        build_settings({"rooms": [{"name": "R", "heating": ["climate.r"]}]}).rooms[0].heating[0].preset("away") is None
+    )

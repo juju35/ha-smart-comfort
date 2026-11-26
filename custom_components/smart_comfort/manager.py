@@ -35,6 +35,7 @@ from .const import (
     FAMILIES,
     KIND_AIR_TO_DRY,
     KIND_CONDENSATION,
+    KIND_HUMIDITY,
     KIND_POLLUTED,
     NOTIFY_TIMEOUT,
     OPENING_UNAVAILABLE,
@@ -220,6 +221,11 @@ class SmartComfort:
         self._stopped = False
         # Hash of the state last handed to the Store: an evaluation that changed nothing writes nothing.
         self._saved: int | None = None
+        # The readings and device states of each room at the last evaluation, for the sensors and the panel (read
+        # once per evaluation, not again by each of them); the outdoor readings of the last instant read.
+        self.readings: dict[str, RoomReading] = {}
+        self.states: dict[str, dict[str, DeviceState]] = {}
+        self._outdoor_cache: tuple[datetime, Any] | None = None
 
     # Lifecycle.
 
@@ -538,8 +544,32 @@ class SmartComfort:
         ]
         return [], None, max(changed, default=None)
 
+    def _outdoors(self, now: datetime) -> tuple[float | None, float | None, float | None, float | None, frozenset[str]]:
+        """Outdoor temperature, noise, air, humidity and the gone outdoor readings: the same for every room, read
+        once per instant (an evaluation, a status) instead of once per room."""
+        if self._outdoor_cache is not None and self._outdoor_cache[0] == now:
+            return self._outdoor_cache[1]
+        settled = self._settled(now)
+        gone = {"outdoor"} if self._outdoor_gone(settled) else set()
+        for name, outdoor_sensors in (
+            ("outdoor_noise", self.settings.outdoor_noise),
+            ("outdoor_air", self.settings.outdoor_air),
+        ):
+            if settled and outdoor_sensors and all(self.hass.states.get(e) is None for e in outdoor_sensors):
+                gone.add(name)
+        values = (self.outdoor(), self.outdoor_noise(), self.outdoor_air(), self.outdoor_humidity(), frozenset(gone))
+        self._outdoor_cache = (now, values)
+        return values
+
+    def current(self, room: Room) -> tuple[RoomReading, dict[str, DeviceState]]:
+        """The room's reading and device states of the last evaluation (read now before the first one)."""
+        if room.id in self.readings and room.id in self.states:
+            return self.readings[room.id], self.states[room.id]
+        return self.reading(room)[0], self.device_states(room)
+
     def reading(self, room: Room, now: datetime | None = None) -> tuple[RoomReading, RoomContext]:
         now = now or dt_util.utcnow()
+        outdoor, outdoor_noise, outdoor_air, outdoor_humidity, gone = self._outdoors(now)
         opened, open_since, closed_since = self._openings(room, now)
         temperature = _temperature(self.hass.states.get(room.temperature)) if room.temperature else None
         settled = self._settled(now)
@@ -552,14 +582,7 @@ class SmartComfort:
         missing = {n for n, entity_id in sources if entity_id and settled and self.hass.states.get(entity_id) is None}
         if settled and room.indoor_air and all(self.hass.states.get(e) is None for e in room.indoor_air):
             missing.add("indoor_air")
-        if self._outdoor_gone(settled):
-            missing.add("outdoor")
-        for name, outdoor_sensors in (
-            ("outdoor_noise", self.settings.outdoor_noise),
-            ("outdoor_air", self.settings.outdoor_air),
-        ):
-            if settled and outdoor_sensors and all(self.hass.states.get(e) is None for e in outdoor_sensors):
-                missing.add(name)
+        missing |= gone
         reading = RoomReading(
             temperature=temperature,
             co2=_float(self.hass.states.get(room.co2)) if room.co2 else None,
@@ -568,8 +591,8 @@ class SmartComfort:
             pm25=_worst([_float(self.hass.states.get(e)) for e in room.pm25]),
             pm10=_worst([_float(self.hass.states.get(e)) for e in room.pm10]),
             aqi=_worst([indoor_air_level(self.hass.states.get(e), self._homekit(e)) for e in room.air_quality]),
-            outdoor_noise=self.outdoor_noise(),
-            outdoor_air=self.outdoor_air(),
+            outdoor_noise=outdoor_noise,
+            outdoor_air=outdoor_air,
             tank_full=self._tank_full(room),
             heating_fault=self.controller.faults.get(room.id),
             pellets=min((v for e in room.pellets if (v := _float(self.hass.states.get(e))) is not None), default=None),
@@ -577,7 +600,6 @@ class SmartComfort:
             has_openings=bool(room.openings),
             missing=frozenset(missing),
         )
-        outdoor = self.outdoor()
         surface_sensor = (
             _temperature(self.hass.states.get(room.surface_temperature)) if room.surface_temperature else None
         )
@@ -586,7 +608,7 @@ class SmartComfort:
         if reading.surface is not None and reading.dew_point is not None:
             reading.dew_margin = round(reading.surface - reading.dew_point, 1)
         inside = absolute_humidity(temperature, reading.humidity)
-        outside = absolute_humidity(outdoor, self.outdoor_humidity())
+        outside = absolute_humidity(outdoor, outdoor_humidity)
         if inside is not None and outside is not None:
             reading.drier = round(inside - outside, 1)
         ctx = RoomContext(
@@ -704,8 +726,15 @@ class SmartComfort:
                 ctx = contexts[room.id]
                 ctx.polluted = self.engine.alerting(room.id, KIND_POLLUTED)
                 ctx.damp = self.engine.alerting(room.id, KIND_CONDENSATION)
-                airing = self.engine.episodes.get(f"{room.id}|{KIND_AIR_TO_DRY}")
-                ctx.airing_since = airing.since if airing is not None else None
+                # Airing would dry the room: the wait counts from when the room became damp, so closing the windows
+                # after airing (which starts the suggestion again) doesn't start the wait again.
+                if f"{room.id}|{KIND_AIR_TO_DRY}" in self.engine.episodes:
+                    damp = [
+                        ep.since
+                        for kind in (KIND_HUMIDITY, KIND_CONDENSATION)
+                        if (ep := self.engine.episodes.get(f"{room.id}|{kind}")) is not None
+                    ]
+                    ctx.airing_since = min(damp, default=None)
                 ctx.away, ctx.stove_heating, ctx.local = away, stove, dt_util.as_local(now)
                 states = self.device_states(room)
                 if self.control_enabled:
@@ -720,7 +749,9 @@ class SmartComfort:
                     handled.add(f"{room.id}|{KIND_POLLUTED}")
                 handled |= self.controller.handled_keys(room, states)
                 readings[room.id].handled = room.id in handled
+                self.states[room.id] = states
             self.handled = handled
+            self.readings = readings
             sent = await self._run(commands, now)
             # A device fails when one of its commands failed or was not sent (unavailable, paused).
             ok = {id(c) for c, done in sent if done}
