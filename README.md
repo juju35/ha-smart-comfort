@@ -39,7 +39,7 @@ Comfort automations built with a cooldown keep notifying every couple of hours a
   - **indicator lights and displays** of the devices (an on/off indicator light or switch, a display brightness, a brightness select such as bright / dim / off) turned off in their hours (the quiet night by default) and during the naps of their room, and back on after at the brightness or option they had; found by Discover
   - **back to normal at a set time**, per device (`reset_at`): the purifier back to its automatic mode at 20:40, even after a change by hand
   - **quiet night**: in the night hours (22:00–07:00 by default), devices with night settings run quieter — a fan at a lower speed or a sleep preset, a purifier in its sleep preset or mode, an air conditioner in its silent fan mode — and get no window boost; the day settings (or the state before the night) come back in the morning
-- **Adaptive lighting**: the dimmable lights of each room that are on get the brightness of the moment — day with the sun up, evening once it is down, night in the quiet night hours — at once when turned on, then gradually; optionally the warmth too (color temperature, can be turned off). Smart Comfort never turns a light on or off, night lights are only set at night, and a light changed by hand is left alone until it is turned off
+- **Adaptive lighting**: the dimmable lights of each room that are on get the brightness of the moment — day with the sun up, evening once it is down, night in the quiet night hours — at once when turned on, then gradually; optionally the warmth too (color temperature, can be turned off). Smart Comfort never turns a light on or off, night lights are only set at night, and a light changed by hand is left alone until it is turned off or for the manual override (60 minutes by default)
 - **Lights on presence** moved to [House Rules](https://github.com/juju35/ha-house-rules) in 2.0: its import brings them over as they were — see [Lights on presence: moved to House Rules](#lights-on-presence-moved-to-house-rules)
 - **Outdoors**: outdoor places (garden, terrace…) with their temperature, air quality and noise sensors, plus sensors in no area (weather entity, a city air quality index such as Atmo France)
 - **Noise**: a sound level sensor per room (noisy room alert), and outdoor noise sensors: no suggestion to open the windows while it is noisy outside, and an alert to close them when they are open in the noise
@@ -280,7 +280,7 @@ Set under `alerts:` for every living-space room, under `annex_alerts:` for every
 | Alert | Condition | Default (living space) |
 |---|---|---|
 | `too_hot` | temperature > `threshold` | 27 °C, warning |
-| `too_cold` | temperature < `threshold` | 17 °C, warning |
+| `too_cold` | temperature < `threshold` (a room Smart Comfort heats to a lower setpoint — eco, away, frost protection: below that setpoint − 1 °C) | 17 °C, warning |
 | `ventilate` | openings closed, temperature ≥ `min_indoor` and ≥ outdoor + `threshold` | 24 °C, +2 °C, info |
 | `close_windows` | an opening open, outdoor ≥ `min_outdoor` and ≥ temperature + `threshold` | 25 °C, +0.5 °C, warning |
 | `window_open_cold` | an opening open for the delay, outdoor ≤ `max_outdoor`, and the room has no `too_hot`, `co2_high`, `polluted_air` or `humidity_high` problem | 12 °C, 20 min, **disabled** |

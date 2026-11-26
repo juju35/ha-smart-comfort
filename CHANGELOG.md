@@ -10,7 +10,9 @@
 - Device control per family: `switch.smart_comfort_dehumidifier_control` and `switch.smart_comfort_heating_control`, in the panel's *Device control* menu and the mini card's *Devices* switch; turned off, the dehumidifiers drying are turned off and the heaters set back to comfort (those off for the season stay off).
 - Comfort score: a few points off short of an alert — a heated room below the setpoint its heater reports, humidity outside 40–60 % in a living space, not counted again while a too cold or high humidity alert is on (`score_penalty` of each room; the Overview takes the mean of the rooms', not their sum).
 - Discover: dehumidifiers with their tank sensor and quiet mode, heaters (climate entities that heat but don't cool) with their pilot wire presets, pellet stoves with their pellet level, the humidity sensors of the outdoor places.
-- The sensors and the panel use the readings of the last evaluation instead of reading every sensor again (the outdoor ones once per evaluation, not once per room).
+- Too cold, in a room Smart Comfort heats to a lower setpoint (eco at night, away, frost protection): only below that setpoint − 1 °C, so that the eco night is no alert.
+- Activity card, Activity tab and Overview: the dehumidifier and heater commands in words (*Drying*, *Shower boost*, *Heating: eco · 17 °C*…) with their icons.
+- The sensors and the panel use the readings of the last evaluation instead of reading every sensor again (the outdoor ones once per evaluation, not once per room); the panel gets the status only when it changed; a device whose measurements alone change (a thermostat's current temperature) no longer starts an evaluation; the calendar's state no longer goes through the whole history.
 - Panel: the dehumidifiers and heaters of each room with their settings, their defaults and the shower boost in Settings, a wall temperature sensor per room, the outdoor humidity sensors.
 
 ## 2.2.4 - 2026-11-25
