@@ -25,6 +25,8 @@ export default {
   fam_climate: "klimatske naprave",
   fam_fans: "ventilatorji",
   fam_purifiers: "čistilniki zraka",
+  fam_dehumidifiers: "razvlaževalniki",
+  fam_heating: "ogrevanje",
   on: "vklop",
   off: "izklop",
   zoom_in: "Polna kartica",

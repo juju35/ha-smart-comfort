@@ -1,7 +1,8 @@
 // ── Room devices ──
-// The devices of a room: its air conditioner, fans, air purifiers and lights, each with its settings folded. Methods
+// The devices of a room: its air conditioner, fans, air purifiers, dehumidifiers, heaters and lights, each with its
+// settings folded. Methods
 // of SmartComfortPanel, copied onto its prototype at registration.
-import { EQUIPMENT, bool, entity, lightingLevels, minutes, num, percent } from "./form.js";
+import { EQUIPMENT, bool, entity, lightingLevels, minutes, num, percent, time } from "./form.js";
 
 export class SmartComfortPanelRoomDevices {
 
@@ -48,6 +49,8 @@ export class SmartComfortPanelRoomDevices {
     }
     this._deviceList(body, room, "fans");
     this._deviceList(body, room, "purifiers");
+    this._deviceList(body, room, "dehumidifiers");
+    this._deviceList(body, room, "heating");
     this._addChips(body, [
       ...(room.climate || this._shown.has(`${index}:climate`)
         ? []
@@ -62,6 +65,8 @@ export class SmartComfortPanelRoomDevices {
           ]),
       [this._t("fan"), () => this._addItem(room, "fans")],
       [this._t("purifier"), () => this._addItem(room, "purifiers")],
+      [this._t("dehumidifier"), () => this._addItem(room, "dehumidifiers")],
+      [this._t("heater"), () => this._addItem(room, "heating")],
     ]);
   }
 
@@ -73,11 +78,12 @@ export class SmartComfortPanelRoomDevices {
         ? { ...this._config.defaults.lighting, ...(this._draft.lighting || {}), ...(room.lighting || {}) }
         : this._effectiveControl(room, key);
     const schemaFor = (item) =>
-      key === "fans"
-        ? this._fanSchema(item.entity_id)
-        : key === "lights"
-          ? this._lightSchema(item, defaults)
-          : this._purifierSchema(item);
+      ({
+        fans: () => this._fanSchema(item.entity_id),
+        lights: () => this._lightSchema(item, defaults),
+        dehumidifiers: () => this._dehumidifierSchema(item.entity_id),
+        heating: () => this._heaterSchema(item),
+      })[key]?.() ?? this._purifierSchema(item);
     items.forEach((raw, i) => {
       const item = this._item(raw);
       const line = this._el("div", "device-item");
@@ -121,7 +127,7 @@ export class SmartComfortPanelRoomDevices {
   }
 
   _deviceLabel(section, name) {
-    if (name === "entity_id") return this._t({ fans: "fan", lights: "light" }[section] || "purifier");
+    if (name === "entity_id") return this._t({ fans: "fan", lights: "light", dehumidifiers: "dehumidifier", heating: "heater" }[section] || "purifier");
     if (section === "lights") return this._label("lighting", name);
     const map = { mode_select: "purifier_mode_select", open_mode: "purifier_open_mode", closed_mode: "purifier_closed_mode" };
     if (map[name]) return this._label("room", map[name], "overrides");
@@ -193,6 +199,75 @@ export class SmartComfortPanelRoomDevices {
                 { name: "off_preset", selector: this._choice(presets) },
                 { name: "night_percentage", selector: percent },
                 { name: "night_preset", selector: this._choice(presets) },
+                { name: "shower_percentage", selector: percent },
+                { name: "shower_preset", selector: this._choice(presets) },
+                ...EQUIPMENT,
+              ],
+            },
+          ]
+        : []),
+    ];
+  }
+
+  _dehumidifierSchema(entityId) {
+    const modes = this._attr(entityId, "available_modes");
+    const humidifier = entityId?.startsWith("humidifier.");
+    return [
+      { name: "entity_id", selector: entity(["humidifier", "switch"]) },
+      ...(entityId
+        ? [
+            {
+              type: "expandable",
+              name: "",
+              flatten: true,
+              title: this._t("device_settings"),
+              schema: [
+                { name: "on_above", selector: num("%", { min: 0, max: 100, step: 1 }) },
+                { name: "off_below", selector: num("%", { min: 0, max: 100, step: 1 }) },
+                ...(humidifier
+                  ? [
+                      { name: "mode", selector: this._choice(modes) },
+                      { name: "target_humidity", selector: percent },
+                      { name: "boost_mode", selector: this._choice(modes) },
+                      { name: "night_mode", selector: this._choice(modes) },
+                    ]
+                  : []),
+                { name: "night_off", selector: bool },
+                { name: "tank", selector: entity("binary_sensor") },
+                { name: "off_on_open", selector: minutes() },
+                { name: "prefer_airing", selector: bool },
+                { name: "airing_wait", selector: minutes() },
+                ...EQUIPMENT,
+              ],
+            },
+          ]
+        : []),
+    ];
+  }
+
+  _heaterSchema(item) {
+    const entityId = item?.entity_id;
+    const presets = this._attr(entityId, "preset_modes");
+    const setpoint = num("°C", { step: 0.5, min: 0, max: 35 });
+    return [
+      { name: "entity_id", selector: entity("climate") },
+      ...(entityId
+        ? [
+            {
+              type: "expandable",
+              name: "",
+              flatten: true,
+              title: this._t("device_settings"),
+              schema: [
+                { type: "grid", name: "", column_min_width: "110px", schema: ["comfort", "eco", "frost", "away"].map((m) => ({ name: m, selector: setpoint })) },
+                ...(presets.length
+                  ? [{ type: "grid", name: "", column_min_width: "110px", schema: ["comfort", "eco", "frost", "away"].map((m) => ({ name: `${m}_preset`, selector: this._choice(presets) })) }]
+                  : []),
+                { name: "schedule", selector: entity(["schedule", "input_boolean", "binary_sensor", "switch"]) },
+                { name: "stove", selector: bool },
+                ...(item.stove ? [{ name: "pellets", selector: entity("sensor") }] : []),
+                { name: "backup", selector: bool },
+                ...(item.backup ? [{ name: "backup_margin", selector: num("°C", { step: 0.5, min: 0, max: 10 }) }] : []),
                 ...EQUIPMENT,
               ],
             },

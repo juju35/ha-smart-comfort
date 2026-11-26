@@ -24,6 +24,8 @@ export default {
   fam_climate: "клима уређаји",
   fam_fans: "вентилатори",
   fam_purifiers: "пречишћивачи ваздуха",
+  fam_dehumidifiers: "одвлаживачи",
+  fam_heating: "грејање",
   on: "укључено",
   off: "искључено",
   zoom_in: "Пуна картица",

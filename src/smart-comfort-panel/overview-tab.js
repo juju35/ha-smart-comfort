@@ -317,6 +317,8 @@ export class SmartComfortPanelOverview {
       climate: ["mdi:air-conditioner", "mdi:snowflake-off"],
       fans: ["mdi:fan", "mdi:fan-off"],
       purifiers: ["mdi:air-purifier", "mdi:air-purifier-off"],
+      dehumidifiers: ["mdi:air-humidifier", "mdi:air-humidifier-off"],
+      heating: ["mdi:radiator", "mdi:radiator-disabled"],
     };
     pop.append(row(s.control_enabled, "mdi:air-conditioner", "mdi:hand-back-right-off", this._t("control_all"), "control"));
     for (const [family, on] of families) {
@@ -338,6 +340,8 @@ export class SmartComfortPanelOverview {
       control_climate: "switch.smart_comfort_air_conditioner_control",
       control_fans: "switch.smart_comfort_fan_control",
       control_purifiers: "switch.smart_comfort_purifier_control",
+      control_dehumidifiers: "switch.smart_comfort_dehumidifier_control",
+      control_heating: "switch.smart_comfort_heating_control",
       lighting: "switch.smart_comfort_adaptive_lighting",
     }[key] || "switch.smart_comfort_notifications";
   }

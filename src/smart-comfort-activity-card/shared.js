@@ -20,7 +20,7 @@ export const SWITCHES = [
 ];
 
 // The device families, each with its own switch under the device control one (control_climate…).
-export const FAMILIES = ["climate", "fans", "purifiers"];
+export const FAMILIES = ["climate", "fans", "purifiers", "dehumidifiers", "heating"];
 
 /** The integration's entities: its alerts sensor, its room sensors, its switches and the device family ones. */
 export function findEntities(hass) {

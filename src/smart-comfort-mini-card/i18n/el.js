@@ -23,6 +23,8 @@ export default {
   fam_climate: "κλιματιστικά",
   fam_fans: "ανεμιστήρες",
   fam_purifiers: "καθαριστές αέρα",
+  fam_dehumidifiers: "αφυγραντήρες",
+  fam_heating: "θέρμανση",
   on: "ενεργό",
   off: "ανενεργό",
   zoom_in: "Πλήρης κάρτα",

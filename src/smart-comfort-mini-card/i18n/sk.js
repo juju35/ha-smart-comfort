@@ -25,6 +25,8 @@ export default {
   fam_climate: "klimatizácie",
   fam_fans: "ventilátory",
   fam_purifiers: "čističky vzduchu",
+  fam_dehumidifiers: "odvlhčovače",
+  fam_heating: "kúrenie",
   on: "zap.",
   off: "vyp.",
   zoom_in: "Celá karta",

@@ -25,6 +25,8 @@ export default {
   fam_climate: "klimatyzatory",
   fam_fans: "wentylatory",
   fam_purifiers: "oczyszczacze powietrza",
+  fam_dehumidifiers: "osuszacze",
+  fam_heating: "ogrzewanie",
   on: "włączone",
   off: "wyłączone",
   zoom_in: "Pełna karta",

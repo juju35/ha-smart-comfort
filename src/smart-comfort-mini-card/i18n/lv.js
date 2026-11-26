@@ -24,6 +24,8 @@ export default {
   fam_climate: "kondicionieri",
   fam_fans: "ventilatori",
   fam_purifiers: "gaisa attīrītāji",
+  fam_dehumidifiers: "mitruma savācēji",
+  fam_heating: "apkure",
   on: "ieslēgts",
   off: "izslēgts",
   zoom_in: "Pilna kartīte",

@@ -1,7 +1,10 @@
 // ── Settings tab ──
 // The Settings tab: notifications, device control, adaptive lighting. Methods of SmartComfortPanel, copied onto its
 // prototype at registration.
-import { LEVEL_KEYS, bool, entity, lightingLevels, minutes, num, percent, text } from "./form.js";
+import { LEVEL_KEYS, bool, entity, grid, lightingLevels, minutes, num, percent, text, time } from "./form.js";
+
+// Where the device control labels live: the step's own, then each device section's.
+const CONTROL_SECTIONS = [null, "climate", "fans", "purifiers", "dehumidifiers", "heating"];
 
 export class SmartComfortPanelSettings {
 
@@ -85,11 +88,16 @@ export class SmartComfortPanelSettings {
   // Device control.
 
   _controlSchema() {
-    const sec = (name, schema) => ({ type: "expandable", name, title: this._sectionTitle("control", name), schema });
+    // Each field keeps its section, for its label (off_on_open of the heating is not the air conditioners' one).
+    const tag = (fields, section) => fields.map((f) => (f.schema ? { ...f, schema: tag(f.schema, section) } : { ...f, section }));
+    const sec = (name, schema) => ({ type: "expandable", name, title: this._sectionTitle("control", name), schema: tag(schema, name) });
     return [
       { name: "enabled", selector: bool },
       { name: "suppress_when_handled", selector: bool },
       { name: "manual_override", selector: minutes() },
+      // A shower: the dehumidifiers (and the fans with a shower speed) of the room boosted.
+      { name: "shower_rise", selector: num("%", { min: 0, max: 100, step: 1 }) },
+      { name: "shower_boost", selector: minutes() },
       sec("climate", [
         { name: "cool_above", selector: num("°C") },
         { name: "off_below", selector: num("°C") },
@@ -110,12 +118,41 @@ export class SmartComfortPanelSettings {
         { name: "keep_on", selector: bool },
         { name: "night_percentage", selector: percent },
       ]),
+      sec("dehumidifiers", [
+        { name: "on_above", selector: num("%", { min: 0, max: 100, step: 1 }) },
+        { name: "off_below", selector: num("%", { min: 0, max: 100, step: 1 }) },
+        { name: "night_off", selector: bool },
+        { name: "off_on_open", selector: minutes() },
+        { name: "prefer_airing", selector: bool },
+        { name: "airing_wait", selector: minutes() },
+      ]),
+      sec("heating", [
+        grid(["comfort", "eco", "frost", "away"].map((m) => ({ name: m, selector: num("°C", { step: 0.5, min: 0, max: 35 }) }))),
+        { name: "schedule", selector: entity(["schedule", "input_boolean", "binary_sensor", "switch"]) },
+        { name: "off_on_open", selector: minutes() },
+        { name: "max_outdoor", selector: num("°C") },
+        { name: "preheat", selector: bool },
+        { name: "preheat_max", selector: minutes() },
+        { name: "fault_after", selector: minutes(10) },
+        { name: "tempo", selector: entity("sensor") },
+        { name: "tempo_tomorrow", selector: entity("sensor") },
+        grid([
+          { name: "tempo_red", selector: num("°C", { step: 0.5, min: 0, max: 10 }) },
+          { name: "tempo_white", selector: num("°C", { step: 0.5, min: 0, max: 10 }) },
+          { name: "tempo_preheat", selector: num("°C", { step: 0.5, min: 0, max: 5 }) },
+        ]),
+        { name: "offpeak", selector: entity(["binary_sensor", "input_boolean", "sensor", "schedule"]) },
+        grid([
+          { name: "offpeak_start", selector: time },
+          { name: "offpeak_end", selector: time },
+        ]),
+      ]),
     ];
   }
 
   _controlLabel(schema) {
     if (schema.type === "expandable") return this._sectionTitle("control", schema.name);
-    for (const section of [null, "climate", "fans", "purifiers"]) {
+    for (const section of [schema.section, ...CONTROL_SECTIONS].filter((x) => x !== undefined)) {
       const label = this._label("control", schema.name, section);
       if (label !== schema.name) return label;
     }
@@ -123,7 +160,7 @@ export class SmartComfortPanelSettings {
   }
 
   _controlHelper(schema) {
-    for (const section of [null, "climate", "fans", "purifiers"]) {
+    for (const section of [schema.section, ...CONTROL_SECTIONS].filter((x) => x !== undefined)) {
       const help = this._helper("control", schema.name, section);
       if (help) return help;
     }

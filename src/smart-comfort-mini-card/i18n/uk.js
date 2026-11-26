@@ -25,6 +25,8 @@ export default {
   fam_climate: "кондиціонери",
   fam_fans: "вентилятори",
   fam_purifiers: "очищувачі повітря",
+  fam_dehumidifiers: "осушувачі",
+  fam_heating: "опалення",
   on: "увімк.",
   off: "вимк.",
   zoom_in: "Повна картка",

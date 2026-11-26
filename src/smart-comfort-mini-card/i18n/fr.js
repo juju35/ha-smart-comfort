@@ -23,6 +23,8 @@ export default {
   fam_climate: "climatiseurs",
   fam_fans: "ventilateurs",
   fam_purifiers: "purificateurs d'air",
+  fam_dehumidifiers: "déshumidificateurs",
+  fam_heating: "chauffage",
   on: "activé",
   off: "désactivé",
   zoom_in: "Carte complète",

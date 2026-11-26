@@ -23,6 +23,8 @@ export default {
   fam_climate: "aircondition",
   fam_fans: "ventilatorer",
   fam_purifiers: "luftrensere",
+  fam_dehumidifiers: "affugtere",
+  fam_heating: "opvarmning",
   on: "til",
   off: "fra",
   zoom_in: "Fuldt kort",
