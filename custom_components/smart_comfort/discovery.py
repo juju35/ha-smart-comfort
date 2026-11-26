@@ -172,7 +172,6 @@ AIR_WORDS = (
     "aqi",
 )
 NOT_AIR_WORDS = ("pollen", "j_1", "tomorrow", "demain", "forecast")
-AIR_PLATFORMS = ("atmofrance", "waqi", "airvisual", "airly", "airnow", "google_air_quality")
 PURIFIER_WORDS = ("purif", "luftreinig", "air_clean")
 NATURAL_WORDS = ("natur",)
 DIRECT_WORDS = ("direct", "straight", "standard", "normal")
@@ -907,14 +906,14 @@ def _light(e: _Entity) -> str | dict[str, Any]:
 
 def _is_air(e: _Entity, outdoor: bool = False) -> bool:
     """An air quality index sensor (in no area: a city one, like Atmo France, not a forecast nor pollen)."""
-    if e.device_class == "aqi" and (not outdoor or e.platform in AIR_PLATFORMS):
+    if e.device_class == "aqi" and (not outdoor or e.platform in k.AIR_PLATFORMS):
         return True
     if not _has(e.name, AIR_WORDS) and not _has(e.entity_id, AIR_WORDS):
         return False
     if _has(e.entity_id, NOT_AIR_WORDS):
         return False
     # In no area: only the integrations of outdoor air quality (a city index), not any "air quality".
-    return not outdoor or e.platform in AIR_PLATFORMS
+    return not outdoor or e.platform in k.AIR_PLATFORMS
 
 
 def discover_rooms(hass: HomeAssistant) -> Found:

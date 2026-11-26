@@ -73,6 +73,28 @@ def _entity(domain: str | list[str], multiple: bool = False, device_class: str |
     return EntitySelector(EntitySelectorConfig(**config))
 
 
+def _pick(filters: list[dict[str, Any]], multiple: bool = False) -> EntitySelector:
+    """A picker listing only the entities of these kinds (domain and device class)."""
+    return EntitySelector(EntitySelectorConfig(filter=filters, multiple=multiple))
+
+
+# Outdoor temperature: sensors or weather entities; an air quality index; the openings; who is home.
+OUTDOOR_TEMPERATURE = [{"domain": "sensor", "device_class": "temperature"}, {"domain": "weather"}]
+AIR_INDEX = [
+    {"domain": "sensor", "device_class": ["aqi", "enum"]},
+    *({"integration": platform, "domain": "sensor"} for platform in k.AIR_PLATFORMS),
+]
+OPENINGS = [{"domain": "binary_sensor", "device_class": ["window", "door", "opening", "garage_door"]}]
+PRESENCE = [
+    {"domain": "zone"},
+    {"domain": "person"},
+    {"domain": "group"},
+    {"domain": "device_tracker"},
+    {"domain": "input_boolean"},
+    {"domain": "binary_sensor", "device_class": ["occupancy", "presence"]},
+]
+
+
 def _select(options: list[str], key: str, multiple: bool = False, custom: bool = False) -> SelectSelector:
     return SelectSelector(
         SelectSelectorConfig(
@@ -128,8 +150,8 @@ def _general_schema(hass: HomeAssistant, o: dict[str, Any], first: bool = False)
                 mode=SelectSelectorMode.DROPDOWN,
             )
         ),
-        vol.Optional(k.CONF_OUTDOOR, default=list(o.get(k.CONF_OUTDOOR, []))): _entity(
-            ["sensor", "weather"], multiple=True
+        vol.Optional(k.CONF_OUTDOOR, default=list(o.get(k.CONF_OUTDOOR, []))): _pick(
+            OUTDOOR_TEMPERATURE, multiple=True
         ),
         vol.Required(k.CONF_OUTDOOR_AGGREGATE, default=o.get(k.CONF_OUTDOOR_AGGREGATE, "min")): _select(
             list(k.AGGREGATES), k.CONF_OUTDOOR_AGGREGATE
@@ -140,7 +162,7 @@ def _general_schema(hass: HomeAssistant, o: dict[str, Any], first: bool = False)
     schema[_opt(k.CONF_OUTDOOR_NOISE, list(o.get(k.CONF_OUTDOOR_NOISE, [])))] = _entity(
         "sensor", multiple=True, device_class="sound_pressure"
     )
-    schema[_opt(k.CONF_OUTDOOR_AIR, list(o.get(k.CONF_OUTDOOR_AIR, [])))] = _entity("sensor", multiple=True)
+    schema[_opt(k.CONF_OUTDOOR_AIR, list(o.get(k.CONF_OUTDOOR_AIR, [])))] = _pick(AIR_INDEX, multiple=True)
     schema.update(
         {
             vol.Required(
@@ -153,9 +175,7 @@ def _general_schema(hass: HomeAssistant, o: dict[str, Any], first: bool = False)
             ): _minutes(),
             _opt(k.CONF_QUIET_START, o.get(k.CONF_QUIET_START)): TimeSelector(),
             _opt(k.CONF_QUIET_END, o.get(k.CONF_QUIET_END)): TimeSelector(),
-            _opt(k.CONF_PRESENCE, o.get(k.CONF_PRESENCE)): _entity(
-                ["zone", "person", "group", "binary_sensor", "input_boolean", "device_tracker"]
-            ),
+            _opt(k.CONF_PRESENCE, o.get(k.CONF_PRESENCE)): _pick(PRESENCE),
             vol.Required(
                 k.CONF_CLEAR_WHEN_RESOLVED, default=o.get(k.CONF_CLEAR_WHEN_RESOLVED, True)
             ): BooleanSelector(),
@@ -297,8 +317,8 @@ def _room_schema(room: dict[str, Any]) -> vol.Schema:
             _opt(k.CONF_NOISE, room.get(k.CONF_NOISE)): _entity("sensor", device_class="sound_pressure"),
             _opt(k.CONF_PM25, ids(k.CONF_PM25)): _entity("sensor", multiple=True, device_class="pm25"),
             _opt(k.CONF_PM10, ids(k.CONF_PM10)): _entity("sensor", multiple=True, device_class="pm10"),
-            _opt(k.CONF_AIR_QUALITY, ids(k.CONF_AIR_QUALITY)): _entity("sensor", multiple=True),
-            _opt(k.CONF_OPENINGS, list(room.get(k.CONF_OPENINGS) or [])): _entity("binary_sensor", multiple=True),
+            _opt(k.CONF_AIR_QUALITY, ids(k.CONF_AIR_QUALITY)): _pick(AIR_INDEX, multiple=True),
+            _opt(k.CONF_OPENINGS, list(room.get(k.CONF_OPENINGS) or [])): _pick(OPENINGS, multiple=True),
             _opt(k.CONF_CLIMATE, climate[0] if climate else None): _entity("climate"),
             _opt(k.CONF_FANS, ids(k.CONF_FANS)): _entity("fan", multiple=True),
             _opt(k.CONF_PURIFIERS, ids(k.CONF_PURIFIERS)): _entity("fan", multiple=True),

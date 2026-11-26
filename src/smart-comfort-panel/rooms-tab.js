@@ -3,7 +3,7 @@
 // SmartComfortPanel, copied onto its prototype at registration.
 import { KIND_ICONS } from "./constants.js";
 import { SENSOR_KEYS, asList, isEmpty, prune, shifted } from "./configuration.js";
-import { WEEKDAYS, bool, entity, grid, text, time } from "./form.js";
+import { WEEKDAYS, bool, grid, pick, text, time } from "./form.js";
 
 export class SmartComfortPanelRooms {
 
@@ -139,7 +139,7 @@ export class SmartComfortPanelRooms {
     section("openings", "mdi:window-closed-variant", this._count(room.openings), (body) =>
       body.append(
         this._form(
-          [{ name: "openings", selector: entity("binary_sensor", { multiple: true }) }],
+          [{ name: "openings", selector: pick("openings", { multiple: true }) }],
           { openings: room.openings || [] },
           (value) => {
             if (isEmpty(value.openings)) delete room.openings;
@@ -200,13 +200,13 @@ export class SmartComfortPanelRooms {
   _roomSensors(body, room, index) {
     const all = [
       ["temperature", "temperature"],
-      ["co2", "carbon_dioxide"],
+      ["co2", "co2"],
       ["humidity", "humidity"],
-      ["noise", "sound_pressure"],
+      ["noise", "noise"],
       // Indoor air: lists (the worst counts), the purifiers' sensors too.
       ["pm25", "pm25", true],
       ["pm10", "pm10", true],
-      ["air_quality", null, true],
+      ["air_quality", "air_quality", true],
       // Coldest wall or window (condensation risk), estimated from the outdoor temperature when unset.
       ["surface_temperature", "temperature"],
     ];
@@ -214,10 +214,7 @@ export class SmartComfortPanelRooms {
     if (shown.length) {
       body.append(
         this._form(
-          shown.map(([key, deviceClass, multiple]) => ({
-            name: key,
-            selector: entity("sensor", { ...(deviceClass ? { device_class: deviceClass } : {}), ...(multiple ? { multiple } : {}) }),
-          })),
+          shown.map(([key, kind, multiple]) => ({ name: key, selector: pick(kind, multiple ? { multiple } : {}) })),
           Object.fromEntries(shown.map(([key]) => [key, room[key]])),
           (value) => {
             for (const [key] of shown) {
@@ -345,7 +342,7 @@ export class SmartComfortPanelRooms {
         // A nap entity (a schedule helper shared with House Rules…): a nap while it is on.
         line.append(
           this._form(
-            [{ name: "entity", required: true, selector: entity(["schedule", "input_boolean", "binary_sensor", "switch"]) }],
+            [{ name: "entity", required: true, selector: pick("schedule") }],
             { entity: nap },
             (value) => {
               naps[i] = value.entity || nap;

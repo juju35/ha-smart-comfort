@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.3.1 - 2026-11-27
+
+### Fixes
+- Panel and options: each entity picker lists only the entities that fit — sensors by their device class (an air quality index also in words or from an air quality service such as Atmo France), outdoor temperature sensors and weather entities, door / window / opening sensors, presence entities, `schedule` and `input_boolean` helpers for the schedules and naps, enum sensors for the EDF Tempo colours, `problem` sensors for a dehumidifier's tank, dehumidifiers by their device class (or a plug). Another entity still goes in the YAML.
+
 ## 2.3.0 - 2026-11-26
 
 ### Features
