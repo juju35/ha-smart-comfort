@@ -140,7 +140,7 @@
         "data_description": {
           "start": "A ventilátorok és légtisztítók csak ezen időpontok között kapcsolnak teljes sebességre, amikor egy nyílászáró kinyílik. Mindkettő üres: egész nap.",
           "manual_override": "Ennyi percig hagyja békén a kézzel módosított eszközt. 0: nincs szünet.",
-          "suppress_when_handled": "Nincs „túl meleg” riasztás olyan helyiségre, ahol a Smart Comfort bekapcsolta a klímát vagy a ventilátort.",
+          "suppress_when_handled": "Nincs riasztás olyan problémáról, amellyel egy eszköz a Smart Comfort parancsára foglalkozik: túl meleg (klíma vagy ventilátor), szennyezett levegő (légtisztító), páratartalom és páralecsapódás (páramentesítő), túl hideg (fűtés).",
           "night_start": "Ezen időpontok között az eszközök az éjszakai beállításaikat használják (halkabb sebesség, előbeállítás vagy ventilátormód), és nincs számukra ablakos rásegítés.",
           "display": "Kikapcsol az Ütemezés lap „Kijelzők kikapcsolva” óráiban és a helyiség szunyókálásai alatt, utána visszakapcsol.",
           "reset_at": "Ekkor az eszköz visszaáll a normál állapotába, kézi módosítás után is (egy légtisztító vissza automatára…).",

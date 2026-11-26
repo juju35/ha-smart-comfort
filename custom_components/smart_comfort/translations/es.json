@@ -140,7 +140,7 @@
         "data_description": {
           "start": "Ventiladores y purificadores van al máximo al abrir solo entre estas horas. Ambas vacías: todo el día.",
           "manual_override": "Minutos que se deja en paz un aparato cambiado a mano. 0: nunca.",
-          "suppress_when_handled": "Sin alerta «demasiado calor» si Smart Comfort ha encendido el aire o el ventilador de la estancia.",
+          "suppress_when_handled": "Sin alerta para un problema del que se ocupa un aparato por orden de Smart Comfort: demasiado calor (aire acondicionado o ventilador), aire contaminado (purificador), humedad y condensación (deshumidificador), demasiado frío (calefacción).",
           "night_start": "Entre estas horas los aparatos usan sus ajustes de noche (velocidad, modo o ventilación más silenciosos) y no hay impulso de ventana.",
           "display": "Apagado en las horas «Pantallas apagadas» de la pestaña Horarios y durante las siestas de la habitación, encendido después.",
           "reset_at": "A esta hora el aparato vuelve a su estado normal, incluso tras un cambio manual (un purificador de nuevo en auto…).",

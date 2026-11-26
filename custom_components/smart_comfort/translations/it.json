@@ -140,7 +140,7 @@
         "data_description": {
           "start": "Ventilatori e purificatori vanno alla massima velocità quando si apre un'apertura solo tra questi orari. Entrambi vuoti: tutto il giorno.",
           "manual_override": "Minuti in cui un dispositivo modificato a mano viene lasciato stare. 0: mai in pausa.",
-          "suppress_when_handled": "Nessun avviso “troppo caldo” per una stanza di cui Smart Comfort ha acceso il condizionatore o il ventilatore.",
+          "suppress_when_handled": "Nessun avviso per un problema di cui si occupa un dispositivo su comando di Smart Comfort: troppo caldo (condizionatore o ventilatore), aria inquinata (purificatore), umidità e condensa (deumidificatore), troppo freddo (riscaldamento).",
           "night_start": "Tra questi orari i dispositivi usano le loro impostazioni notturne (velocità più silenziosa, preimpostazione o modalità ventola) e non c'è boost finestra per loro.",
           "display": "Spento nelle ore \"Display spenti\" della scheda Programma e durante i riposini della stanza, riacceso dopo.",
           "reset_at": "A quest'ora il dispositivo torna al suo stato normale, anche dopo una modifica manuale (un purificatore di nuovo in automatico…).",

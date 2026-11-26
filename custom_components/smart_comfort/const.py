@@ -352,7 +352,8 @@ DEFAULT_ALERTS: Final[dict[str, dict]] = {
     KIND_AIR_TO_DRY: {
         CONF_ENABLED: True,
         CONF_THRESHOLD: 2.0,
-        CONF_MIN_OUTDOOR: 0.0,
+        # Colder air is nearly always drier: below this, opening would mostly cool the room.
+        CONF_MIN_OUTDOOR: 5.0,
         CONF_MAX_NOISE: 65.0,
         CONF_MAX_AIR: 3.0,
         CONF_HYSTERESIS: 0.5,

@@ -140,7 +140,7 @@
         "data_description": {
           "start": "Ventilatoarele și purificatoarele trec la viteză maximă când se deschide o fereastră sau o ușă doar între aceste ore. Ambele goale: toată ziua.",
           "manual_override": "Minute în care un aparat modificat manual este lăsat în pace. 0: nicio pauză.",
-          "suppress_when_handled": "Nicio alertă „prea cald” pentru o cameră în care Smart Comfort a pornit aerul condiționat sau ventilatorul.",
+          "suppress_when_handled": "Nicio alertă pentru o problemă de care se ocupă un aparat la comanda Smart Comfort: prea cald (aer condiționat sau ventilator), aer poluat (purificator), umiditate și condens (dezumidificator), prea frig (încălzire).",
           "night_start": "Între aceste ore aparatele folosesc setările de noapte (viteză mai silențioasă, presetare sau mod ventilator) și nu au impuls la fereastră.",
           "display": "Stins în orele „Afișaje stinse” din fila Program și în timpul siestelor din cameră, reaprins după.",
           "reset_at": "La această oră aparatul revine la starea normală, chiar și după o modificare manuală (un purificator înapoi pe auto…).",

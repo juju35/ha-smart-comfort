@@ -288,9 +288,9 @@ Set under `alerts:` for every living-space room, under `annex_alerts:` for every
 | `polluted_air` | PM2.5 > `threshold`, or PM10 > `pm10_threshold`, or the air quality level > `aqi_threshold` (room `pm25`, `pm10`, `air_quality` sensors) | 25 µg/m³, 50 µg/m³, 3, warning |
 | `humidity_high` | humidity > `threshold` | 70 %, info |
 | `condensation_risk` | the coldest surface less than `threshold` above the dew point of the room's air (room `temperature` and `humidity`; `surface_temperature` sensor, else estimated) | 2 °C, 30 min, info |
-| `air_to_dry` | the room has `humidity_high` or `condensation_risk` (pending or alerting), its openings are closed, the outdoor air holds at least `threshold` less water, outdoor ≥ `min_outdoor` (`outdoor_humidity` sensors) | 2 g/m³, 0 °C, info |
+| `air_to_dry` | the room has `humidity_high` or `condensation_risk` (pending or alerting), its openings are closed, the outdoor air holds at least `threshold` less water, outdoor ≥ `min_outdoor` (`outdoor_humidity` sensors) | 2 g/m³, 5 °C, info |
 | `tank_full` | a dehumidifier's `tank` sensor is on | warning |
-| `heating_fault` | a heater heats on Smart Comfort's command, openings closed, and the room hasn't warmed by 0.3 °C for `heating.fault_after` | warning |
+| `heating_fault` | a heater heats on Smart Comfort's command, openings closed, the room at least 1 °C below the setpoint the device reports, and it hasn't warmed by 0.3 °C for `heating.fault_after` | warning |
 | `pellets_low` | a stove's `pellets` level < `threshold` | 20 %, warning |
 | `noise_high` | room noise > `threshold` (room `noise` sensor) | 60 dB, info |
 | `noisy_outside` | an opening open, outdoor noise > `threshold` (outdoor noise sensors) | 65 dB, info |
@@ -321,7 +321,7 @@ The first rows (`enabled`, `start` / `end`, `manual_override`, `suppress_when_ha
 | `enabled` | `true` | Control the devices (also the **Device control** switch) |
 | `start` / `end` | 09:00 / 21:00 | Window boost hours of the fans and purifiers. Both empty (or equal): all day |
 | `manual_override` | 60 min | A device changed by hand is left alone this long, then its target is applied again. 0: never paused |
-| `suppress_when_handled` | `true` | No "too hot" alert for a room whose air conditioner or fan is running on Smart Comfort's command, nor "polluted air" one while its purifier is boosted |
+| `suppress_when_handled` | `true` | No alert for a problem a device is handling on Smart Comfort's command: "too hot" while the room's air conditioner or fan runs, "polluted air" while its purifier is boosted, "high humidity", "condensation risk" and "open the windows (drier outside)" while a dehumidifier dries, "too cold" while a heater heats |
 | `night_start` / `night_end` | 22:00 / 07:00 | Quiet night hours: devices with night settings use them, and get no window boost |
 | `display_off` / `display_on` | the quiet night | Hours the indicator lights and displays of the devices are off (e.g. 20:00 / 10:00) |
 | `shower_rise` / `shower_boost` | 10 % / 30 min | A humidity rise of this many points within 10 minutes is a shower: the room's dehumidifiers and its fans that have a shower speed or preset are boosted this long (not at night for those with night settings). Empty: no shower detection |
@@ -346,13 +346,13 @@ The first rows (`enabled`, `start` / `end`, `manual_override`, `suppress_when_ha
 | `dehumidifiers.on_above` / `off_below` | 65 / 55 % | Dry above, stop below (hysteresis band in between); also dries while the room has a `condensation_risk` alert |
 | `dehumidifiers.mode` / `target_humidity` | none | Mode and target humidity set when drying (humidifier entities) |
 | `dehumidifiers.boost_mode` | none | Mode after a shower (unset: `mode`) |
-| `dehumidifiers.night_mode` / `night_off` | none / `false` | At night: its quiet mode, or off |
+| `dehumidifiers.night_mode` / `night_off` | none / `false` | At night: its quiet mode, or off. One that was drying when the night began dries again in the morning, until `off_below` |
 | `dehumidifiers.tank` | none | Tank full `binary_sensor`: the `tank_full` alert, and the device left alone until emptied (Discover finds it) |
 | `dehumidifiers.off_on_open` | 5 min | Off when an opening stays open this long (airing dries the room) |
 | `dehumidifiers.prefer_airing` / `airing_wait` | `true` / 30 min | While `air_to_dry` suggests opening the windows, wait this long before starting to dry |
 | `heating.comfort` / `eco` / `frost` / `away` | 20 / 17 / 7 / 16 °C | Setpoints of the modes |
-| `heating.comfort_preset` / `eco_preset` / `frost_preset` / `away_preset` | none | Pilot wire radiators: the preset of each mode, set instead of a setpoint (Discover picks them) |
-| `heating.schedule` | none | `schedule` helper (or any on/off entity): on = comfort, off = eco. Without one: comfort, frost protection in an annex. Away (the `presence` option) wins |
+| `heating.comfort_preset` / `eco_preset` / `frost_preset` / `away_preset` | none | Pilot wire radiators: the preset of each mode, set instead of a setpoint (Discover picks them). A preset can't be lowered by a few degrees: on red Tempo days a radiator with comfort and eco presets stays at eco |
+| `heating.schedule` | none | `schedule` helper (or any on/off entity): on = comfort, off = eco. Without one: comfort, frost protection in an annex. While nobody is home (the `presence` option), the away setpoint when it is lower — never warmer than eco, and frost protection stays |
 | `heating.preheat` / `preheat_max` | `true` / 120 min | Comfort starts early, from the room's learnt warm-up rate (°C/h, 1 until learnt), at most this long before the schedule turns on (its `next_event`) |
 | `heating.off_on_open` | 5 min | Frost protection when an opening stays open this long |
 | `heating.max_outdoor` | 16 °C | Heating off while it is at least this warm outdoors, back on 1 °C below. Empty: never off. Heaters stay off while the room's air conditioner cools, and the air conditioner doesn't cool while they heat |
@@ -566,7 +566,7 @@ The activity (the last 300 entries) is kept across restarts. It is also availabl
 |---|---|
 | `sensor.smart_comfort_active_alerts` | Number of current problems. Attributes: `alerts` (room, kind, value, since, notified_at, snoozed, acknowledged, handled…), `snoozes`, `outdoor_temperature`, `outdoor_noise`, `outdoor_air_quality` |
 | `sensor.smart_comfort_<room>_comfort` | `ok` or the main problem of the room. Attributes: `room_name`, readings, open and ignored openings, alerts, device targets and manual overrides |
-| `sensor.smart_comfort_<room>_comfort_score` | How comfortable the room is now, 0 to 100 %: 100 with nothing wrong, minus 10 per *info* problem under way, 25 per *warning*, 50 per *critical* (the severity set for each alert), and short of an alert 5 per °C a heated room is below its setpoint beyond 0.5 °C (at most 15) and, in a living space, 1 per % of humidity outside 40–60 % (at most 10). Its long-term statistics give the day's, the week's or the month's comfort in a statistics card or graph |
+| `sensor.smart_comfort_<room>_comfort_score` | How comfortable the room is now, 0 to 100 %: 100 with nothing wrong, minus 10 per *info* problem under way, 25 per *warning*, 50 per *critical* (the severity set for each alert), and short of an alert 5 per °C a heated room is below the setpoint its heater reports beyond 0.5 °C (at most 15; not while a too cold alert is on) and, in a living space, 1 per % of humidity outside 40–60 % (at most 10; not while a high humidity alert is on). Its long-term statistics give the day's, the week's or the month's comfort in a statistics card or graph |
 | `sensor.smart_comfort_last_notification` | Time of the last notification. Attributes: `title`, `message`, `severity`, `alerts` |
 | `calendar.smart_comfort_comfort_alerts` | The alerts as events: one per alert, from its start to its end (the ones going on end a minute ahead, so the calendar is `on` while they last). Summary `🌡️ Bedroom: Too hot`, location the room, description its worst value. Finished alerts are kept 90 days (at most 1000) |
 | `switch.smart_comfort_notifications` | Send notifications (problems are still tracked when off) |

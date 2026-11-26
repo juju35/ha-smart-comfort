@@ -140,7 +140,7 @@
         "data_description": {
           "start": "Ventilatori un attīrītāji pāriet uz pilnu ātrumu, kad atveras logs vai durvis, tikai starp šiem laikiem. Abi tukši: visu dienu.",
           "manual_override": "Minūtes, cik ilgi manuāli mainīta ierīce tiek atstāta mierā. 0: nekad netiek pauzēta.",
-          "suppress_when_handled": "Nav brīdinājuma „pārāk karsts“ telpai, kurā Smart Comfort ir ieslēdzis gaisa kondicionieri vai ventilatoru.",
+          "suppress_when_handled": "Nav brīdinājuma par problēmu, ar kuru pēc Smart Comfort komandas nodarbojas ierīce: pārāk karsts (kondicionieris vai ventilators), piesārņots gaiss (attīrītājs), mitrums un kondensāts (mitruma savācējs), pārāk auksts (apkure).",
           "night_start": "Starp šiem laikiem ierīces izmanto nakts iestatījumus (klusāks ātrums, iepriekšējs iestatījums vai ventilatora režīms), un tām nav loga pastiprinājuma.",
           "display": "Izslēgts cilnes Grafiks stundās „Displeji izslēgti“ un telpas diendusas laikā, pēc tam atkal ieslēgts.",
           "reset_at": "Šajā laikā ierīce atgriežas normālā stāvoklī, arī pēc manuālas maiņas (attīrītājs atpakaļ uz auto…).",

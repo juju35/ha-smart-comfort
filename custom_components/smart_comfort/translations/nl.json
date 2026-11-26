@@ -140,7 +140,7 @@
         "data_description": {
           "start": "Ventilatoren en luchtreinigers gaan alleen tussen deze tijden op volle snelheid als een opening opengaat. Beide leeg: de hele dag.",
           "manual_override": "Minuten dat een met de hand gewijzigd apparaat met rust wordt gelaten. 0: nooit gepauzeerd.",
-          "suppress_when_handled": "Geen waarschuwing “te warm” voor een kamer waarvan Smart Comfort de airco of ventilator heeft ingeschakeld.",
+          "suppress_when_handled": "Geen melding voor een probleem dat een apparaat op bevel van Smart Comfort aanpakt: te warm (airco of ventilator), vervuilde lucht (luchtreiniger), vochtigheid en condensatie (ontvochtiger), te koud (verwarming).",
           "night_start": "Tussen deze tijden gebruiken de apparaten hun nachtinstellingen (stillere snelheid, voorinstelling of ventilatormodus) en is er voor hen geen raamboost.",
           "display": "Uitgeschakeld in de uren \"Displays uit\" van het tabblad Planning en tijdens de dutjes van de kamer, daarna weer aan.",
           "reset_at": "Op dit tijdstip gaat het apparaat terug naar zijn normale toestand, ook na een handmatige wijziging (een luchtreiniger terug op auto…).",

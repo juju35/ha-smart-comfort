@@ -140,7 +140,7 @@
         "data_description": {
           "start": "Fläktar och luftrenare går på full hastighet när en öppning öppnas, bara mellan dessa tider. Båda tomma: hela dagen.",
           "manual_override": "Minuter som en enhet som ändrats manuellt lämnas ifred. 0: pausas aldrig.",
-          "suppress_when_handled": "Ingen ”för varmt”-varning för ett rum vars luftkonditionering eller fläkt Smart Comfort har slagit på.",
+          "suppress_when_handled": "Ingen varning för ett problem som en enhet tar hand om på Smart Comforts kommando: för varmt (luftkonditionering eller fläkt), förorenad luft (luftrenare), fukt och kondens (avfuktare), för kallt (uppvärmning).",
           "night_start": "Mellan dessa tider använder enheterna sina nattinställningar (tystare hastighet, förinställning eller fläktläge) och det blir ingen fönsterboost för dem.",
           "display": "Släcks under timmarna ”Displayer av” på fliken Schema och under rummets tupplurar, tänds igen efteråt.",
           "reset_at": "Vid denna tid går enheten tillbaka till sitt normala läge, även efter en manuell ändring (en luftrenare tillbaka på auto…).",

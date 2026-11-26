@@ -140,7 +140,7 @@
         "data_description": {
           "start": "Ventilatorji in čistilniki preklopijo na polno hitrost ob odprtju okna ali vrat le med temi urami. Obe prazni: ves dan.",
           "manual_override": "Minute, ko se ročno spremenjena naprava pusti pri miru. 0: brez premora.",
-          "suppress_when_handled": "Brez opozorila »prevroče« za prostor, v katerem je Smart Comfort vklopil klimatsko napravo ali ventilator.",
+          "suppress_when_handled": "Brez opozorila za težavo, s katero se na ukaz Smart Comfort ukvarja naprava: prevroče (klimatska naprava ali ventilator), onesnažen zrak (čistilnik), vlažnost in kondenzacija (razvlaževalnik), premrzlo (ogrevanje).",
           "night_start": "Med temi urami naprave uporabljajo nočne nastavitve (tišja hitrost, prednastavitev ali način ventilatorja) in zanje ni okenske okrepitve.",
           "display": "Izklopi se v urah »Zasloni izklopljeni« na zavihku Urnik in med dremeži v prostoru, nato se znova vklopi.",
           "reset_at": "Ob tej uri se naprava vrne v običajno stanje, tudi po ročni spremembi (čistilnik nazaj na samodejno…).",

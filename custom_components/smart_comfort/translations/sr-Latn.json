@@ -140,7 +140,7 @@
         "data_description": {
           "start": "Ventilatori i prečišćivači prelaze na maksimalnu brzinu kada se prozor/vrata otvori samo između ovih vremena. Ako su oba prazna: ceo dan.",
           "manual_override": "Minuti tokom kojih se ručno promenjen uređaj ne dira. 0: nikada se ne pauzira.",
-          "suppress_when_handled": "Bez upozorenja „pretoplo“ za sobu u kojoj je Smart Comfort uključio klima uređaj ili ventilator.",
+          "suppress_when_handled": "Bez upozorenja za problem kojim se uređaj bavi na nalog Smart Comfort-a: previše toplo (klima ili ventilator), zagađen vazduh (prečišćivač), vlažnost i kondenzacija (odvlaživač), previše hladno (grejanje).",
           "night_start": "Između ovih vremena uređaji koriste svoja noćna podešavanja (tiša brzina, predefinisani režim ili režim ventilatora) i za njih nema pojačanja zbog otvaranja prozora.",
           "display": "Isključuje se u periodu „Indikatori isključeni“ iz kartice Raspored i tokom dremke u sobi, a zatim se ponovo uključuje.",
           "reset_at": "U ovo vreme uređaj se vraća u normalno stanje, čak i nakon ručne promene (prečišćivač ponovo na automatski…).",

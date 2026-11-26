@@ -140,7 +140,7 @@
         "data_description": {
           "start": "Ventilatorer og luftrensere går på fuld hastighed, når en åbning åbnes, kun mellem disse tidspunkter. Begge tomme: hele dagen.",
           "manual_override": "Minutter en enhed, der er ændret manuelt, lades i fred. 0: aldrig sat på pause.",
-          "suppress_when_handled": "Ingen „for varmt“-advarsel for et rum, hvis klimaanlæg eller ventilator Smart Comfort har tændt.",
+          "suppress_when_handled": "Ingen advarsel for et problem, som en enhed tager sig af på Smart Comforts kommando: for varmt (aircondition eller ventilator), forurenet luft (luftrenser), fugt og kondens (affugter), for koldt (opvarmning).",
           "night_start": "Mellem disse tidspunkter bruger enhederne deres natindstillinger (roligere hastighed, forudindstilling eller ventilatortilstand), og der er ingen vinduesboost for dem.",
           "display": "Slukkes i timerne „Displays slukket“ på fanen Tidsplan og under rummets lure, tændes igen bagefter.",
           "reset_at": "På dette tidspunkt går enheden tilbage til sin normale tilstand, også efter en manuel ændring (en luftrenser tilbage på auto…).",

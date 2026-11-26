@@ -140,7 +140,7 @@
         "data_description": {
           "start": "Ventilátory a čističky prejdú na plný výkon pri otvorení okna alebo dverí len medzi týmito časmi. Obe prázdne: celý deň.",
           "manual_override": "Minúty, počas ktorých sa ručne zmenené zariadenie nechá na pokoji. 0: nikdy sa nepozastaví.",
-          "suppress_when_handled": "Žiadne upozornenie „príliš teplo“ pre miestnosť, v ktorej Smart Comfort zapol klimatizáciu alebo ventilátor.",
+          "suppress_when_handled": "Žiadne upozornenie na problém, ktorý na príkaz Smart Comfort rieši zariadenie: príliš teplo (klimatizácia alebo ventilátor), znečistený vzduch (čistička), vlhkosť a kondenzácia (odvlhčovač), príliš chladno (kúrenie).",
           "night_start": "Medzi týmito časmi používajú zariadenia nočné nastavenia (tichšia rýchlosť, predvoľba alebo režim ventilátora) a nemajú posilnenie pri okne.",
           "display": "Vypne sa v hodinách „Displeje vypnuté“ na karte Plán a počas zdriemnutí v miestnosti, potom sa znova zapne.",
           "reset_at": "V tomto čase sa zariadenie vráti do normálneho stavu, aj po ručnej zmene (čistička späť na auto…).",

@@ -140,7 +140,7 @@
         "data_description": {
           "start": "As ventoinhas e os purificadores passam para a velocidade máxima quando uma abertura se abre só entre estas horas. Ambos vazios: todo o dia.",
           "manual_override": "Minutos durante os quais um dispositivo alterado à mão é deixado em paz. 0: nunca em pausa.",
-          "suppress_when_handled": "Sem alerta “demasiado quente” para uma divisão cujo ar condicionado ou ventoinha o Smart Comfort ligou.",
+          "suppress_when_handled": "Sem alerta para um problema que um aparelho está resolvendo por comando do Smart Comfort: calor demais (ar-condicionado ou ventilador), ar poluído (purificador), umidade e condensação (desumidificador), frio demais (aquecimento).",
           "night_start": "Entre estas horas os dispositivos usam as suas definições noturnas (velocidade mais silenciosa, predefinição ou modo de ventilação) e não há reforço de janela para eles.",
           "display": "Desligado nas horas \"Ecrãs desligados\" do separador Horário e durante as sestas da divisão, ligado de novo depois.",
           "reset_at": "A esta hora o dispositivo volta ao seu estado normal, mesmo após uma alteração à mão (um purificador de volta ao automático…).",

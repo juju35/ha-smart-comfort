@@ -140,7 +140,7 @@
         "data_description": {
           "start": "Wentylatory i oczyszczacze przechodzą na pełną prędkość po otwarciu okna lub drzwi tylko między tymi godzinami. Oba puste: cały dzień.",
           "manual_override": "Minuty, przez które urządzenie zmienione ręcznie jest pozostawione w spokoju. 0: nigdy nie wstrzymywane.",
-          "suppress_when_handled": "Brak alertu „za gorąco” dla pomieszczenia, w którym Smart Comfort włączył klimatyzator lub wentylator.",
+          "suppress_when_handled": "Brak alertu o problemie, którym na polecenie Smart Comfort zajmuje się urządzenie: za gorąco (klimatyzator lub wentylator), zanieczyszczone powietrze (oczyszczacz), wilgotność i kondensacja (osuszacz), za zimno (ogrzewanie).",
           "night_start": "Między tymi godzinami urządzenia używają ustawień nocnych (cichsza prędkość, ustawienie wstępne lub tryb wentylatora) i nie ma dla nich wzmocnienia przy oknie.",
           "display": "Wyłączane w godzinach \"Wyświetlacze wyłączone\" z karty Harmonogram i podczas drzemek w pomieszczeniu, potem włączane ponownie.",
           "reset_at": "O tej godzinie urządzenie wraca do normalnego stanu, nawet po ręcznej zmianie (oczyszczacz z powrotem w trybie auto…).",
