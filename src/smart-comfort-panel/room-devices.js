@@ -1,8 +1,8 @@
 // ── Room devices ──
 // The devices of a room: its air conditioner, fans, air purifiers, dehumidifiers, heaters and lights. Each device shows
-// its few essential settings, the rest under Advanced; an empty field shows the default it falls back to (greyed), an
-// unset switch its default state. Methods of SmartComfortPanel, copied onto its prototype at registration.
-import { EQUIPMENT, bool, entity, lightingLevels, minutes, num } from "./form.js";
+// its few essential settings, the rest under Advanced, in a tile of its own; an empty field shows the default it falls
+// back to (greyed), an unset switch its default state. Methods of SmartComfortPanel, copied onto its prototype at registration.
+import { EQUIPMENT, bool, entity, humidity, lightingLevels, minutes, num } from "./form.js";
 
 // A percentage typed in a box, so that an empty one can show its default (a slider can't).
 const pct = { number: { mode: "box", step: 1, min: 0, max: 100, unit_of_measurement: "%" } };
@@ -28,7 +28,7 @@ export class SmartComfortPanelRoomDevices {
     if (room.climate || this._shown.has(`${index}:climate`)) {
       const climate = room.climate ? this._item(room.climate) : {};
       const defaults = this._effectiveControl(room, "climate");
-      const line = this._el("div", "device-item");
+      const line = this._el("div", "device-item slot");
       const form = this._deviceForm(
         "climate",
         climate,
@@ -85,7 +85,7 @@ export class SmartComfortPanelRoomDevices {
         heating: () => this._heaterSchema(item),
       })[key]?.() ?? this._purifierSchema(item);
     items.forEach((raw, i) => {
-      const line = this._el("div", "device-item");
+      const line = this._el("div", "device-item slot");
       const form = this._deviceForm(
         key,
         this._item(raw),
@@ -147,11 +147,7 @@ export class SmartComfortPanelRoomDevices {
         form.schema = this._withDefaults(schemaFor(next), defaults);
         form.data = shown(next);
       },
-      (f) => (f.type === "expandable" ? f.title : f.name === NIGHT ? this._t("night_behaviour") : this._deviceLabel(key, f.name)),
-      (f) =>
-        f.selector?.boolean && own[f.name] === undefined && typeof defaults[f.name] === "boolean"
-          ? this._t("default_value", { value: this._t(defaults[f.name] ? "enabled" : "disabled") })
-          : undefined
+      (f) => (f.type === "expandable" ? f.title : f.name === NIGHT ? this._t("night_behaviour") : this._deviceLabel(key, f.name))
     );
     return form;
   }
@@ -297,8 +293,8 @@ export class SmartComfortPanelRoomDevices {
       entityId,
       [
         pair([
-          { name: "on_above", selector: num("%", { min: 0, max: 100, step: 1 }) },
-          { name: "off_below", selector: num("%", { min: 0, max: 100, step: 1 }) },
+          { name: "on_above", selector: humidity },
+          { name: "off_below", selector: humidity },
         ]),
         {
           name: NIGHT,

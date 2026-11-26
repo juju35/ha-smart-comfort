@@ -113,7 +113,6 @@ export default {
   dehumidifiers: "Изсушители",
   heating: "Отопление",
   device_settings: "Настройки на устройството",
-  default_value: "По подразбиране: {value}",
   no_rooms: "Все още няма стаи.",
   outdoor_air: "Външен въздух",
   outdoors: "Външни",

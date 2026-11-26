@@ -113,7 +113,6 @@ export default {
   dehumidifiers: "Razvlaževalniki",
   heating: "Ogrevanje",
   device_settings: "Nastavitve te naprave",
-  default_value: "Privzeto: {value}",
   no_rooms: "Še ni prostorov.",
   outdoor_air: "Zunanji zrak",
   outdoors: "Zunaj",

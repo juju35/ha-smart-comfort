@@ -113,7 +113,6 @@ export default {
   dehumidifiers: "Avfuktare",
   heating: "Uppvärmning",
   device_settings: "Enhetsinställningar",
-  default_value: "Standard: {value}",
   no_rooms: "Inget rum än.",
   outdoor_air: "Utomhusluft",
   outdoors: "Utomhus",

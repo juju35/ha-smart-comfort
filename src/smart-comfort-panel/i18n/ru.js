@@ -113,7 +113,6 @@ export default {
   dehumidifiers: "Осушители",
   heating: "Отопление",
   device_settings: "Настройки устройства",
-  default_value: "По умолчанию: {value}",
   no_rooms: "Комнат пока нет.",
   outdoor_air: "Воздух на улице",
   outdoors: "Улица",

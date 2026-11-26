@@ -113,7 +113,6 @@ export default {
   dehumidifiers: "Dehumidifiers",
   heating: "Heating",
   device_settings: "Settings of this device",
-  default_value: "Default: {value}",
   no_rooms: "No room yet.",
   outdoor_air: "Outdoor air",
   outdoors: "Outdoors",

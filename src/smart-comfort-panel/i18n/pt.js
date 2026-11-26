@@ -113,7 +113,6 @@ export default {
   dehumidifiers: "Desumidificadores",
   heating: "Aquecimento",
   device_settings: "Definições deste dispositivo",
-  default_value: "Predefinição: {value}",
   no_rooms: "Ainda nenhuma divisão.",
   outdoor_air: "Ar exterior",
   outdoors: "Exteriores",

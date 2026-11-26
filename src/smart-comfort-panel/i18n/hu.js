@@ -113,7 +113,6 @@ export default {
   dehumidifiers: "Páramentesítők",
   heating: "Fűtés",
   device_settings: "Az eszköz beállításai",
-  default_value: "Alapértelmezett: {value}",
   no_rooms: "Még nincs helyiség.",
   outdoor_air: "Kültéri levegő",
   outdoors: "Kültér",

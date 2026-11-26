@@ -113,7 +113,6 @@ export default {
   dehumidifiers: "Ontvochtigers",
   heating: "Verwarming",
   device_settings: "Instellingen van dit apparaat",
-  default_value: "Standaard: {value}",
   no_rooms: "Nog geen kamer.",
   outdoor_air: "Buitenlucht",
   outdoors: "Buiten",

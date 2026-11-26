@@ -113,7 +113,6 @@ export default {
   dehumidifiers: "Odvlaživači",
   heating: "Grejanje",
   device_settings: "Podešavanja ovog uređaja",
-  default_value: "Podrazumevano: {value}",
   no_rooms: "Još uvek nema soba.",
   outdoor_air: "Spoljašnji vazduh",
   outdoors: "Spoljašnji prostor",

@@ -113,7 +113,6 @@ export default {
   dehumidifiers: "Odvlhčovače",
   heating: "Kúrenie",
   device_settings: "Nastavenia zariadenia",
-  default_value: "Predvolené: {value}",
   no_rooms: "Zatiaľ žiadna miestnosť.",
   outdoor_air: "Vonkajší vzduch",
   outdoors: "Vonku",

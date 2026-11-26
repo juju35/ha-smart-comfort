@@ -113,7 +113,6 @@ export default {
   dehumidifiers: "Mitruma savācēji",
   heating: "Apkure",
   device_settings: "Šīs ierīces iestatījumi",
-  default_value: "Noklusējums: {value}",
   no_rooms: "Vēl nav telpu.",
   outdoor_air: "Āra gaiss",
   outdoors: "Ārā",

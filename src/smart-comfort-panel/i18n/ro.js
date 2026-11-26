@@ -113,7 +113,6 @@ export default {
   dehumidifiers: "Dezumidificatoare",
   heating: "Încălzire",
   device_settings: "Setările aparatului",
-  default_value: "Implicit: {value}",
   no_rooms: "Încă nicio cameră.",
   outdoor_air: "Aer exterior",
   outdoors: "Exterior",

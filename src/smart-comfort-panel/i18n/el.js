@@ -113,7 +113,6 @@ export default {
   dehumidifiers: "Αφυγραντήρες",
   heating: "Θέρμανση",
   device_settings: "Ρυθμίσεις συσκευής",
-  default_value: "Προεπιλογή: {value}",
   no_rooms: "Κανένα δωμάτιο ακόμα.",
   outdoor_air: "Εξωτερικός αέρας",
   outdoors: "Εξωτερικοί χώροι",

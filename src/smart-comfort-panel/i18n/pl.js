@@ -113,7 +113,6 @@ export default {
   dehumidifiers: "Osuszacze",
   heating: "Ogrzewanie",
   device_settings: "Ustawienia tego urządzenia",
-  default_value: "Domyślnie: {value}",
   no_rooms: "Brak pomieszczeń.",
   outdoor_air: "Powietrze na zewnątrz",
   outdoors: "Na zewnątrz",

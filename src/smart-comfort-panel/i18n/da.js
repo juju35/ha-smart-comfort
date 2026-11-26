@@ -113,7 +113,6 @@ export default {
   dehumidifiers: "Affugtere",
   heating: "Opvarmning",
   device_settings: "Indstillinger for denne enhed",
-  default_value: "Standard: {value}",
   no_rooms: "Intet rum endnu.",
   outdoor_air: "Udendørs luft",
   outdoors: "Udendørs",

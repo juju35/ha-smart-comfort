@@ -1,7 +1,7 @@
 // ── Settings tab ──
 // The Settings tab: notifications, device control, adaptive lighting. Methods of SmartComfortPanel, copied onto its
 // prototype at registration.
-import { LEVEL_KEYS, bool, entity, grid, lightingLevels, minutes, num, percent, text, time } from "./form.js";
+import { LEVEL_KEYS, bool, entity, grid, humidity, lightingLevels, minutes, num, percent, text, time } from "./form.js";
 
 // Where the device control labels live: the step's own, then each device section's.
 const CONTROL_SECTIONS = [null, "climate", "fans", "purifiers", "dehumidifiers", "heating"];
@@ -90,54 +90,64 @@ export class SmartComfortPanelSettings {
   _controlSchema() {
     // Each field keeps its section, for its label (off_on_open of the heating is not the air conditioners' one).
     const tag = (fields, section) => fields.map((f) => (f.schema ? { ...f, schema: tag(f.schema, section) } : { ...f, section }));
-    const sec = (name, schema) => ({ type: "expandable", name, title: this._sectionTitle("control", name), schema: tag(schema, name) });
+    const sec = (name, icon, schema) => ({ type: "expandable", name, icon, title: this._sectionTitle("control", name), schema: tag(schema, name) });
     // A group inside a section: folded, its fields kept at the section's level.
-    const group = (key, schema) => ({ type: "expandable", name: "", flatten: true, title: this._t(key), schema });
+    const group = (key, icon, schema) => ({ type: "expandable", name: "", flatten: true, icon, title: this._t(key), schema });
     return [
       { name: "enabled", selector: bool },
       { name: "suppress_when_handled", selector: bool },
       { name: "manual_override", selector: minutes() },
       // A shower: the dehumidifiers (and the fans with a shower speed) of the room boosted.
-      { name: "shower_rise", selector: num("%", { min: 0, max: 100, step: 1 }) },
+      { name: "shower_rise", selector: humidity },
       { name: "shower_boost", selector: minutes() },
-      sec("climate", [
-        { name: "cool_above", selector: num("°C") },
-        { name: "off_below", selector: num("°C") },
-        { name: "setpoint", selector: num("°C", { step: 0.5 }) },
-        { name: "closed_for", selector: minutes() },
-        { name: "off_on_open", selector: minutes() },
+      sec("climate", "mdi:air-conditioner", [
+        grid([
+          { name: "cool_above", selector: num("°C") },
+          { name: "off_below", selector: num("°C") },
+          { name: "setpoint", selector: num("°C", { step: 0.5 }) },
+        ]),
+        grid([
+          { name: "closed_for", selector: minutes() },
+          { name: "off_on_open", selector: minutes() },
+        ]),
         { name: "min_outdoor", selector: num("°C") },
       ]),
-      sec("fans", [
-        { name: "on_above", selector: num("°C") },
-        { name: "off_below", selector: num("°C") },
+      sec("fans", "mdi:fan", [
+        grid([
+          { name: "on_above", selector: num("°C") },
+          { name: "off_below", selector: num("°C") },
+        ]),
         { name: "percentage", selector: percent },
         { name: "open_percentage", selector: percent },
         { name: "night_percentage", selector: percent },
       ]),
-      sec("purifiers", [
+      sec("purifiers", "mdi:air-purifier", [
         { name: "open_percentage", selector: percent },
         { name: "keep_on", selector: bool },
         { name: "night_percentage", selector: percent },
       ]),
-      sec("dehumidifiers", [
-        { name: "on_above", selector: num("%", { min: 0, max: 100, step: 1 }) },
-        { name: "off_below", selector: num("%", { min: 0, max: 100, step: 1 }) },
+      sec("dehumidifiers", "mdi:air-humidifier", [
+        grid([
+          { name: "on_above", selector: humidity },
+          { name: "off_below", selector: humidity },
+        ]),
         { name: "night_off", selector: bool },
-        { name: "off_on_open", selector: minutes() },
         { name: "prefer_airing", selector: bool },
-        { name: "airing_wait", selector: minutes() },
+        grid([
+          { name: "airing_wait", selector: minutes() },
+          { name: "off_on_open", selector: minutes() },
+        ]),
       ]),
-      sec("heating", [
-        group("heat_setpoints", [
+      sec("heating", "mdi:radiator", [
+        group("heat_setpoints", "mdi:thermometer", [
           grid(["comfort", "eco", "frost", "away"].map((m) => ({ name: m, selector: num("°C", { step: 0.5, min: 0, max: 35 }) }))),
         ]),
-        group("heat_schedule", [
+        group("heat_schedule", "mdi:calendar-clock", [
           { name: "schedule", selector: entity(["schedule", "input_boolean", "binary_sensor", "switch"]) },
           { name: "preheat", selector: bool },
           { name: "preheat_max", selector: minutes() },
         ]),
-        group("heat_tempo", [
+        group("heat_tempo", "mdi:flash", [
           grid([
             { name: "tempo", selector: entity("sensor") },
             { name: "tempo_tomorrow", selector: entity("sensor") },
@@ -153,10 +163,12 @@ export class SmartComfortPanelSettings {
             { name: "offpeak_end", selector: time },
           ]),
         ]),
-        group("heat_safety", [
-          { name: "off_on_open", selector: minutes() },
-          { name: "max_outdoor", selector: num("°C") },
-          { name: "fault_after", selector: minutes(10) },
+        group("heat_safety", "mdi:shield-check-outline", [
+          grid([
+            { name: "off_on_open", selector: minutes() },
+            { name: "max_outdoor", selector: num("°C") },
+            { name: "fault_after", selector: minutes(10) },
+          ]),
         ]),
       ]),
     ];
