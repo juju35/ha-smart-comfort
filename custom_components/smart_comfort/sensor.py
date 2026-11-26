@@ -102,6 +102,12 @@ class RoomSensor(SmartComfortEntity, SensorEntity):
             "alerts",
             "handled",
             "devices",
+            "lights",
+            "lighting_phase",
+            "score_penalty",
+            "dew_point",
+            "heat_rate",
+            "shower",
         }
     )
 
