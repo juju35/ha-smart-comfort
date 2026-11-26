@@ -2,7 +2,7 @@
 // The Outdoors tab: the outdoor places and the outdoor sensors in no place. Methods of SmartComfortPanel, copied
 // onto its prototype at registration.
 import { isEmpty, shifted } from "./configuration.js";
-import { entity, text } from "./form.js";
+import { pick, text } from "./form.js";
 
 export class SmartComfortPanelOutdoors {
 
@@ -29,10 +29,10 @@ export class SmartComfortPanelOutdoors {
     other.append(this._el("div", "help", this._t("other_outdoor_help")));
     other.append(
       this._topForm([
-        { name: "outdoor_temperature", selector: entity(["sensor", "weather"], { multiple: true }) },
-        { name: "outdoor_air_quality", selector: entity("sensor", { multiple: true }) },
-        { name: "outdoor_noise", selector: entity("sensor", { device_class: "sound_pressure", multiple: true }) },
-        { name: "outdoor_humidity", selector: entity("sensor", { device_class: "humidity", multiple: true }) },
+        { name: "outdoor_temperature", selector: pick("outdoor_temperature", { multiple: true }) },
+        { name: "outdoor_air_quality", selector: pick("air_quality", { multiple: true }) },
+        { name: "outdoor_noise", selector: pick("noise", { multiple: true }) },
+        { name: "outdoor_humidity", selector: pick("humidity", { multiple: true }) },
         { name: "outdoor_aggregate", selector: { select: { mode: "dropdown", options: this._options("outdoor_aggregate", this._config.aggregates) } } },
       ])
     );
@@ -79,10 +79,10 @@ export class SmartComfortPanelOutdoors {
       this._form(
         [
           { name: "name", required: true, selector: text },
-          { name: "temperature", selector: entity(["sensor", "weather"], { multiple: true }) },
-          { name: "air_quality", selector: entity("sensor", { multiple: true }) },
-          { name: "noise", selector: entity("sensor", { device_class: "sound_pressure", multiple: true }) },
-          { name: "humidity", selector: entity("sensor", { device_class: "humidity", multiple: true }) },
+          { name: "temperature", selector: pick("outdoor_temperature", { multiple: true }) },
+          { name: "air_quality", selector: pick("air_quality", { multiple: true }) },
+          { name: "noise", selector: pick("noise", { multiple: true }) },
+          { name: "humidity", selector: pick("humidity", { multiple: true }) },
         ],
         Object.fromEntries(keys.filter((k) => k in place).map((k) => [k, place[k]])),
         (value) => {

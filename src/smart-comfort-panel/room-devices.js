@@ -2,7 +2,7 @@
 // The devices of a room: its air conditioner, fans, air purifiers, dehumidifiers, heaters and lights. Each device shows
 // its few essential settings, the rest under Advanced, in a tile of its own; an empty field shows the default it falls
 // back to (greyed), an unset switch its default state. Methods of SmartComfortPanel, copied onto its prototype at registration.
-import { EQUIPMENT, bool, entity, humidity, lightingLevels, minutes, num } from "./form.js";
+import { EQUIPMENT, bool, entity, humidity, lightingLevels, minutes, num, pick } from "./form.js";
 
 // A percentage typed in a box, so that an empty one can show its default (a slider can't).
 const pct = { number: { mode: "box", step: 1, min: 0, max: 100, unit_of_measurement: "%" } };
@@ -207,9 +207,10 @@ export class SmartComfortPanelRoomDevices {
     return this._label("control", name, section);
   }
 
-  /** The essentials on show, then the rest under Advanced; only the entity picker until one is chosen. */
-  _deviceSchema(domain, entityId, essentials, advanced) {
-    return [{ name: "entity_id", selector: entity(domain) }, ...(entityId ? [...essentials, this._advanced([...advanced, ...EQUIPMENT])] : [])];
+  /** The essentials on show, then the rest under Advanced; only the entity picker (a domain, or a selector) until one
+   *  is chosen. */
+  _deviceSchema(picker, entityId, essentials, advanced) {
+    return [{ name: "entity_id", selector: typeof picker === "string" ? entity(picker) : picker }, ...(entityId ? [...essentials, this._advanced([...advanced, ...EQUIPMENT])] : [])];
   }
 
   _climateSchema(entityId) {
@@ -289,7 +290,7 @@ export class SmartComfortPanelRoomDevices {
     const nightChoices = ["normal", ...(humidifier && modes.length ? ["quiet"] : []), "off"];
     const quiet = humidifier && item.night_mode !== undefined && item.night_off !== true;
     return this._deviceSchema(
-      ["humidifier", "switch"],
+      pick("dehumidifier"),
       entityId,
       [
         pair([
@@ -301,7 +302,7 @@ export class SmartComfortPanelRoomDevices {
           selector: { select: { mode: "list", options: nightChoices.map((value) => ({ value, label: this._t(`night_${value}`) })) } },
         },
         ...(quiet ? [{ name: "night_mode", selector: this._choice(modes) }] : []),
-        { name: "tank", selector: entity("binary_sensor") },
+        { name: "tank", selector: pick("tank") },
       ],
       [
         ...(humidifier
@@ -325,7 +326,7 @@ export class SmartComfortPanelRoomDevices {
       entityId,
       [
         { type: "grid", name: "", column_min_width: "90px", schema: modes.map((m) => ({ name: m, selector: setpoint })) },
-        { name: "schedule", selector: entity(["schedule", "input_boolean", "binary_sensor", "switch"]) },
+        { name: "schedule", selector: pick("schedule") },
         { name: "stove", selector: bool },
         ...(item.stove ? [{ name: "pellets", selector: entity("sensor") }] : []),
       ],

@@ -12,6 +12,40 @@ export const text = { text: {} };
 export const bool = { boolean: {} };
 export const time = { time: {} };
 export const entity = (domain, extra = {}) => ({ entity: { domain, ...extra } });
+// The kinds of entities each picker lists (domain and device class), so that it offers only those that fit.
+const sensor = (device_class) => ({ domain: "sensor", device_class });
+const ON_OFF = [{ domain: "schedule" }, { domain: "input_boolean" }];
+export const PICK = {
+  temperature: [sensor("temperature")],
+  outdoor_temperature: [sensor("temperature"), { domain: "weather" }],
+  humidity: [sensor("humidity")],
+  co2: [sensor("carbon_dioxide")],
+  noise: [sensor("sound_pressure")],
+  pm25: [sensor("pm25")],
+  pm10: [sensor("pm10")],
+  // An index: its device class, a level in words (good, poor…), or the sensors of an air quality service (Atmo France's
+  // index has no device class).
+  air_quality: [
+    sensor("aqi"),
+    sensor("enum"),
+    ...["atmofrance", "waqi", "airvisual", "airly", "airnow", "google_air_quality"].map((integration) => ({ integration, domain: "sensor" })),
+  ],
+  openings: [{ domain: "binary_sensor", device_class: ["window", "door", "opening", "garage_door"] }],
+  presence: [
+    { domain: "zone" },
+    { domain: "person" },
+    { domain: "group" },
+    { domain: "device_tracker" },
+    { domain: "input_boolean" },
+    { domain: "binary_sensor", device_class: ["occupancy", "presence"] },
+  ],
+  schedule: ON_OFF,
+  tempo: [sensor("enum")],
+  offpeak: [{ domain: "binary_sensor" }, sensor("enum"), ...ON_OFF],
+  tank: [{ domain: "binary_sensor", device_class: "problem" }],
+  dehumidifier: [{ domain: "humidifier", device_class: "dehumidifier" }, { domain: "switch" }],
+};
+export const pick = (kind, extra = {}) => ({ entity: { filter: PICK[kind], ...extra } });
 // Every device: its indicator light or display, and a time to go back to its normal state.
 export const EQUIPMENT = [
   { name: "display", selector: entity(["light", "switch", "number", "select"]) },

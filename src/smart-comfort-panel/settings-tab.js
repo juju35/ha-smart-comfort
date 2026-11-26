@@ -1,7 +1,7 @@
 // ── Settings tab ──
 // The Settings tab: notifications, device control, adaptive lighting. Methods of SmartComfortPanel, copied onto its
 // prototype at registration.
-import { LEVEL_KEYS, bool, entity, grid, humidity, lightingLevels, minutes, num, percent, text, time } from "./form.js";
+import { LEVEL_KEYS, bool, grid, humidity, lightingLevels, minutes, num, percent, pick, text, time } from "./form.js";
 
 // Where the device control labels live: the step's own, then each device section's.
 const CONTROL_SECTIONS = [null, "climate", "fans", "purifiers", "dehumidifiers", "heating"];
@@ -25,7 +25,7 @@ export class SmartComfortPanelSettings {
             select: { multiple: true, custom_value: true, mode: "dropdown", options: [...new Set([...notify, ...current])].sort() },
           },
         },
-        { name: "presence", selector: entity(["zone", "person", "group", "binary_sensor", "input_boolean", "device_tracker"]) },
+        { name: "presence", selector: pick("presence") },
         { name: "digest_window", selector: minutes() },
         { name: "reminder", selector: minutes() },
         this._advanced([
@@ -143,21 +143,21 @@ export class SmartComfortPanelSettings {
           grid(["comfort", "eco", "frost", "away"].map((m) => ({ name: m, selector: num("°C", { step: 0.5, min: 0, max: 35 }) }))),
         ]),
         group("heat_schedule", "mdi:calendar-clock", [
-          { name: "schedule", selector: entity(["schedule", "input_boolean", "binary_sensor", "switch"]) },
+          { name: "schedule", selector: pick("schedule") },
           { name: "preheat", selector: bool },
           { name: "preheat_max", selector: minutes() },
         ]),
         group("heat_tempo", "mdi:flash", [
           grid([
-            { name: "tempo", selector: entity("sensor") },
-            { name: "tempo_tomorrow", selector: entity("sensor") },
+            { name: "tempo", selector: pick("tempo") },
+            { name: "tempo_tomorrow", selector: pick("tempo") },
           ]),
           grid([
             { name: "tempo_red", selector: num("°C", { step: 0.5, min: 0, max: 10 }) },
             { name: "tempo_white", selector: num("°C", { step: 0.5, min: 0, max: 10 }) },
             { name: "tempo_preheat", selector: num("°C", { step: 0.5, min: 0, max: 5 }) },
           ]),
-          { name: "offpeak", selector: entity(["binary_sensor", "input_boolean", "sensor", "schedule"]) },
+          { name: "offpeak", selector: pick("offpeak") },
           grid([
             { name: "offpeak_start", selector: time },
             { name: "offpeak_end", selector: time },
