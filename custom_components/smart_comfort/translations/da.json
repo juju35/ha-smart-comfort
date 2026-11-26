@@ -632,6 +632,7 @@
     "line_polluted_air_index": "luftkvalitet {value}/6, over {threshold}/6",
     "line_humidity_high": "luftfugtighed {value} % — luft ud",
     "line_condensation_risk": "risiko for kondens: vægge {value} °C over dugpunktet — luft ud eller affugt",
+    "line_condensation": "kondens: vægge ved dugpunktet — luft ud eller affugt",
     "line_air_to_dry": "{value} g/m³ tørrere udenfor — åbn vinduerne for at tørre rummet",
     "line_tank_full": "affugterens tank er fuld — tøm den",
     "line_heating_fault": "varmen er tændt, men rummet bliver ikke varmere ({value} °C, temperatur {threshold} °C)",

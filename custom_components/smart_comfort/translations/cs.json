@@ -632,6 +632,7 @@
     "line_polluted_air_index": "kvalita vzduchu {value}/6, nad {threshold}/6",
     "line_humidity_high": "vlhkost {value} % — vyvětrejte místnost",
     "line_condensation_risk": "riziko kondenzace: stěny {value} °C nad rosným bodem — vyvětrejte nebo odvlhčete",
+    "line_condensation": "kondenzace: stěny na rosném bodu — vyvětrejte nebo odvlhčete",
     "line_air_to_dry": "venku sušší o {value} g/m³ — otevřete okna, abyste místnost vysušili",
     "line_tank_full": "nádrž odvlhčovače plná — vyprázdněte ji",
     "line_heating_fault": "topení zapnuté, ale místnost se neohřívá ({value} °C, nastaveno {threshold} °C)",

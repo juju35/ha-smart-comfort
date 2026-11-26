@@ -403,3 +403,12 @@ def test_eco_falls_back_on_comfort_not_frost():
     )
     assert dev.preset("eco") == "comfort"
     assert dev.preset("away") == "frost"
+
+
+def test_condensation_line_at_the_dew_point():
+    from custom_components.smart_comfort.message import problem_text
+
+    assert problem_text({}, "condensation_risk", 1.2, {}).startswith("condensation risk: walls 1.2 °C above")
+    assert problem_text({}, "condensation_risk", -0.4, {}) == (
+        "condensation: walls at the dew point — air or dry the room"
+    )

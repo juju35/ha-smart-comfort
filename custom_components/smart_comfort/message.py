@@ -69,6 +69,7 @@ FALLBACK = {
     "line_polluted_air_index": "air quality {value}/6, above {threshold}/6",
     "line_humidity_high": "humidity {value} % — air the room",
     "line_condensation_risk": "condensation risk: walls {value} °C above the dew point — air or dry the room",
+    "line_condensation": "condensation: walls at the dew point — air or dry the room",
     "line_air_to_dry": "{value} g/m³ drier outside — open the windows to dry the room",
     "line_tank_full": "dehumidifier tank full — empty it",
     "line_heating_fault": "heating on but the room isn't warming ({value} °C, setpoint {threshold} °C)",
@@ -129,6 +130,8 @@ def problem_text(
     key = f"line_{kind}"
     if kind == KIND_POLLUTED and details.get("metric") == "aqi":
         key = "line_polluted_air_index"
+    elif kind == KIND_CONDENSATION and isinstance(value, (int, float)) and value <= 0:
+        key = "line_condensation"  # At or below the dew point: condensing already.
     return format_text(
         texts,
         key,

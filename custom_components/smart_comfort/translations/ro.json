@@ -632,6 +632,7 @@
     "line_polluted_air_index": "calitatea aerului {value}/6, peste {threshold}/6",
     "line_humidity_high": "umiditate {value} % — aerisiți camera",
     "line_condensation_risk": "risc de condens: pereți cu {value} °C peste punctul de rouă — aerisiți sau dezumidificați",
+    "line_condensation": "condens: pereți la punctul de rouă — aerisiți sau dezumidificați",
     "line_air_to_dry": "afară cu {value} g/m³ mai uscat — deschideți ferestrele pentru a usca camera",
     "line_tank_full": "rezervorul dezumidificatorului plin — goliți-l",
     "line_heating_fault": "încălzire pornită, dar camera nu se încălzește ({value} °C, temperatură setată {threshold} °C)",

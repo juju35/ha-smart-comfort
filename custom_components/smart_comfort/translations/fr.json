@@ -632,6 +632,7 @@
     "line_polluted_air_index": "qualité de l'air {value}/6, au-dessus de {threshold}/6",
     "line_humidity_high": "humidité {value} % — aérez",
     "line_condensation_risk": "risque de condensation : murs à {value} °C au-dessus du point de rosée — aérez ou déshumidifiez",
+    "line_condensation": "condensation : murs au point de rosée — aérez ou déshumidifiez",
     "line_air_to_dry": "air {value} g/m³ plus sec dehors — ouvrez les fenêtres pour assécher la pièce",
     "line_tank_full": "réservoir du déshumidificateur plein — videz-le",
     "line_heating_fault": "chauffage en marche mais la pièce ne se réchauffe pas ({value} °C, consigne {threshold} °C)",

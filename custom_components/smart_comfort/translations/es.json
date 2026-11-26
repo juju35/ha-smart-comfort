@@ -632,6 +632,7 @@
     "line_polluted_air_index": "calidad del aire {value}/6, por encima de {threshold}/6",
     "line_humidity_high": "humedad {value} % — ventile",
     "line_condensation_risk": "riesgo de condensación: paredes {value} °C por encima del punto de rocío — ventile o deshumidifique",
+    "line_condensation": "condensación: paredes en el punto de rocío — ventile o deshumidifique",
     "line_air_to_dry": "{value} g/m³ más seco fuera — abra las ventanas para secar la habitación",
     "line_tank_full": "depósito del deshumidificador lleno — vacíelo",
     "line_heating_fault": "calefacción encendida pero la habitación no se calienta ({value} °C, consigna {threshold} °C)",

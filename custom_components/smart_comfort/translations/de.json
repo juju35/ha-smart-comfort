@@ -632,6 +632,7 @@
     "line_polluted_air_index": "Luftqualität {value}/6, über {threshold}/6",
     "line_humidity_high": "Luftfeuchtigkeit {value} % — lüften",
     "line_condensation_risk": "Kondensationsrisiko: Wände {value} °C über dem Taupunkt — lüften oder entfeuchten",
+    "line_condensation": "Kondensation: Wände am Taupunkt — lüften oder entfeuchten",
     "line_air_to_dry": "draußen {value} g/m³ trockener — Fenster öffnen, um den Raum zu trocknen",
     "line_tank_full": "Wassertank des Entfeuchters voll — leeren",
     "line_heating_fault": "Heizung an, aber der Raum erwärmt sich nicht ({value} °C, Sollwert {threshold} °C)",

@@ -632,6 +632,7 @@
     "line_polluted_air_index": "jakość powietrza {value}/6, powyżej {threshold}/6",
     "line_humidity_high": "wilgotność {value} % — przewietrz pomieszczenie",
     "line_condensation_risk": "ryzyko kondensacji: ściany {value} °C powyżej punktu rosy — przewietrz lub osusz pomieszczenie",
+    "line_condensation": "kondensacja: ściany w punkcie rosy — przewietrz lub osusz pomieszczenie",
     "line_air_to_dry": "na zewnątrz suszej o {value} g/m³ — otwórz okna, aby osuszyć pomieszczenie",
     "line_tank_full": "pełny zbiornik osuszacza — opróżnij go",
     "line_heating_fault": "ogrzewanie włączone, ale pomieszczenie się nie nagrzewa ({value} °C, temperatura zadana {threshold} °C)",

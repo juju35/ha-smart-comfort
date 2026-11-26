@@ -632,6 +632,7 @@
     "line_polluted_air_index": "kakovost zraka {value}/6, nad {threshold}/6",
     "line_humidity_high": "vlažnost {value} % — prezračite prostor",
     "line_condensation_risk": "nevarnost kondenzacije: stene {value} °C nad rosiščem — prezračite ali razvlažite",
+    "line_condensation": "kondenzacija: stene na rosišču — prezračite ali razvlažite",
     "line_air_to_dry": "zunaj bolj suho za {value} g/m³ — odprite okna, da se prostor osuši",
     "line_tank_full": "rezervoar razvlaževalnika poln — izpraznite ga",
     "line_heating_fault": "ogrevanje vklopljeno, a se prostor ne ogreva ({value} °C, nastavljeno {threshold} °C)",

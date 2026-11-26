@@ -632,6 +632,7 @@
     "line_polluted_air_index": "qualidade do ar {value}/6, acima de {threshold}/6",
     "line_humidity_high": "humidade {value} % — areje a divisão",
     "line_condensation_risk": "risco de condensação: paredes {value} °C acima do ponto de orvalho — areje ou desumidifique",
+    "line_condensation": "condensação: paredes no ponto de orvalho — areje ou desumidifique",
     "line_air_to_dry": "{value} g/m³ mais seco lá fora — abra as janelas para secar a divisão",
     "line_tank_full": "depósito do desumidificador cheio — esvazie-o",
     "line_heating_fault": "aquecimento ligado mas a divisão não aquece ({value} °C, temperatura {threshold} °C)",

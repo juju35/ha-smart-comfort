@@ -632,6 +632,7 @@
     "line_polluted_air_index": "qualità dell'aria {value}/6, sopra {threshold}/6",
     "line_humidity_high": "umidità {value} % — arieggia la stanza",
     "line_condensation_risk": "rischio di condensa: pareti {value} °C sopra il punto di rugiada — arieggiare o deumidificare",
+    "line_condensation": "condensa: pareti al punto di rugiada — arieggiare o deumidificare",
     "line_air_to_dry": "{value} g/m³ più secco fuori — aprire le finestre per asciugare la stanza",
     "line_tank_full": "serbatoio del deumidificatore pieno — svuotarlo",
     "line_heating_fault": "riscaldamento acceso ma la stanza non si scalda ({value} °C, temperatura {threshold} °C)",

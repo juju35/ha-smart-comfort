@@ -632,6 +632,7 @@
     "line_polluted_air_index": "levegőminőség {value}/6, {threshold}/6 felett",
     "line_humidity_high": "páratartalom {value} % — szellőztessen",
     "line_condensation_risk": "páralecsapódás veszélye: a falak {value} °C-kal a harmatpont felett — szellőztess vagy páramentesíts",
+    "line_condensation": "páralecsapódás: a falak a harmatponton — szellőztess vagy páramentesíts",
     "line_air_to_dry": "kint {value} g/m³-rel szárazabb — nyisd ki az ablakokat a helyiség kiszárításához",
     "line_tank_full": "a páramentesítő tartálya tele — ürítsd ki",
     "line_heating_fault": "a fűtés bekapcsolva, de a helyiség nem melegszik ({value} °C, beállítva {threshold} °C)",

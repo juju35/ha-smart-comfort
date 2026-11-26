@@ -632,6 +632,7 @@
     "line_polluted_air_index": "gaisa kvalitāte {value}/6, virs {threshold}/6",
     "line_humidity_high": "mitrums {value} % — izvēdiniet telpu",
     "line_condensation_risk": "kondensāta risks: sienas {value} °C virs rasas punkta — izvēdiniet vai savāciet mitrumu",
+    "line_condensation": "kondensāts: sienas rasas punktā — izvēdiniet vai savāciet mitrumu",
     "line_air_to_dry": "ārā sausāks par {value} g/m³ — atveriet logus, lai izžāvētu telpu",
     "line_tank_full": "mitruma savācēja tvertne pilna — iztukšojiet to",
     "line_heating_fault": "apkure ieslēgta, bet telpa nesasilst ({value} °C, iestatīts {threshold} °C)",

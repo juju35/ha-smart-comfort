@@ -632,6 +632,7 @@
     "line_polluted_air_index": "luchtkwaliteit {value}/6, boven {threshold}/6",
     "line_humidity_high": "vochtigheid {value} % — lucht de kamer",
     "line_condensation_risk": "condensatierisico: wanden {value} °C boven het dauwpunt — lucht of ontvochtig de ruimte",
+    "line_condensation": "condensatie: wanden op het dauwpunt — lucht of ontvochtig de ruimte",
     "line_air_to_dry": "buiten {value} g/m³ droger — open de ramen om de ruimte te drogen",
     "line_tank_full": "reservoir van de ontvochtiger vol — leeg het",
     "line_heating_fault": "verwarming aan maar de ruimte warmt niet op ({value} °C, instelwaarde {threshold} °C)",

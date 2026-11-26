@@ -632,6 +632,7 @@
     "line_polluted_air_index": "kvalitet vazduha {value}/6, iznad {threshold}/6",
     "line_humidity_high": "vlažnost {value} % — provetrite sobu",
     "line_condensation_risk": "rizik od kondenzacije: zidovi {value} °C iznad tačke rose — provetrite ili odvlažite",
+    "line_condensation": "kondenzacija: zidovi na tački rose — provetrite ili odvlažite",
     "line_air_to_dry": "napolju suvlje za {value} g/m³ — otvorite prozore da isušite prostoriju",
     "line_tank_full": "rezervoar odvlaživača pun — ispraznite ga",
     "line_heating_fault": "grejanje uključeno, ali se prostorija ne zagreva ({value} °C, zadato {threshold} °C)",

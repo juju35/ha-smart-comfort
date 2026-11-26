@@ -632,6 +632,7 @@
     "line_polluted_air_index": "luftkvalitet {value}/6, över {threshold}/6",
     "line_humidity_high": "luftfuktighet {value} % — vädra rummet",
     "line_condensation_risk": "kondensrisk: väggar {value} °C över daggpunkten — vädra eller avfukta",
+    "line_condensation": "kondens: väggar vid daggpunkten — vädra eller avfukta",
     "line_air_to_dry": "{value} g/m³ torrare ute — öppna fönstren för att torka rummet",
     "line_tank_full": "avfuktarens tank full — töm den",
     "line_heating_fault": "värmen är på men rummet blir inte varmare ({value} °C, temperatur {threshold} °C)",
