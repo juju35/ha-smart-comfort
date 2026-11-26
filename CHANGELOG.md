@@ -17,6 +17,7 @@
 
 ### Fixes
 - The room sensors' new attributes (dew point, score penalty, warm-up rate, shower) and the lighting ones are kept out of the recorder.
+- A dehumidifier stopping as its tank fills is no longer taken for a change by hand: it dries again as soon as the tank is emptied. A heater offering no `heat` mode is turned on in `auto` (or its first mode).
 - Setpoints in Home Assistant's unit: on a °F system, the air conditioner's and the heaters' setpoints are sent in °F, and the heaters' are read back in °C (a heater was set again at every evaluation).
 
 ## 2.2.4 - 2026-11-25
