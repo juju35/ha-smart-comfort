@@ -91,6 +91,8 @@ export class SmartComfortPanelSettings {
     // Each field keeps its section, for its label (off_on_open of the heating is not the air conditioners' one).
     const tag = (fields, section) => fields.map((f) => (f.schema ? { ...f, schema: tag(f.schema, section) } : { ...f, section }));
     const sec = (name, schema) => ({ type: "expandable", name, title: this._sectionTitle("control", name), schema: tag(schema, name) });
+    // A group inside a section: folded, its fields kept at the section's level.
+    const group = (key, schema) => ({ type: "expandable", name: "", flatten: true, title: this._t(key), schema });
     return [
       { name: "enabled", selector: bool },
       { name: "suppress_when_handled", selector: bool },
@@ -127,31 +129,41 @@ export class SmartComfortPanelSettings {
         { name: "airing_wait", selector: minutes() },
       ]),
       sec("heating", [
-        grid(["comfort", "eco", "frost", "away"].map((m) => ({ name: m, selector: num("°C", { step: 0.5, min: 0, max: 35 }) }))),
-        { name: "schedule", selector: entity(["schedule", "input_boolean", "binary_sensor", "switch"]) },
-        { name: "off_on_open", selector: minutes() },
-        { name: "max_outdoor", selector: num("°C") },
-        { name: "preheat", selector: bool },
-        { name: "preheat_max", selector: minutes() },
-        { name: "fault_after", selector: minutes(10) },
-        { name: "tempo", selector: entity("sensor") },
-        { name: "tempo_tomorrow", selector: entity("sensor") },
-        grid([
-          { name: "tempo_red", selector: num("°C", { step: 0.5, min: 0, max: 10 }) },
-          { name: "tempo_white", selector: num("°C", { step: 0.5, min: 0, max: 10 }) },
-          { name: "tempo_preheat", selector: num("°C", { step: 0.5, min: 0, max: 5 }) },
+        group("heat_setpoints", [
+          grid(["comfort", "eco", "frost", "away"].map((m) => ({ name: m, selector: num("°C", { step: 0.5, min: 0, max: 35 }) }))),
         ]),
-        { name: "offpeak", selector: entity(["binary_sensor", "input_boolean", "sensor", "schedule"]) },
-        grid([
-          { name: "offpeak_start", selector: time },
-          { name: "offpeak_end", selector: time },
+        group("heat_schedule", [
+          { name: "schedule", selector: entity(["schedule", "input_boolean", "binary_sensor", "switch"]) },
+          { name: "preheat", selector: bool },
+          { name: "preheat_max", selector: minutes() },
+        ]),
+        group("heat_tempo", [
+          grid([
+            { name: "tempo", selector: entity("sensor") },
+            { name: "tempo_tomorrow", selector: entity("sensor") },
+          ]),
+          grid([
+            { name: "tempo_red", selector: num("°C", { step: 0.5, min: 0, max: 10 }) },
+            { name: "tempo_white", selector: num("°C", { step: 0.5, min: 0, max: 10 }) },
+            { name: "tempo_preheat", selector: num("°C", { step: 0.5, min: 0, max: 5 }) },
+          ]),
+          { name: "offpeak", selector: entity(["binary_sensor", "input_boolean", "sensor", "schedule"]) },
+          grid([
+            { name: "offpeak_start", selector: time },
+            { name: "offpeak_end", selector: time },
+          ]),
+        ]),
+        group("heat_safety", [
+          { name: "off_on_open", selector: minutes() },
+          { name: "max_outdoor", selector: num("°C") },
+          { name: "fault_after", selector: minutes(10) },
         ]),
       ]),
     ];
   }
 
   _controlLabel(schema) {
-    if (schema.type === "expandable") return this._sectionTitle("control", schema.name);
+    if (schema.type === "expandable") return schema.title || this._sectionTitle("control", schema.name);
     for (const section of [schema.section, ...CONTROL_SECTIONS].filter((x) => x !== undefined)) {
       const label = this._label("control", schema.name, section);
       if (label !== schema.name) return label;

@@ -1,8 +1,15 @@
 // ── Room devices ──
-// The devices of a room: its air conditioner, fans, air purifiers, dehumidifiers, heaters and lights, each with its
-// settings folded. Methods
-// of SmartComfortPanel, copied onto its prototype at registration.
-import { EQUIPMENT, bool, entity, lightingLevels, minutes, num, percent, time } from "./form.js";
+// The devices of a room: its air conditioner, fans, air purifiers, dehumidifiers, heaters and lights. Each device shows
+// its few essential settings, the rest under Advanced; an empty field shows the default it falls back to (greyed), an
+// unset switch its default state. Methods of SmartComfortPanel, copied onto its prototype at registration.
+import { EQUIPMENT, bool, entity, lightingLevels, minutes, num } from "./form.js";
+
+// A percentage typed in a box, so that an empty one can show its default (a slider can't).
+const pct = { number: { mode: "box", step: 1, min: 0, max: 100, unit_of_measurement: "%" } };
+const pair = (fields) => ({ type: "grid", name: "", column_min_width: "120px", schema: fields });
+const setpoint = num("°C", { step: 0.5, min: 0, max: 35 });
+// How a dehumidifier spends the night: a choice standing for night_off and night_mode (never stored as such).
+const NIGHT = "night_behaviour";
 
 export class SmartComfortPanelRoomDevices {
 
@@ -16,25 +23,21 @@ export class SmartComfortPanelRoomDevices {
     return { select: { mode: "dropdown", custom_value: true, options } };
   }
 
-  /** Air conditioner, fans and purifiers of a room, each with its settings folded. */
+  /** Air conditioner, fans, purifiers, dehumidifiers and heaters of a room, each with its settings. */
   _roomDevices(body, room, index) {
     if (room.climate || this._shown.has(`${index}:climate`)) {
       const climate = room.climate ? this._item(room.climate) : {};
       const defaults = this._effectiveControl(room, "climate");
       const line = this._el("div", "device-item");
-      const form = this._form(
-        this._climateSchema(climate.entity_id),
+      const form = this._deviceForm(
+        "climate",
         climate,
+        defaults,
         (value) => {
           if (!value.entity_id) delete room.climate;
           else room.climate = this._store(value);
-          form.schema = this._climateSchema(value.entity_id);
         },
-        (f) => {
-          if (f.type === "expandable") return this._t("device_settings");
-          return f.name === "entity_id" ? this._t("climate") : this._label("control", f.name, "climate");
-        },
-        (f) => this._defaultHelp(f, defaults)
+        (value) => this._climateSchema(value.entity_id)
       );
       line.append(
         form,
@@ -47,10 +50,7 @@ export class SmartComfortPanelRoomDevices {
       );
       body.append(line);
     }
-    this._deviceList(body, room, "fans");
-    this._deviceList(body, room, "purifiers");
-    this._deviceList(body, room, "dehumidifiers");
-    this._deviceList(body, room, "heating");
+    for (const key of ["fans", "purifiers", "dehumidifiers", "heating"]) this._deviceList(body, room, key);
     this._addChips(body, [
       ...(room.climate || this._shown.has(`${index}:climate`)
         ? []
@@ -70,7 +70,7 @@ export class SmartComfortPanelRoomDevices {
     ]);
   }
 
-  /** The fans, purifiers or lights of a room: one line each, its own settings folded. */
+  /** The fans, purifiers, dehumidifiers, heaters or lights of a room: one block each. */
   _deviceList(body, room, key) {
     const items = Array.isArray(room[key]) ? room[key] : room[key] ? [room[key]] : [];
     const defaults =
@@ -81,22 +81,20 @@ export class SmartComfortPanelRoomDevices {
       ({
         fans: () => this._fanSchema(item.entity_id),
         lights: () => this._lightSchema(item, defaults),
-        dehumidifiers: () => this._dehumidifierSchema(item.entity_id),
+        dehumidifiers: () => this._dehumidifierSchema(item),
         heating: () => this._heaterSchema(item),
       })[key]?.() ?? this._purifierSchema(item);
     items.forEach((raw, i) => {
-      const item = this._item(raw);
       const line = this._el("div", "device-item");
-      const form = this._form(
-        schemaFor(item),
-        item,
+      const form = this._deviceForm(
+        key,
+        this._item(raw),
+        defaults,
         (value) => {
           items[i] = this._store(value);
           room[key] = items.filter((x) => x && (typeof x === "string" || x.entity_id));
-          form.schema = schemaFor(value);
         },
-        (f) => (f.type === "expandable" ? f.title || this._t("device_settings") : this._deviceLabel(key, f.name)),
-        (f) => this._defaultHelp(f, defaults)
+        schemaFor
       );
       line.append(
         form,
@@ -112,6 +110,90 @@ export class SmartComfortPanelRoomDevices {
     });
   }
 
+  /**
+   * One device's form. Its empty fields show their defaults (greyed); an unset switch shows its default state, and
+   * is stored only once changed from it, so that the device keeps following the defaults it doesn't override.
+   */
+  _deviceForm(key, item, defaults, store, schemaFor) {
+    const own = { ...item };
+    const shown = (value) => {
+      const data = { ...value };
+      for (const f of this._flatFields(schemaFor(value))) {
+        if (f.selector?.boolean && data[f.name] === undefined && typeof defaults[f.name] === "boolean") {
+          data[f.name] = defaults[f.name];
+        }
+      }
+      if (key === "dehumidifiers") data[NIGHT] = this._nightOf(value, defaults);
+      return data;
+    };
+    const kept = (value) => {
+      const out = { ...value };
+      for (const f of this._flatFields(schemaFor(out))) {
+        // A switch left at its default state is not stored (it was only shown so).
+        if (f.selector?.boolean && own[f.name] === undefined && out[f.name] === defaults[f.name]) delete out[f.name];
+      }
+      if (key === "dehumidifiers") this._setNight(out, out[NIGHT], defaults, this._attr(out.entity_id, "available_modes"));
+      delete out[NIGHT];
+      return out;
+    };
+    const form = this._form(
+      this._withDefaults(schemaFor(item), defaults),
+      shown(item),
+      (value) => {
+        const next = kept(value);
+        for (const name of Object.keys(own)) if (!(name in next)) delete own[name];
+        Object.assign(own, next);
+        store(next);
+        form.schema = this._withDefaults(schemaFor(next), defaults);
+        form.data = shown(next);
+      },
+      (f) => (f.type === "expandable" ? f.title : f.name === NIGHT ? this._t("night_behaviour") : this._deviceLabel(key, f.name)),
+      (f) =>
+        f.selector?.boolean && own[f.name] === undefined && typeof defaults[f.name] === "boolean"
+          ? this._t("default_value", { value: this._t(defaults[f.name] ? "enabled" : "disabled") })
+          : undefined
+    );
+    return form;
+  }
+
+  /** The fields of a schema, through its grids and expandables. */
+  _flatFields(schema) {
+    return schema.flatMap((f) => (f.schema ? this._flatFields(f.schema) : [f]));
+  }
+
+  /** The schema with each field's default as its placeholder (shown greyed while the field is empty). */
+  _withDefaults(schema, defaults) {
+    return schema.map((f) => {
+      if (f.schema) return { ...f, schema: this._withDefaults(f.schema, defaults) };
+      const value = defaults[f.name];
+      if (f.name === "entity_id" || f.selector?.boolean || value === undefined || value === null || value === "") return f;
+      return { ...f, default: value };
+    });
+  }
+
+  _nightOf(item, defaults) {
+    const off = item.night_off ?? defaults.night_off;
+    if (off) return "off";
+    return item.night_mode || defaults.night_mode ? "quiet" : "normal";
+  }
+
+  /** The night choice of a dehumidifier into night_off and night_mode (dropped when back to the defaults); a quiet
+   *  night just chosen gets the device's quietest mode, to change at will. */
+  _setNight(item, choice, defaults, modes = []) {
+    if (!choice) return;
+    if (choice === "off") {
+      if (defaults.night_off) delete item.night_off;
+      else item.night_off = true;
+      return;
+    }
+    if (defaults.night_off) item.night_off = false;
+    else delete item.night_off;
+    if (choice === "normal") delete item.night_mode;
+    else if (choice === "quiet" && !item.night_mode && !defaults.night_mode) {
+      item.night_mode = modes.find((m) => /sleep|silent|quiet|night|nuit|nacht|calme/i.test(m)) || modes[0];
+    }
+  }
+
   _effectiveControl(room, section) {
     const defaults = this._config.defaults.control[section] || {};
     const global = this._draft.control?.[section] || {};
@@ -119,46 +201,34 @@ export class SmartComfortPanelRoomDevices {
     return { ...defaults, ...global, ...own };
   }
 
-  _defaultHelp(schema, defaults) {
-    if (schema.type || schema.name === "entity_id" || schema.name === "mode_select") return undefined;
-    const value = defaults[schema.name];
-    if (value === undefined || value === null || value === "") return undefined;
-    return this._t("default_value", { value: typeof value === "boolean" ? this._t(value ? "enabled" : "disabled") : value });
-  }
-
   _deviceLabel(section, name) {
-    if (name === "entity_id") return this._t({ fans: "fan", lights: "light", dehumidifiers: "dehumidifier", heating: "heater" }[section] || "purifier");
+    if (name === "entity_id") {
+      return this._t({ fans: "fan", lights: "light", dehumidifiers: "dehumidifier", heating: "heater", climate: "climate" }[section] || "purifier");
+    }
     if (section === "lights") return this._label("lighting", name);
     const map = { mode_select: "purifier_mode_select", open_mode: "purifier_open_mode", closed_mode: "purifier_closed_mode" };
     if (map[name]) return this._label("room", map[name], "overrides");
     return this._label("control", name, section);
   }
 
+  /** The essentials on show, then the rest under Advanced; only the entity picker until one is chosen. */
+  _deviceSchema(domain, entityId, essentials, advanced) {
+    return [{ name: "entity_id", selector: entity(domain) }, ...(entityId ? [...essentials, this._advanced([...advanced, ...EQUIPMENT])] : [])];
+  }
+
   _climateSchema(entityId) {
-    return [
-      { name: "entity_id", selector: entity("climate") },
-      ...(entityId
-        ? [
-            {
-              type: "expandable",
-              name: "",
-              flatten: true,
-              title: this._t("device_settings"),
-              schema: [
-                { name: "cool_above", selector: num("°C") },
-                { name: "off_below", selector: num("°C") },
-                { name: "setpoint", selector: num("°C", { step: 0.5 }) },
-                { name: "fan_mode", selector: this._choice(this._attr(entityId, "fan_modes")) },
-                { name: "closed_for", selector: minutes() },
-                { name: "off_on_open", selector: minutes() },
-                { name: "min_outdoor", selector: num("°C") },
-                { name: "night_fan_mode", selector: this._choice(this._attr(entityId, "fan_modes")) },
-                ...EQUIPMENT,
-              ],
-            },
-          ]
-        : []),
-    ];
+    const fanModes = this._attr(entityId, "fan_modes");
+    return this._deviceSchema(
+      "climate",
+      entityId,
+      [pair([{ name: "cool_above", selector: num("°C") }, { name: "off_below", selector: num("°C") }]), { name: "setpoint", selector: num("°C", { step: 0.5 }) }],
+      [
+        { name: "fan_mode", selector: this._choice(fanModes) },
+        { name: "night_fan_mode", selector: this._choice(fanModes) },
+        pair([{ name: "closed_for", selector: minutes() }, { name: "off_on_open", selector: minutes() }]),
+        { name: "min_outdoor", selector: num("°C") },
+      ]
+    );
   }
 
   _lightSchema(item, defaults) {
@@ -180,135 +250,96 @@ export class SmartComfortPanelRoomDevices {
 
   _fanSchema(entityId) {
     const presets = this._attr(entityId, "preset_modes");
-    return [
-      { name: "entity_id", selector: entity("fan") },
-      ...(entityId
-        ? [
-            {
-              type: "expandable",
-              name: "",
-              flatten: true,
-              title: this._t("device_settings"),
-              schema: [
-                { name: "on_above", selector: num("°C") },
-                { name: "off_below", selector: num("°C") },
-                { name: "percentage", selector: percent },
-                { name: "preset", selector: this._choice(presets) },
-                { name: "open_percentage", selector: percent },
-                { name: "open_preset", selector: this._choice(presets) },
-                { name: "off_preset", selector: this._choice(presets) },
-                { name: "night_percentage", selector: percent },
-                { name: "night_preset", selector: this._choice(presets) },
-                { name: "shower_percentage", selector: percent },
-                { name: "shower_preset", selector: this._choice(presets) },
-                ...EQUIPMENT,
-              ],
-            },
-          ]
-        : []),
-    ];
-  }
-
-  _dehumidifierSchema(entityId) {
-    const modes = this._attr(entityId, "available_modes");
-    const humidifier = entityId?.startsWith("humidifier.");
-    return [
-      { name: "entity_id", selector: entity(["humidifier", "switch"]) },
-      ...(entityId
-        ? [
-            {
-              type: "expandable",
-              name: "",
-              flatten: true,
-              title: this._t("device_settings"),
-              schema: [
-                { name: "on_above", selector: num("%", { min: 0, max: 100, step: 1 }) },
-                { name: "off_below", selector: num("%", { min: 0, max: 100, step: 1 }) },
-                ...(humidifier
-                  ? [
-                      { name: "mode", selector: this._choice(modes) },
-                      { name: "target_humidity", selector: percent },
-                      { name: "boost_mode", selector: this._choice(modes) },
-                      { name: "night_mode", selector: this._choice(modes) },
-                    ]
-                  : []),
-                { name: "night_off", selector: bool },
-                { name: "tank", selector: entity("binary_sensor") },
-                { name: "off_on_open", selector: minutes() },
-                { name: "prefer_airing", selector: bool },
-                { name: "airing_wait", selector: minutes() },
-                ...EQUIPMENT,
-              ],
-            },
-          ]
-        : []),
-    ];
-  }
-
-  _heaterSchema(item) {
-    const entityId = item?.entity_id;
-    const presets = this._attr(entityId, "preset_modes");
-    const setpoint = num("°C", { step: 0.5, min: 0, max: 35 });
-    return [
-      { name: "entity_id", selector: entity("climate") },
-      ...(entityId
-        ? [
-            {
-              type: "expandable",
-              name: "",
-              flatten: true,
-              title: this._t("device_settings"),
-              schema: [
-                { type: "grid", name: "", column_min_width: "110px", schema: ["comfort", "eco", "frost", "away"].map((m) => ({ name: m, selector: setpoint })) },
-                ...(presets.length
-                  ? [{ type: "grid", name: "", column_min_width: "110px", schema: ["comfort", "eco", "frost", "away"].map((m) => ({ name: `${m}_preset`, selector: this._choice(presets) })) }]
-                  : []),
-                { name: "schedule", selector: entity(["schedule", "input_boolean", "binary_sensor", "switch"]) },
-                { name: "stove", selector: bool },
-                ...(item.stove ? [{ name: "pellets", selector: entity("sensor") }] : []),
-                { name: "backup", selector: bool },
-                ...(item.backup ? [{ name: "backup_margin", selector: num("°C", { step: 0.5, min: 0, max: 10 }) }] : []),
-                ...EQUIPMENT,
-              ],
-            },
-          ]
-        : []),
-    ];
+    return this._deviceSchema(
+      "fan",
+      entityId,
+      [pair([{ name: "on_above", selector: num("°C") }, { name: "off_below", selector: num("°C") }]), pair([{ name: "percentage", selector: pct }, { name: "open_percentage", selector: pct }])],
+      [
+        pair([{ name: "preset", selector: this._choice(presets) }, { name: "open_preset", selector: this._choice(presets) }]),
+        { name: "off_preset", selector: this._choice(presets) },
+        pair([{ name: "night_percentage", selector: pct }, { name: "night_preset", selector: this._choice(presets) }]),
+        pair([{ name: "shower_percentage", selector: pct }, { name: "shower_preset", selector: this._choice(presets) }]),
+      ]
+    );
   }
 
   _purifierSchema(item) {
     const entityId = item?.entity_id;
     const presets = this._attr(entityId, "preset_modes");
     const modes = item?.mode_select ? this._attr(item.mode_select, "options") : [];
-    return [
-      { name: "entity_id", selector: entity("fan") },
-      ...(entityId
-        ? [
-            {
-              type: "expandable",
-              name: "",
-              flatten: true,
-              title: this._t("device_settings"),
-              schema: [
-                { name: "open_percentage", selector: percent },
-                { name: "open_preset", selector: this._choice(presets) },
-                { name: "closed_preset", selector: this._choice(presets) },
-                { name: "mode_select", selector: entity("select") },
-                ...(item?.mode_select
-                  ? [
-                      { name: "open_mode", selector: this._choice(modes) },
-                      { name: "closed_mode", selector: this._choice(modes) },
-                      { name: "night_mode", selector: this._choice(modes) },
-                    ]
-                  : []),
-                { name: "keep_on", selector: bool },
-                { name: "night_percentage", selector: percent },
-                { name: "night_preset", selector: this._choice(presets) },
-                ...EQUIPMENT,
-              ],
-            },
-          ]
-        : []),
-    ];
+    return this._deviceSchema(
+      "fan",
+      entityId,
+      [pair([{ name: "open_preset", selector: this._choice(presets) }, { name: "closed_preset", selector: this._choice(presets) }]), { name: "keep_on", selector: bool }],
+      [
+        { name: "open_percentage", selector: pct },
+        { name: "mode_select", selector: entity("select") },
+        ...(item?.mode_select
+          ? [
+              pair([{ name: "open_mode", selector: this._choice(modes) }, { name: "closed_mode", selector: this._choice(modes) }]),
+              { name: "night_mode", selector: this._choice(modes) },
+            ]
+          : []),
+        pair([{ name: "night_percentage", selector: pct }, { name: "night_preset", selector: this._choice(presets) }]),
+      ]
+    );
+  }
+
+  _dehumidifierSchema(item) {
+    const entityId = item?.entity_id;
+    const modes = this._attr(entityId, "available_modes");
+    const humidifier = entityId?.startsWith("humidifier.");
+    // A quiet night needs a mode to switch to: humidifier entities that have some.
+    const nightChoices = ["normal", ...(humidifier && modes.length ? ["quiet"] : []), "off"];
+    const quiet = humidifier && item.night_mode !== undefined && item.night_off !== true;
+    return this._deviceSchema(
+      ["humidifier", "switch"],
+      entityId,
+      [
+        pair([
+          { name: "on_above", selector: num("%", { min: 0, max: 100, step: 1 }) },
+          { name: "off_below", selector: num("%", { min: 0, max: 100, step: 1 }) },
+        ]),
+        {
+          name: NIGHT,
+          selector: { select: { mode: "list", options: nightChoices.map((value) => ({ value, label: this._t(`night_${value}`) })) } },
+        },
+        ...(quiet ? [{ name: "night_mode", selector: this._choice(modes) }] : []),
+        { name: "tank", selector: entity("binary_sensor") },
+      ],
+      [
+        ...(humidifier
+          ? [
+              pair([{ name: "mode", selector: this._choice(modes) }, { name: "boost_mode", selector: this._choice(modes) }]),
+              { name: "target_humidity", selector: pct },
+            ]
+          : []),
+        { name: "prefer_airing", selector: bool },
+        pair([{ name: "airing_wait", selector: minutes() }, { name: "off_on_open", selector: minutes() }]),
+      ]
+    );
+  }
+
+  _heaterSchema(item) {
+    const entityId = item?.entity_id;
+    const presets = this._attr(entityId, "preset_modes");
+    const modes = ["comfort", "eco", "frost", "away"];
+    return this._deviceSchema(
+      "climate",
+      entityId,
+      [
+        { type: "grid", name: "", column_min_width: "90px", schema: modes.map((m) => ({ name: m, selector: setpoint })) },
+        { name: "schedule", selector: entity(["schedule", "input_boolean", "binary_sensor", "switch"]) },
+        { name: "stove", selector: bool },
+        ...(item.stove ? [{ name: "pellets", selector: entity("sensor") }] : []),
+      ],
+      [
+        ...(presets.length
+          ? [{ type: "grid", name: "", column_min_width: "120px", schema: modes.map((m) => ({ name: `${m}_preset`, selector: this._choice(presets) })) }]
+          : []),
+        { name: "backup", selector: bool },
+        ...(item.backup ? [{ name: "backup_margin", selector: num("°C", { step: 0.5, min: 0, max: 10 }) }] : []),
+      ]
+    );
   }
 }

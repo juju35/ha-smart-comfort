@@ -14,6 +14,7 @@
 - Activity card, Activity tab and Overview: the dehumidifier and heater commands in words (*Drying*, *Shower boost*, *Heating: eco · 17 °C*…) with their icons.
 - The sensors and the panel use the readings of the last evaluation instead of reading every sensor again (the outdoor ones once per evaluation, not once per room); the panel gets the status only when it changed; a device whose measurements alone change (a thermostat's current temperature) no longer starts an evaluation; the calendar's state no longer goes through the whole history.
 - Panel: the dehumidifiers and heaters of each room with their settings, their defaults and the shower boost in Settings, a wall temperature sensor per room, the outdoor humidity sensors.
+- Panel, devices of a room: the essential settings first, the rest under *Advanced*; each empty field shows its default greyed, each switch its actual state; a dehumidifier's night as one choice (*As by day*, *Quiet mode*, *Off*). Settings: the heating ones in sub-sections (setpoints, schedule and anticipation, EDF Tempo, safety).
 
 ### Fixes
 - The room sensors' new attributes (dew point, score penalty, warm-up rate, shower) and the lighting ones are kept out of the recorder.

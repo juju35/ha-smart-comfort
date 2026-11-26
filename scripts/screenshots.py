@@ -243,6 +243,10 @@ const FORM_STYLE = `
   .field .small { font-size: 12px; color: var(--secondary-text-color); line-height: 16px; }
   .field .value { font-size: 16px; line-height: 22px; }
   .field .placeholder { color: var(--secondary-text-color); font-size: 14px; }
+  .radios { display: flex; flex-wrap: wrap; gap: 6px 18px; padding: 4px 0; }
+  .radio { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; }
+  .radio .dot { width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--secondary-text-color); box-sizing: border-box; }
+  .radio.on .dot { border-color: var(--primary-color); box-shadow: inset 0 0 0 3px var(--card-background-color, #fff); background: var(--primary-color); }
   .field .name { font-size: 14px; line-height: 20px; }
   .field .unit { color: var(--secondary-text-color); font-size: 14px; }
   .field .icon { color: var(--secondary-text-color); display: flex; }
@@ -308,7 +312,7 @@ customElements.define("ha-form", class extends HTMLElement {
     const helpText = this._helperFn ? this._helperFn(s) : undefined;
     const help = helpText ? `<div class="helper">${esc(helpText)}</div>` : "";
     if (sel.boolean) {
-      return `<div class="boolean"><span>${label}</span><span class="switch${value ? " on" : ""}"></span></div>`;
+      return `<div><div class="boolean"><span>${label}</span><span class="switch${value ? " on" : ""}"></span></div>${help}</div>`;
     }
     if (sel.entity) {
       const ids = (Array.isArray(value) ? value : value ? [value] : []).filter(Boolean);
@@ -325,15 +329,25 @@ customElements.define("ha-form", class extends HTMLElement {
       const v = typeof value === "number" ? value : min;
       return `<div><div class="label">${label}</div><div class="slider"><div class="track"><div class="fill" style="width:${((v - min) / (max - min)) * 100}%"></div></div><span>${esc(value ?? "")}</span></div>${help}</div>`;
     }
+    if (sel.select && sel.select.mode === "list") {
+      const options = (sel.select.options || []).map((o) => (typeof o === "string" ? { value: o, label: o } : o));
+      const radios = options
+        .map((o) => `<span class="radio${o.value === value ? " on" : ""}"><span class="dot"></span>${esc(o.label)}</span>`)
+        .join("");
+      return `<div><div class="label">${label}</div><div class="radios">${radios}</div>${help}</div>`;
+    }
     if (sel.select) {
       const options = (sel.select.options || []).map((o) => (typeof o === "string" ? { value: o, label: o } : o));
       const shown = (Array.isArray(value) ? value : [value]).filter((v) => v !== undefined && v !== null && v !== "");
       const text = shown.map((v) => options.find((o) => o.value === v)?.label ?? v).join(", ");
       const clear = shown.length ? svg("close", 20) : "";
-      return `<div><div class="field"><div class="text"><span class="small">${label}</span><span class="value">${esc(text)}</span></div><span class="end">${clear}${svg("menu-down")}</span></div>${help}</div>`;
+      const shownText = text ? esc(text) : s.default != null ? `<span class="placeholder">${esc(s.default)}</span>` : "";
+      return `<div><div class="field"><div class="text"><span class="small">${label}</span><span class="value">${shownText}</span></div><span class="end">${clear}${svg("menu-down")}</span></div>${help}</div>`;
     }
     const unit = sel.number?.unit_of_measurement ? `<span class="unit">${esc(sel.number.unit_of_measurement)}</span>` : "";
-    return `<div><div class="field"><div class="text"><span class="small">${label}</span><span class="value">${esc(value ?? "")}</span></div>${unit}</div>${help}</div>`;
+    // Empty: its default as the placeholder, greyed (ha-form passes `default` as the placeholder).
+    const shownValue = value !== undefined && value !== null && value !== "" ? esc(value) : s.default != null ? `<span class="placeholder">${esc(s.default)}</span>` : "";
+    return `<div><div class="field"><div class="text"><span class="small">${label}</span><span class="value">${shownValue}</span></div>${unit}</div>${help}</div>`;
   }
   _entity(id) {
     const state = this._hass?.states?.[id];
