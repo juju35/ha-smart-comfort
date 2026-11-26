@@ -344,6 +344,8 @@ async def test_outdoor_places(hass: HomeAssistant) -> None:
             "name": "Terrasse",
             "area": "terrasse",
             "temperature": ["sensor.exterieur_1_temperature", "sensor.exterieur_2_temperature"],
+            # Their humidity too: whether airing dries a damp room.
+            "humidity": ["sensor.exterieur_1_humidity", "sensor.exterieur_2_humidity"],
         }
     ]
     assert found.outdoor == ["sensor.balcon_temperature"]
@@ -360,6 +362,8 @@ async def test_outdoor_places(hass: HomeAssistant) -> None:
             "name": "Terrasse",
             "area": "terrasse",
             "temperature": ["sensor.exterieur_1_temperature", "sensor.exterieur_2_temperature"],
+            # Their humidity too: whether airing dries a damp room.
+            "humidity": ["sensor.exterieur_1_humidity", "sensor.exterieur_2_humidity"],
         }
     ]
     assert merged["outdoor_air_quality"] == ["sensor.atmo_qualite_globale_rennes"]
@@ -752,3 +756,37 @@ async def test_appliances_left_out(hass: HomeAssistant) -> None:
     assert light_ids == ["light.kitchen_ceiling"]
     fan_ids = [x if isinstance(x, str) else x["entity_id"] for x in room.get("fans", [])]
     assert fan_ids == ["fan.kitchen_fan"]
+
+
+async def test_dehumidifiers_and_heaters(hass: HomeAssistant) -> None:
+    """A dehumidifier with its tank sensor, a pilot wire radiator with its presets, a stove with its pellets."""
+    h = House(hass)
+    cellar = h.area("Cave")
+    dry = h.device("Déshumidificateur", cellar)
+    h.entity(
+        "humidifier", "deshumidificateur", "off", dry, device_class="dehumidifier", available_modes=["auto", "sleep"]
+    )
+    h.entity("binary_sensor", "deshumidificateur_tank_full", "off", dry, device_class="problem")
+    h.entity("humidifier", "humidificateur", "off", h.device("Humidificateur", cellar), device_class="humidifier")
+    radiator = h.device("Radiateur", cellar)
+    h.entity(
+        "climate", "radiateur", "heat", radiator, hvac_modes=["off", "heat"], preset_modes=["comfort", "eco", "frost"]
+    )
+    stove = h.device("Poêle", cellar)
+    h.entity("climate", "poele", "off", stove, hvac_modes=["off", "heat"], temperature=20)
+    h.entity("sensor", "poele_pellet_level", "60", stove, unit_of_measurement="%")
+    h.entity("climate", "clim", "off", h.device("Clim", cellar), hvac_modes=["off", "cool", "heat"])
+    found = discover_rooms(hass)
+    room = found.rooms[0]
+    assert room["dehumidifiers"] == [
+        {
+            "entity_id": "humidifier.deshumidificateur",
+            "tank": "binary_sensor.deshumidificateur_tank_full",
+            "night_mode": "sleep",
+        }
+    ]
+    assert room["heating"] == [
+        {"entity_id": "climate.poele", "stove": True, "pellets": "sensor.poele_pellet_level"},
+        {"entity_id": "climate.radiateur", "comfort_preset": "comfort", "eco_preset": "eco", "frost_preset": "frost"},
+    ]
+    assert room["climate"] == "climate.clim"

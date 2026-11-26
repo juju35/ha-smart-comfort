@@ -539,7 +539,13 @@ async def test_family_switch_restored_before_entities(hass: HomeAssistant, notif
     await hass.services.async_call(
         "switch", "turn_off", {"entity_id": "switch.smart_comfort_fan_control"}, blocking=True
     )
-    assert entry.runtime_data.families == {"climate": True, "fans": False, "purifiers": True}
+    assert entry.runtime_data.families == {
+        "climate": True,
+        "fans": False,
+        "purifiers": True,
+        "dehumidifiers": True,
+        "heating": True,
+    }
     assert await hass.config_entries.async_unload(entry.entry_id)
     await hass.async_block_till_done()
     assert hass.data[DOMAIN]["state"]["families"]["fans"] is False
@@ -1326,3 +1332,62 @@ async def test_presence_moved_to_house_rules(hass: HomeAssistant) -> None:
     hass.config_entries.async_update_entry(entry, options={**options, "rooms": [{"name": "Entrance"}]})
     await hass.async_block_till_done()
     assert ir.async_get(hass).async_get_issue(DOMAIN, "presence_moved") is None
+
+
+async def test_dehumidifier_and_heating_in_home_assistant(hass: HomeAssistant, notify) -> None:
+    """A damp cellar: its dehumidifier dries (the alerts it handles not notified), its tank and its stove watched."""
+    humidifier = {s: async_mock_service(hass, "humidifier", s) for s in ("turn_on", "turn_off", "set_mode")}
+    climate = {s: async_mock_service(hass, "climate", s) for s in ("set_hvac_mode", "set_temperature", "turn_off")}
+    hass.states.async_set("sensor.out", "4")
+    hass.states.async_set("sensor.out_h", "80")
+    hass.states.async_set("sensor.t_cave", "12")
+    hass.states.async_set("sensor.h_cave", "85")
+    hass.states.async_set("humidifier.cave", "off", {"mode": "auto", "available_modes": ["auto", "dry"]})
+    hass.states.async_set("binary_sensor.tank", "off")
+    hass.states.async_set("climate.stove", "off", {"hvac_modes": ["off", "heat"], "temperature": 18})
+    hass.states.async_set("sensor.pellets", "12")
+    options = {
+        "notify": ["notify.phone"],
+        "outdoor_temperature": ["sensor.out"],
+        "outdoor_humidity": ["sensor.out_h"],
+        "digest_window": 0,
+        "startup_grace": 0,
+        "alerts": {"humidity_high": {"delay": 0}, "pellets_low": {"delay": 0}},
+        "rooms": [
+            {
+                "name": "Cave",
+                "type": "annex",
+                "temperature": "sensor.t_cave",
+                "humidity": "sensor.h_cave",
+                "dehumidifiers": [
+                    {
+                        "entity_id": "humidifier.cave",
+                        "mode": "dry",
+                        "tank": "binary_sensor.tank",
+                        "prefer_airing": False,
+                    }
+                ],
+                "heating": [{"entity_id": "climate.stove", "stove": True, "pellets": "sensor.pellets"}],
+            }
+        ],
+    }
+    entry = await _setup(hass, {**options, "annex_alerts": {"humidity_high": {"delay": 0}}})
+    await _evaluate(hass, entry)
+    assert humidifier["turn_on"][0].data == {"entity_id": "humidifier.cave"}
+    assert humidifier["set_mode"][0].data == {"entity_id": "humidifier.cave", "mode": "dry"}
+    # The annex's stove: frost protection.
+    assert climate["set_hvac_mode"][0].data == {"entity_id": "climate.stove", "hvac_mode": "heat"}
+    assert climate["set_temperature"][0].data == {"entity_id": "climate.stove", "temperature": 7.0}
+    hass.states.async_set("humidifier.cave", "on", {"mode": "dry"})
+    hass.states.async_set("climate.stove", "heat", {"hvac_modes": ["off", "heat"], "temperature": 7.0})
+    hass.states.async_set("binary_sensor.tank", "on")
+    await _evaluate(hass, entry)
+    await _evaluate(hass, entry)
+    kinds = {e.kind for e in entry.runtime_data.engine.active()}
+    assert {"humidity_high", "tank_full", "pellets_low"} <= kinds
+    # Drying: high humidity handled (not notified); the full tank and the pellets are.
+    message = notify[-1].data["message"]
+    assert "tank" in message and "pellets" in message and "humidity" not in message
+    status = hass.states.get("switch.smart_comfort_dehumidifier_control")
+    assert status is not None and status.state == "on"
+    assert hass.states.get("switch.smart_comfort_heating_control").state == "on"
