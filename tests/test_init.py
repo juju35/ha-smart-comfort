@@ -1083,6 +1083,12 @@ async def test_calendar_parses_the_history_once(hass: HomeAssistant, notify, fan
     await _evaluate(hass, entry)
     history = entry.runtime_data.engine.history
     assert len(history) == 2
+    # Its state only looks at the alerts going on: the history isn't parsed at each state write.
+    assert not any(any(r is h for h in history) for r in parsed)
+    # Listing the events parses it once, then reuses it.
+    now = dt_util.utcnow()
+    for _ in range(2):
+        await calendar.async_get_events(hass, now - timedelta(days=1), now + timedelta(days=1))
     assert sum(any(r is h for h in history) for r in parsed) == 2
 
 
@@ -1432,3 +1438,32 @@ async def test_airing_wait_counts_from_the_damp_episode(hass: HomeAssistant, not
     # The sensors read once per evaluation: the room's comfort and score from the same reading.
     assert m.readings["cave"].humidity == 80
     assert hass.states.get("sensor.smart_comfort_cave_comfort").attributes["humidity"] == 80
+
+
+async def test_measurement_only_device_change_is_not_evaluated(hass: HomeAssistant, notify, fan_calls) -> None:
+    """A thermostat's current temperature (what it measures) changing alone evaluates nothing again."""
+    _states(hass)
+    entry = await _setup(hass)
+    await _evaluate(hass, entry)
+    m = entry.runtime_data
+    hass.states.async_set("fan.sejour", "off", {"percentage": 0, "current_temperature": 21})
+    await hass.async_block_till_done()
+    assert m._debounce is None
+    hass.states.async_set("fan.sejour", "off", {"percentage": 30, "current_temperature": 21})
+    await hass.async_block_till_done()
+    assert m._debounce is not None
+
+
+async def test_unchanged_status_not_sent_again(hass: HomeAssistant, hass_ws_client, notify, fan_calls) -> None:
+    _states(hass)
+    entry = await _setup(hass)
+    await _evaluate(hass, entry)
+    client = await hass_ws_client(hass)
+    await client.send_json({"id": 1, "type": "smart_comfort/subscribe"})
+    assert (await client.receive_json())["success"]
+    assert "status" in (await client.receive_json())["event"]
+    await _evaluate(hass, entry)  # Nothing changed: no new message.
+    _states(hass, sejour=27.5)
+    await _evaluate(hass, entry)
+    event = (await client.receive_json())["event"]
+    assert next(r for r in event["status"]["rooms"] if r["room_id"] == "sejour")["temperature"] == 27.5
