@@ -23,6 +23,8 @@ export default {
   fam_climate: "airco's",
   fam_fans: "ventilatoren",
   fam_purifiers: "luchtreinigers",
+  fam_dehumidifiers: "ontvochtigers",
+  fam_heating: "verwarming",
   on: "aan",
   off: "uit",
   zoom_in: "Volledige kaart",

@@ -39,3 +39,8 @@ async_get_config_entry_diagnostics  # unused function (custom_components/smart_c
 # ruamel.yaml settings (yaml_file.Writer)
 _.preserve_quotes
 _.width
+_.eco  # read by HeatingDevice.setpoint (getattr by mode) (custom_components/smart_comfort/config.py)
+_.comfort_preset  # read by HeatingDevice.preset (getattr by mode) (custom_components/smart_comfort/config.py)
+_.eco_preset  # read by HeatingDevice.preset (getattr by mode) (custom_components/smart_comfort/config.py)
+_.frost_preset  # read by HeatingDevice.preset (getattr by mode) (custom_components/smart_comfort/config.py)
+_.away_preset  # read by HeatingDevice.preset (getattr by mode) (custom_components/smart_comfort/config.py)

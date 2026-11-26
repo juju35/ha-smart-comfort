@@ -6,13 +6,18 @@ import logging
 from datetime import datetime
 
 from .const import (
+    KIND_AIR_TO_DRY,
     KIND_BAD_AIR_OUTSIDE,
     KIND_CLOSE_WINDOWS,
     KIND_CO2,
+    KIND_CONDENSATION,
+    KIND_HEATING_FAULT,
     KIND_HUMIDITY,
     KIND_NOISE,
     KIND_NOISY_OUTSIDE,
+    KIND_PELLETS_LOW,
     KIND_POLLUTED,
+    KIND_TANK_FULL,
     KIND_TOO_COLD,
     KIND_TOO_HOT,
     KIND_VENTILATE,
@@ -31,6 +36,11 @@ ICONS = {
     KIND_CO2: "🌬️",
     KIND_POLLUTED: "🌫️",
     KIND_HUMIDITY: "💧",
+    KIND_CONDENSATION: "🍄",
+    KIND_AIR_TO_DRY: "🪟",
+    KIND_TANK_FULL: "🪣",
+    KIND_HEATING_FAULT: "🔧",
+    KIND_PELLETS_LOW: "🪵",
     KIND_NOISE: "🔊",
     KIND_NOISY_OUTSIDE: "🔇",
     KIND_BAD_AIR_OUTSIDE: "😷",
@@ -58,6 +68,12 @@ FALLBACK = {
     "line_polluted_air": "{pollutant} {value} µg/m³, above {threshold} µg/m³",
     "line_polluted_air_index": "air quality {value}/6, above {threshold}/6",
     "line_humidity_high": "humidity {value} % — air the room",
+    "line_condensation_risk": "condensation risk: walls {value} °C above the dew point — air or dry the room",
+    "line_condensation": "condensation: walls at the dew point — air or dry the room",
+    "line_air_to_dry": "{value} g/m³ drier outside — open the windows to dry the room",
+    "line_tank_full": "dehumidifier tank full — empty it",
+    "line_heating_fault": "heating on but the room isn't warming ({value} °C, setpoint {threshold} °C)",
+    "line_pellets_low": "pellets {value} %, below {threshold} %",
     "line_noise_high": "noise {value} dB, above {threshold} dB",
     "line_noisy_outside": "{value} dB outside — close {openings}",
     "line_bad_air_outside": "outdoor air quality {value}/6 — close {openings}",
@@ -70,6 +86,7 @@ DIGITS = {
     KIND_CO2: 0,
     KIND_POLLUTED: 0,
     KIND_HUMIDITY: 0,
+    KIND_PELLETS_LOW: 0,
     KIND_NOISE: 0,
     KIND_NOISY_OUTSIDE: 0,
     KIND_BAD_AIR_OUTSIDE: 0,
@@ -113,6 +130,8 @@ def problem_text(
     key = f"line_{kind}"
     if kind == KIND_POLLUTED and details.get("metric") == "aqi":
         key = "line_polluted_air_index"
+    elif kind == KIND_CONDENSATION and isinstance(value, (int, float)) and value <= 0:
+        key = "line_condensation"  # At or below the dew point: condensing already.
     return format_text(
         texts,
         key,

@@ -57,7 +57,8 @@
           "critical_volume": "Critical alert volume",
           "url": "Tap action",
           "tag": "Notification tag",
-          "hide_header": "Hide the top bar"
+          "hide_header": "Hide the top bar",
+          "outdoor_humidity": "Outdoor humidity"
         },
         "data_description": {
           "notify": "Where the alerts go (notify.mobile_app_…, a notify group…).",
@@ -75,7 +76,8 @@
           "critical_volume": "iOS critical sound volume, 0 to 1.",
           "url": "Opened when the notification is tapped, e.g. homeassistant://navigate/lovelace/comfort",
           "tag": "Each notification replaces the previous one with this tag instead of piling up.",
-          "hide_header": "The dashboards' top bar (title, menu, edit and search buttons); the view tabs stay. This panel's top bar goes too; its tabs stay. Add ?show_header to a dashboard's address to see it anyway."
+          "hide_header": "The dashboards' top bar (title, menu, edit and search buttons); the view tabs stay. This panel's top bar goes too; its tabs stay. Add ?show_header to a dashboard's address to see it anyway.",
+          "outdoor_humidity": "Relative humidity sensors outside (%), added to those of the outdoor places: tells whether airing would dry a damp room."
         }
       },
       "alerts": {
@@ -131,15 +133,18 @@
           "display": "Indicator light or display",
           "reset_at": "Back to normal at",
           "display_off": "Displays off from",
-          "display_on": "Displays on from"
+          "display_on": "Displays on from",
+          "shower_rise": "Shower: humidity rise",
+          "shower_boost": "Shower boost (min)"
         },
         "data_description": {
           "start": "Fans and purifiers go to full speed when an opening opens only between these times. Both empty: all day.",
           "manual_override": "Minutes a device changed by hand is left alone. 0: never paused.",
-          "suppress_when_handled": "No “too hot” alert for a room whose air conditioner or fan Smart Comfort has turned on.",
+          "suppress_when_handled": "No alert for a problem a device is handling on Smart Comfort's command: too hot (air conditioner or fan), polluted air (purifier), humidity and condensation (dehumidifier), too cold (heater).",
           "night_start": "Between these times the devices use their night settings (quieter speed, preset or fan mode) and there is no window boost for them.",
           "display": "Turned off in the \"Displays off\" hours of the Schedule tab and during the naps of the room, back on after.",
-          "reset_at": "At this time the device goes back to its normal state, even after a change by hand (a purifier back to auto…)."
+          "reset_at": "At this time the device goes back to its normal state, even after a change by hand (a purifier back to auto…).",
+          "shower_rise": "Humidity points gained within 10 minutes that tell a shower: the room's dehumidifiers (and the fans with a shower speed) are boosted. Empty: off."
         },
         "sections": {
           "climate": {
@@ -169,7 +174,9 @@
               "open_preset": "Preset, window open",
               "off_preset": "Preset before turning off",
               "night_percentage": "Speed at night",
-              "night_preset": "Preset at night"
+              "night_preset": "Preset at night",
+              "shower_percentage": "Speed after a shower",
+              "shower_preset": "Preset after a shower"
             },
             "description": "Leave “On from” and “Off below” empty for fans driven by the windows only."
           },
@@ -186,6 +193,66 @@
             },
             "data_description": {
               "keep_on": "Turn a purifier back on when it has been off for 10 s (power cut, glitch)."
+            }
+          },
+          "dehumidifiers": {
+            "name": "Dehumidifiers",
+            "data": {
+              "on_above": "On from",
+              "off_below": "Off below",
+              "mode": "Mode",
+              "target_humidity": "Target humidity",
+              "boost_mode": "Boost mode",
+              "night_mode": "Mode at night",
+              "night_off": "Off at night",
+              "tank": "Tank full sensor",
+              "off_on_open": "Off when open for (min)",
+              "prefer_airing": "Prefer airing",
+              "airing_wait": "Wait for airing (min)"
+            },
+            "data_description": {
+              "prefer_airing": "When the outdoor air is drier, suggest opening the windows and wait this long before drying.",
+              "tank": "Water tank full sensor: an alert, and the dehumidifier left alone until it is emptied."
+            }
+          },
+          "heating": {
+            "name": "Heating",
+            "data": {
+              "comfort": "Comfort",
+              "eco": "Eco",
+              "frost": "Frost protection",
+              "away": "Away",
+              "comfort_preset": "Comfort preset",
+              "eco_preset": "Eco preset",
+              "frost_preset": "Frost protection preset",
+              "away_preset": "Away preset",
+              "schedule": "Schedule",
+              "off_on_open": "Frost protection when open for (min)",
+              "max_outdoor": "Off from (outdoors)",
+              "preheat": "Anticipate",
+              "preheat_max": "Anticipate at most (min)",
+              "tempo": "Tempo colour today",
+              "tempo_tomorrow": "Tempo colour tomorrow",
+              "tempo_red": "Lower on red days",
+              "tempo_white": "Lower on white days",
+              "tempo_preheat": "Raise before a red day",
+              "offpeak": "Off-peak hours",
+              "offpeak_start": "Off-peak from",
+              "offpeak_end": "Off-peak until",
+              "stove": "Pellet stove",
+              "pellets": "Pellet level",
+              "backup": "Backup heater",
+              "backup_margin": "Backup below comfort by",
+              "fault_after": "Fault after (min)"
+            },
+            "data_description": {
+              "schedule": "Schedule helper or on/off entity: on = comfort, off = eco. Empty: comfort (frost protection in an annex).",
+              "comfort_preset": "Pilot wire radiators: the preset of each mode is set instead of a setpoint.",
+              "max_outdoor": "Heating off while it is at least this warm outdoors, back on 1 °C below. Empty: never.",
+              "preheat": "Start comfort early, from the room's learnt warm-up time.",
+              "tempo": "EDF Tempo colour sensor: setpoints lowered on red (and white) days, raised a little in the off-peak hours before a red day.",
+              "backup": "Kept at eco while a pellet stove heats and on red Tempo days, unless the room falls below comfort by the margin.",
+              "fault_after": "Heating that doesn't warm the room for this long raises an alert."
             }
           }
         }
@@ -205,6 +272,9 @@
           "climate": "Air conditioner",
           "fans": "Fans",
           "purifiers": "Air purifiers",
+          "surface_temperature": "Wall temperature",
+          "heating": "Heating",
+          "dehumidifiers": "Dehumidifiers",
           "lights": "Lights",
           "type": "Type"
         },
@@ -232,7 +302,8 @@
           "pm25": "Fine particle sensors (µg/m³), those of the air purifiers too: a polluted air alert, and the purifiers boosted until the air is clean again.",
           "air_quality": "Air quality index sensors of the room (HomeKit 1–5, European 1–6, US AQI).",
           "lights": "Dimmable lights: their brightness follows the time of day while they are on (adaptive lighting).",
-          "type": "Living space uses the standard alert defaults; an annex (cellar, garage, workshop…) uses its own — frost and mould only."
+          "type": "Living space uses the standard alert defaults; an annex (cellar, garage, workshop…) uses its own — frost and mould only.",
+          "surface_temperature": "Temperature of the coldest wall or window (condensation risk). Empty: estimated from the indoor and outdoor temperatures."
         }
       },
       "room": {
@@ -250,6 +321,9 @@
           "climate": "Air conditioner",
           "fans": "Fans",
           "purifiers": "Air purifiers",
+          "surface_temperature": "Wall temperature",
+          "heating": "Heating",
+          "dehumidifiers": "Dehumidifiers",
           "lights": "Lights",
           "type": "Type"
         },
@@ -277,7 +351,8 @@
           "pm25": "Fine particle sensors (µg/m³), those of the air purifiers too: a polluted air alert, and the purifiers boosted until the air is clean again.",
           "air_quality": "Air quality index sensors of the room (HomeKit 1–5, European 1–6, US AQI).",
           "lights": "Dimmable lights: their brightness follows the time of day while they are on (adaptive lighting).",
-          "type": "Living space uses the standard alert defaults; an annex (cellar, garage, workshop…) uses its own — frost and mould only."
+          "type": "Living space uses the standard alert defaults; an annex (cellar, garage, workshop…) uses its own — frost and mould only.",
+          "surface_temperature": "Temperature of the coldest wall or window (condensation risk). Empty: estimated from the indoor and outdoor temperatures."
         }
       },
       "outdoor": {
@@ -286,7 +361,8 @@
           "name": "Name",
           "temperature": "Temperature",
           "air_quality": "Air quality",
-          "noise": "Noise"
+          "noise": "Noise",
+          "humidity": "Humidity"
         }
       },
       "edit_room": {
@@ -352,6 +428,11 @@
         "co2_high": "High CO₂",
         "polluted_air": "Polluted air",
         "humidity_high": "High humidity",
+        "condensation_risk": "Condensation risk",
+        "air_to_dry": "Open the windows (drier outside)",
+        "tank_full": "Dehumidifier tank full",
+        "heating_fault": "Heating fault",
+        "pellets_low": "Low pellets",
         "noise_high": "Noisy room",
         "noisy_outside": "Close the windows (noisy outside)",
         "bad_air_outside": "Close the windows (poor air outside)"
@@ -419,6 +500,11 @@
           "co2_high": "High CO₂",
           "polluted_air": "Polluted air",
           "humidity_high": "High humidity",
+          "condensation_risk": "Condensation risk",
+          "air_to_dry": "Open the windows (drier outside)",
+          "tank_full": "Dehumidifier tank full",
+          "heating_fault": "Heating fault",
+          "pellets_low": "Low pellets",
           "noise_high": "Noisy room",
           "noisy_outside": "Close the windows (noisy outside)",
           "bad_air_outside": "Close the windows (poor air outside)"
@@ -446,6 +532,12 @@
       },
       "control_purifiers": {
         "name": "Purifier control"
+      },
+      "control_heating": {
+        "name": "Heating control"
+      },
+      "control_dehumidifiers": {
+        "name": "Dehumidifier control"
       },
       "lighting": {
         "name": "Adaptive lighting"
@@ -539,6 +631,12 @@
     "line_polluted_air": "{pollutant} {value} µg/m³, above {threshold} µg/m³",
     "line_polluted_air_index": "air quality {value}/6, above {threshold}/6",
     "line_humidity_high": "humidity {value} % — air the room",
+    "line_condensation_risk": "condensation risk: walls {value} °C above the dew point — air or dry the room",
+    "line_condensation": "condensation: walls at the dew point — air or dry the room",
+    "line_air_to_dry": "{value} g/m³ drier outside — open the windows to dry the room",
+    "line_tank_full": "dehumidifier tank full — empty it",
+    "line_heating_fault": "heating on but the room isn't warming ({value} °C, setpoint {threshold} °C)",
+    "line_pellets_low": "pellets {value} %, below {threshold} %",
     "line_noise_high": "noise {value} dB, above {threshold} dB",
     "line_noisy_outside": "{value} dB outside — close {openings}",
     "line_bad_air_outside": "outdoor air quality {value}/6 — close {openings}",

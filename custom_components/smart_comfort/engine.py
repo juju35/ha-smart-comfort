@@ -18,13 +18,18 @@ from .const import (
     CLEAR_RETRY,
     HISTORY_DAYS,
     HISTORY_SIZE,
+    KIND_AIR_TO_DRY,
     KIND_BAD_AIR_OUTSIDE,
     KIND_CLOSE_WINDOWS,
     KIND_CO2,
+    KIND_CONDENSATION,
+    KIND_HEATING_FAULT,
     KIND_HUMIDITY,
     KIND_NOISE,
     KIND_NOISY_OUTSIDE,
+    KIND_PELLETS_LOW,
     KIND_POLLUTED,
+    KIND_TANK_FULL,
     KIND_TOO_COLD,
     KIND_TOO_HOT,
     KIND_VENTILATE,
@@ -40,10 +45,17 @@ REASON_WORSE = "worse"
 REASON_ONGOING = "ongoing"
 
 # Kinds a running device takes care of: not notified when suppress_when_handled. Too hot: an air conditioner
-# cooling or a fan blowing (the room id in `handled`); polluted air: a purifier boosting (the episode key).
-HANDLED_KINDS = frozenset({KIND_TOO_HOT, KIND_POLLUTED})
+# cooling or a fan blowing (the room id in `handled`); polluted air: a purifier boosting; damp: a dehumidifier
+# drying; too cold: a heater heating (the episode key).
+HANDLED_KINDS = frozenset(
+    {KIND_TOO_HOT, KIND_POLLUTED, KIND_HUMIDITY, KIND_CONDENSATION, KIND_AIR_TO_DRY, KIND_TOO_COLD}
+)
 # Kinds that need the outdoor temperature.
-OUTDOOR_KINDS = frozenset({KIND_VENTILATE, KIND_CLOSE_WINDOWS, KIND_WINDOW_OPEN_COLD})
+OUTDOOR_KINDS = frozenset({KIND_VENTILATE, KIND_CLOSE_WINDOWS, KIND_WINDOW_OPEN_COLD, KIND_AIR_TO_DRY})
+# Kinds that need the outdoor humidity.
+HUMIDITY_OUTDOOR_KINDS = frozenset({KIND_AIR_TO_DRY})
+# Damp problems airing can dry: while the room has one, air_to_dry tells whether opening would.
+DAMP_KINDS = frozenset({KIND_HUMIDITY, KIND_CONDENSATION})
 # Kinds that need the outdoor noise.
 NOISE_OUTDOOR_KINDS = frozenset({KIND_NOISY_OUTSIDE})
 # Kinds that need the outdoor air quality.
@@ -52,8 +64,10 @@ AIR_OUTDOOR_KINDS = frozenset({KIND_BAD_AIR_OUTSIDE})
 OPENING_KINDS = frozenset({KIND_CLOSE_WINDOWS, KIND_WINDOW_OPEN_COLD, KIND_NOISY_OUTSIDE, KIND_BAD_AIR_OUTSIDE})
 # Comfort problems an open window works on: while the room has one (pending or active), an opening open in the
 # cold is no alert. window_open_cold is evaluated after them.
-AIRING_KINDS = frozenset({KIND_TOO_HOT, KIND_CO2, KIND_POLLUTED, KIND_HUMIDITY})
-EVALUATION_ORDER = (*(k for k in KINDS if k != KIND_WINDOW_OPEN_COLD), KIND_WINDOW_OPEN_COLD)
+AIRING_KINDS = frozenset({KIND_TOO_HOT, KIND_CO2, KIND_POLLUTED, KIND_HUMIDITY, KIND_CONDENSATION})
+# air_to_dry after the damp kinds, window_open_cold last.
+_LAST = (KIND_AIR_TO_DRY, KIND_WINDOW_OPEN_COLD)
+EVALUATION_ORDER = (*(k for k in KINDS if k not in _LAST), *_LAST)
 # Readings each kind is computed from (RoomReading field names, "outdoor" for the outdoor temperature,
 # "outdoor_noise" and "outdoor_air" for the outdoor noise and air quality).
 SOURCES: dict[str, tuple[str, ...]] = {
@@ -66,13 +80,21 @@ SOURCES: dict[str, tuple[str, ...]] = {
     # Any of the room's PM2.5, PM10 and air quality index sensors.
     KIND_POLLUTED: ("indoor_air",),
     KIND_HUMIDITY: ("humidity",),
+    # The room's temperature and humidity, its surface temperature (or the outdoor one to estimate it).
+    KIND_CONDENSATION: ("temperature", "humidity"),
+    KIND_AIR_TO_DRY: ("humidity", "outdoor", "outdoor_humidity"),
+    KIND_TANK_FULL: ("tanks",),
+    KIND_HEATING_FAULT: ("heating",),
+    KIND_PELLETS_LOW: ("pellets",),
     KIND_NOISE: ("noise",),
     KIND_NOISY_OUTSIDE: ("outdoor_noise",),
     KIND_BAD_AIR_OUTSIDE: ("outdoor_air",),
 }
-GLOBAL_SOURCES = frozenset({"outdoor", "outdoor_noise", "outdoor_air"})
+GLOBAL_SOURCES = frozenset({"outdoor", "outdoor_noise", "outdoor_air", "outdoor_humidity"})
+# How far below the setpoint of its heating a room is too cold.
+HEATED_MARGIN = 1.0
 # Kinds whose value gets worse when it goes down.
-DOWNWARD_KINDS = frozenset({KIND_TOO_COLD, KIND_WINDOW_OPEN_COLD})
+DOWNWARD_KINDS = frozenset({KIND_TOO_COLD, KIND_WINDOW_OPEN_COLD, KIND_CONDENSATION, KIND_PELLETS_LOW})
 
 
 @dataclass
@@ -94,6 +116,18 @@ class RoomReading:
     # Names of the openings that are open; None when one of them is unknown.
     open: list[str] | None = field(default_factory=list)
     has_openings: bool = False
+    # How far (°C) the coldest surface is above the dew point of the room's air (condensation below 0).
+    dew_margin: float | None = None
+    surface: float | None = None
+    dew_point: float | None = None
+    # How much less water (g/m³) the outdoor air holds than the room's (positive: airing dries).
+    drier: float | None = None
+    # The setpoint the room is heated to on Smart Comfort's command (its heaters'), None when it isn't.
+    heat_setpoint: float | None = None
+    # A dehumidifier's tank is full; the heating doesn't warm the room (its setpoint); the lowest pellet level (%).
+    tank_full: bool | None = None
+    heating_fault: float | None = None
+    pellets: float | None = None
     # A fan or air conditioner of the room is working on it.
     handled: bool = False
     # Readings (field names) whose entity no longer exists: their problems end instead of holding.
@@ -152,7 +186,12 @@ def check(kind: str, s: AlertSettings, r: RoomReading, outdoor: float | None, ac
     if kind == KIND_TOO_HOT:
         return Check(_above(r.temperature, s.threshold, h), r.temperature, {"threshold": s.threshold})
     if kind == KIND_TOO_COLD:
-        return Check(_below(r.temperature, s.threshold, h), r.temperature, {"threshold": s.threshold})
+        # Heated by Smart Comfort to a lower setpoint (eco at night, away, frost protection): too cold only a degree
+        # below it, so that the eco night is no alert.
+        threshold = s.threshold
+        if threshold is not None and r.heat_setpoint is not None:
+            threshold = min(threshold, r.heat_setpoint - HEATED_MARGIN)
+        return Check(_below(r.temperature, threshold, h), r.temperature, {"threshold": threshold})
     if kind == KIND_CO2:
         return Check(_above(r.co2, s.threshold, h), r.co2, {"threshold": s.threshold})
     if kind == KIND_POLLUTED:
@@ -161,6 +200,30 @@ def check(kind: str, s: AlertSettings, r: RoomReading, outdoor: float | None, ac
         return Check(_above(r.humidity, s.threshold, h), r.humidity, {"threshold": s.threshold})
     if kind == KIND_NOISE:
         return Check(_above(r.noise, s.threshold, h), r.noise, {"threshold": s.threshold})
+    if kind == KIND_CONDENSATION:
+        details = {"threshold": s.threshold, "surface": r.surface, "dew_point": r.dew_point}
+        return Check(_below(r.dew_margin, s.threshold, h), r.dew_margin, details)
+    if kind == KIND_AIR_TO_DRY:
+        if r.drier is None or outdoor is None or s.threshold is None:
+            return Check(None)
+        details = {"outdoor": outdoor, "humidity": r.humidity}
+        if r.has_openings:
+            if r.any_open is None:
+                return Check(None, r.drier, details)
+            if r.any_open:  # Already aired.
+                return Check(False, r.drier, details)
+        mild = s.min_outdoor is None or outdoor >= s.min_outdoor - h
+        noisy = s.max_noise is not None and r.outdoor_noise is not None and r.outdoor_noise > s.max_noise
+        polluted = s.max_air is not None and r.outdoor_air is not None and r.outdoor_air > s.max_air
+        return Check(mild and not noisy and not polluted and r.drier >= s.threshold - h, r.drier, details)
+    if kind == KIND_TANK_FULL:
+        return Check(r.tank_full)
+    if kind == KIND_HEATING_FAULT:
+        if r.heating_fault is None:
+            return Check(False)
+        return Check(True, r.temperature, {"threshold": r.heating_fault})
+    if kind == KIND_PELLETS_LOW:
+        return Check(_below(r.pellets, s.threshold, h), r.pellets, {"threshold": s.threshold})
     if kind == KIND_NOISY_OUTSIDE:
         if not r.has_openings:
             return Check(False)
@@ -213,7 +276,8 @@ def check(kind: str, s: AlertSettings, r: RoomReading, outdoor: float | None, ac
 
 def is_handled(ep: Episode, handled: set[str]) -> bool:
     """A device takes care of the problem: `handled` holds the rooms whose air conditioner or fan runs (too hot)
-    and the keys of the problems a device works on (polluted air: a purifier boosting)."""
+    and the keys of the problems a device works on (polluted air: a purifier boosting; damp: a dehumidifier; too
+    cold: a heater)."""
     if ep.kind == KIND_TOO_HOT:
         return ep.room in handled
     return ep.kind in HANDLED_KINDS and ep.key in handled
@@ -375,6 +439,8 @@ class Engine:
             return False
         if kind in AIR_OUTDOOR_KINDS and not self.settings.outdoor_air:
             return False
+        if kind in HUMIDITY_OUTDOOR_KINDS and not self.settings.outdoor_humidity:
+            return False
         if kind in OPENING_KINDS and not room.openings:
             return False
         return all(getattr(room, field) for field in SOURCES[kind] if field not in GLOBAL_SOURCES)
@@ -428,6 +494,8 @@ class Engine:
                 if kind == KIND_WINDOW_OPEN_COLD and result.state and self._airing(room.id):
                     # Open for a reason: the delay starts again once that problem is over.
                     result = Check(False)
+                if kind == KIND_AIR_TO_DRY and result.state and not self._damp(room.id):
+                    result = Check(False)  # Nothing to dry.
                 if result.state is None:
                     # Unknown: the episode holds, unless its sensor is gone for good.
                     if ep is not None and reading.missing.intersection(SOURCES[kind]):
@@ -452,6 +520,10 @@ class Engine:
     def _airing(self, room_id: str) -> bool:
         """The room has a problem an open window works on (CO₂, polluted air, humidity, too hot)."""
         return any(f"{room_id}|{kind}" in self.episodes for kind in AIRING_KINDS)
+
+    def _damp(self, room_id: str) -> bool:
+        """The room has a damp problem (high humidity, condensation risk), pending or active."""
+        return any(f"{room_id}|{kind}" in self.episodes for kind in DAMP_KINDS)
 
     def _finish(self, ep: Episode, now: datetime) -> None:
         """Keep an episode that was an alert (active) in the history; a pending one that never became one is dropped."""

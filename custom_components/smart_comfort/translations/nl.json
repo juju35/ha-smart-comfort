@@ -57,7 +57,8 @@
           "critical_volume": "Volume van kritieke waarschuwingen",
           "url": "Actie bij tikken",
           "tag": "Meldingstag",
-          "hide_header": "Bovenste balk verbergen"
+          "hide_header": "Bovenste balk verbergen",
+          "outdoor_humidity": "Buitenluchtvochtigheid"
         },
         "data_description": {
           "notify": "Waar de waarschuwingen naartoe gaan (notify.mobile_app_…, een meldingsgroep…).",
@@ -75,7 +76,8 @@
           "critical_volume": "Volume van het kritieke geluid op iOS, 0 tot 1.",
           "url": "Geopend bij tikken op de melding, bijv. homeassistant://navigate/lovelace/comfort",
           "tag": "Elke melding vervangt de vorige met deze tag in plaats van zich op te stapelen.",
-          "hide_header": "De bovenste balk van de dashboards (titel, menu, bewerk- en zoekknoppen); de tabbladen van de weergaven blijven. Ook de bovenbalk van dit paneel; de tabbladen blijven. Voeg ?show_header toe aan het adres van een dashboard om hem toch te zien."
+          "hide_header": "De bovenste balk van de dashboards (titel, menu, bewerk- en zoekknoppen); de tabbladen van de weergaven blijven. Ook de bovenbalk van dit paneel; de tabbladen blijven. Voeg ?show_header toe aan het adres van een dashboard om hem toch te zien.",
+          "outdoor_humidity": "Sensoren voor de relatieve luchtvochtigheid buiten (%), naast die van de buitenruimtes: geeft aan of luchten een vochtige ruimte zou drogen."
         }
       },
       "alerts": {
@@ -131,15 +133,18 @@
           "display": "Indicatielampje of display",
           "reset_at": "Terug naar normaal om",
           "display_off": "Displays uit vanaf",
-          "display_on": "Displays aan vanaf"
+          "display_on": "Displays aan vanaf",
+          "shower_rise": "Douche: stijging van de vochtigheid",
+          "shower_boost": "Doucheboost (min)"
         },
         "data_description": {
           "start": "Ventilatoren en luchtreinigers gaan alleen tussen deze tijden op volle snelheid als een opening opengaat. Beide leeg: de hele dag.",
           "manual_override": "Minuten dat een met de hand gewijzigd apparaat met rust wordt gelaten. 0: nooit gepauzeerd.",
-          "suppress_when_handled": "Geen waarschuwing “te warm” voor een kamer waarvan Smart Comfort de airco of ventilator heeft ingeschakeld.",
+          "suppress_when_handled": "Geen melding voor een probleem dat een apparaat op bevel van Smart Comfort aanpakt: te warm (airco of ventilator), vervuilde lucht (luchtreiniger), vochtigheid en condensatie (ontvochtiger), te koud (verwarming).",
           "night_start": "Tussen deze tijden gebruiken de apparaten hun nachtinstellingen (stillere snelheid, voorinstelling of ventilatormodus) en is er voor hen geen raamboost.",
           "display": "Uitgeschakeld in de uren \"Displays uit\" van het tabblad Planning en tijdens de dutjes van de kamer, daarna weer aan.",
-          "reset_at": "Op dit tijdstip gaat het apparaat terug naar zijn normale toestand, ook na een handmatige wijziging (een luchtreiniger terug op auto…)."
+          "reset_at": "Op dit tijdstip gaat het apparaat terug naar zijn normale toestand, ook na een handmatige wijziging (een luchtreiniger terug op auto…).",
+          "shower_rise": "Vochtigheidspunten binnen 10 minuten die op een douche wijzen: de ontvochtigers van de ruimte (en ventilatoren met een douchesnelheid) krijgen een boost. Leeg: uit."
         },
         "sections": {
           "climate": {
@@ -169,7 +174,9 @@
               "open_preset": "Voorinstelling, raam open",
               "off_preset": "Voorinstelling voor het uitschakelen",
               "night_percentage": "Snelheid 's nachts",
-              "night_preset": "Voorinstelling 's nachts"
+              "night_preset": "Voorinstelling 's nachts",
+              "shower_percentage": "Snelheid na een douche",
+              "shower_preset": "Voorinstelling na een douche"
             },
             "description": "Laat “Aan vanaf” en “Uit onder” leeg voor ventilatoren die alleen door de ramen worden aangestuurd."
           },
@@ -186,6 +193,66 @@
             },
             "data_description": {
               "keep_on": "Zet een luchtreiniger weer aan als hij 10 s uit is geweest (stroomstoring, storing)."
+            }
+          },
+          "dehumidifiers": {
+            "name": "Ontvochtigers",
+            "data": {
+              "on_above": "Aan vanaf",
+              "off_below": "Uit onder",
+              "mode": "Modus",
+              "target_humidity": "Doelvochtigheid",
+              "boost_mode": "Boostmodus",
+              "night_mode": "Modus 's nachts",
+              "night_off": "'s Nachts uit",
+              "tank": "Sensor waterreservoir vol",
+              "off_on_open": "Uit als open sinds (min)",
+              "prefer_airing": "Luchten verkiezen",
+              "airing_wait": "Wachten op luchten (min)"
+            },
+            "data_description": {
+              "prefer_airing": "Als de buitenlucht droger is, wordt voorgesteld de ramen te openen en wordt zo lang gewacht voor het ontvochtigen.",
+              "tank": "Sensor voor vol waterreservoir: een melding, en de ontvochtiger met rust gelaten tot hij geleegd is."
+            }
+          },
+          "heating": {
+            "name": "Verwarming",
+            "data": {
+              "comfort": "Comfort",
+              "eco": "Eco",
+              "frost": "Vorstbeveiliging",
+              "away": "Afwezig",
+              "comfort_preset": "Voorinstelling comfort",
+              "eco_preset": "Voorinstelling eco",
+              "frost_preset": "Voorinstelling vorstbeveiliging",
+              "away_preset": "Voorinstelling afwezig",
+              "schedule": "Schema",
+              "off_on_open": "Vorstbeveiliging als open sinds (min)",
+              "max_outdoor": "Uit vanaf (buiten)",
+              "preheat": "Vooruit verwarmen",
+              "preheat_max": "Hoogstens vooruit verwarmen (min)",
+              "tempo": "Tempo-kleur vandaag",
+              "tempo_tomorrow": "Tempo-kleur morgen",
+              "tempo_red": "Verlaging op rode dagen",
+              "tempo_white": "Verlaging op witte dagen",
+              "tempo_preheat": "Verhoging voor een rode dag",
+              "offpeak": "Daluren",
+              "offpeak_start": "Daluren vanaf",
+              "offpeak_end": "Daluren tot",
+              "stove": "Pelletkachel",
+              "pellets": "Pelletniveau",
+              "backup": "Bijverwarming",
+              "backup_margin": "Bijverwarming onder comfort met",
+              "fault_after": "Storing na (min)"
+            },
+            "data_description": {
+              "schedule": "Schemahelper of aan/uit-entiteit: aan = comfort, uit = eco. Leeg: comfort (vorstbeveiliging in een bijgebouw).",
+              "comfort_preset": "Radiatoren met stuurdraad: de voorinstelling van elke modus wordt gezet in plaats van een instelwaarde.",
+              "max_outdoor": "Verwarming uit zolang het buiten minstens zo warm is, weer aan 1 °C lager. Leeg: nooit.",
+              "preheat": "Start comfort eerder, op basis van de aangeleerde opwarmtijd van de ruimte.",
+              "tempo": "EDF Tempo-kleursensor: instelwaarden verlaagd op rode (en witte) dagen, iets verhoogd in de daluren voor een rode dag.",
+              "backup": "Blijft op eco zolang een pelletkachel verwarmt en op rode Tempo-dagen, tenzij de ruimte de marge onder comfort zakt.",
+              "fault_after": "Een verwarming die de ruimte zo lang niet opwarmt, geeft een melding."
             }
           }
         }
@@ -205,6 +272,9 @@
           "climate": "Airco",
           "fans": "Ventilatoren",
           "purifiers": "Luchtreinigers",
+          "surface_temperature": "Wandtemperatuur",
+          "heating": "Verwarming",
+          "dehumidifiers": "Ontvochtigers",
           "lights": "Lampen",
           "type": "Type"
         },
@@ -232,7 +302,8 @@
           "pm25": "Fijnstofsensoren (µg/m³), ook die van de luchtreinigers: een melding bij vervuilde lucht, en de luchtreinigers harder tot de lucht weer schoon is.",
           "air_quality": "Luchtkwaliteitsindexsensoren van de ruimte (HomeKit 1–5, Europees 1–6, Amerikaanse AQI).",
           "lights": "Dimbare lampen: hun helderheid volgt het moment van de dag zolang ze aan zijn (adaptieve verlichting).",
-          "type": "Een leefruimte gebruikt de standaarddrempels; een bijruimte (kelder, garage, werkplaats…) gebruikt eigen drempels — alleen vorst en schimmel."
+          "type": "Een leefruimte gebruikt de standaarddrempels; een bijruimte (kelder, garage, werkplaats…) gebruikt eigen drempels — alleen vorst en schimmel.",
+          "surface_temperature": "Temperatuur van de koudste wand of het koudste raam (condensatierisico). Leeg: geschat uit de binnen- en buitentemperatuur."
         }
       },
       "room": {
@@ -250,6 +321,9 @@
           "climate": "Airco",
           "fans": "Ventilatoren",
           "purifiers": "Luchtreinigers",
+          "surface_temperature": "Wandtemperatuur",
+          "heating": "Verwarming",
+          "dehumidifiers": "Ontvochtigers",
           "lights": "Lampen",
           "type": "Type"
         },
@@ -277,7 +351,8 @@
           "pm25": "Fijnstofsensoren (µg/m³), ook die van de luchtreinigers: een melding bij vervuilde lucht, en de luchtreinigers harder tot de lucht weer schoon is.",
           "air_quality": "Luchtkwaliteitsindexsensoren van de ruimte (HomeKit 1–5, Europees 1–6, Amerikaanse AQI).",
           "lights": "Dimbare lampen: hun helderheid volgt het moment van de dag zolang ze aan zijn (adaptieve verlichting).",
-          "type": "Een leefruimte gebruikt de standaarddrempels; een bijruimte (kelder, garage, werkplaats…) gebruikt eigen drempels — alleen vorst en schimmel."
+          "type": "Een leefruimte gebruikt de standaarddrempels; een bijruimte (kelder, garage, werkplaats…) gebruikt eigen drempels — alleen vorst en schimmel.",
+          "surface_temperature": "Temperatuur van de koudste wand of het koudste raam (condensatierisico). Leeg: geschat uit de binnen- en buitentemperatuur."
         }
       },
       "outdoor": {
@@ -286,7 +361,8 @@
           "name": "Naam",
           "temperature": "Temperatuur",
           "air_quality": "Luchtkwaliteit",
-          "noise": "Geluid"
+          "noise": "Geluid",
+          "humidity": "Luchtvochtigheid"
         }
       },
       "edit_room": {
@@ -352,6 +428,11 @@
         "co2_high": "Hoge CO₂",
         "polluted_air": "Vervuilde lucht",
         "humidity_high": "Hoge vochtigheid",
+        "condensation_risk": "Condensatierisico",
+        "air_to_dry": "Ramen openen (buiten droger)",
+        "tank_full": "Reservoir van de ontvochtiger vol",
+        "heating_fault": "Storing verwarming",
+        "pellets_low": "Weinig pellets",
         "noise_high": "Lawaaiige kamer",
         "noisy_outside": "Ramen sluiten (lawaai buiten)",
         "bad_air_outside": "Ramen sluiten (slechte lucht buiten)"
@@ -419,6 +500,11 @@
           "co2_high": "Hoge CO₂",
           "polluted_air": "Vervuilde lucht",
           "humidity_high": "Hoge vochtigheid",
+          "condensation_risk": "Condensatierisico",
+          "air_to_dry": "Ramen openen (buiten droger)",
+          "tank_full": "Reservoir van de ontvochtiger vol",
+          "heating_fault": "Storing verwarming",
+          "pellets_low": "Weinig pellets",
           "noise_high": "Lawaaiige kamer",
           "noisy_outside": "Ramen sluiten (lawaai buiten)",
           "bad_air_outside": "Ramen sluiten (slechte lucht buiten)"
@@ -446,6 +532,12 @@
       },
       "control_purifiers": {
         "name": "Luchtreinigerbediening"
+      },
+      "control_heating": {
+        "name": "Aansturing verwarming"
+      },
+      "control_dehumidifiers": {
+        "name": "Aansturing ontvochtigers"
       },
       "lighting": {
         "name": "Adaptieve verlichting"
@@ -539,6 +631,12 @@
     "line_polluted_air": "{pollutant} {value} µg/m³, boven {threshold} µg/m³",
     "line_polluted_air_index": "luchtkwaliteit {value}/6, boven {threshold}/6",
     "line_humidity_high": "vochtigheid {value} % — lucht de kamer",
+    "line_condensation_risk": "condensatierisico: wanden {value} °C boven het dauwpunt — lucht of ontvochtig de ruimte",
+    "line_condensation": "condensatie: wanden op het dauwpunt — lucht of ontvochtig de ruimte",
+    "line_air_to_dry": "buiten {value} g/m³ droger — open de ramen om de ruimte te drogen",
+    "line_tank_full": "reservoir van de ontvochtiger vol — leeg het",
+    "line_heating_fault": "verwarming aan maar de ruimte warmt niet op ({value} °C, instelwaarde {threshold} °C)",
+    "line_pellets_low": "pellets {value} %, onder {threshold} %",
     "line_noise_high": "geluid {value} dB, boven {threshold} dB",
     "line_noisy_outside": "{value} dB buiten — sluit {openings}",
     "line_bad_air_outside": "buitenluchtkwaliteit {value}/6 — sluit {openings}",

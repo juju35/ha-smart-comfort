@@ -57,7 +57,8 @@
           "critical_volume": "Kritisko brīdinājumu skaļums",
           "url": "Pieskāriena darbība",
           "tag": "Paziņojuma tags",
-          "hide_header": "Paslēpt augšējo joslu"
+          "hide_header": "Paslēpt augšējo joslu",
+          "outdoor_humidity": "Āra mitrums"
         },
         "data_description": {
           "notify": "Kur nonāk brīdinājumi (notify.mobile_app_…, notify grupa…).",
@@ -75,7 +76,8 @@
           "critical_volume": "Kritiskās skaņas skaļums iOS, no 0 līdz 1.",
           "url": "Tiek atvērts, pieskaroties paziņojumam, piem., homeassistant://navigate/lovelace/comfort",
           "tag": "Katrs paziņojums aizstāj iepriekšējo ar šo tagu, nevis tie krājas.",
-          "hide_header": "Informācijas paneļu augšējā josla (virsraksts, izvēlne, rediģēšanas un meklēšanas pogas); skatu cilnes paliek. Arī šī paneļa augšējā josla; tā cilnes paliek. Pievienojiet ?show_header paneļa adresei, lai to tomēr redzētu."
+          "hide_header": "Informācijas paneļu augšējā josla (virsraksts, izvēlne, rediģēšanas un meklēšanas pogas); skatu cilnes paliek. Arī šī paneļa augšējā josla; tā cilnes paliek. Pievienojiet ?show_header paneļa adresei, lai to tomēr redzētu.",
+          "outdoor_humidity": "Relatīvā mitruma sensori ārā (%), papildus āra vietu sensoriem: rāda, vai vēdināšana izžāvētu mitru telpu."
         }
       },
       "alerts": {
@@ -131,15 +133,18 @@
           "display": "Indikatora gaisma vai displejs",
           "reset_at": "Atpakaļ uz normālu plkst.",
           "display_off": "Displeji izslēgti no",
-          "display_on": "Displeji ieslēgti no"
+          "display_on": "Displeji ieslēgti no",
+          "shower_rise": "Duša: mitruma pieaugums",
+          "shower_boost": "Pastiprinājums pēc dušas (min)"
         },
         "data_description": {
           "start": "Ventilatori un attīrītāji pāriet uz pilnu ātrumu, kad atveras logs vai durvis, tikai starp šiem laikiem. Abi tukši: visu dienu.",
           "manual_override": "Minūtes, cik ilgi manuāli mainīta ierīce tiek atstāta mierā. 0: nekad netiek pauzēta.",
-          "suppress_when_handled": "Nav brīdinājuma „pārāk karsts“ telpai, kurā Smart Comfort ir ieslēdzis gaisa kondicionieri vai ventilatoru.",
+          "suppress_when_handled": "Nav brīdinājuma par problēmu, ar kuru pēc Smart Comfort komandas nodarbojas ierīce: pārāk karsts (kondicionieris vai ventilators), piesārņots gaiss (attīrītājs), mitrums un kondensāts (mitruma savācējs), pārāk auksts (apkure).",
           "night_start": "Starp šiem laikiem ierīces izmanto nakts iestatījumus (klusāks ātrums, iepriekšējs iestatījums vai ventilatora režīms), un tām nav loga pastiprinājuma.",
           "display": "Izslēgts cilnes Grafiks stundās „Displeji izslēgti“ un telpas diendusas laikā, pēc tam atkal ieslēgts.",
-          "reset_at": "Šajā laikā ierīce atgriežas normālā stāvoklī, arī pēc manuālas maiņas (attīrītājs atpakaļ uz auto…)."
+          "reset_at": "Šajā laikā ierīce atgriežas normālā stāvoklī, arī pēc manuālas maiņas (attīrītājs atpakaļ uz auto…).",
+          "shower_rise": "Mitruma punkti 10 minūtēs, kas norāda uz dušu: telpas mitruma savācēji (un ventilatori ar dušas ātrumu) darbojas pastiprināti. Tukšs: izslēgts."
         },
         "sections": {
           "climate": {
@@ -169,7 +174,9 @@
               "open_preset": "Iepriekšējs iestatījums, logs atvērts",
               "off_preset": "Iepriekšējs iestatījums pirms izslēgšanas",
               "night_percentage": "Ātrums naktī",
-              "night_preset": "Iepriekšējs iestatījums naktī"
+              "night_preset": "Iepriekšējs iestatījums naktī",
+              "shower_percentage": "Ātrums pēc dušas",
+              "shower_preset": "Iestatījums pēc dušas"
             },
             "description": "Atstājiet „Ieslēgt no“ un „Izslēgt zem“ tukšus ventilatoriem, kurus vada tikai logi."
           },
@@ -186,6 +193,66 @@
             },
             "data_description": {
               "keep_on": "Atkal ieslēgt attīrītāju, ja tas bijis izslēgts 10 s (strāvas pārrāvums, kļūme)."
+            }
+          },
+          "dehumidifiers": {
+            "name": "Mitruma savācēji",
+            "data": {
+              "on_above": "Ieslēgt no",
+              "off_below": "Izslēgt zem",
+              "mode": "Režīms",
+              "target_humidity": "Mērķa mitrums",
+              "boost_mode": "Pastiprinātais režīms",
+              "night_mode": "Režīms naktī",
+              "night_off": "Naktī izslēgts",
+              "tank": "Pilnas tvertnes sensors",
+              "off_on_open": "Izslēgt, ja atvērts (min)",
+              "prefer_airing": "Dot priekšroku vēdināšanai",
+              "airing_wait": "Gaidīt vēdināšanu (min)"
+            },
+            "data_description": {
+              "prefer_airing": "Ja āra gaiss ir sausāks, iesaka atvērt logus un tik ilgi gaida pirms mitruma savākšanas.",
+              "tank": "Pilnas ūdens tvertnes sensors: brīdinājums, un mitruma savācējs tiek atstāts mierā, līdz to iztukšo."
+            }
+          },
+          "heating": {
+            "name": "Apkure",
+            "data": {
+              "comfort": "Komforts",
+              "eco": "Eko",
+              "frost": "Aizsardzība pret sasalšanu",
+              "away": "Prombūtne",
+              "comfort_preset": "Komforta iestatījums",
+              "eco_preset": "Eko iestatījums",
+              "frost_preset": "Pretsasalšanas iestatījums",
+              "away_preset": "Prombūtnes iestatījums",
+              "schedule": "Grafiks",
+              "off_on_open": "Pretsasalšana, ja atvērts (min)",
+              "max_outdoor": "Izslēgt no (ārā)",
+              "preheat": "Iepriekšēja sildīšana",
+              "preheat_max": "Iepriekšēja sildīšana ne vairāk kā (min)",
+              "tempo": "Tempo krāsa šodien",
+              "tempo_tomorrow": "Tempo krāsa rīt",
+              "tempo_red": "Pazemināt sarkanajās dienās",
+              "tempo_white": "Pazemināt baltajās dienās",
+              "tempo_preheat": "Paaugstināt pirms sarkanās dienas",
+              "offpeak": "Zemā tarifa stundas",
+              "offpeak_start": "Zemais tarifs no",
+              "offpeak_end": "Zemais tarifs līdz",
+              "stove": "Granulu krāsns",
+              "pellets": "Granulu līmenis",
+              "backup": "Papildu apkure",
+              "backup_margin": "Papildu zem komforta par",
+              "fault_after": "Kļūme pēc (min)"
+            },
+            "data_description": {
+              "schedule": "Grafika palīgs vai ieslēgšanas/izslēgšanas entītija: ieslēgts = komforts, izslēgts = eko. Tukšs: komforts (pretsasalšana palīgtelpā).",
+              "comfort_preset": "Radiatori ar vadības vadu: temperatūras vietā tiek iestatīts katra režīma iestatījums.",
+              "max_outdoor": "Apkure izslēgta, kamēr ārā ir vismaz tik silts, atkal ieslēgta 1 °C zemāk. Tukšs: nekad.",
+              "preheat": "Sāk komfortu agrāk pēc telpas apgūtā uzsilšanas laika.",
+              "tempo": "EDF Tempo krāsas sensors: temperatūras pazeminātas sarkanajās (un baltajās) dienās, nedaudz paaugstinātas zemā tarifa stundās pirms sarkanās dienas.",
+              "backup": "Paliek eko režīmā, kamēr kurina granulu krāsns un sarkanajās Tempo dienās, ja vien telpa nenoslīd zem komforta par rezervi.",
+              "fault_after": "Apkure, kas tik ilgi nesilda telpu, rada brīdinājumu."
             }
           }
         }
@@ -205,6 +272,9 @@
           "climate": "Gaisa kondicionieris",
           "fans": "Ventilatori",
           "purifiers": "Gaisa attīrītāji",
+          "surface_temperature": "Sienu temperatūra",
+          "heating": "Apkure",
+          "dehumidifiers": "Mitruma savācēji",
           "lights": "Gaismas",
           "type": "Tips"
         },
@@ -232,7 +302,8 @@
           "pm25": "Smalko daļiņu sensori (µg/m³), arī gaisa attīrītāju: brīdinājums par piesārņotu gaisu, un attīrītāji darbojas jaudīgāk, līdz gaiss atkal ir tīrs.",
           "air_quality": "Telpas gaisa kvalitātes indeksa sensori (HomeKit 1–5, Eiropas 1–6, ASV AQI).",
           "lights": "Regulējamas gaismas: to spilgtums seko diennakts laikam, kamēr tās ir ieslēgtas (adaptīvais apgaismojums).",
-          "type": "Dzīvojamā telpa izmanto standarta sliekšņus; palīgtelpa (pagrabs, garāža, darbnīca…) izmanto savus — tikai salu un pelējumu."
+          "type": "Dzīvojamā telpa izmanto standarta sliekšņus; palīgtelpa (pagrabs, garāža, darbnīca…) izmanto savus — tikai salu un pelējumu.",
+          "surface_temperature": "Aukstākās sienas vai loga temperatūra (kondensāta risks). Tukšs: novērtēta no iekšējās un āra temperatūras."
         }
       },
       "room": {
@@ -250,6 +321,9 @@
           "climate": "Gaisa kondicionieris",
           "fans": "Ventilatori",
           "purifiers": "Gaisa attīrītāji",
+          "surface_temperature": "Sienu temperatūra",
+          "heating": "Apkure",
+          "dehumidifiers": "Mitruma savācēji",
           "lights": "Gaismas",
           "type": "Tips"
         },
@@ -277,7 +351,8 @@
           "pm25": "Smalko daļiņu sensori (µg/m³), arī gaisa attīrītāju: brīdinājums par piesārņotu gaisu, un attīrītāji darbojas jaudīgāk, līdz gaiss atkal ir tīrs.",
           "air_quality": "Telpas gaisa kvalitātes indeksa sensori (HomeKit 1–5, Eiropas 1–6, ASV AQI).",
           "lights": "Regulējamas gaismas: to spilgtums seko diennakts laikam, kamēr tās ir ieslēgtas (adaptīvais apgaismojums).",
-          "type": "Dzīvojamā telpa izmanto standarta sliekšņus; palīgtelpa (pagrabs, garāža, darbnīca…) izmanto savus — tikai salu un pelējumu."
+          "type": "Dzīvojamā telpa izmanto standarta sliekšņus; palīgtelpa (pagrabs, garāža, darbnīca…) izmanto savus — tikai salu un pelējumu.",
+          "surface_temperature": "Aukstākās sienas vai loga temperatūra (kondensāta risks). Tukšs: novērtēta no iekšējās un āra temperatūras."
         }
       },
       "outdoor": {
@@ -286,7 +361,8 @@
           "name": "Nosaukums",
           "temperature": "Temperatūra",
           "air_quality": "Gaisa kvalitāte",
-          "noise": "Troksnis"
+          "noise": "Troksnis",
+          "humidity": "Mitrums"
         }
       },
       "edit_room": {
@@ -352,6 +428,11 @@
         "co2_high": "Augsts CO₂",
         "polluted_air": "Piesārņots gaiss",
         "humidity_high": "Augsts mitrums",
+        "condensation_risk": "Kondensāta risks",
+        "air_to_dry": "Atveriet logus (ārā sausāks)",
+        "tank_full": "Mitruma savācēja tvertne pilna",
+        "heating_fault": "Apkures kļūme",
+        "pellets_low": "Maz granulu",
         "noise_high": "Trokšņaina telpa",
         "noisy_outside": "Aizveriet logus (ārā ir troksnis)",
         "bad_air_outside": "Aizveriet logus (ārā ir slikts gaiss)"
@@ -419,6 +500,11 @@
           "co2_high": "Augsts CO₂",
           "polluted_air": "Piesārņots gaiss",
           "humidity_high": "Augsts mitrums",
+          "condensation_risk": "Kondensāta risks",
+          "air_to_dry": "Atveriet logus (ārā sausāks)",
+          "tank_full": "Mitruma savācēja tvertne pilna",
+          "heating_fault": "Apkures kļūme",
+          "pellets_low": "Maz granulu",
           "noise_high": "Trokšņaina telpa",
           "noisy_outside": "Aizveriet logus (ārā ir troksnis)",
           "bad_air_outside": "Aizveriet logus (ārā ir slikts gaiss)"
@@ -446,6 +532,12 @@
       },
       "control_purifiers": {
         "name": "Gaisa attīrītāju vadība"
+      },
+      "control_heating": {
+        "name": "Apkures vadība"
+      },
+      "control_dehumidifiers": {
+        "name": "Mitruma savācēju vadība"
       },
       "lighting": {
         "name": "Adaptīvais apgaismojums"
@@ -539,6 +631,12 @@
     "line_polluted_air": "{pollutant} {value} µg/m³, virs {threshold} µg/m³",
     "line_polluted_air_index": "gaisa kvalitāte {value}/6, virs {threshold}/6",
     "line_humidity_high": "mitrums {value} % — izvēdiniet telpu",
+    "line_condensation_risk": "kondensāta risks: sienas {value} °C virs rasas punkta — izvēdiniet vai savāciet mitrumu",
+    "line_condensation": "kondensāts: sienas rasas punktā — izvēdiniet vai savāciet mitrumu",
+    "line_air_to_dry": "ārā sausāks par {value} g/m³ — atveriet logus, lai izžāvētu telpu",
+    "line_tank_full": "mitruma savācēja tvertne pilna — iztukšojiet to",
+    "line_heating_fault": "apkure ieslēgta, bet telpa nesasilst ({value} °C, iestatīts {threshold} °C)",
+    "line_pellets_low": "granulas {value} %, zem {threshold} %",
     "line_noise_high": "troksnis {value} dB, virs {threshold} dB",
     "line_noisy_outside": "{value} dB ārā — aizveriet: {openings}",
     "line_bad_air_outside": "gaisa kvalitāte ārā {value}/6 — aizveriet: {openings}",

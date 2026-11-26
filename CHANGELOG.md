@@ -1,5 +1,26 @@
 # Changelog
 
+## 2.3.0 - 2026-11-26
+
+### Features
+- Dehumidifiers (`dehumidifiers:` of a room, `humidifier` or `switch` entities): dry from `on_above` (65 %) to `off_below` (55 %), or while a condensation risk is under way; their `mode` / `target_humidity`, a quiet `night_mode` or `night_off`, off when an opening stays open (`off_on_open`), left alone while their `tank` sensor says it is full. With `prefer_airing`, they wait `airing_wait` minutes while opening the windows would dry the room, counted from when the room became damp (airing and closing again doesn't start the wait over).
+- Shower boost: a humidity rise of `control.shower_rise` points (10) within 10 minutes boosts the room's dehumidifiers (`boost_mode`) and its fans with a `shower_percentage` / `shower_preset` for `control.shower_boost` minutes (30).
+- Heating (`heating:` of a room, `climate` entities): comfort / eco from a `schedule` helper, the away setpoint while nobody is home (only when lower), frost protection in an annex and while an opening stays open, off from `max_outdoor` (16 °C) outdoors and while the room's air conditioner cools (which no longer cools while the room heats). Pilot wire radiators by their presets of each mode. Comfort anticipated from the room's learnt warm-up rate (`preheat`, `preheat_max`). EDF Tempo: setpoints lowered on red (`tempo_red`, 2 °C) and white days, raised (`tempo_preheat`) in the off-peak hours before a red day. Pellet stoves (`stove`, `pellets`) as the main source, with `backup` heaters kept at eco while one heats. A radiator driven by presets spends red Tempo days at eco, and gets its eco preset for away or frost protection, its comfort preset for eco, when it has no preset of their own (never a setpoint it may not take).
+- New alerts: `condensation_risk` (its own wording once the walls reach the dew point; the coldest wall — a `surface_temperature` sensor, else estimated from the outdoor temperature — near the dew point), `air_to_dry` (a damp room whose windows are closed while the outdoor air is drier and at least 5 °C, from the new `outdoor_humidity` sensors), `tank_full`, `heating_fault` (heating on, the room at least 1 °C below the setpoint the device reports, that doesn't warm it for `fault_after` minutes) and `pellets_low`. High humidity, condensation risk and too cold are handled (and the *No alert when handled* help says so) while a dehumidifier dries or a heater heats.
+- Device control per family: `switch.smart_comfort_dehumidifier_control` and `switch.smart_comfort_heating_control`, in the panel's *Device control* menu and the mini card's *Devices* switch; turned off, the dehumidifiers drying are turned off and the heaters set back to comfort (those off for the season stay off).
+- Comfort score: a few points off short of an alert — a heated room below the setpoint its heater reports, humidity outside 40–60 % in a living space, not counted again while a too cold or high humidity alert is on (`score_penalty` of each room; the Overview takes the mean of the rooms', not their sum).
+- Discover: dehumidifiers with their tank sensor and quiet mode, heaters (climate entities that heat but don't cool) with their pilot wire presets, pellet stoves with their pellet level, the humidity sensors of the outdoor places.
+- Too cold, in a room Smart Comfort heats to a lower setpoint (eco at night, away, frost protection): only below that setpoint − 1 °C, so that the eco night is no alert.
+- Activity card, Activity tab and Overview: the dehumidifier and heater commands in words (*Drying*, *Shower boost*, *Heating: eco · 17 °C*…) with their icons.
+- The sensors and the panel use the readings of the last evaluation instead of reading every sensor again (the outdoor ones once per evaluation, not once per room); the panel gets the status only when it changed; a device whose measurements alone change (a thermostat's current temperature) no longer starts an evaluation; the calendar's state no longer goes through the whole history.
+- Panel: the dehumidifiers and heaters of each room with their settings, their defaults and the shower boost in Settings, a wall temperature sensor per room, the outdoor humidity sensors.
+- Panel, devices of a room: the essential settings first, the rest under *Advanced*; each device in a tile of its own, each empty field shows its default greyed, each switch its actual state; a dehumidifier's night as one choice (*As by day*, *Quiet mode*, *Off*). Settings: each device family with its icon and its thresholds side by side, the heating ones in sub-sections (setpoints, schedule and anticipation, EDF Tempo, safety).
+
+### Fixes
+- The room sensors' new attributes (dew point, score penalty, warm-up rate, shower) and the lighting ones are kept out of the recorder.
+- A dehumidifier stopping as its tank fills is no longer taken for a change by hand: it dries again as soon as the tank is emptied. A heater offering no `heat` mode is turned on in `auto` (or its first mode).
+- Setpoints in Home Assistant's unit: on a °F system, the air conditioner's and the heaters' setpoints are sent in °F, and the heaters' are read back in °C (a heater was set again at every evaluation).
+
 ## 2.2.4 - 2026-11-25
 
 ### Fixes

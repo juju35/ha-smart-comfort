@@ -89,6 +89,17 @@ COMMON = {
 
 # Material Design Icons paths used by the panel, the form fields and the sidebar (from @mdi/js 7.4.47).
 ICONS = {
+    "flash": "M7,2V13H10V22L17,10H13L17,2H7Z",
+    "shield-check-outline": "M21,11C21,16.55 17.16,21.74 12,23C6.84,21.74 3,16.55 3,11V5L12,1L21,5V11M12,21C15.75,20 19,15.54 19,11.22V6.3L12,3.18L5,6.3V11.22C5,15.54 8.25,20 12,21M10,17L6,13L7.41,11.59L10,14.17L16.59,7.58L18,9",
+    "air-humidifier": "M11 9C8.79 9 7 10.79 7 13S8.79 17 11 17 15 15.21 15 13 13.21 9 11 9M11 15C9.9 15 9 14.11 9 13S9.9 11 11 11 13 11.9 13 13 12.11 15 11 15M7 4H14C16.21 4 18 5.79 18 8V9H16V8C16 6.9 15.11 6 14 6H7C5.9 6 5 6.9 5 8V20H16V18H18V22H3V8C3 5.79 4.79 4 7 4M19 10.5C19 10.5 21 12.67 21 14C21 15.1 20.1 16 19 16S17 15.1 17 14C17 12.67 19 10.5 19 10.5",
+    "air-humidifier-off": "M22.1 21.5L2.4 1.7L1.1 3L3.8 5.7C3.3 6.3 3 7.1 3 8V22H18V19.9L20.8 22.7L22.1 21.5M9.6 11.5L12.4 14.3C12.1 14.7 11.6 15 11 15C9.9 15 9 14.1 9 13C9 12.4 9.3 11.9 9.6 11.5M16 17.9V20H5V8C5 7.7 5.1 7.4 5.2 7.1L8.2 10.1C7.5 10.8 7 11.9 7 13C7 15.2 8.8 17 11 17C12.1 17 13.2 16.5 13.9 15.8L16 17.9M17 13.8C17.1 12.5 19 10.5 19 10.5S21 12.7 21 14C21 15 20.2 15.9 19.2 16L17 13.8M9.2 6L7.2 4H14C16.2 4 18 5.8 18 8V9H16V8C16 6.9 15.1 6 14 6H9.2Z",
+    "radiator": "M7.95,3L6.53,5.19L7.95,7.4H7.94L5.95,10.5L4.22,9.6L5.64,7.39L4.22,5.19L6.22,2.09L7.95,3M13.95,2.89L12.53,5.1L13.95,7.3L13.94,7.31L11.95,10.4L10.22,9.5L11.64,7.3L10.22,5.1L12.22,2L13.95,2.89M20,2.89L18.56,5.1L20,7.3V7.31L18,10.4L16.25,9.5L17.67,7.3L16.25,5.1L18.25,2L20,2.89M2,22V14A2,2 0 0,1 4,12H20A2,2 0 0,1 22,14V22H20V20H4V22H2M6,14A1,1 0 0,0 5,15V17A1,1 0 0,0 6,18A1,1 0 0,0 7,17V15A1,1 0 0,0 6,14M10,14A1,1 0 0,0 9,15V17A1,1 0 0,0 10,18A1,1 0 0,0 11,17V15A1,1 0 0,0 10,14M14,14A1,1 0 0,0 13,15V17A1,1 0 0,0 14,18A1,1 0 0,0 15,17V15A1,1 0 0,0 14,14M18,14A1,1 0 0,0 17,15V17A1,1 0 0,0 18,18A1,1 0 0,0 19,17V15A1,1 0 0,0 18,14Z",
+    "radiator-disabled": "M20,12H4A2,2 0 0,0 2,14V22H4V20H20V22H22V14A2,2 0 0,0 20,12M7,17A1,1 0 0,1 6,18A1,1 0 0,1 5,17V15A1,1 0 0,1 6,14A1,1 0 0,1 7,15V17M11,17A1,1 0 0,1 10,18A1,1 0 0,1 9,17V15A1,1 0 0,1 10,14A1,1 0 0,1 11,15V17M15,17A1,1 0 0,1 14,18A1,1 0 0,1 13,17V15A1,1 0 0,1 14,14A1,1 0 0,1 15,15V17M19,17A1,1 0 0,1 18,18A1,1 0 0,1 17,17V15A1,1 0 0,1 18,14A1,1 0 0,1 19,15V17Z",
+    "radiator-off": "M3.28,2L2,3.27L4.77,6.04L5.64,7.39L4.22,9.6L5.95,10.5L7.23,8.5L10.73,12H4A2,2 0 0,0 2,14V22H4V20H18.73L20,21.27V22H22V20.73L22,20.72V20.72L3.28,2M7,17A1,1 0 0,1 6,18A1,1 0 0,1 5,17V15A1,1 0 0,1 6,14A1,1 0 0,1 7,15V17M11,17A1,1 0 0,1 10,18A1,1 0 0,1 9,17V15A1,1 0 0,1 10,14A1,1 0 0,1 11,15V17M15,17A1,1 0 0,1 14,18A1,1 0 0,1 13,17V15C13,14.79 13.08,14.61 13.18,14.45L15,16.27V17M16.25,9.5L17.67,7.3L16.25,5.1L18.25,2L20,2.89L18.56,5.1L20,7.3V7.31L18,10.4L16.25,9.5M22,14V18.18L19,15.18V15A1,1 0 0,0 18,14C17.95,14 17.9,14 17.85,14.03L15.82,12H20C21.11,12 22,12.9 22,14M11.64,7.3L10.22,5.1L12.22,2L13.95,2.89L12.53,5.1L13.95,7.3L13.94,7.31L12.84,9L11.44,7.62L11.64,7.3M7.5,3.69L6.1,2.28L6.22,2.09L7.95,3L7.5,3.69Z",
+    "mushroom-outline": "M4,12H20C20,8.27 17.44,5.13 14,4.25C13.86,5.24 13,6 12,6C11,6 10.14,5.24 10,4.25C6.56,5.13 4,8.27 4,12M12,2A10,10 0 0,1 22,12A2,2 0 0,1 20,14H4A2,2 0 0,1 2,12A10,10 0 0,1 12,2M13.5,17H10.5L9.92,19L9.65,20H14.35L14.08,19L13.5,17M15,15L16,18.5L16.27,19.45L16.35,20C16.35,21.1 15.45,22 14.35,22H9.65L9.17,21.94C8.1,21.66 7.45,20.57 7.73,19.5L8,18.5L9,15H15M16,7A2,2 0 0,1 18,9A2,2 0 0,1 16,11A2,2 0 0,1 14,9A2,2 0 0,1 16,7M8,7A2,2 0 0,1 10,9A2,2 0 0,1 8,11A2,2 0 0,1 6,9A2,2 0 0,1 8,7Z",
+    "weather-windy": "M4,10A1,1 0 0,1 3,9A1,1 0 0,1 4,8H12A2,2 0 0,0 14,6A2,2 0 0,0 12,4C11.45,4 10.95,4.22 10.59,4.59C10.2,5 9.56,5 9.17,4.59C8.78,4.2 8.78,3.56 9.17,3.17C9.9,2.45 10.9,2 12,2A4,4 0 0,1 16,6A4,4 0 0,1 12,10H4M19,12A1,1 0 0,0 20,11A1,1 0 0,0 19,10C18.72,10 18.47,10.11 18.29,10.29C17.9,10.68 17.27,10.68 16.88,10.29C16.5,9.9 16.5,9.27 16.88,8.88C17.42,8.34 18.17,8 19,8A3,3 0 0,1 22,11A3,3 0 0,1 19,14H5A1,1 0 0,1 4,13A1,1 0 0,1 5,12H19M18,18H4A1,1 0 0,1 3,17A1,1 0 0,1 4,16H18A3,3 0 0,1 21,19A3,3 0 0,1 18,22C17.17,22 16.42,21.66 15.88,21.12C15.5,20.73 15.5,20.1 15.88,19.71C16.27,19.32 16.9,19.32 17.29,19.71C17.47,19.89 17.72,20 18,20A1,1 0 0,0 19,19A1,1 0 0,0 18,18Z",
+    "cup-water": "M18.32,8H5.67L5.23,4H18.77M12,19A3,3 0 0,1 9,16C9,14 12,10.6 12,10.6C12,10.6 15,14 15,16A3,3 0 0,1 12,19M3,2L5,20.23C5.13,21.23 5.97,22 7,22H17C18,22 18.87,21.23 19,20.23L21,2H3Z",
+    "sack-percent": "M8,7L6,2L10,4L12,2L14,4L18,2L16,7H8M16,22C10,22 8,22 8,22C2,22 3,18 3,18C3,18 4,11 8,9H16C20,11 21,18 21,18C21,18 22,22 16,22M7.5,12.5A1.5,1.5 0 0,0 9,14A1.5,1.5 0 0,0 10.5,12.5A1.5,1.5 0 0,0 9,11A1.5,1.5 0 0,0 7.5,12.5M16.5,18.5A1.5,1.5 0 0,0 15,17A1.5,1.5 0 0,0 13.5,18.5A1.5,1.5 0 0,0 15,20A1.5,1.5 0 0,0 16.5,18.5M16.5,12.35L15.15,11L7.5,18.65L8.87,20L16.5,12.35Z",
     "snowflake-off": "M11 5.12L9.29 3.41L10.71 2L12 3.29L13.29 2L14.71 3.41L13 5.12V7.38L15.45 8.82L17.45 7.69L18.07 5.36L20 5.88L19.54 7.65L21.31 8.12L20.79 10.05L18.46 9.43L16.46 10.56V13.26L14.5 11.3V10.56L12.74 9.54L10.73 7.53L11 7.38V5.12M18.46 14.57L16.87 13.67L19.55 16.35L21.3 15.88L20.79 13.95L18.46 14.57M13 16.62V18.88L14.7 20.59L13.29 22L12 20.71L10.71 22L9.29 20.59L11 18.88V16.62L8.55 15.18L6.55 16.31L5.93 18.64L4 18.12L4.47 16.36L2.7 15.89L3.22 13.96L5.55 14.58L7.55 13.45V10.56L5.55 9.43L3.22 10.05L2.7 8.12L4.47 7.65L4 5.89L1.11 3L2.39 1.73L22.11 21.46L20.84 22.73L14.1 16L13 16.62M12 14.89L12.63 14.5L9.5 11.39V13.44L12 14.89Z",
     "air-purifier-off": "M21 11C18.6 11 18.5 12.9 16.2 13L16 12.8V11C18.5 11 18.5 9 21 9V11M22.1 21.5L20.8 22.8L18 19.9V22H3V8C3 7.1 3.3 6.3 3.8 5.7L1.1 3L2.4 1.7L22.1 21.5M9 13C9 14.1 9.9 15 11 15C11.6 15 12.1 14.7 12.5 14.4L9.7 11.6C9.3 11.9 9 12.4 9 13M16 17.9L13.9 15.8C13.2 16.5 12.1 17 11 17C8.8 17 7 15.2 7 13C7 11.9 7.5 10.8 8.2 10.1L5.2 7.1C5.1 7.4 5 7.7 5 8V20H16V17.9M21 15V13C19.3 13 18.7 14 17.7 14.5L18.8 15.6C19.4 15.3 20 15 21 15M14 6C15.1 6 16 6.9 16 8V9H18V8C18 5.8 16.2 4 14 4H7.2L9.2 6H14Z",
     "fan-off": "M12.5,2C9.64,2 8.57,4.55 9.29,7.47L15,13.16C15.87,13.37 16.81,13.81 17.28,14.73C18.46,17.1 22.03,17 22.03,12.5C22.03,8.92 18.05,8.13 14.35,10.13C14.03,9.73 13.61,9.42 13.13,9.22C13.32,8.29 13.76,7.24 14.75,6.75C17.11,5.57 17,2 12.5,2M3.28,4L2,5.27L4.47,7.73C3.22,7.74 2,8.87 2,11.5C2,15.07 5.96,15.85 9.65,13.87C9.97,14.27 10.4,14.59 10.89,14.79C10.69,15.71 10.25,16.75 9.27,17.24C6.91,18.42 7,22 11.5,22C13.8,22 14.94,20.36 14.94,18.21L18.73,22L20,20.72L3.28,4Z",
@@ -234,6 +245,10 @@ const FORM_STYLE = `
   .field .small { font-size: 12px; color: var(--secondary-text-color); line-height: 16px; }
   .field .value { font-size: 16px; line-height: 22px; }
   .field .placeholder { color: var(--secondary-text-color); font-size: 14px; }
+  .radios { display: flex; flex-wrap: wrap; gap: 6px 18px; padding: 4px 0; }
+  .radio { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; }
+  .radio .dot { width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--secondary-text-color); box-sizing: border-box; }
+  .radio.on .dot { border-color: var(--primary-color); box-shadow: inset 0 0 0 3px var(--card-background-color, #fff); background: var(--primary-color); }
   .field .name { font-size: 14px; line-height: 20px; }
   .field .unit { color: var(--secondary-text-color); font-size: 14px; }
   .field .icon { color: var(--secondary-text-color); display: flex; }
@@ -299,7 +314,7 @@ customElements.define("ha-form", class extends HTMLElement {
     const helpText = this._helperFn ? this._helperFn(s) : undefined;
     const help = helpText ? `<div class="helper">${esc(helpText)}</div>` : "";
     if (sel.boolean) {
-      return `<div class="boolean"><span>${label}</span><span class="switch${value ? " on" : ""}"></span></div>`;
+      return `<div><div class="boolean"><span>${label}</span><span class="switch${value ? " on" : ""}"></span></div>${help}</div>`;
     }
     if (sel.entity) {
       const ids = (Array.isArray(value) ? value : value ? [value] : []).filter(Boolean);
@@ -316,15 +331,25 @@ customElements.define("ha-form", class extends HTMLElement {
       const v = typeof value === "number" ? value : min;
       return `<div><div class="label">${label}</div><div class="slider"><div class="track"><div class="fill" style="width:${((v - min) / (max - min)) * 100}%"></div></div><span>${esc(value ?? "")}</span></div>${help}</div>`;
     }
+    if (sel.select && sel.select.mode === "list") {
+      const options = (sel.select.options || []).map((o) => (typeof o === "string" ? { value: o, label: o } : o));
+      const radios = options
+        .map((o) => `<span class="radio${o.value === value ? " on" : ""}"><span class="dot"></span>${esc(o.label)}</span>`)
+        .join("");
+      return `<div><div class="label">${label}</div><div class="radios">${radios}</div>${help}</div>`;
+    }
     if (sel.select) {
       const options = (sel.select.options || []).map((o) => (typeof o === "string" ? { value: o, label: o } : o));
       const shown = (Array.isArray(value) ? value : [value]).filter((v) => v !== undefined && v !== null && v !== "");
       const text = shown.map((v) => options.find((o) => o.value === v)?.label ?? v).join(", ");
       const clear = shown.length ? svg("close", 20) : "";
-      return `<div><div class="field"><div class="text"><span class="small">${label}</span><span class="value">${esc(text)}</span></div><span class="end">${clear}${svg("menu-down")}</span></div>${help}</div>`;
+      const shownText = text ? esc(text) : s.default != null ? `<span class="placeholder">${esc(s.default)}</span>` : "";
+      return `<div><div class="field"><div class="text"><span class="small">${label}</span><span class="value">${shownText}</span></div><span class="end">${clear}${svg("menu-down")}</span></div>${help}</div>`;
     }
     const unit = sel.number?.unit_of_measurement ? `<span class="unit">${esc(sel.number.unit_of_measurement)}</span>` : "";
-    return `<div><div class="field"><div class="text"><span class="small">${label}</span><span class="value">${esc(value ?? "")}</span></div>${unit}</div>${help}</div>`;
+    // Empty: its default as the placeholder, greyed (ha-form passes `default` as the placeholder).
+    const shownValue = value !== undefined && value !== null && value !== "" ? esc(value) : s.default != null ? `<span class="placeholder">${esc(s.default)}</span>` : "";
+    return `<div><div class="field"><div class="text"><span class="small">${label}</span><span class="value">${shownValue}</span></div>${unit}</div>${help}</div>`;
   }
   _entity(id) {
     const state = this._hass?.states?.[id];
@@ -418,6 +443,8 @@ ENTITIES = {
     "light.bedroom_night_light": ("Bedroom night light", "mdi:lightbulb-night", "bedroom", "off"),
     "sensor.bathroom_humidity": ("Bathroom humidity", "mdi:water-percent", "bathroom", "64"),
     "sensor.office_temperature": ("Office temperature", "mdi:thermometer", "office", "16.2"),
+    "humidifier.bathroom_dehumidifier": ("Bathroom dehumidifier", "mdi:air-humidifier", "bathroom", "on"),
+    "climate.office_radiator": ("Office radiator", "mdi:radiator", "office", "heat"),
     "light.entrance": ("Entrance", "mdi:ceiling-light", "entrance", "off"),
     "light.hallway": ("Hallway", "mdi:ceiling-light", "entrance", "off"),
     "sensor.entrance_light_level": ("Entrance light level", "mdi:brightness-5", "entrance", "3"),
@@ -469,8 +496,8 @@ ROOMS = {
         "lighting": {"quiet_morning": True},
         "naps": [{"start": "13:30:00", "end": "15:30:00", "days": ["sat", "sun"]}],
     },
-    "Bathroom": {"humidity": "sensor.bathroom_humidity"},
-    "Office": {"temperature": "sensor.office_temperature"},
+    "Bathroom": {"humidity": "sensor.bathroom_humidity", "dehumidifiers": ["humidifier.bathroom_dehumidifier"]},
+    "Office": {"temperature": "sensor.office_temperature", "heating": ["climate.office_radiator"]},
     "Entrance": {
         "lights": ["light.entrance"],
     },

@@ -57,7 +57,8 @@
           "critical_volume": "Volumen de las alertas críticas",
           "url": "Acción al tocar",
           "tag": "Etiqueta de notificación",
-          "hide_header": "Ocultar la barra superior"
+          "hide_header": "Ocultar la barra superior",
+          "outdoor_humidity": "Humedad exterior"
         },
         "data_description": {
           "notify": "Adónde van las alertas (notify.mobile_app_…, un grupo notify…).",
@@ -75,7 +76,8 @@
           "critical_volume": "Volumen del sonido crítico de iOS, de 0 a 1.",
           "url": "Se abre al tocar la notificación, p. ej. homeassistant://navigate/lovelace/confort",
           "tag": "Cada notificación sustituye a la anterior con esta etiqueta en lugar de acumularse.",
-          "hide_header": "La barra superior de los paneles (título, menú, botones de edición y búsqueda); las pestañas de las vistas se quedan. La barra superior de este panel también; sus pestañas se quedan. Añade ?show_header a la dirección de un panel para verla igualmente."
+          "hide_header": "La barra superior de los paneles (título, menú, botones de edición y búsqueda); las pestañas de las vistas se quedan. La barra superior de este panel también; sus pestañas se quedan. Añade ?show_header a la dirección de un panel para verla igualmente.",
+          "outdoor_humidity": "Sensores de humedad relativa exterior (%), añadidos a los de los lugares exteriores: indican si ventilar secaría una habitación húmeda."
         }
       },
       "alerts": {
@@ -131,15 +133,18 @@
           "display": "Indicador o pantalla",
           "reset_at": "Vuelta a lo normal a las",
           "display_off": "Pantallas apagadas desde",
-          "display_on": "Pantallas encendidas desde"
+          "display_on": "Pantallas encendidas desde",
+          "shower_rise": "Ducha: subida de humedad",
+          "shower_boost": "Impulso tras la ducha (min)"
         },
         "data_description": {
           "start": "Ventiladores y purificadores van al máximo al abrir solo entre estas horas. Ambas vacías: todo el día.",
           "manual_override": "Minutos que se deja en paz un aparato cambiado a mano. 0: nunca.",
-          "suppress_when_handled": "Sin alerta «demasiado calor» si Smart Comfort ha encendido el aire o el ventilador de la estancia.",
+          "suppress_when_handled": "Sin alerta para un problema del que se ocupa un aparato por orden de Smart Comfort: demasiado calor (aire acondicionado o ventilador), aire contaminado (purificador), humedad y condensación (deshumidificador), demasiado frío (calefacción).",
           "night_start": "Entre estas horas los aparatos usan sus ajustes de noche (velocidad, modo o ventilación más silenciosos) y no hay impulso de ventana.",
           "display": "Apagado en las horas «Pantallas apagadas» de la pestaña Horarios y durante las siestas de la habitación, encendido después.",
-          "reset_at": "A esta hora el aparato vuelve a su estado normal, incluso tras un cambio manual (un purificador de nuevo en auto…)."
+          "reset_at": "A esta hora el aparato vuelve a su estado normal, incluso tras un cambio manual (un purificador de nuevo en auto…).",
+          "shower_rise": "Puntos de humedad ganados en 10 minutos que indican una ducha: los deshumidificadores de la habitación (y los ventiladores con velocidad de ducha) se impulsan. Vacío: desactivado."
         },
         "sections": {
           "climate": {
@@ -169,7 +174,9 @@
               "open_preset": "Modo, ventana abierta",
               "off_preset": "Modo antes de apagar",
               "night_percentage": "Velocidad de noche",
-              "night_preset": "Modo de noche"
+              "night_preset": "Modo de noche",
+              "shower_percentage": "Velocidad tras una ducha",
+              "shower_preset": "Preajuste tras una ducha"
             },
             "description": "Deje vacíos «Encender desde» y «Apagar por debajo de» para ventiladores controlados solo por las ventanas."
           },
@@ -186,6 +193,66 @@
             },
             "data_description": {
               "keep_on": "Vuelve a encender un purificador apagado desde hace 10 s (corte, fallo)."
+            }
+          },
+          "dehumidifiers": {
+            "name": "Deshumidificadores",
+            "data": {
+              "on_above": "Encendido desde",
+              "off_below": "Apagado por debajo de",
+              "mode": "Modo",
+              "target_humidity": "Humedad objetivo",
+              "boost_mode": "Modo turbo",
+              "night_mode": "Modo de noche",
+              "night_off": "Apagado de noche",
+              "tank": "Sensor de depósito lleno",
+              "off_on_open": "Apagado si abierto durante (min)",
+              "prefer_airing": "Preferir ventilar",
+              "airing_wait": "Esperar a ventilar (min)"
+            },
+            "data_description": {
+              "prefer_airing": "Cuando el aire exterior es más seco, sugiere abrir las ventanas y espera este tiempo antes de deshumidificar.",
+              "tank": "Sensor de depósito de agua lleno: una alerta, y el deshumidificador queda tranquilo hasta vaciarlo."
+            }
+          },
+          "heating": {
+            "name": "Calefacción",
+            "data": {
+              "comfort": "Confort",
+              "eco": "Eco",
+              "frost": "Antiheladas",
+              "away": "Ausencia",
+              "comfort_preset": "Preajuste confort",
+              "eco_preset": "Preajuste eco",
+              "frost_preset": "Preajuste antiheladas",
+              "away_preset": "Preajuste ausencia",
+              "schedule": "Programación",
+              "off_on_open": "Antiheladas si abierto durante (min)",
+              "max_outdoor": "Apagado desde (exterior)",
+              "preheat": "Anticipar",
+              "preheat_max": "Anticipar como máximo (min)",
+              "tempo": "Color Tempo de hoy",
+              "tempo_tomorrow": "Color Tempo de mañana",
+              "tempo_red": "Bajada en días rojos",
+              "tempo_white": "Bajada en días blancos",
+              "tempo_preheat": "Subida antes de un día rojo",
+              "offpeak": "Horas valle",
+              "offpeak_start": "Horas valle desde",
+              "offpeak_end": "Horas valle hasta",
+              "stove": "Estufa de pellets",
+              "pellets": "Nivel de pellets",
+              "backup": "Calefacción de apoyo",
+              "backup_margin": "Apoyo por debajo del confort en",
+              "fault_after": "Avería tras (min)"
+            },
+            "data_description": {
+              "schedule": "Ayudante de programación o entidad encendido/apagado: encendido = confort, apagado = eco. Vacío: confort (antiheladas en un anexo).",
+              "comfort_preset": "Radiadores con hilo piloto: se aplica el preajuste de cada modo en lugar de una consigna.",
+              "max_outdoor": "Calefacción apagada mientras fuera haga al menos esta temperatura, de nuevo encendida 1 °C por debajo. Vacío: nunca.",
+              "preheat": "Empieza el confort antes, según el tiempo de calentamiento aprendido de la habitación.",
+              "tempo": "Sensor de color EDF Tempo: consignas bajadas los días rojos (y blancos), algo subidas en horas valle antes de un día rojo.",
+              "backup": "Se mantiene en eco mientras una estufa de pellets calienta y los días rojos Tempo, salvo si la habitación baja del confort en el margen.",
+              "fault_after": "Una calefacción que no calienta la habitación durante este tiempo genera una alerta."
             }
           }
         }
@@ -205,6 +272,9 @@
           "climate": "Aire acondicionado",
           "fans": "Ventiladores",
           "purifiers": "Purificadores de aire",
+          "surface_temperature": "Temperatura de las paredes",
+          "heating": "Calefacción",
+          "dehumidifiers": "Deshumidificadores",
           "lights": "Luces",
           "type": "Tipo"
         },
@@ -232,7 +302,8 @@
           "pm25": "Sensores de partículas finas (µg/m³), también los de los purificadores: una alerta de aire contaminado, y los purificadores reforzados hasta que el aire vuelva a estar limpio.",
           "air_quality": "Sensores de índice de calidad del aire de la estancia (HomeKit 1–5, europeo 1–6, AQI de EE. UU.).",
           "lights": "Luces regulables: su brillo sigue el momento del día mientras están encendidas (iluminación adaptativa).",
-          "type": "Una estancia habitable usa los umbrales estándar; un anexo (bodega, garaje, taller…) usa los suyos: solo heladas y moho."
+          "type": "Una estancia habitable usa los umbrales estándar; un anexo (bodega, garaje, taller…) usa los suyos: solo heladas y moho.",
+          "surface_temperature": "Temperatura de la pared o ventana más fría (riesgo de condensación). Vacío: estimada a partir de las temperaturas interior y exterior."
         }
       },
       "room": {
@@ -250,6 +321,9 @@
           "climate": "Aire acondicionado",
           "fans": "Ventiladores",
           "purifiers": "Purificadores de aire",
+          "surface_temperature": "Temperatura de las paredes",
+          "heating": "Calefacción",
+          "dehumidifiers": "Deshumidificadores",
           "lights": "Luces",
           "type": "Tipo"
         },
@@ -277,7 +351,8 @@
           "pm25": "Sensores de partículas finas (µg/m³), también los de los purificadores: una alerta de aire contaminado, y los purificadores reforzados hasta que el aire vuelva a estar limpio.",
           "air_quality": "Sensores de índice de calidad del aire de la estancia (HomeKit 1–5, europeo 1–6, AQI de EE. UU.).",
           "lights": "Luces regulables: su brillo sigue el momento del día mientras están encendidas (iluminación adaptativa).",
-          "type": "Una estancia habitable usa los umbrales estándar; un anexo (bodega, garaje, taller…) usa los suyos: solo heladas y moho."
+          "type": "Una estancia habitable usa los umbrales estándar; un anexo (bodega, garaje, taller…) usa los suyos: solo heladas y moho.",
+          "surface_temperature": "Temperatura de la pared o ventana más fría (riesgo de condensación). Vacío: estimada a partir de las temperaturas interior y exterior."
         }
       },
       "outdoor": {
@@ -286,7 +361,8 @@
           "name": "Nombre",
           "temperature": "Temperatura",
           "air_quality": "Calidad del aire",
-          "noise": "Ruido"
+          "noise": "Ruido",
+          "humidity": "Humedad"
         }
       },
       "edit_room": {
@@ -352,6 +428,11 @@
         "co2_high": "CO₂ alto",
         "polluted_air": "Aire contaminado",
         "humidity_high": "Humedad alta",
+        "condensation_risk": "Riesgo de condensación",
+        "air_to_dry": "Abrir las ventanas (más seco fuera)",
+        "tank_full": "Depósito del deshumidificador lleno",
+        "heating_fault": "Avería de la calefacción",
+        "pellets_low": "Pocos pellets",
         "noise_high": "Estancia ruidosa",
         "noisy_outside": "Cerrar las ventanas (ruido fuera)",
         "bad_air_outside": "Cerrar las ventanas (aire contaminado fuera)"
@@ -419,6 +500,11 @@
           "co2_high": "CO₂ alto",
           "polluted_air": "Aire contaminado",
           "humidity_high": "Humedad alta",
+          "condensation_risk": "Riesgo de condensación",
+          "air_to_dry": "Abrir las ventanas (más seco fuera)",
+          "tank_full": "Depósito del deshumidificador lleno",
+          "heating_fault": "Avería de la calefacción",
+          "pellets_low": "Pocos pellets",
           "noise_high": "Estancia ruidosa",
           "noisy_outside": "Cerrar las ventanas (ruido fuera)",
           "bad_air_outside": "Cerrar las ventanas (aire contaminado fuera)"
@@ -446,6 +532,12 @@
       },
       "control_purifiers": {
         "name": "Control de purificadores"
+      },
+      "control_heating": {
+        "name": "Control de la calefacción"
+      },
+      "control_dehumidifiers": {
+        "name": "Control de los deshumidificadores"
       },
       "lighting": {
         "name": "Iluminación adaptativa"
@@ -539,6 +631,12 @@
     "line_polluted_air": "{pollutant} {value} µg/m³, por encima de {threshold} µg/m³",
     "line_polluted_air_index": "calidad del aire {value}/6, por encima de {threshold}/6",
     "line_humidity_high": "humedad {value} % — ventile",
+    "line_condensation_risk": "riesgo de condensación: paredes {value} °C por encima del punto de rocío — ventile o deshumidifique",
+    "line_condensation": "condensación: paredes en el punto de rocío — ventile o deshumidifique",
+    "line_air_to_dry": "{value} g/m³ más seco fuera — abra las ventanas para secar la habitación",
+    "line_tank_full": "depósito del deshumidificador lleno — vacíelo",
+    "line_heating_fault": "calefacción encendida pero la habitación no se calienta ({value} °C, consigna {threshold} °C)",
+    "line_pellets_low": "pellets al {value} %, por debajo del {threshold} %",
     "line_noise_high": "ruido {value} dB, por encima de {threshold} dB",
     "line_noisy_outside": "{value} dB fuera — cierre {openings}",
     "line_bad_air_outside": "calidad del aire fuera {value}/6 — cierre {openings}",

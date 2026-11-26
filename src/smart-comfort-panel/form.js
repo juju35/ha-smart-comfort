@@ -4,6 +4,8 @@ import { TIME } from "./configuration.js";
 export const num = (unit, opts = {}) => ({
   number: { mode: "box", step: opts.step ?? 0.1, min: opts.min ?? -50, max: opts.max ?? 5000, unit_of_measurement: unit },
 });
+// A relative humidity threshold.
+export const humidity = { number: { mode: "box", step: 1, min: 0, max: 100, unit_of_measurement: "%" } };
 export const minutes = (min = 0) => ({ number: { mode: "box", step: 1, min, max: 1440, unit_of_measurement: "min" } });
 export const percent = { number: { mode: "slider", step: 1, min: 0, max: 100, unit_of_measurement: "%" } };
 export const text = { text: {} };

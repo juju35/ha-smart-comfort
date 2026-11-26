@@ -11,7 +11,7 @@ snooze:
       selector:
         text:
           multiple: true
-    kinds:
+    kinds: &kinds
       selector:
         select:
           multiple: true
@@ -25,6 +25,11 @@ snooze:
             - co2_high
             - polluted_air
             - humidity_high
+            - condensation_risk
+            - air_to_dry
+            - tank_full
+            - heating_fault
+            - pellets_low
             - noise_high
             - noisy_outside
             - bad_air_outside
@@ -40,23 +45,7 @@ acknowledge:
       selector:
         text:
           multiple: true
-    kinds:
-      selector:
-        select:
-          multiple: true
-          translation_key: kind
-          options:
-            - too_hot
-            - close_windows
-            - ventilate
-            - too_cold
-            - window_open_cold
-            - co2_high
-            - polluted_air
-            - humidity_high
-            - noise_high
-            - noisy_outside
-            - bad_air_outside
+    kinds: *kinds
 notify_now:
 get_config:
 reload:

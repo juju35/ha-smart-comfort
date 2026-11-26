@@ -57,7 +57,8 @@
           "critical_volume": "Głośność alertów krytycznych",
           "url": "Akcja po dotknięciu",
           "tag": "Tag powiadomienia",
-          "hide_header": "Ukryj górny pasek"
+          "hide_header": "Ukryj górny pasek",
+          "outdoor_humidity": "Wilgotność na zewnątrz"
         },
         "data_description": {
           "notify": "Dokąd trafiają alerty (notify.mobile_app_…, grupa powiadomień…).",
@@ -75,7 +76,8 @@
           "critical_volume": "Głośność dźwięku krytycznego iOS, od 0 do 1.",
           "url": "Otwierane po dotknięciu powiadomienia, np. homeassistant://navigate/lovelace/comfort",
           "tag": "Każde powiadomienie zastępuje poprzednie z tym tagiem zamiast się gromadzić.",
-          "hide_header": "Górny pasek pulpitów (tytuł, menu, przyciski edycji i wyszukiwania); karty widoków zostają. Również górny pasek tego panelu; jego karty zostają. Dodaj ?show_header do adresu pulpitu, aby mimo to go zobaczyć."
+          "hide_header": "Górny pasek pulpitów (tytuł, menu, przyciski edycji i wyszukiwania); karty widoków zostają. Również górny pasek tego panelu; jego karty zostają. Dodaj ?show_header do adresu pulpitu, aby mimo to go zobaczyć.",
+          "outdoor_humidity": "Czujniki wilgotności względnej na zewnątrz (%), dodane do czujników miejsc zewnętrznych: mówią, czy wietrzenie osuszyłoby wilgotne pomieszczenie."
         }
       },
       "alerts": {
@@ -131,15 +133,18 @@
           "display": "Lampka kontrolna lub wyświetlacz",
           "reset_at": "Powrót do normy o",
           "display_off": "Wyświetlacze wyłączone od",
-          "display_on": "Wyświetlacze włączone od"
+          "display_on": "Wyświetlacze włączone od",
+          "shower_rise": "Prysznic: wzrost wilgotności",
+          "shower_boost": "Wzmocnienie po prysznicu (min)"
         },
         "data_description": {
           "start": "Wentylatory i oczyszczacze przechodzą na pełną prędkość po otwarciu okna lub drzwi tylko między tymi godzinami. Oba puste: cały dzień.",
           "manual_override": "Minuty, przez które urządzenie zmienione ręcznie jest pozostawione w spokoju. 0: nigdy nie wstrzymywane.",
-          "suppress_when_handled": "Brak alertu „za gorąco” dla pomieszczenia, w którym Smart Comfort włączył klimatyzator lub wentylator.",
+          "suppress_when_handled": "Brak alertu o problemie, którym na polecenie Smart Comfort zajmuje się urządzenie: za gorąco (klimatyzator lub wentylator), zanieczyszczone powietrze (oczyszczacz), wilgotność i kondensacja (osuszacz), za zimno (ogrzewanie).",
           "night_start": "Między tymi godzinami urządzenia używają ustawień nocnych (cichsza prędkość, ustawienie wstępne lub tryb wentylatora) i nie ma dla nich wzmocnienia przy oknie.",
           "display": "Wyłączane w godzinach \"Wyświetlacze wyłączone\" z karty Harmonogram i podczas drzemek w pomieszczeniu, potem włączane ponownie.",
-          "reset_at": "O tej godzinie urządzenie wraca do normalnego stanu, nawet po ręcznej zmianie (oczyszczacz z powrotem w trybie auto…)."
+          "reset_at": "O tej godzinie urządzenie wraca do normalnego stanu, nawet po ręcznej zmianie (oczyszczacz z powrotem w trybie auto…).",
+          "shower_rise": "Punkty wilgotności zyskane w 10 minut, które oznaczają prysznic: osuszacze pomieszczenia (i wentylatory z prędkością prysznicową) pracują mocniej. Puste: wyłączone."
         },
         "sections": {
           "climate": {
@@ -169,7 +174,9 @@
               "open_preset": "Ustawienie wstępne, okno otwarte",
               "off_preset": "Ustawienie wstępne przed wyłączeniem",
               "night_percentage": "Prędkość w nocy",
-              "night_preset": "Ustawienie wstępne w nocy"
+              "night_preset": "Ustawienie wstępne w nocy",
+              "shower_percentage": "Prędkość po prysznicu",
+              "shower_preset": "Ustawienie po prysznicu"
             },
             "description": "Pozostaw „Włączony od” i „Wyłączony poniżej” puste dla wentylatorów sterowanych tylko przez okna."
           },
@@ -186,6 +193,66 @@
             },
             "data_description": {
               "keep_on": "Włącz ponownie oczyszczacz, gdy był wyłączony przez 10 s (przerwa w zasilaniu, usterka)."
+            }
+          },
+          "dehumidifiers": {
+            "name": "Osuszacze",
+            "data": {
+              "on_above": "Włącz od",
+              "off_below": "Wyłącz poniżej",
+              "mode": "Tryb",
+              "target_humidity": "Docelowa wilgotność",
+              "boost_mode": "Tryb wzmocniony",
+              "night_mode": "Tryb nocny",
+              "night_off": "Wyłączony w nocy",
+              "tank": "Czujnik pełnego zbiornika",
+              "off_on_open": "Wyłącz, gdy otwarte od (min)",
+              "prefer_airing": "Preferuj wietrzenie",
+              "airing_wait": "Czekaj na wietrzenie (min)"
+            },
+            "data_description": {
+              "prefer_airing": "Gdy powietrze na zewnątrz jest suchsze, proponuje otwarcie okien i czeka tyle przed osuszaniem.",
+              "tank": "Czujnik pełnego zbiornika na wodę: alert, a osuszacz pozostawiony w spokoju do opróżnienia."
+            }
+          },
+          "heating": {
+            "name": "Ogrzewanie",
+            "data": {
+              "comfort": "Komfort",
+              "eco": "Eko",
+              "frost": "Ochrona przed mrozem",
+              "away": "Nieobecność",
+              "comfort_preset": "Ustawienie komfort",
+              "eco_preset": "Ustawienie eko",
+              "frost_preset": "Ustawienie ochrony przed mrozem",
+              "away_preset": "Ustawienie nieobecności",
+              "schedule": "Harmonogram",
+              "off_on_open": "Ochrona przed mrozem, gdy otwarte od (min)",
+              "max_outdoor": "Wyłącz od (na zewnątrz)",
+              "preheat": "Wyprzedzaj",
+              "preheat_max": "Wyprzedzaj najwyżej (min)",
+              "tempo": "Kolor Tempo dziś",
+              "tempo_tomorrow": "Kolor Tempo jutro",
+              "tempo_red": "Obniżenie w czerwone dni",
+              "tempo_white": "Obniżenie w białe dni",
+              "tempo_preheat": "Podwyższenie przed czerwonym dniem",
+              "offpeak": "Godziny pozaszczytowe",
+              "offpeak_start": "Poza szczytem od",
+              "offpeak_end": "Poza szczytem do",
+              "stove": "Piec na pellet",
+              "pellets": "Poziom pelletu",
+              "backup": "Ogrzewanie wspomagające",
+              "backup_margin": "Wspomaganie poniżej komfortu o",
+              "fault_after": "Usterka po (min)"
+            },
+            "data_description": {
+              "schedule": "Pomocnik harmonogramu lub encja wł./wył.: wł. = komfort, wył. = eko. Puste: komfort (ochrona przed mrozem w pomieszczeniu pomocniczym).",
+              "comfort_preset": "Grzejniki z przewodem pilotującym: zamiast temperatury ustawiane jest ustawienie każdego trybu.",
+              "max_outdoor": "Ogrzewanie wyłączone, dopóki na zewnątrz jest co najmniej tak ciepło, ponownie włączone 1 °C niżej. Puste: nigdy.",
+              "preheat": "Rozpoczyna komfort wcześniej, według wyuczonego czasu nagrzewania pomieszczenia.",
+              "tempo": "Czujnik koloru EDF Tempo: temperatury obniżone w czerwone (i białe) dni, nieco podwyższone w godzinach pozaszczytowych przed czerwonym dniem.",
+              "backup": "Utrzymywane na eko, gdy grzeje piec na pellet i w czerwone dni Tempo, chyba że pomieszczenie spadnie poniżej komfortu o margines.",
+              "fault_after": "Ogrzewanie, które tak długo nie nagrzewa pomieszczenia, wywołuje alert."
             }
           }
         }
@@ -205,6 +272,9 @@
           "climate": "Klimatyzator",
           "fans": "Wentylatory",
           "purifiers": "Oczyszczacze powietrza",
+          "surface_temperature": "Temperatura ścian",
+          "heating": "Ogrzewanie",
+          "dehumidifiers": "Osuszacze",
           "lights": "Światła",
           "type": "Typ"
         },
@@ -232,7 +302,8 @@
           "pm25": "Czujniki pyłów drobnych (µg/m³), także oczyszczaczy: alert o zanieczyszczonym powietrzu, a oczyszczacze pracują mocniej, aż powietrze znów będzie czyste.",
           "air_quality": "Czujniki indeksu jakości powietrza w pomieszczeniu (HomeKit 1–5, europejski 1–6, amerykański AQI).",
           "lights": "Światła ściemniane: ich jasność podąża za porą dnia, gdy są włączone (oświetlenie adaptacyjne).",
-          "type": "Pomieszczenie mieszkalne używa standardowych progów; pomieszczenie gospodarcze (piwnica, garaż, warsztat…) używa własnych — tylko mróz i pleśń."
+          "type": "Pomieszczenie mieszkalne używa standardowych progów; pomieszczenie gospodarcze (piwnica, garaż, warsztat…) używa własnych — tylko mróz i pleśń.",
+          "surface_temperature": "Temperatura najzimniejszej ściany lub okna (ryzyko kondensacji). Puste: szacowana z temperatury wewnętrznej i zewnętrznej."
         }
       },
       "room": {
@@ -250,6 +321,9 @@
           "climate": "Klimatyzator",
           "fans": "Wentylatory",
           "purifiers": "Oczyszczacze powietrza",
+          "surface_temperature": "Temperatura ścian",
+          "heating": "Ogrzewanie",
+          "dehumidifiers": "Osuszacze",
           "lights": "Światła",
           "type": "Typ"
         },
@@ -277,7 +351,8 @@
           "pm25": "Czujniki pyłów drobnych (µg/m³), także oczyszczaczy: alert o zanieczyszczonym powietrzu, a oczyszczacze pracują mocniej, aż powietrze znów będzie czyste.",
           "air_quality": "Czujniki indeksu jakości powietrza w pomieszczeniu (HomeKit 1–5, europejski 1–6, amerykański AQI).",
           "lights": "Światła ściemniane: ich jasność podąża za porą dnia, gdy są włączone (oświetlenie adaptacyjne).",
-          "type": "Pomieszczenie mieszkalne używa standardowych progów; pomieszczenie gospodarcze (piwnica, garaż, warsztat…) używa własnych — tylko mróz i pleśń."
+          "type": "Pomieszczenie mieszkalne używa standardowych progów; pomieszczenie gospodarcze (piwnica, garaż, warsztat…) używa własnych — tylko mróz i pleśń.",
+          "surface_temperature": "Temperatura najzimniejszej ściany lub okna (ryzyko kondensacji). Puste: szacowana z temperatury wewnętrznej i zewnętrznej."
         }
       },
       "outdoor": {
@@ -286,7 +361,8 @@
           "name": "Nazwa",
           "temperature": "Temperatura",
           "air_quality": "Jakość powietrza",
-          "noise": "Hałas"
+          "noise": "Hałas",
+          "humidity": "Wilgotność"
         }
       },
       "edit_room": {
@@ -352,6 +428,11 @@
         "co2_high": "Wysokie CO₂",
         "polluted_air": "Zanieczyszczone powietrze",
         "humidity_high": "Wysoka wilgotność",
+        "condensation_risk": "Ryzyko kondensacji",
+        "air_to_dry": "Otwórz okna (suszej na zewnątrz)",
+        "tank_full": "Pełny zbiornik osuszacza",
+        "heating_fault": "Usterka ogrzewania",
+        "pellets_low": "Mało pelletu",
         "noise_high": "Głośne pomieszczenie",
         "noisy_outside": "Zamknij okna (hałas na zewnątrz)",
         "bad_air_outside": "Zamknij okna (złe powietrze na zewnątrz)"
@@ -419,6 +500,11 @@
           "co2_high": "Wysokie CO₂",
           "polluted_air": "Zanieczyszczone powietrze",
           "humidity_high": "Wysoka wilgotność",
+          "condensation_risk": "Ryzyko kondensacji",
+          "air_to_dry": "Otwórz okna (suszej na zewnątrz)",
+          "tank_full": "Pełny zbiornik osuszacza",
+          "heating_fault": "Usterka ogrzewania",
+          "pellets_low": "Mało pelletu",
           "noise_high": "Głośne pomieszczenie",
           "noisy_outside": "Zamknij okna (hałas na zewnątrz)",
           "bad_air_outside": "Zamknij okna (złe powietrze na zewnątrz)"
@@ -446,6 +532,12 @@
       },
       "control_purifiers": {
         "name": "Sterowanie oczyszczaczami"
+      },
+      "control_heating": {
+        "name": "Sterowanie ogrzewaniem"
+      },
+      "control_dehumidifiers": {
+        "name": "Sterowanie osuszaczami"
       },
       "lighting": {
         "name": "Oświetlenie adaptacyjne"
@@ -539,6 +631,12 @@
     "line_polluted_air": "{pollutant} {value} µg/m³, powyżej {threshold} µg/m³",
     "line_polluted_air_index": "jakość powietrza {value}/6, powyżej {threshold}/6",
     "line_humidity_high": "wilgotność {value} % — przewietrz pomieszczenie",
+    "line_condensation_risk": "ryzyko kondensacji: ściany {value} °C powyżej punktu rosy — przewietrz lub osusz pomieszczenie",
+    "line_condensation": "kondensacja: ściany w punkcie rosy — przewietrz lub osusz pomieszczenie",
+    "line_air_to_dry": "na zewnątrz suszej o {value} g/m³ — otwórz okna, aby osuszyć pomieszczenie",
+    "line_tank_full": "pełny zbiornik osuszacza — opróżnij go",
+    "line_heating_fault": "ogrzewanie włączone, ale pomieszczenie się nie nagrzewa ({value} °C, temperatura zadana {threshold} °C)",
+    "line_pellets_low": "pellet {value} %, poniżej {threshold} %",
     "line_noise_high": "hałas {value} dB, powyżej {threshold} dB",
     "line_noisy_outside": "{value} dB na zewnątrz — zamknij: {openings}",
     "line_bad_air_outside": "jakość powietrza na zewnątrz {value}/6 — zamknij: {openings}",

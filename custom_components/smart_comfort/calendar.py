@@ -92,9 +92,10 @@ class AlertsCalendar(SmartComfortEntity, CalendarEntity):
     @property
     def event(self) -> CalendarEvent | None:
         """The alert going on (the most recent one), else none."""
-        now = dt_util.utcnow()
-        ongoing = [e for e in self._events(now) if e.end >= now]
-        return ongoing[-1] if ongoing else None
+        # Only the alerts going on can be on now (the finished ones ended before): no need for the whole history.
+        ahead = dt_util.utcnow() + timedelta(minutes=1)
+        ongoing = [e for ep in self.manager.engine.active() if (e := self._event(ep.finished(ahead))) is not None]
+        return max(ongoing, key=lambda e: e.start) if ongoing else None
 
     async def async_get_events(
         self, hass: HomeAssistant, start_date: datetime, end_date: datetime

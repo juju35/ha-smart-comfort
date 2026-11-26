@@ -23,6 +23,8 @@ export default {
   fam_climate: "klímák",
   fam_fans: "ventilátorok",
   fam_purifiers: "légtisztítók",
+  fam_dehumidifiers: "páramentesítők",
+  fam_heating: "fűtés",
   on: "be",
   off: "ki",
   zoom_in: "Teljes kártya",

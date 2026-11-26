@@ -23,6 +23,8 @@ export default {
   fam_climate: "климатици",
   fam_fans: "вентилатори",
   fam_purifiers: "пречистватели на въздух",
+  fam_dehumidifiers: "изсушители",
+  fam_heating: "отопление",
   on: "вкл.",
   off: "изкл.",
   zoom_in: "Пълна карта",

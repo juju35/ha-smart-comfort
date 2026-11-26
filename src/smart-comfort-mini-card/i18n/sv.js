@@ -23,6 +23,8 @@ export default {
   fam_climate: "luftkonditionering",
   fam_fans: "fläktar",
   fam_purifiers: "luftrenare",
+  fam_dehumidifiers: "avfuktare",
+  fam_heating: "uppvärmning",
   on: "på",
   off: "av",
   zoom_in: "Fullständigt kort",

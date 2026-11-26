@@ -57,7 +57,8 @@
           "critical_volume": "Hlasitost kritických upozornění",
           "url": "Akce po klepnutí",
           "tag": "Značka oznámení",
-          "hide_header": "Skrýt horní lištu"
+          "hide_header": "Skrýt horní lištu",
+          "outdoor_humidity": "Venkovní vlhkost"
         },
         "data_description": {
           "notify": "Kam jdou upozornění (notify.mobile_app_…, skupina notify…).",
@@ -75,7 +76,8 @@
           "critical_volume": "Hlasitost kritického zvuku v iOS, 0 až 1.",
           "url": "Otevře se po klepnutí na oznámení, např. homeassistant://navigate/lovelace/comfort",
           "tag": "Každé oznámení nahradí předchozí s touto značkou, místo aby se hromadila.",
-          "hide_header": "Horní lišta řídicích panelů (název, nabídka, tlačítka úprav a hledání); karty zobrazení zůstávají. Také horní lišta tohoto panelu; jeho karty zůstávají. Přidejte ?show_header k adrese panelu, chcete-li ji přesto vidět."
+          "hide_header": "Horní lišta řídicích panelů (název, nabídka, tlačítka úprav a hledání); karty zobrazení zůstávají. Také horní lišta tohoto panelu; jeho karty zůstávají. Přidejte ?show_header k adrese panelu, chcete-li ji přesto vidět.",
+          "outdoor_humidity": "Čidla relativní vlhkosti venku (%), přidaná k čidlům venkovních míst: ukazují, zda by větrání vysušilo vlhkou místnost."
         }
       },
       "alerts": {
@@ -131,15 +133,18 @@
           "display": "Kontrolka nebo displej",
           "reset_at": "Návrat do normálu v",
           "display_off": "Displeje vypnuté od",
-          "display_on": "Displeje zapnuté od"
+          "display_on": "Displeje zapnuté od",
+          "shower_rise": "Sprcha: nárůst vlhkosti",
+          "shower_boost": "Posílení po sprše (min)"
         },
         "data_description": {
           "start": "Ventilátory a čističky přejdou na plný výkon při otevření okna nebo dveří jen mezi těmito časy. Obě prázdné: celý den.",
           "manual_override": "Minuty, po které se ručně změněné zařízení nechá na pokoji. 0: nikdy se nepozastaví.",
-          "suppress_when_handled": "Žádné upozornění „příliš teplo“ pro místnost, v níž Smart Comfort zapnul klimatizaci nebo ventilátor.",
+          "suppress_when_handled": "Žádné upozornění na problém, který na příkaz Smart Comfort řeší zařízení: příliš teplo (klimatizace nebo ventilátor), znečištěný vzduch (čistička), vlhkost a kondenzace (odvlhčovač), příliš chladno (topení).",
           "night_start": "Mezi těmito časy používají zařízení noční nastavení (tišší rychlost, předvolba nebo režim ventilátoru) a nemají posílení u okna.",
           "display": "Vypne se v hodinách „Displeje vypnuté“ na kartě Plán a během zdřímnutí v místnosti, potom se znovu zapne.",
-          "reset_at": "V tuto dobu se zařízení vrátí do normálního stavu, i po ruční změně (čistička zpět na auto…)."
+          "reset_at": "V tuto dobu se zařízení vrátí do normálního stavu, i po ruční změně (čistička zpět na auto…).",
+          "shower_rise": "Body vlhkosti za 10 minut, které ukazují na sprchování: odvlhčovače místnosti (a ventilátory s rychlostí pro sprchu) běží posíleně. Prázdné: vypnuto."
         },
         "sections": {
           "climate": {
@@ -169,7 +174,9 @@
               "open_preset": "Předvolba, okno otevřené",
               "off_preset": "Předvolba před vypnutím",
               "night_percentage": "Rychlost v noci",
-              "night_preset": "Předvolba v noci"
+              "night_preset": "Předvolba v noci",
+              "shower_percentage": "Rychlost po sprše",
+              "shower_preset": "Předvolba po sprše"
             },
             "description": "U ventilátorů řízených jen okny nechte „Zapnout od“ a „Vypnout pod“ prázdné."
           },
@@ -186,6 +193,66 @@
             },
             "data_description": {
               "keep_on": "Znovu zapnout čističku, když byla 10 s vypnutá (výpadek proudu, závada)."
+            }
+          },
+          "dehumidifiers": {
+            "name": "Odvlhčovače",
+            "data": {
+              "on_above": "Zapnout od",
+              "off_below": "Vypnout pod",
+              "mode": "Režim",
+              "target_humidity": "Cílová vlhkost",
+              "boost_mode": "Posílený režim",
+              "night_mode": "Režim v noci",
+              "night_off": "V noci vypnutý",
+              "tank": "Čidlo plné nádrže",
+              "off_on_open": "Vypnout, když otevřeno (min)",
+              "prefer_airing": "Upřednostnit větrání",
+              "airing_wait": "Čekat na větrání (min)"
+            },
+            "data_description": {
+              "prefer_airing": "Když je venkovní vzduch sušší, navrhne otevřít okna a čeká tak dlouho před odvlhčováním.",
+              "tank": "Čidlo plné nádrže na vodu: upozornění a odvlhčovač ponechán v klidu, dokud není vyprázdněn."
+            }
+          },
+          "heating": {
+            "name": "Topení",
+            "data": {
+              "comfort": "Komfort",
+              "eco": "Eko",
+              "frost": "Ochrana proti mrazu",
+              "away": "Nepřítomnost",
+              "comfort_preset": "Předvolba komfort",
+              "eco_preset": "Předvolba eko",
+              "frost_preset": "Předvolba ochrany proti mrazu",
+              "away_preset": "Předvolba nepřítomnosti",
+              "schedule": "Rozvrh",
+              "off_on_open": "Ochrana proti mrazu, když otevřeno (min)",
+              "max_outdoor": "Vypnout od (venku)",
+              "preheat": "Předtápět",
+              "preheat_max": "Předtápět nejvýše (min)",
+              "tempo": "Barva Tempo dnes",
+              "tempo_tomorrow": "Barva Tempo zítra",
+              "tempo_red": "Snížení v červené dny",
+              "tempo_white": "Snížení v bílé dny",
+              "tempo_preheat": "Zvýšení před červeným dnem",
+              "offpeak": "Nízký tarif",
+              "offpeak_start": "Nízký tarif od",
+              "offpeak_end": "Nízký tarif do",
+              "stove": "Peletová kamna",
+              "pellets": "Hladina pelet",
+              "backup": "Doplňkové topení",
+              "backup_margin": "Doplňkové pod komfortem o",
+              "fault_after": "Porucha po (min)"
+            },
+            "data_description": {
+              "schedule": "Pomocník rozvrhu nebo entita zap./vyp.: zap. = komfort, vyp. = eko. Prázdné: komfort (ochrana proti mrazu v přístavku).",
+              "comfort_preset": "Radiátory s pilotním vodičem: místo teploty se nastaví předvolba každého režimu.",
+              "max_outdoor": "Topení vypnuté, dokud je venku alespoň takto teplo, znovu zapnuté o 1 °C níž. Prázdné: nikdy.",
+              "preheat": "Spouští komfort dříve podle naučené doby vytápění místnosti.",
+              "tempo": "Čidlo barvy EDF Tempo: teploty snížené v červené (a bílé) dny, mírně zvýšené v nízkém tarifu před červeným dnem.",
+              "backup": "Zůstává na eko, dokud topí peletová kamna a v červené dny Tempo, pokud místnost neklesne pod komfort o rezervu.",
+              "fault_after": "Topení, které tak dlouho neohřeje místnost, vyvolá upozornění."
             }
           }
         }
@@ -205,6 +272,9 @@
           "climate": "Klimatizace",
           "fans": "Ventilátory",
           "purifiers": "Čističky vzduchu",
+          "surface_temperature": "Teplota stěn",
+          "heating": "Topení",
+          "dehumidifiers": "Odvlhčovače",
           "lights": "Světla",
           "type": "Typ"
         },
@@ -232,7 +302,8 @@
           "pm25": "Senzory jemných prachových částic (µg/m³), i ty na čističkách: upozornění na znečištěný vzduch a čističky běží silněji, dokud vzduch není opět čistý.",
           "air_quality": "Senzory indexu kvality vzduchu v místnosti (HomeKit 1–5, evropský 1–6, americký AQI).",
           "lights": "Stmívatelná světla: jejich jas sleduje denní dobu, dokud svítí (adaptivní osvětlení).",
-          "type": "Obytný prostor používá standardní prahy; vedlejší prostor (sklep, garáž, dílna…) používá vlastní — jen mráz a plíseň."
+          "type": "Obytný prostor používá standardní prahy; vedlejší prostor (sklep, garáž, dílna…) používá vlastní — jen mráz a plíseň.",
+          "surface_temperature": "Teplota nejchladnější stěny nebo okna (riziko kondenzace). Prázdné: odhadnuta z vnitřní a venkovní teploty."
         }
       },
       "room": {
@@ -250,6 +321,9 @@
           "climate": "Klimatizace",
           "fans": "Ventilátory",
           "purifiers": "Čističky vzduchu",
+          "surface_temperature": "Teplota stěn",
+          "heating": "Topení",
+          "dehumidifiers": "Odvlhčovače",
           "lights": "Světla",
           "type": "Typ"
         },
@@ -277,7 +351,8 @@
           "pm25": "Senzory jemných prachových částic (µg/m³), i ty na čističkách: upozornění na znečištěný vzduch a čističky běží silněji, dokud vzduch není opět čistý.",
           "air_quality": "Senzory indexu kvality vzduchu v místnosti (HomeKit 1–5, evropský 1–6, americký AQI).",
           "lights": "Stmívatelná světla: jejich jas sleduje denní dobu, dokud svítí (adaptivní osvětlení).",
-          "type": "Obytný prostor používá standardní prahy; vedlejší prostor (sklep, garáž, dílna…) používá vlastní — jen mráz a plíseň."
+          "type": "Obytný prostor používá standardní prahy; vedlejší prostor (sklep, garáž, dílna…) používá vlastní — jen mráz a plíseň.",
+          "surface_temperature": "Teplota nejchladnější stěny nebo okna (riziko kondenzace). Prázdné: odhadnuta z vnitřní a venkovní teploty."
         }
       },
       "outdoor": {
@@ -286,7 +361,8 @@
           "name": "Název",
           "temperature": "Teplota",
           "air_quality": "Kvalita vzduchu",
-          "noise": "Hluk"
+          "noise": "Hluk",
+          "humidity": "Vlhkost"
         }
       },
       "edit_room": {
@@ -352,6 +428,11 @@
         "co2_high": "Vysoké CO₂",
         "polluted_air": "Znečištěný vzduch",
         "humidity_high": "Vysoká vlhkost",
+        "condensation_risk": "Riziko kondenzace",
+        "air_to_dry": "Otevřete okna (venku sušší)",
+        "tank_full": "Nádrž odvlhčovače plná",
+        "heating_fault": "Porucha topení",
+        "pellets_low": "Málo pelet",
         "noise_high": "Hlučná místnost",
         "noisy_outside": "Zavřete okna (venku je hluk)",
         "bad_air_outside": "Zavřete okna (venku je špatný vzduch)"
@@ -419,6 +500,11 @@
           "co2_high": "Vysoké CO₂",
           "polluted_air": "Znečištěný vzduch",
           "humidity_high": "Vysoká vlhkost",
+          "condensation_risk": "Riziko kondenzace",
+          "air_to_dry": "Otevřete okna (venku sušší)",
+          "tank_full": "Nádrž odvlhčovače plná",
+          "heating_fault": "Porucha topení",
+          "pellets_low": "Málo pelet",
           "noise_high": "Hlučná místnost",
           "noisy_outside": "Zavřete okna (venku je hluk)",
           "bad_air_outside": "Zavřete okna (venku je špatný vzduch)"
@@ -446,6 +532,12 @@
       },
       "control_purifiers": {
         "name": "Ovládání čističek"
+      },
+      "control_heating": {
+        "name": "Ovládání topení"
+      },
+      "control_dehumidifiers": {
+        "name": "Ovládání odvlhčovačů"
       },
       "lighting": {
         "name": "Adaptivní osvětlení"
@@ -539,6 +631,12 @@
     "line_polluted_air": "{pollutant} {value} µg/m³, nad {threshold} µg/m³",
     "line_polluted_air_index": "kvalita vzduchu {value}/6, nad {threshold}/6",
     "line_humidity_high": "vlhkost {value} % — vyvětrejte místnost",
+    "line_condensation_risk": "riziko kondenzace: stěny {value} °C nad rosným bodem — vyvětrejte nebo odvlhčete",
+    "line_condensation": "kondenzace: stěny na rosném bodu — vyvětrejte nebo odvlhčete",
+    "line_air_to_dry": "venku sušší o {value} g/m³ — otevřete okna, abyste místnost vysušili",
+    "line_tank_full": "nádrž odvlhčovače plná — vyprázdněte ji",
+    "line_heating_fault": "topení zapnuté, ale místnost se neohřívá ({value} °C, nastaveno {threshold} °C)",
+    "line_pellets_low": "pelety {value} %, pod {threshold} %",
     "line_noise_high": "hluk {value} dB, nad {threshold} dB",
     "line_noisy_outside": "{value} dB venku — zavřete: {openings}",
     "line_bad_air_outside": "kvalita vzduchu venku {value}/6 — zavřete: {openings}",

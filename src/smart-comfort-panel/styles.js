@@ -245,6 +245,8 @@ export const STYLE = `
   .alert .kind.too_cold, .alert .kind.window_open_cold { color: var(--info-color, #039be5); }
   .alert .kind.co2_high, .alert .kind.humidity_high, .alert .kind.ventilate,
   .alert .kind.noise_high, .alert .kind.noisy_outside, .alert .kind.bad_air_outside { color: var(--primary-color); }
+  .alert .kind.condensation_risk, .alert .kind.air_to_dry, .alert .kind.tank_full { color: var(--info-color, #039be5); }
+  .alert .kind.heating_fault, .alert .kind.pellets_low { color: var(--warning-color, #ffa600); }
   .alert .kind.close_windows { color: var(--error-color); }
   .alert-body { flex: 1; min-width: 0; }
   .alert-title { font-weight: 500; }

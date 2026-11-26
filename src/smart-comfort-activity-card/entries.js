@@ -11,7 +11,15 @@ export const ICONS = {
   reset: "mdi:clock-check-outline",
   failed: "mdi:alert-circle-outline",
 };
-export const DEVICE_ICONS = { climate: "mdi:air-conditioner", fan: "mdi:fan" };
+export const DEVICE_ICONS = { climate: "mdi:air-conditioner", fan: "mdi:fan", humidifier: "mdi:air-humidifier" };
+// Targets of the heaters ("heat:<mode>:<setpoint>") and dehumidifiers: their own icon, whatever the entity domain.
+export const HEAT_ICON = "mdi:radiator";
+export const DRY_TARGETS = new Set(["dry", "dry_night", "off_night", "shower"]);
+/** A device target as a text key and its setpoint: "heat:eco:17" -> ["heat_eco", "17"]; "cool" -> ["cool", null]. */
+export const targetParts = (target) => {
+  const [prefix, mode, setpoint] = String(target || "").split(":");
+  return prefix === "heat" && mode ? [`heat_${mode}`, setpoint || null] : [String(target || ""), null];
+};
 // Filter groups of the Activity tab (a failed command goes with what it was sent to: see groupOf),
 // and the kinds of the card option.
 export const GROUPS = {

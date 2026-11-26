@@ -57,7 +57,8 @@
           "critical_volume": "Lautstärke kritischer Meldungen",
           "url": "Aktion beim Tippen",
           "tag": "Benachrichtigungs-Tag",
-          "hide_header": "Obere Leiste ausblenden"
+          "hide_header": "Obere Leiste ausblenden",
+          "outdoor_humidity": "Außenluftfeuchtigkeit"
         },
         "data_description": {
           "notify": "Wohin die Meldungen gehen (notify.mobile_app_…, eine notify-Gruppe…).",
@@ -75,7 +76,8 @@
           "critical_volume": "Lautstärke des kritischen iOS-Tons, 0 bis 1.",
           "url": "Wird beim Tippen geöffnet, z. B. homeassistant://navigate/lovelace/komfort",
           "tag": "Jede Benachrichtigung ersetzt die vorherige mit diesem Tag, statt sich zu stapeln.",
-          "hide_header": "Die obere Leiste der Dashboards (Titel, Menü, Bearbeiten- und Suchschaltflächen); die Ansichts-Tabs bleiben. Die obere Leiste dieses Panels ebenfalls; seine Tabs bleiben. Mit ?show_header in der Adresse eines Dashboards wird sie trotzdem angezeigt."
+          "hide_header": "Die obere Leiste der Dashboards (Titel, Menü, Bearbeiten- und Suchschaltflächen); die Ansichts-Tabs bleiben. Die obere Leiste dieses Panels ebenfalls; seine Tabs bleiben. Mit ?show_header in der Adresse eines Dashboards wird sie trotzdem angezeigt.",
+          "outdoor_humidity": "Sensoren für die relative Luftfeuchtigkeit draußen (%), zusätzlich zu denen der Außenbereiche: zeigt, ob Lüften einen feuchten Raum trocknen würde."
         }
       },
       "alerts": {
@@ -131,15 +133,18 @@
           "display": "Kontrollleuchte oder Display",
           "reset_at": "Zurück zum Normalzustand um",
           "display_off": "Anzeigen aus ab",
-          "display_on": "Anzeigen an ab"
+          "display_on": "Anzeigen an ab",
+          "shower_rise": "Dusche: Feuchtigkeitsanstieg",
+          "shower_boost": "Duschboost (min)"
         },
         "data_description": {
           "start": "Lüfter und Luftreiniger laufen beim Öffnen nur zwischen diesen Zeiten auf voller Stufe. Beide leer: ganztägig.",
           "manual_override": "Minuten, die ein von Hand geändertes Gerät in Ruhe gelassen wird. 0: nie.",
-          "suppress_when_handled": "Keine „zu warm“-Meldung für einen Raum, dessen Klimaanlage oder Lüfter Smart Comfort eingeschaltet hat.",
+          "suppress_when_handled": "Keine Warnung für ein Problem, um das sich ein Gerät auf Befehl von Smart Comfort kümmert: zu warm (Klimaanlage oder Ventilator), verschmutzte Luft (Luftreiniger), Feuchtigkeit und Kondensation (Luftentfeuchter), zu kalt (Heizung).",
           "night_start": "Zwischen diesen Zeiten nutzen die Geräte ihre Nachteinstellungen (leisere Stufe, Voreinstellung oder Lüftermodus) und es gibt keinen Fenster-Boost.",
           "display": "Aus in den Stunden „Anzeigen aus“ im Tab Zeitplan und während der Mittagsschläfchen im Raum, danach wieder an.",
-          "reset_at": "Zu dieser Uhrzeit kehrt das Gerät in seinen Normalzustand zurück, auch nach einer manuellen Änderung (ein Luftreiniger wieder auf Auto…)."
+          "reset_at": "Zu dieser Uhrzeit kehrt das Gerät in seinen Normalzustand zurück, auch nach einer manuellen Änderung (ein Luftreiniger wieder auf Auto…).",
+          "shower_rise": "Feuchtigkeitspunkte innerhalb von 10 Minuten, die eine Dusche anzeigen: Luftentfeuchter des Raums (und Ventilatoren mit Duschstufe) laufen im Boost. Leer: aus."
         },
         "sections": {
           "climate": {
@@ -169,7 +174,9 @@
               "open_preset": "Voreinstellung, Fenster offen",
               "off_preset": "Voreinstellung vor dem Ausschalten",
               "night_percentage": "Geschwindigkeit nachts",
-              "night_preset": "Voreinstellung nachts"
+              "night_preset": "Voreinstellung nachts",
+              "shower_percentage": "Stufe nach dem Duschen",
+              "shower_preset": "Voreinstellung nach dem Duschen"
             },
             "description": "„Ein ab“ und „Aus unter“ leer lassen für Lüfter, die nur über die Fenster gesteuert werden."
           },
@@ -186,6 +193,66 @@
             },
             "data_description": {
               "keep_on": "Schaltet einen Luftreiniger wieder ein, der seit 10 s aus ist (Stromausfall, Störung)."
+            }
+          },
+          "dehumidifiers": {
+            "name": "Luftentfeuchter",
+            "data": {
+              "on_above": "Ein ab",
+              "off_below": "Aus unter",
+              "mode": "Modus",
+              "target_humidity": "Zielfeuchtigkeit",
+              "boost_mode": "Boost-Modus",
+              "night_mode": "Modus nachts",
+              "night_off": "Nachts aus",
+              "tank": "Sensor Wassertank voll",
+              "off_on_open": "Aus, wenn offen seit (min)",
+              "prefer_airing": "Lüften bevorzugen",
+              "airing_wait": "Auf Lüften warten (min)"
+            },
+            "data_description": {
+              "prefer_airing": "Ist die Außenluft trockener, wird Lüften vorgeschlagen und so lange gewartet, bevor entfeuchtet wird.",
+              "tank": "Sensor für vollen Wassertank: eine Warnung, und der Entfeuchter bleibt unangetastet, bis er geleert ist."
+            }
+          },
+          "heating": {
+            "name": "Heizung",
+            "data": {
+              "comfort": "Komfort",
+              "eco": "Eco",
+              "frost": "Frostschutz",
+              "away": "Abwesend",
+              "comfort_preset": "Voreinstellung Komfort",
+              "eco_preset": "Voreinstellung Eco",
+              "frost_preset": "Voreinstellung Frostschutz",
+              "away_preset": "Voreinstellung Abwesend",
+              "schedule": "Zeitplan",
+              "off_on_open": "Frostschutz, wenn offen seit (min)",
+              "max_outdoor": "Aus ab (draußen)",
+              "preheat": "Vorausheizen",
+              "preheat_max": "Höchstens vorausheizen (min)",
+              "tempo": "Tempo-Farbe heute",
+              "tempo_tomorrow": "Tempo-Farbe morgen",
+              "tempo_red": "Absenkung an roten Tagen",
+              "tempo_white": "Absenkung an weißen Tagen",
+              "tempo_preheat": "Anhebung vor einem roten Tag",
+              "offpeak": "Nebentarifzeit",
+              "offpeak_start": "Nebentarif ab",
+              "offpeak_end": "Nebentarif bis",
+              "stove": "Pelletofen",
+              "pellets": "Pelletfüllstand",
+              "backup": "Zusatzheizung",
+              "backup_margin": "Zusatz unter Komfort um",
+              "fault_after": "Störung nach (min)"
+            },
+            "data_description": {
+              "schedule": "Zeitplan-Helfer oder Ein/Aus-Entität: ein = Komfort, aus = Eco. Leer: Komfort (Frostschutz in einem Nebenraum).",
+              "comfort_preset": "Heizkörper mit Steuerdraht: statt eines Sollwerts wird die Voreinstellung jedes Modus gesetzt.",
+              "max_outdoor": "Heizung aus, solange es draußen mindestens so warm ist, wieder an 1 °C darunter. Leer: nie.",
+              "preheat": "Komfort früher starten, nach der gelernten Aufheizzeit des Raums.",
+              "tempo": "EDF-Tempo-Farbsensor: Sollwerte an roten (und weißen) Tagen gesenkt, in der Nebentarifzeit vor einem roten Tag leicht angehoben.",
+              "backup": "Bleibt auf Eco, solange ein Pelletofen heizt und an roten Tempo-Tagen, außer der Raum fällt um die Spanne unter Komfort.",
+              "fault_after": "Eine Heizung, die den Raum so lange nicht erwärmt, löst eine Warnung aus."
             }
           }
         }
@@ -205,6 +272,9 @@
           "climate": "Klimaanlage",
           "fans": "Lüfter",
           "purifiers": "Luftreiniger",
+          "surface_temperature": "Wandtemperatur",
+          "heating": "Heizung",
+          "dehumidifiers": "Luftentfeuchter",
           "lights": "Lichter",
           "type": "Typ"
         },
@@ -232,7 +302,8 @@
           "pm25": "Feinstaubsensoren (µg/m³), auch die der Luftreiniger: eine Warnung bei verschmutzter Luft, und die Luftreiniger laufen verstärkt, bis die Luft wieder sauber ist.",
           "air_quality": "Luftqualitätsindex-Sensoren des Raums (HomeKit 1–5, europäisch 1–6, US-AQI).",
           "lights": "Dimmbare Lichter: ihre Helligkeit folgt der Tageszeit, solange sie an sind (adaptive Beleuchtung).",
-          "type": "Ein Wohnraum nutzt die Standard-Alarmschwellen; ein Nebenraum (Keller, Garage, Werkstatt…) hat eigene – nur Frost und Schimmel."
+          "type": "Ein Wohnraum nutzt die Standard-Alarmschwellen; ein Nebenraum (Keller, Garage, Werkstatt…) hat eigene – nur Frost und Schimmel.",
+          "surface_temperature": "Temperatur der kältesten Wand oder des kältesten Fensters (Kondensationsrisiko). Leer: aus Innen- und Außentemperatur geschätzt."
         }
       },
       "room": {
@@ -250,6 +321,9 @@
           "climate": "Klimaanlage",
           "fans": "Lüfter",
           "purifiers": "Luftreiniger",
+          "surface_temperature": "Wandtemperatur",
+          "heating": "Heizung",
+          "dehumidifiers": "Luftentfeuchter",
           "lights": "Lichter",
           "type": "Typ"
         },
@@ -277,7 +351,8 @@
           "pm25": "Feinstaubsensoren (µg/m³), auch die der Luftreiniger: eine Warnung bei verschmutzter Luft, und die Luftreiniger laufen verstärkt, bis die Luft wieder sauber ist.",
           "air_quality": "Luftqualitätsindex-Sensoren des Raums (HomeKit 1–5, europäisch 1–6, US-AQI).",
           "lights": "Dimmbare Lichter: ihre Helligkeit folgt der Tageszeit, solange sie an sind (adaptive Beleuchtung).",
-          "type": "Ein Wohnraum nutzt die Standard-Alarmschwellen; ein Nebenraum (Keller, Garage, Werkstatt…) hat eigene – nur Frost und Schimmel."
+          "type": "Ein Wohnraum nutzt die Standard-Alarmschwellen; ein Nebenraum (Keller, Garage, Werkstatt…) hat eigene – nur Frost und Schimmel.",
+          "surface_temperature": "Temperatur der kältesten Wand oder des kältesten Fensters (Kondensationsrisiko). Leer: aus Innen- und Außentemperatur geschätzt."
         }
       },
       "outdoor": {
@@ -286,7 +361,8 @@
           "name": "Name",
           "temperature": "Temperatur",
           "air_quality": "Luftqualität",
-          "noise": "Lärm"
+          "noise": "Lärm",
+          "humidity": "Luftfeuchtigkeit"
         }
       },
       "edit_room": {
@@ -352,6 +428,11 @@
         "co2_high": "Hoher CO₂-Wert",
         "polluted_air": "Verschmutzte Luft",
         "humidity_high": "Hohe Luftfeuchtigkeit",
+        "condensation_risk": "Kondensationsrisiko",
+        "air_to_dry": "Fenster öffnen (draußen trockener)",
+        "tank_full": "Wassertank des Entfeuchters voll",
+        "heating_fault": "Heizungsstörung",
+        "pellets_low": "Wenig Pellets",
         "noise_high": "Lauter Raum",
         "noisy_outside": "Fenster schließen (draußen laut)",
         "bad_air_outside": "Fenster schließen (schlechte Luft draußen)"
@@ -419,6 +500,11 @@
           "co2_high": "Hoher CO₂-Wert",
           "polluted_air": "Verschmutzte Luft",
           "humidity_high": "Hohe Luftfeuchtigkeit",
+          "condensation_risk": "Kondensationsrisiko",
+          "air_to_dry": "Fenster öffnen (draußen trockener)",
+          "tank_full": "Wassertank des Entfeuchters voll",
+          "heating_fault": "Heizungsstörung",
+          "pellets_low": "Wenig Pellets",
           "noise_high": "Lauter Raum",
           "noisy_outside": "Fenster schließen (draußen laut)",
           "bad_air_outside": "Fenster schließen (schlechte Luft draußen)"
@@ -446,6 +532,12 @@
       },
       "control_purifiers": {
         "name": "Luftreiniger-Steuerung"
+      },
+      "control_heating": {
+        "name": "Steuerung der Heizung"
+      },
+      "control_dehumidifiers": {
+        "name": "Steuerung der Luftentfeuchter"
       },
       "lighting": {
         "name": "Adaptive Beleuchtung"
@@ -539,6 +631,12 @@
     "line_polluted_air": "{pollutant} {value} µg/m³, über {threshold} µg/m³",
     "line_polluted_air_index": "Luftqualität {value}/6, über {threshold}/6",
     "line_humidity_high": "Luftfeuchtigkeit {value} % — lüften",
+    "line_condensation_risk": "Kondensationsrisiko: Wände {value} °C über dem Taupunkt — lüften oder entfeuchten",
+    "line_condensation": "Kondensation: Wände am Taupunkt — lüften oder entfeuchten",
+    "line_air_to_dry": "draußen {value} g/m³ trockener — Fenster öffnen, um den Raum zu trocknen",
+    "line_tank_full": "Wassertank des Entfeuchters voll — leeren",
+    "line_heating_fault": "Heizung an, aber der Raum erwärmt sich nicht ({value} °C, Sollwert {threshold} °C)",
+    "line_pellets_low": "Pellets {value} %, unter {threshold} %",
     "line_noise_high": "Lärm {value} dB, über {threshold} dB",
     "line_noisy_outside": "{value} dB draußen — schließen: {openings}",
     "line_bad_air_outside": "Außenluftqualität {value}/6 — {openings} schließen",

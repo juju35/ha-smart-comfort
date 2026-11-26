@@ -57,7 +57,8 @@
           "critical_volume": "Kritikus riasztás hangereje",
           "url": "Koppintási művelet",
           "tag": "Értesítési címke",
-          "hide_header": "Felső sáv elrejtése"
+          "hide_header": "Felső sáv elrejtése",
+          "outdoor_humidity": "Kültéri páratartalom"
         },
         "data_description": {
           "notify": "Hová mennek a riasztások (notify.mobile_app_…, egy notify csoport…).",
@@ -75,7 +76,8 @@
           "critical_volume": "Kritikus hang hangereje iOS-en, 0 és 1 között.",
           "url": "Az értesítésre koppintva nyílik meg, pl. homeassistant://navigate/lovelace/comfort",
           "tag": "Minden értesítés lecseréli az előzőt ezzel a címkével, ahelyett hogy felhalmozódnának.",
-          "hide_header": "Az irányítópultok felső sávja (cím, menü, szerkesztés és keresés gombok); a nézetek fülei maradnak. Ennek a panelnek a felső sávja is; a lapjai maradnak. Az irányítópult címéhez fűzött ?show_header mégis megjeleníti."
+          "hide_header": "Az irányítópultok felső sávja (cím, menü, szerkesztés és keresés gombok); a nézetek fülei maradnak. Ennek a panelnek a felső sávja is; a lapjai maradnak. Az irányítópult címéhez fűzött ?show_header mégis megjeleníti.",
+          "outdoor_humidity": "Kültéri relatív páratartalom-érzékelők (%), a kültéri helyek érzékelői mellett: megmutatják, hogy a szellőztetés kiszárítaná-e a nedves helyiséget."
         }
       },
       "alerts": {
@@ -131,15 +133,18 @@
           "display": "Jelzőfény vagy kijelző",
           "reset_at": "Visszaállás a normálra ekkor",
           "display_off": "Kijelzők kikapcsolva ettől",
-          "display_on": "Kijelzők bekapcsolva ettől"
+          "display_on": "Kijelzők bekapcsolva ettől",
+          "shower_rise": "Zuhany: páratartalom-emelkedés",
+          "shower_boost": "Zuhany utáni gyorsítás (min)"
         },
         "data_description": {
           "start": "A ventilátorok és légtisztítók csak ezen időpontok között kapcsolnak teljes sebességre, amikor egy nyílászáró kinyílik. Mindkettő üres: egész nap.",
           "manual_override": "Ennyi percig hagyja békén a kézzel módosított eszközt. 0: nincs szünet.",
-          "suppress_when_handled": "Nincs „túl meleg” riasztás olyan helyiségre, ahol a Smart Comfort bekapcsolta a klímát vagy a ventilátort.",
+          "suppress_when_handled": "Nincs riasztás olyan problémáról, amellyel egy eszköz a Smart Comfort parancsára foglalkozik: túl meleg (klíma vagy ventilátor), szennyezett levegő (légtisztító), páratartalom és páralecsapódás (páramentesítő), túl hideg (fűtés).",
           "night_start": "Ezen időpontok között az eszközök az éjszakai beállításaikat használják (halkabb sebesség, előbeállítás vagy ventilátormód), és nincs számukra ablakos rásegítés.",
           "display": "Kikapcsol az Ütemezés lap „Kijelzők kikapcsolva” óráiban és a helyiség szunyókálásai alatt, utána visszakapcsol.",
-          "reset_at": "Ekkor az eszköz visszaáll a normál állapotába, kézi módosítás után is (egy légtisztító vissza automatára…)."
+          "reset_at": "Ekkor az eszköz visszaáll a normál állapotába, kézi módosítás után is (egy légtisztító vissza automatára…).",
+          "shower_rise": "10 perc alatti páratartalom-növekedés, amely zuhanyzást jelez: a helyiség páramentesítői (és a zuhanysebességgel rendelkező ventilátorok) gyorsítva működnek. Üres: kikapcsolva."
         },
         "sections": {
           "climate": {
@@ -169,7 +174,9 @@
               "open_preset": "Előbeállítás, nyitott ablak",
               "off_preset": "Előbeállítás kikapcsolás előtt",
               "night_percentage": "Sebesség éjjel",
-              "night_preset": "Előbeállítás éjjel"
+              "night_preset": "Előbeállítás éjjel",
+              "shower_percentage": "Sebesség zuhany után",
+              "shower_preset": "Előbeállítás zuhany után"
             },
             "description": "Hagyja üresen a „Bekapcsolás ettől” és a „Kikapcsolás ez alatt” mezőt a csak az ablakok által vezérelt ventilátoroknál."
           },
@@ -186,6 +193,66 @@
             },
             "data_description": {
               "keep_on": "Visszakapcsolja a légtisztítót, ha 10 s-ig ki volt kapcsolva (áramszünet, hiba)."
+            }
+          },
+          "dehumidifiers": {
+            "name": "Páramentesítők",
+            "data": {
+              "on_above": "Bekapcsolás ettől",
+              "off_below": "Kikapcsolás ez alatt",
+              "mode": "Mód",
+              "target_humidity": "Cél páratartalom",
+              "boost_mode": "Gyorsított mód",
+              "night_mode": "Mód éjjel",
+              "night_off": "Éjjel kikapcsolva",
+              "tank": "Teli tartály érzékelő",
+              "off_on_open": "Kikapcsolás, ha nyitva (min)",
+              "prefer_airing": "Szellőztetés előnyben",
+              "airing_wait": "Várakozás szellőztetésre (min)"
+            },
+            "data_description": {
+              "prefer_airing": "Ha a kinti levegő szárazabb, ablaknyitást javasol, és ennyit vár a páramentesítés előtt.",
+              "tank": "Teli víztartály érzékelő: riasztás, és a páramentesítő békén hagyva, amíg ki nem ürítik."
+            }
+          },
+          "heating": {
+            "name": "Fűtés",
+            "data": {
+              "comfort": "Komfort",
+              "eco": "Eco",
+              "frost": "Fagyvédelem",
+              "away": "Távol",
+              "comfort_preset": "Komfort előbeállítás",
+              "eco_preset": "Eco előbeállítás",
+              "frost_preset": "Fagyvédelmi előbeállítás",
+              "away_preset": "Távol előbeállítás",
+              "schedule": "Ütemezés",
+              "off_on_open": "Fagyvédelem, ha nyitva (min)",
+              "max_outdoor": "Kikapcsolás ettől (kint)",
+              "preheat": "Előfűtés",
+              "preheat_max": "Előfűtés legfeljebb (min)",
+              "tempo": "Mai Tempo szín",
+              "tempo_tomorrow": "Holnapi Tempo szín",
+              "tempo_red": "Csökkentés piros napokon",
+              "tempo_white": "Csökkentés fehér napokon",
+              "tempo_preheat": "Emelés piros nap előtt",
+              "offpeak": "Völgyidőszak",
+              "offpeak_start": "Völgyidőszak kezdete",
+              "offpeak_end": "Völgyidőszak vége",
+              "stove": "Pelletkályha",
+              "pellets": "Pelletszint",
+              "backup": "Kiegészítő fűtés",
+              "backup_margin": "Kiegészítő a komfort alatt ennyivel",
+              "fault_after": "Hiba ennyi után (min)"
+            },
+            "data_description": {
+              "schedule": "Ütemezés segéd vagy be/ki entitás: be = komfort, ki = eco. Üres: komfort (fagyvédelem melléképületben).",
+              "comfort_preset": "Vezérlővezetékes radiátorok: hőmérséklet helyett minden mód előbeállítása kerül beállításra.",
+              "max_outdoor": "A fűtés ki van kapcsolva, amíg kint legalább ilyen meleg van, 1 °C-kal lejjebb újra bekapcsol. Üres: soha.",
+              "preheat": "A komfortot korábban indítja, a helyiség megtanult felfűtési ideje alapján.",
+              "tempo": "EDF Tempo színérzékelő: a hőmérsékletek piros (és fehér) napokon csökkentve, piros nap előtti völgyidőszakban kissé emelve.",
+              "backup": "Eco-n marad, amíg pelletkályha fűt és piros Tempo napokon, kivéve ha a helyiség a ráhagyással a komfort alá esik.",
+              "fault_after": "Az a fűtés, amely ennyi ideig nem melegíti fel a helyiséget, riasztást ad."
             }
           }
         }
@@ -205,6 +272,9 @@
           "climate": "Klíma",
           "fans": "Ventilátorok",
           "purifiers": "Légtisztítók",
+          "surface_temperature": "Falhőmérséklet",
+          "heating": "Fűtés",
+          "dehumidifiers": "Páramentesítők",
           "lights": "Lámpák",
           "type": "Típus"
         },
@@ -232,7 +302,8 @@
           "pm25": "Szálló por érzékelők (µg/m³), a légtisztítóké is: riasztás szennyezett levegőnél, és a légtisztítók erősebben mennek, amíg a levegő újra tiszta nem lesz.",
           "air_quality": "A helyiség levegőminőségi index érzékelői (HomeKit 1–5, európai 1–6, amerikai AQI).",
           "lights": "Szabályozható fényerejű lámpák: fényerejük a napszakot követi, amíg be vannak kapcsolva (adaptív világítás).",
-          "type": "A lakótér a szokásos küszöböket használja; a melléképület (pince, garázs, műhely…) a sajátjait — csak fagy és penész."
+          "type": "A lakótér a szokásos küszöböket használja; a melléképület (pince, garázs, műhely…) a sajátjait — csak fagy és penész.",
+          "surface_temperature": "A leghidegebb fal vagy ablak hőmérséklete (páralecsapódás veszélye). Üres: a belső és külső hőmérsékletből becsülve."
         }
       },
       "room": {
@@ -250,6 +321,9 @@
           "climate": "Klíma",
           "fans": "Ventilátorok",
           "purifiers": "Légtisztítók",
+          "surface_temperature": "Falhőmérséklet",
+          "heating": "Fűtés",
+          "dehumidifiers": "Páramentesítők",
           "lights": "Lámpák",
           "type": "Típus"
         },
@@ -277,7 +351,8 @@
           "pm25": "Szálló por érzékelők (µg/m³), a légtisztítóké is: riasztás szennyezett levegőnél, és a légtisztítók erősebben mennek, amíg a levegő újra tiszta nem lesz.",
           "air_quality": "A helyiség levegőminőségi index érzékelői (HomeKit 1–5, európai 1–6, amerikai AQI).",
           "lights": "Szabályozható fényerejű lámpák: fényerejük a napszakot követi, amíg be vannak kapcsolva (adaptív világítás).",
-          "type": "A lakótér a szokásos küszöböket használja; a melléképület (pince, garázs, műhely…) a sajátjait — csak fagy és penész."
+          "type": "A lakótér a szokásos küszöböket használja; a melléképület (pince, garázs, műhely…) a sajátjait — csak fagy és penész.",
+          "surface_temperature": "A leghidegebb fal vagy ablak hőmérséklete (páralecsapódás veszélye). Üres: a belső és külső hőmérsékletből becsülve."
         }
       },
       "outdoor": {
@@ -286,7 +361,8 @@
           "name": "Név",
           "temperature": "Hőmérséklet",
           "air_quality": "Levegőminőség",
-          "noise": "Zaj"
+          "noise": "Zaj",
+          "humidity": "Páratartalom"
         }
       },
       "edit_room": {
@@ -352,6 +428,11 @@
         "co2_high": "Magas CO₂",
         "polluted_air": "Szennyezett levegő",
         "humidity_high": "Magas páratartalom",
+        "condensation_risk": "Páralecsapódás veszélye",
+        "air_to_dry": "Nyisd ki az ablakokat (kint szárazabb)",
+        "tank_full": "A páramentesítő tartálya tele",
+        "heating_fault": "Fűtési hiba",
+        "pellets_low": "Kevés pellet",
         "noise_high": "Zajos helyiség",
         "noisy_outside": "Zárja be az ablakokat (kint zaj van)",
         "bad_air_outside": "Zárja be az ablakokat (rossz a levegő)"
@@ -419,6 +500,11 @@
           "co2_high": "Magas CO₂",
           "polluted_air": "Szennyezett levegő",
           "humidity_high": "Magas páratartalom",
+          "condensation_risk": "Páralecsapódás veszélye",
+          "air_to_dry": "Nyisd ki az ablakokat (kint szárazabb)",
+          "tank_full": "A páramentesítő tartálya tele",
+          "heating_fault": "Fűtési hiba",
+          "pellets_low": "Kevés pellet",
           "noise_high": "Zajos helyiség",
           "noisy_outside": "Zárja be az ablakokat (kint zaj van)",
           "bad_air_outside": "Zárja be az ablakokat (rossz a levegő)"
@@ -446,6 +532,12 @@
       },
       "control_purifiers": {
         "name": "Légtisztítók vezérlése"
+      },
+      "control_heating": {
+        "name": "Fűtés vezérlése"
+      },
+      "control_dehumidifiers": {
+        "name": "Páramentesítők vezérlése"
       },
       "lighting": {
         "name": "Adaptív világítás"
@@ -539,6 +631,12 @@
     "line_polluted_air": "{pollutant} {value} µg/m³, {threshold} µg/m³ felett",
     "line_polluted_air_index": "levegőminőség {value}/6, {threshold}/6 felett",
     "line_humidity_high": "páratartalom {value} % — szellőztessen",
+    "line_condensation_risk": "páralecsapódás veszélye: a falak {value} °C-kal a harmatpont felett — szellőztess vagy páramentesíts",
+    "line_condensation": "páralecsapódás: a falak a harmatponton — szellőztess vagy páramentesíts",
+    "line_air_to_dry": "kint {value} g/m³-rel szárazabb — nyisd ki az ablakokat a helyiség kiszárításához",
+    "line_tank_full": "a páramentesítő tartálya tele — ürítsd ki",
+    "line_heating_fault": "a fűtés bekapcsolva, de a helyiség nem melegszik ({value} °C, beállítva {threshold} °C)",
+    "line_pellets_low": "pellet {value} %, {threshold} % alatt",
     "line_noise_high": "zaj {value} dB, {threshold} dB felett",
     "line_noisy_outside": "kint {value} dB — csukja be: {openings}",
     "line_bad_air_outside": "kültéri levegőminőség {value}/6 — csukja be: {openings}",

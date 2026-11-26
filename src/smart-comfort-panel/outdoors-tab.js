@@ -32,6 +32,7 @@ export class SmartComfortPanelOutdoors {
         { name: "outdoor_temperature", selector: entity(["sensor", "weather"], { multiple: true }) },
         { name: "outdoor_air_quality", selector: entity("sensor", { multiple: true }) },
         { name: "outdoor_noise", selector: entity("sensor", { device_class: "sound_pressure", multiple: true }) },
+        { name: "outdoor_humidity", selector: entity("sensor", { device_class: "humidity", multiple: true }) },
         { name: "outdoor_aggregate", selector: { select: { mode: "dropdown", options: this._options("outdoor_aggregate", this._config.aggregates) } } },
       ])
     );
@@ -73,7 +74,7 @@ export class SmartComfortPanelOutdoors {
     header.append(toggle, summary, tools);
     card.append(header);
     if (!open) return card;
-    const keys = ["name", "temperature", "air_quality", "noise"];
+    const keys = ["name", "temperature", "air_quality", "noise", "humidity"];
     card.append(
       this._form(
         [
@@ -81,6 +82,7 @@ export class SmartComfortPanelOutdoors {
           { name: "temperature", selector: entity(["sensor", "weather"], { multiple: true }) },
           { name: "air_quality", selector: entity("sensor", { multiple: true }) },
           { name: "noise", selector: entity("sensor", { device_class: "sound_pressure", multiple: true }) },
+          { name: "humidity", selector: entity("sensor", { device_class: "humidity", multiple: true }) },
         ],
         Object.fromEntries(keys.filter((k) => k in place).map((k) => [k, place[k]])),
         (value) => {

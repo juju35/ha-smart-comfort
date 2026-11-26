@@ -23,6 +23,8 @@ export default {
   fam_climate: "air conditioners",
   fam_fans: "fans",
   fam_purifiers: "air purifiers",
+  fam_dehumidifiers: "dehumidifiers",
+  fam_heating: "heating",
   on: "on",
   off: "off",
   zoom_in: "Full card",

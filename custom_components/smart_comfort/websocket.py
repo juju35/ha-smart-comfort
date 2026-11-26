@@ -12,6 +12,7 @@ from homeassistant.components import websocket_api
 from homeassistant.config_entries import ConfigEntry, ConfigEntryState
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
+from homeassistant.helpers.json import json_bytes
 from homeassistant.util import dt as dt_util
 from voluptuous.humanize import humanize_error
 
@@ -175,12 +176,18 @@ async def ws_create_file(hass: HomeAssistant, connection: websocket_api.ActiveCo
 def ws_subscribe(hass: HomeAssistant, connection: websocket_api.ActiveConnection, msg: dict[str, Any]) -> None:
     """Status now and after every evaluation, across reloads of the integration."""
 
+    last: list[bytes] = []
+
     @callback
     def send() -> None:
         manager = _manager(hass)
         payload = status(manager, dt_util.utcnow()) if manager is not None else None
         entry = _entry(hass)
         rev = revision(entry.options) if entry is not None else None
+        message = json_bytes({"status": payload, "revision": rev})
+        if last and last[0] == message:
+            return  # Nothing changed since the last evaluation: the panel isn't drawn again for nothing.
+        last[:] = [message]
         connection.send_message(websocket_api.event_message(msg["id"], {"status": payload, "revision": rev}))
 
     connection.subscriptions[msg["id"]] = async_dispatcher_connect(hass, k.SIGNAL_UPDATE, send)

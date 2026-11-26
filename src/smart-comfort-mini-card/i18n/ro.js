@@ -24,6 +24,8 @@ export default {
   fam_climate: "aparate de aer condiționat",
   fam_fans: "ventilatoare",
   fam_purifiers: "purificatoare de aer",
+  fam_dehumidifiers: "dezumidificatoare",
+  fam_heating: "încălzire",
   on: "activat",
   off: "dezactivat",
   zoom_in: "Card complet",

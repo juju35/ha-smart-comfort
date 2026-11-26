@@ -57,7 +57,8 @@
           "critical_volume": "Jačina zvuka kritičnog upozorenja",
           "url": "Akcija na dodir",
           "tag": "Oznaka obaveštenja",
-          "hide_header": "Sakrij gornju traku"
+          "hide_header": "Sakrij gornju traku",
+          "outdoor_humidity": "Spoljna vlažnost"
         },
         "data_description": {
           "notify": "Gde se šalju obaveštenja (notify.mobile_app_…, grupa za obaveštenja…).",
@@ -75,7 +76,8 @@
           "critical_volume": "iOS jačina zvuka kritičnog upozorenja, od 0 do 1.",
           "url": "Otvara se kada se dodirne obaveštenje, npr. homeassistant://navigate/lovelace/comfort",
           "tag": "Svako obaveštenje zamenjuje prethodno sa ovom oznakom umesto da se gomilaju.",
-          "hide_header": "Gornja traka kontrolnih tabli (naslov, meni, dugmad za uređivanje i pretragu); kartice prikaza ostaju. Takođe i gornja traka ovog panela; njegove kartice ostaju. Dodajte ?show_header na adresu table da biste je ipak videli."
+          "hide_header": "Gornja traka kontrolnih tabli (naslov, meni, dugmad za uređivanje i pretragu); kartice prikaza ostaju. Takođe i gornja traka ovog panela; njegove kartice ostaju. Dodajte ?show_header na adresu table da biste je ipak videli.",
+          "outdoor_humidity": "Senzori relativne vlažnosti napolju (%), pored onih iz spoljnih mesta: pokazuju da li bi provetravanje isušilo vlažnu prostoriju."
         }
       },
       "alerts": {
@@ -131,15 +133,18 @@
           "display": "Indikatorsko svetlo ili ekran",
           "reset_at": "Povratak na normalno u",
           "display_off": "Indikatori isključeni od",
-          "display_on": "Indikatori ponovo uključeni od"
+          "display_on": "Indikatori ponovo uključeni od",
+          "shower_rise": "Tuširanje: porast vlažnosti",
+          "shower_boost": "Pojačanje posle tuširanja (min)"
         },
         "data_description": {
           "start": "Ventilatori i prečišćivači prelaze na maksimalnu brzinu kada se prozor/vrata otvori samo između ovih vremena. Ako su oba prazna: ceo dan.",
           "manual_override": "Minuti tokom kojih se ručno promenjen uređaj ne dira. 0: nikada se ne pauzira.",
-          "suppress_when_handled": "Bez upozorenja „pretoplo“ za sobu u kojoj je Smart Comfort uključio klima uređaj ili ventilator.",
+          "suppress_when_handled": "Bez upozorenja za problem kojim se uređaj bavi na nalog Smart Comfort-a: previše toplo (klima ili ventilator), zagađen vazduh (prečišćivač), vlažnost i kondenzacija (odvlaživač), previše hladno (grejanje).",
           "night_start": "Između ovih vremena uređaji koriste svoja noćna podešavanja (tiša brzina, predefinisani režim ili režim ventilatora) i za njih nema pojačanja zbog otvaranja prozora.",
           "display": "Isključuje se u periodu „Indikatori isključeni“ iz kartice Raspored i tokom dremke u sobi, a zatim se ponovo uključuje.",
-          "reset_at": "U ovo vreme uređaj se vraća u normalno stanje, čak i nakon ručne promene (prečišćivač ponovo na automatski…)."
+          "reset_at": "U ovo vreme uređaj se vraća u normalno stanje, čak i nakon ručne promene (prečišćivač ponovo na automatski…).",
+          "shower_rise": "Porast vlažnosti za 10 minuta koji ukazuje na tuširanje: odvlaživači prostorije (i ventilatori sa brzinom za tuširanje) rade pojačano. Prazno: isključeno."
         },
         "sections": {
           "climate": {
@@ -169,7 +174,9 @@
               "open_preset": "Predefinisani režim, otvoren prozor",
               "off_preset": "Predefinisani režim pre isključivanja",
               "night_percentage": "Brzina noću",
-              "night_preset": "Predefinisani režim noću"
+              "night_preset": "Predefinisani režim noću",
+              "shower_percentage": "Brzina posle tuširanja",
+              "shower_preset": "Podešavanje posle tuširanja"
             },
             "description": "Ostavite „Uključi iznad“ i „Isključi ispod“ praznim za ventilatore koji se pokreću isključivo otvaranjem prozora."
           },
@@ -186,6 +193,66 @@
             },
             "data_description": {
               "keep_on": "Ponovo uključi prečišćivač kada je isključen 10 sekundi (prekid struje, greška u radu)."
+            }
+          },
+          "dehumidifiers": {
+            "name": "Odvlaživači",
+            "data": {
+              "on_above": "Uključi od",
+              "off_below": "Isključi ispod",
+              "mode": "Režim",
+              "target_humidity": "Ciljna vlažnost",
+              "boost_mode": "Pojačani režim",
+              "night_mode": "Režim noću",
+              "night_off": "Isključen noću",
+              "tank": "Senzor punog rezervoara",
+              "off_on_open": "Isključi ako je otvoreno (min)",
+              "prefer_airing": "Prednost provetravanju",
+              "airing_wait": "Čekaj provetravanje (min)"
+            },
+            "data_description": {
+              "prefer_airing": "Kada je spoljni vazduh suvlji, predlaže otvaranje prozora i čeka toliko pre odvlaživanja.",
+              "tank": "Senzor punog rezervoara za vodu: upozorenje, a odvlaživač ostaje na miru dok se ne isprazni."
+            }
+          },
+          "heating": {
+            "name": "Grejanje",
+            "data": {
+              "comfort": "Komfor",
+              "eco": "Eko",
+              "frost": "Zaštita od smrzavanja",
+              "away": "Odsustvo",
+              "comfort_preset": "Podešavanje komfor",
+              "eco_preset": "Podešavanje eko",
+              "frost_preset": "Podešavanje zaštite od smrzavanja",
+              "away_preset": "Podešavanje odsustva",
+              "schedule": "Raspored",
+              "off_on_open": "Zaštita od smrzavanja ako je otvoreno (min)",
+              "max_outdoor": "Isključi od (napolju)",
+              "preheat": "Unapred",
+              "preheat_max": "Unapred najviše (min)",
+              "tempo": "Boja Tempo danas",
+              "tempo_tomorrow": "Boja Tempo sutra",
+              "tempo_red": "Sniženje crvenim danima",
+              "tempo_white": "Sniženje belim danima",
+              "tempo_preheat": "Povišenje pre crvenog dana",
+              "offpeak": "Jeftina tarifa",
+              "offpeak_start": "Jeftina tarifa od",
+              "offpeak_end": "Jeftina tarifa do",
+              "stove": "Peć na pelet",
+              "pellets": "Nivo peleta",
+              "backup": "Pomoćno grejanje",
+              "backup_margin": "Pomoćno ispod komfora za",
+              "fault_after": "Kvar posle (min)"
+            },
+            "data_description": {
+              "schedule": "Pomoćnik rasporeda ili entitet uključ./isključ.: uključeno = komfor, isključeno = eko. Prazno: komfor (zaštita od smrzavanja u pomoćnoj prostoriji).",
+              "comfort_preset": "Radijatori sa pilot žicom: umesto temperature postavlja se podešavanje svakog režima.",
+              "max_outdoor": "Grejanje isključeno dok je napolju bar ovoliko toplo, ponovo uključeno 1 °C niže. Prazno: nikad.",
+              "preheat": "Počinje komfor ranije, prema naučenom vremenu zagrevanja prostorije.",
+              "tempo": "Senzor boje EDF Tempo: temperature snižene crvenim (i belim) danima, malo povišene u jeftinoj tarifi pre crvenog dana.",
+              "backup": "Ostaje na eko dok peć na pelet greje i crvenim danima Tempo, osim ako prostorija ne padne ispod komfora za marginu.",
+              "fault_after": "Grejanje koje ovoliko dugo ne zagreva prostoriju izaziva upozorenje."
             }
           }
         }
@@ -205,6 +272,9 @@
           "climate": "Klima uređaj",
           "fans": "Ventilatori",
           "purifiers": "Prečišćivači vazduha",
+          "surface_temperature": "Temperatura zidova",
+          "heating": "Grejanje",
+          "dehumidifiers": "Odvlaživači",
           "lights": "Svetla",
           "type": "Tip"
         },
@@ -232,7 +302,8 @@
           "pm25": "Senzori finih čestica (µg/m³), i oni na prečistačima: upozorenje o zagađenom vazduhu, a prečistači rade jače dok vazduh ponovo ne bude čist.",
           "air_quality": "Senzori indeksa kvaliteta vazduha u prostoriji (HomeKit 1–5, evropski 1–6, američki AQI).",
           "lights": "Svetla sa podesivom jačinom: njihova jačina prati doba dana dok su uključena (prilagodljivo osvetljenje).",
-          "type": "Stambeni prostor koristi standardne pragove upozorenja; pomoćna prostorija (podrum, garaža, radionica…) koristi svoje — samo mraz i buđ."
+          "type": "Stambeni prostor koristi standardne pragove upozorenja; pomoćna prostorija (podrum, garaža, radionica…) koristi svoje — samo mraz i buđ.",
+          "surface_temperature": "Temperatura najhladnijeg zida ili prozora (rizik od kondenzacije). Prazno: procenjena iz unutrašnje i spoljne temperature."
         }
       },
       "room": {
@@ -250,6 +321,9 @@
           "climate": "Klima uređaj",
           "fans": "Ventilatori",
           "purifiers": "Prečišćivači vazduha",
+          "surface_temperature": "Temperatura zidova",
+          "heating": "Grejanje",
+          "dehumidifiers": "Odvlaživači",
           "lights": "Svetla",
           "type": "Tip"
         },
@@ -277,7 +351,8 @@
           "pm25": "Senzori finih čestica (µg/m³), i oni na prečistačima: upozorenje o zagađenom vazduhu, a prečistači rade jače dok vazduh ponovo ne bude čist.",
           "air_quality": "Senzori indeksa kvaliteta vazduha u prostoriji (HomeKit 1–5, evropski 1–6, američki AQI).",
           "lights": "Svetla sa podesivom jačinom: njihova jačina prati doba dana dok su uključena (prilagodljivo osvetljenje).",
-          "type": "Stambeni prostor koristi standardne pragove upozorenja; pomoćna prostorija (podrum, garaža, radionica…) koristi svoje — samo mraz i buđ."
+          "type": "Stambeni prostor koristi standardne pragove upozorenja; pomoćna prostorija (podrum, garaža, radionica…) koristi svoje — samo mraz i buđ.",
+          "surface_temperature": "Temperatura najhladnijeg zida ili prozora (rizik od kondenzacije). Prazno: procenjena iz unutrašnje i spoljne temperature."
         }
       },
       "outdoor": {
@@ -286,7 +361,8 @@
           "name": "Ime",
           "temperature": "Temperatura",
           "air_quality": "Kvalitet vazduha",
-          "noise": "Buka"
+          "noise": "Buka",
+          "humidity": "Vlažnost"
         }
       },
       "edit_room": {
@@ -352,6 +428,11 @@
         "co2_high": "Visok nivo CO₂",
         "polluted_air": "Zagađen vazduh",
         "humidity_high": "Visoka vlažnost vazduha",
+        "condensation_risk": "Rizik od kondenzacije",
+        "air_to_dry": "Otvorite prozore (suvlje napolju)",
+        "tank_full": "Rezervoar odvlaživača pun",
+        "heating_fault": "Kvar grejanja",
+        "pellets_low": "Malo peleta",
         "noise_high": "Bučna soba",
         "noisy_outside": "Zatvorite prozore (bučno je napolju)",
         "bad_air_outside": "Zatvorite prozore (loš vazduh napolju)"
@@ -419,6 +500,11 @@
           "co2_high": "Visok nivo CO₂",
           "polluted_air": "Zagađen vazduh",
           "humidity_high": "Visoka vlažnost vazduha",
+          "condensation_risk": "Rizik od kondenzacije",
+          "air_to_dry": "Otvorite prozore (suvlje napolju)",
+          "tank_full": "Rezervoar odvlaživača pun",
+          "heating_fault": "Kvar grejanja",
+          "pellets_low": "Malo peleta",
           "noise_high": "Bučna soba",
           "noisy_outside": "Zatvorite prozore (bučno je napolju)",
           "bad_air_outside": "Zatvorite prozore (loš vazduh napolju)"
@@ -446,6 +532,12 @@
       },
       "control_purifiers": {
         "name": "Kontrola prečišćivača"
+      },
+      "control_heating": {
+        "name": "Upravljanje grejanjem"
+      },
+      "control_dehumidifiers": {
+        "name": "Upravljanje odvlaživačima"
       },
       "lighting": {
         "name": "Prilagodljivo osvetljenje"
@@ -539,6 +631,12 @@
     "line_polluted_air": "{pollutant} {value} µg/m³, iznad {threshold} µg/m³",
     "line_polluted_air_index": "kvalitet vazduha {value}/6, iznad {threshold}/6",
     "line_humidity_high": "vlažnost {value} % — provetrite sobu",
+    "line_condensation_risk": "rizik od kondenzacije: zidovi {value} °C iznad tačke rose — provetrite ili odvlažite",
+    "line_condensation": "kondenzacija: zidovi na tački rose — provetrite ili odvlažite",
+    "line_air_to_dry": "napolju suvlje za {value} g/m³ — otvorite prozore da isušite prostoriju",
+    "line_tank_full": "rezervoar odvlaživača pun — ispraznite ga",
+    "line_heating_fault": "grejanje uključeno, ali se prostorija ne zagreva ({value} °C, zadato {threshold} °C)",
+    "line_pellets_low": "pelet {value} %, ispod {threshold} %",
     "line_noise_high": "buka {value} dB, iznad {threshold} dB",
     "line_noisy_outside": "{value} dB napolju — zatvorite {openings}",
     "line_bad_air_outside": "spoljašnji kvalitet vazduha {value}/6 — zatvorite {openings}",

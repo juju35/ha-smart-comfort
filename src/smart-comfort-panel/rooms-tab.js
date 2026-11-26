@@ -173,9 +173,11 @@ export class SmartComfortPanelRooms {
       [list(room.climate).length, "climate"],
       [list(room.fans).length, "fans"],
       [list(room.purifiers).length, "purifiers"],
+      [list(room.dehumidifiers).length, "dehumidifiers"],
+      [list(room.heating).length, "heating"],
     ]
       .filter(([n]) => n)
-      .map(([n, key]) => (n > 1 ? `${this._t(key)} (${n})` : this._t(key === "climate" ? key : key.slice(0, -1))));
+      .map(([n, key]) => (n > 1 ? `${this._t(key)} (${n})` : this._t({ climate: "climate", heating: "heater" }[key] || key.slice(0, -1))));
     return parts.length ? parts.join(", ") : this._t("none");
   }
 
@@ -205,6 +207,8 @@ export class SmartComfortPanelRooms {
       ["pm25", "pm25", true],
       ["pm10", "pm10", true],
       ["air_quality", null, true],
+      // Coldest wall or window (condensation risk), estimated from the outdoor temperature when unset.
+      ["surface_temperature", "temperature"],
     ];
     const shown = all.filter(([key]) => !isEmpty(room[key]) || this._shown.has(`${index}:${key}`));
     if (shown.length) {
@@ -427,6 +431,8 @@ export class SmartComfortPanelRooms {
         ["mdi:air-conditioner", room.climate],
         ["mdi:fan", room.fans],
         ["mdi:air-purifier", room.purifiers],
+        ["mdi:air-humidifier", room.dehumidifiers],
+        ["mdi:radiator", room.heating],
         ["mdi:lightbulb-outline", room.lights],
       ],
       found?.added.has(room.name),

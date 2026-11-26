@@ -179,7 +179,16 @@ export class SmartComfortMiniCard extends HTMLElement {
         if (alert.metric === "aqi") return this._t("level", { value: this._number(alert.value, 0) });
         return `${this._number(alert.value, 0)}${NBSP}µg/m³`;
       case "humidity_high":
+      case "pellets_low":
         return `${this._number(alert.value, 0)}${NBSP}%`;
+      case "condensation_risk":
+        return `${this._number(alert.value)}${NBSP}°C`;
+      case "air_to_dry":
+        return `${ext} −${this._number(alert.value)}${NBSP}g/m³`;
+      case "tank_full":
+        return "";
+      case "heating_fault":
+        return `${this._temp(alert.value)} → ${this._temp(alert.threshold)}`;
       case "noise_high":
         return `${this._number(alert.value, 0)}${NBSP}dB`;
       case "noisy_outside":

@@ -10,32 +10,44 @@ import unicodedata
 from collections.abc import Callable, Mapping
 from dataclasses import dataclass, field
 from datetime import datetime, time
+from functools import cached_property
 from typing import Any
 
 from .const import (
     CONF_AIR_QUALITY,
+    CONF_AIRING_WAIT,
     CONF_ALERTS,
     CONF_ANNEX_ALERTS,
     CONF_AQI_HYSTERESIS,
     CONF_AQI_THRESHOLD,
     CONF_AREA,
+    CONF_AWAY,
+    CONF_AWAY_PRESET,
+    CONF_BACKUP,
+    CONF_BACKUP_MARGIN,
+    CONF_BOOST_MODE,
     CONF_CLEAR_WHEN_RESOLVED,
     CONF_CLIMATE,
     CONF_CLOSED_FOR,
     CONF_CLOSED_MODE,
     CONF_CLOSED_PRESET,
     CONF_CO2,
+    CONF_COMFORT,
+    CONF_COMFORT_PRESET,
     CONF_CONTROL,
     CONF_COOL_ABOVE,
     CONF_CRITICAL_VOLUME,
     CONF_DAY,
     CONF_DAY_KELVIN,
     CONF_DAYS,
+    CONF_DEHUMIDIFIERS,
     CONF_DELAY,
     CONF_DIGEST_WINDOW,
     CONF_DISPLAY,
     CONF_DISPLAY_OFF,
     CONF_DISPLAY_ON,
+    CONF_ECO,
+    CONF_ECO_PRESET,
     CONF_ENABLED,
     CONF_END,
     CONF_ENTITY_ID,
@@ -44,6 +56,10 @@ from .const import (
     CONF_EVENING_KELVIN,
     CONF_FAN_MODE,
     CONF_FANS,
+    CONF_FAULT_AFTER,
+    CONF_FROST,
+    CONF_FROST_PRESET,
+    CONF_HEATING,
     CONF_HUMIDITY,
     CONF_HYSTERESIS,
     CONF_KEEP_ON,
@@ -55,6 +71,7 @@ from .const import (
     CONF_MAX_OUTDOOR,
     CONF_MIN_INDOOR,
     CONF_MIN_OUTDOOR,
+    CONF_MODE,
     CONF_MODE_SELECT,
     CONF_MORNING,
     CONF_MORNING_END,
@@ -68,6 +85,7 @@ from .const import (
     CONF_NIGHT_FAN_MODE,
     CONF_NIGHT_KELVIN,
     CONF_NIGHT_MODE,
+    CONF_NIGHT_OFF,
     CONF_NIGHT_ONLY,
     CONF_NIGHT_PERCENTAGE,
     CONF_NIGHT_PRESET,
@@ -77,6 +95,9 @@ from .const import (
     CONF_OFF_BELOW,
     CONF_OFF_ON_OPEN,
     CONF_OFF_PRESET,
+    CONF_OFFPEAK,
+    CONF_OFFPEAK_END,
+    CONF_OFFPEAK_START,
     CONF_ON_ABOVE,
     CONF_OPEN_MODE,
     CONF_OPEN_PERCENTAGE,
@@ -85,13 +106,18 @@ from .const import (
     CONF_OUTDOOR,
     CONF_OUTDOOR_AGGREGATE,
     CONF_OUTDOOR_AIR,
+    CONF_OUTDOOR_HUMIDITY,
     CONF_OUTDOOR_NOISE,
     CONF_OUTDOORS,
+    CONF_PELLETS,
     CONF_PERCENTAGE,
     CONF_PM10,
     CONF_PM10_HYSTERESIS,
     CONF_PM10_THRESHOLD,
     CONF_PM25,
+    CONF_PREFER_AIRING,
+    CONF_PREHEAT,
+    CONF_PREHEAT_MAX,
     CONF_PRESENCE,
     CONF_PRESENCE_LIGHTS,
     CONF_PRESET,
@@ -102,14 +128,28 @@ from .const import (
     CONF_REMINDER,
     CONF_RESET_AT,
     CONF_ROOMS,
+    CONF_SCHEDULE,
     CONF_SETPOINT,
     CONF_SEVERITY,
+    CONF_SHOWER_BOOST,
+    CONF_SHOWER_PERCENTAGE,
+    CONF_SHOWER_PRESET,
+    CONF_SHOWER_RISE,
     CONF_SNOOZE_DURATION,
     CONF_START,
     CONF_STARTUP_GRACE,
+    CONF_STOVE,
     CONF_SUPPRESS_HANDLED,
+    CONF_SURFACE_TEMPERATURE,
     CONF_TAG,
+    CONF_TANK,
+    CONF_TARGET_HUMIDITY,
     CONF_TEMPERATURE,
+    CONF_TEMPO,
+    CONF_TEMPO_PREHEAT,
+    CONF_TEMPO_RED,
+    CONF_TEMPO_TOMORROW,
+    CONF_TEMPO_WHITE,
     CONF_THRESHOLD,
     CONF_TRANSITION,
     CONF_TYPE,
@@ -244,11 +284,18 @@ class FanDevice:
     night_preset: str | None = None
     display: str | None = None
     reset_at: time | None = None
+    # Speed or preset of a shower boost (a bathroom's extractor); neither: no shower boost.
+    shower_percentage: int | None = None
+    shower_preset: str | None = None
 
     @property
     def quiet(self) -> bool:
         """Has night settings: quieter at night."""
         return self.night_percentage is not None or bool(self.night_preset)
+
+    @property
+    def shower(self) -> bool:
+        return self.shower_percentage is not None or bool(self.shower_preset)
 
 
 @dataclass(frozen=True)
@@ -273,6 +320,95 @@ class PurifierDevice:
         return (
             self.night_percentage is not None or bool(self.night_preset) or bool(self.mode_select and self.night_mode)
         )
+
+
+@dataclass(frozen=True)
+class DehumidifierDevice:
+    """A dehumidifier (humidifier entity of the dehumidifier class, or a switch): dries from on_above to off_below."""
+
+    entity_id: str
+    on_above: float
+    off_below: float
+    mode: str | None = None
+    target_humidity: int | None = None
+    boost_mode: str | None = None
+    night_mode: str | None = None
+    night_off: bool = False
+    tank: str | None = None
+    off_on_open: int = 5
+    prefer_airing: bool = True
+    airing_wait: int = 30
+    display: str | None = None
+    reset_at: time | None = None
+
+    @property
+    def quiet(self) -> bool:
+        return self.night_off or bool(self.night_mode)
+
+
+# A mode without its own preset, on a radiator driven by presets: the presets tried instead, in order.
+# Eco falls back on comfort (warmer), never on frost protection: a radiator without an eco preset is not left at 7 °C
+# for every eco slot of its schedule.
+PRESET_FALLBACK: dict[str, tuple[str, ...]] = {"away": ("eco", "frost"), "frost": ("eco",), "eco": ("comfort",)}
+
+
+@dataclass(frozen=True)
+class HeatingDevice:
+    """A heater (climate entity): thermostat, pilot wire radiator or pellet stove, by mode."""
+
+    entity_id: str
+    comfort: float = 20.0
+    eco: float = 17.0
+    frost: float = 7.0
+    away: float = 16.0
+    comfort_preset: str | None = None
+    eco_preset: str | None = None
+    frost_preset: str | None = None
+    away_preset: str | None = None
+    schedule: str | None = None
+    off_on_open: int = 5
+    max_outdoor: float | None = 16.0
+    preheat: bool = True
+    preheat_max: int = 120
+    tempo: str | None = None
+    tempo_tomorrow: str | None = None
+    tempo_red: float = 2.0
+    tempo_white: float = 0.0
+    tempo_preheat: float = 1.0
+    offpeak: str | None = None
+    offpeak_start: time | None = None
+    offpeak_end: time | None = None
+    stove: bool = False
+    pellets: str | None = None
+    backup: bool = False
+    backup_margin: float = 1.0
+    fault_after: int = 90
+    display: str | None = None
+    reset_at: time | None = None
+
+    def setpoint(self, mode: str) -> float:
+        return float(getattr(self, mode))
+
+    @property
+    def by_preset(self) -> bool:
+        """Driven by its presets (pilot wire): it may have no setpoint at all."""
+        return any((self.comfort_preset, self.eco_preset, self.frost_preset, self.away_preset))
+
+    def preset(self, mode: str) -> str | None:
+        """The preset of a mode; for a radiator driven by presets, the nearest lower one when that mode has none
+        (away, frost protection: eco), so that it never gets a setpoint it may not take."""
+        own = getattr(self, f"{mode}_preset", None)
+        if own or not self.by_preset:
+            return own
+        for fallback in PRESET_FALLBACK.get(mode, ()):
+            if found := getattr(self, f"{fallback}_preset", None):
+                return found
+        return None
+
+    @property
+    def entities(self) -> tuple[str, ...]:
+        """The entities its modes are read from (schedule, Tempo colours, off-peak hours)."""
+        return tuple(e for e in (self.schedule, self.tempo, self.tempo_tomorrow, self.offpeak) if e)
 
 
 @dataclass(frozen=True)
@@ -339,7 +475,7 @@ def _int(value: Any) -> int | None:
     return None if value is None else int(value)
 
 
-Device = ClimateDevice | FanDevice | PurifierDevice
+Device = ClimateDevice | FanDevice | PurifierDevice | DehumidifierDevice | HeatingDevice
 
 
 @dataclass(frozen=True)
@@ -360,6 +496,9 @@ class Room:
     climate: ClimateDevice | None = None
     fans: tuple[FanDevice, ...] = ()
     purifiers: tuple[PurifierDevice, ...] = ()
+    dehumidifiers: tuple[DehumidifierDevice, ...] = ()
+    heating: tuple[HeatingDevice, ...] = ()
+    surface_temperature: str | None = None
     alerts: dict[str, AlertSettings] = field(default_factory=dict)
     lights: tuple[LightDevice, ...] = ()
     naps: tuple[Nap, ...] = ()
@@ -385,6 +524,8 @@ class Room:
             ([self.climate] if self.climate and on.get("climate", True) else [])
             + (list(self.fans) if on.get("fans", True) else [])
             + (list(self.purifiers) if on.get("purifiers", True) else [])
+            + (list(self.dehumidifiers) if on.get("dehumidifiers", True) else [])
+            + (list(self.heating) if on.get("heating", True) else [])
         )
 
     @property
@@ -396,10 +537,26 @@ class Room:
         """Indicator light or display of each device of the families controlled: {display: device}."""
         return {d.display: d.entity_id for d in self.controlled(families) if d.display}
 
-    @property
+    @cached_property
     def devices(self) -> list[str]:
         devices = [self.climate.entity_id] if self.climate else []
-        return devices + [f.entity_id for f in self.fans] + [p.entity_id for p in self.purifiers]
+        return (
+            devices
+            + [f.entity_id for f in self.fans]
+            + [p.entity_id for p in self.purifiers]
+            + [d.entity_id for d in self.dehumidifiers]
+            + [h.entity_id for h in self.heating]
+        )
+
+    @property
+    def tanks(self) -> tuple[str, ...]:
+        """Water tank sensors of the dehumidifiers."""
+        return tuple(d.tank for d in self.dehumidifiers if d.tank)
+
+    @property
+    def pellets(self) -> tuple[str, ...]:
+        """Pellet level sensors of the stoves."""
+        return tuple(h.pellets for h in self.heating if h.pellets)
 
     @property
     def indoor_air(self) -> tuple[str, ...]:
@@ -408,8 +565,9 @@ class Room:
 
     @property
     def sensors(self) -> list[str]:
-        sensors = [e for e in (self.temperature, self.co2, self.humidity, self.noise) if e]
-        return sensors + list(self.indoor_air) + list(self.openings)
+        sensors = [e for e in (self.temperature, self.co2, self.humidity, self.noise, self.surface_temperature) if e]
+        heating = [e for h in self.heating for e in h.entities]
+        return sensors + list(self.indoor_air) + list(self.openings) + list(self.tanks) + list(self.pellets) + heating
 
 
 @dataclass(frozen=True)
@@ -421,6 +579,7 @@ class Outdoor:
     temperature: tuple[str, ...] = ()
     air_quality: tuple[str, ...] = ()
     noise: tuple[str, ...] = ()
+    humidity: tuple[str, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -431,6 +590,7 @@ class Settings:
     aggregate: str = "min"
     outdoor_noise: tuple[str, ...] = ()
     outdoor_air: tuple[str, ...] = ()
+    outdoor_humidity: tuple[str, ...] = ()
     outdoors: tuple[Outdoor, ...] = ()
     digest_window: int = DEFAULT_DIGEST_WINDOW
     startup_grace: int = DEFAULT_STARTUP_GRACE
@@ -459,6 +619,9 @@ class Settings:
     # Indicator lights and displays off from display_off to display_on (the quiet night when unset).
     display_off: time | None = None
     display_on: time | None = None
+    # Shower detection: humidity rise (points within SHOWER_WINDOW minutes; None: off) and the boost minutes.
+    shower_rise: float | None = 10.0
+    shower_boost: int = 30
 
     def night(self, local: time) -> bool:
         """Quiet night hours (none when either bound is unset)."""
@@ -563,6 +726,8 @@ def _room(
                 night_preset=f[CONF_NIGHT_PRESET] or None,
                 display=f[CONF_DISPLAY] or None,
                 reset_at=parse_time(f[CONF_RESET_AT]),
+                shower_percentage=_int(f[CONF_SHOWER_PERCENTAGE]),
+                shower_preset=f[CONF_SHOWER_PRESET] or None,
             )
         )
     purifiers = []
@@ -585,6 +750,65 @@ def _room(
                 reset_at=parse_time(p[CONF_RESET_AT]),
             )
         )
+    dehumidifiers = []
+    for entity_id, own in _device_items(raw.get(CONF_DEHUMIDIFIERS)):
+        d = _merge(control[CONF_DEHUMIDIFIERS], room_control.get(CONF_DEHUMIDIFIERS), own)
+        dehumidifiers.append(
+            DehumidifierDevice(
+                entity_id=entity_id,
+                on_above=float(d[CONF_ON_ABOVE]),
+                off_below=float(d[CONF_OFF_BELOW]),
+                mode=d[CONF_MODE] or None,
+                target_humidity=_int(d[CONF_TARGET_HUMIDITY]),
+                boost_mode=d[CONF_BOOST_MODE] or None,
+                night_mode=d[CONF_NIGHT_MODE] or None,
+                night_off=bool(d[CONF_NIGHT_OFF]),
+                tank=d[CONF_TANK] or None,
+                off_on_open=int(d[CONF_OFF_ON_OPEN]),
+                prefer_airing=bool(d[CONF_PREFER_AIRING]),
+                airing_wait=int(d[CONF_AIRING_WAIT]),
+                display=d[CONF_DISPLAY] or None,
+                reset_at=parse_time(d[CONF_RESET_AT]),
+            )
+        )
+    heating = []
+    for entity_id, own in _device_items(raw.get(CONF_HEATING)):
+        if climate is not None and entity_id == climate.entity_id:
+            continue  # Already the room's air conditioner: one device, one controller.
+        h = _merge(control[CONF_HEATING], room_control.get(CONF_HEATING), own)
+        heating.append(
+            HeatingDevice(
+                entity_id=entity_id,
+                comfort=float(h[CONF_COMFORT]),
+                eco=float(h[CONF_ECO]),
+                frost=float(h[CONF_FROST]),
+                away=float(h[CONF_AWAY]),
+                comfort_preset=h[CONF_COMFORT_PRESET] or None,
+                eco_preset=h[CONF_ECO_PRESET] or None,
+                frost_preset=h[CONF_FROST_PRESET] or None,
+                away_preset=h[CONF_AWAY_PRESET] or None,
+                schedule=h[CONF_SCHEDULE] or None,
+                off_on_open=int(h[CONF_OFF_ON_OPEN]),
+                max_outdoor=_float(h[CONF_MAX_OUTDOOR]),
+                preheat=bool(h[CONF_PREHEAT]),
+                preheat_max=int(h[CONF_PREHEAT_MAX]),
+                tempo=h[CONF_TEMPO] or None,
+                tempo_tomorrow=h[CONF_TEMPO_TOMORROW] or None,
+                tempo_red=float(h[CONF_TEMPO_RED] or 0),
+                tempo_white=float(h[CONF_TEMPO_WHITE] or 0),
+                tempo_preheat=float(h[CONF_TEMPO_PREHEAT] or 0),
+                offpeak=h[CONF_OFFPEAK] or None,
+                offpeak_start=parse_time(h[CONF_OFFPEAK_START]),
+                offpeak_end=parse_time(h[CONF_OFFPEAK_END]),
+                stove=bool(h[CONF_STOVE]),
+                pellets=h[CONF_PELLETS] or None,
+                backup=bool(h[CONF_BACKUP]),
+                backup_margin=float(h[CONF_BACKUP_MARGIN] or 0),
+                fault_after=int(h[CONF_FAULT_AFTER]),
+                display=h[CONF_DISPLAY] or None,
+                reset_at=parse_time(h[CONF_RESET_AT]),
+            )
+        )
     openings = raw.get(CONF_OPENINGS) or []
     return Room(
         id=room_id,
@@ -601,6 +825,9 @@ def _room(
         climate=climate,
         fans=tuple(fans),
         purifiers=tuple(purifiers),
+        dehumidifiers=tuple(dehumidifiers),
+        heating=tuple(heating),
+        surface_temperature=raw.get(CONF_SURFACE_TEMPERATURE) or None,
         lights=_lights(raw, lighting),
         naps=tuple(
             Nap(
@@ -634,7 +861,7 @@ def build_settings(options: dict[str, Any]) -> Settings:
     }
     raw_control = options.get(CONF_CONTROL) or {}
     control = _merge(DEFAULT_CONTROL, raw_control)
-    for section in (CONF_CLIMATE, CONF_FANS, CONF_PURIFIERS):
+    for section in (CONF_CLIMATE, CONF_FANS, CONF_PURIFIERS, CONF_DEHUMIDIFIERS, CONF_HEATING):
         control[section] = _merge(DEFAULT_CONTROL[section], raw_control.get(section))
     used: set[str] = set()
     lighting = _merge(DEFAULT_LIGHTING, options.get(CONF_LIGHTING))
@@ -647,6 +874,7 @@ def build_settings(options: dict[str, Any]) -> Settings:
             temperature=_ids(o.get(CONF_TEMPERATURE)),
             air_quality=_ids(o.get(CONF_AIR_QUALITY)),
             noise=_ids(o.get(CONF_NOISE)),
+            humidity=_ids(o.get(CONF_HUMIDITY)),
         )
         for o in options.get(CONF_OUTDOORS) or []
     )
@@ -661,6 +889,7 @@ def build_settings(options: dict[str, Any]) -> Settings:
         aggregate=str(options.get(CONF_OUTDOOR_AGGREGATE) or "min"),
         outdoor_noise=every(CONF_OUTDOOR_NOISE, lambda o: o.noise),
         outdoor_air=every(CONF_OUTDOOR_AIR, lambda o: o.air_quality),
+        outdoor_humidity=every(CONF_OUTDOOR_HUMIDITY, lambda o: o.humidity),
         outdoors=outdoors,
         digest_window=int(options.get(CONF_DIGEST_WINDOW, DEFAULT_DIGEST_WINDOW)),
         startup_grace=int(options.get(CONF_STARTUP_GRACE, DEFAULT_STARTUP_GRACE)),
@@ -686,4 +915,6 @@ def build_settings(options: dict[str, Any]) -> Settings:
         lighting_enabled=bool(lighting[CONF_ENABLED]),
         morning_end=parse_time(lighting[CONF_MORNING_END]),
         transition=int(lighting[CONF_TRANSITION]),
+        shower_rise=_float(control[CONF_SHOWER_RISE]) or None,
+        shower_boost=int(control[CONF_SHOWER_BOOST]),
     )

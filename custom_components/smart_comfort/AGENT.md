@@ -1,7 +1,7 @@
 # Smart Comfort — Agent Context
 
 ## Purpose
-Home Assistant custom integration that replaces cooldown-based comfort automations: per-room alerts tracked as episodes and sent as grouped, replaceable notifications, plus control of air conditioners, fans and air purifiers.
+Home Assistant custom integration that replaces cooldown-based comfort automations: per-room alerts tracked as episodes and sent as grouped, replaceable notifications, plus control of air conditioners, fans, air purifiers, dehumidifiers and heaters.
 
 ## Architecture
 
@@ -15,7 +15,8 @@ custom_components/smart_comfort/
 ├── config.py        # Pure: build_settings(options) -> Settings/Room/AlertSettings/devices, defaults merged (global < room < device)
 ├── engine.py        # Pure: Episode, Engine.evaluate (readings -> episodes), Engine.step (gates -> Digest | Clear | None)
 ├── lighting.py    # Pure: LightController (brightness/warmth of the lights that are on, by sun elevation and night hours; manual pause until off)
-├── control.py       # Pure: Controller.evaluate (room context + device states -> Commands), targets, manual overrides, keep_on
+├── control.py       # Pure: Controller.evaluate (room context + device states -> Commands), targets, manual overrides, keep_on; dehumidifiers (dry/boost/off, shower detection), heaters ("heat:<mode>:<setpoint>": schedule, away, frost, Tempo, preheat from the learnt rate, backup, fault tracking)
+├── moisture.py      # Pure: dew point, absolute humidity, coldest surface estimate (condensation_risk, air_to_dry)
 ├── message.py       # Pure: render(digest, texts) -> title, message; texts = translations common.*
 ├── manager.py       # HA glue: state tracking, debounce, interval, commands with own Context, notify, mobile_app actions, Store
 ├── config_flow.py   # Single entry; import step; options menu general / alerts (per kind) / control (sections) / rooms

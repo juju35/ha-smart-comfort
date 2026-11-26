@@ -23,6 +23,8 @@ export default {
   fam_climate: "ar condicionados",
   fam_fans: "ventoinhas",
   fam_purifiers: "purificadores de ar",
+  fam_dehumidifiers: "desumidificadores",
+  fam_heating: "aquecimento",
   on: "ligado",
   off: "desligado",
   zoom_in: "Cartão completo",

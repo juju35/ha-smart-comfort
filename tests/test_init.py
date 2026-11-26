@@ -539,7 +539,13 @@ async def test_family_switch_restored_before_entities(hass: HomeAssistant, notif
     await hass.services.async_call(
         "switch", "turn_off", {"entity_id": "switch.smart_comfort_fan_control"}, blocking=True
     )
-    assert entry.runtime_data.families == {"climate": True, "fans": False, "purifiers": True}
+    assert entry.runtime_data.families == {
+        "climate": True,
+        "fans": False,
+        "purifiers": True,
+        "dehumidifiers": True,
+        "heating": True,
+    }
     assert await hass.config_entries.async_unload(entry.entry_id)
     await hass.async_block_till_done()
     assert hass.data[DOMAIN]["state"]["families"]["fans"] is False
@@ -1077,6 +1083,12 @@ async def test_calendar_parses_the_history_once(hass: HomeAssistant, notify, fan
     await _evaluate(hass, entry)
     history = entry.runtime_data.engine.history
     assert len(history) == 2
+    # Its state only looks at the alerts going on: the history isn't parsed at each state write.
+    assert not any(any(r is h for h in history) for r in parsed)
+    # Listing the events parses it once, then reuses it.
+    now = dt_util.utcnow()
+    for _ in range(2):
+        await calendar.async_get_events(hass, now - timedelta(days=1), now + timedelta(days=1))
     assert sum(any(r is h for h in history) for r in parsed) == 2
 
 
@@ -1326,3 +1338,192 @@ async def test_presence_moved_to_house_rules(hass: HomeAssistant) -> None:
     hass.config_entries.async_update_entry(entry, options={**options, "rooms": [{"name": "Entrance"}]})
     await hass.async_block_till_done()
     assert ir.async_get(hass).async_get_issue(DOMAIN, "presence_moved") is None
+
+
+async def test_dehumidifier_and_heating_in_home_assistant(hass: HomeAssistant, notify) -> None:
+    """A damp cellar: its dehumidifier dries (the alerts it handles not notified), its tank and its stove watched."""
+    humidifier = {s: async_mock_service(hass, "humidifier", s) for s in ("turn_on", "turn_off", "set_mode")}
+    climate = {s: async_mock_service(hass, "climate", s) for s in ("set_hvac_mode", "set_temperature", "turn_off")}
+    hass.states.async_set("sensor.out", "4")
+    hass.states.async_set("sensor.out_h", "80")
+    hass.states.async_set("sensor.t_cave", "12")
+    hass.states.async_set("sensor.h_cave", "85")
+    hass.states.async_set("humidifier.cave", "off", {"mode": "auto", "available_modes": ["auto", "dry"]})
+    hass.states.async_set("binary_sensor.tank", "off")
+    hass.states.async_set("climate.stove", "off", {"hvac_modes": ["off", "heat"], "temperature": 18})
+    hass.states.async_set("sensor.pellets", "12")
+    options = {
+        "notify": ["notify.phone"],
+        "outdoor_temperature": ["sensor.out"],
+        "outdoor_humidity": ["sensor.out_h"],
+        "digest_window": 0,
+        "startup_grace": 0,
+        "alerts": {"humidity_high": {"delay": 0}, "pellets_low": {"delay": 0}},
+        "rooms": [
+            {
+                "name": "Cave",
+                "type": "annex",
+                "temperature": "sensor.t_cave",
+                "humidity": "sensor.h_cave",
+                "dehumidifiers": [
+                    {
+                        "entity_id": "humidifier.cave",
+                        "mode": "dry",
+                        "tank": "binary_sensor.tank",
+                        "prefer_airing": False,
+                    }
+                ],
+                "heating": [{"entity_id": "climate.stove", "stove": True, "pellets": "sensor.pellets"}],
+            }
+        ],
+    }
+    entry = await _setup(hass, {**options, "annex_alerts": {"humidity_high": {"delay": 0}}})
+    await _evaluate(hass, entry)
+    assert humidifier["turn_on"][0].data == {"entity_id": "humidifier.cave"}
+    assert humidifier["set_mode"][0].data == {"entity_id": "humidifier.cave", "mode": "dry"}
+    # The annex's stove: frost protection.
+    assert climate["set_hvac_mode"][0].data == {"entity_id": "climate.stove", "hvac_mode": "heat"}
+    assert climate["set_temperature"][0].data == {"entity_id": "climate.stove", "temperature": 7.0}
+    hass.states.async_set("humidifier.cave", "on", {"mode": "dry"})
+    hass.states.async_set("climate.stove", "heat", {"hvac_modes": ["off", "heat"], "temperature": 7.0})
+    hass.states.async_set("binary_sensor.tank", "on")
+    await _evaluate(hass, entry)
+    await _evaluate(hass, entry)
+    kinds = {e.kind for e in entry.runtime_data.engine.active()}
+    assert {"humidity_high", "tank_full", "pellets_low"} <= kinds
+    # Its tank full, the dehumidifier no longer dries: the high humidity is notified too, with the tank and pellets.
+    message = notify[-1].data["message"]
+    assert "tank" in message and "pellets" in message and "humidity" in message
+    status = hass.states.get("switch.smart_comfort_dehumidifier_control")
+    assert status is not None and status.state == "on"
+    assert hass.states.get("switch.smart_comfort_heating_control").state == "on"
+
+
+async def test_airing_wait_counts_from_the_damp_episode(hass: HomeAssistant, notify) -> None:
+    """Closing the windows after airing starts the suggestion again, not the dehumidifier's wait."""
+    hass.states.async_set("sensor.out", "8")
+    hass.states.async_set("sensor.out_h", "60")
+    hass.states.async_set("sensor.t", "18")
+    hass.states.async_set("sensor.h", "80")
+    hass.states.async_set("binary_sensor.w", "off")
+    hass.states.async_set("switch.dry", "off")
+    options = {
+        "notify": ["notify.phone"],
+        "outdoor_temperature": ["sensor.out"],
+        "outdoor_humidity": ["sensor.out_h"],
+        "startup_grace": 0,
+        "alerts": {"humidity_high": {"delay": 0}},
+        "rooms": [
+            {
+                "name": "Cave",
+                "temperature": "sensor.t",
+                "humidity": "sensor.h",
+                "openings": ["binary_sensor.w"],
+                "dehumidifiers": ["switch.dry"],
+            }
+        ],
+    }
+    entry = await _setup(hass, options)
+    # Mocked once set up: the integration's own switches load the real switch actions.
+    switch = {s: async_mock_service(hass, "switch", s) for s in ("turn_on", "turn_off")}
+    m = entry.runtime_data
+    await _evaluate(hass, entry)
+    assert not switch["turn_on"]  # Airing would dry the room: the dehumidifier waits.
+    damp = m.engine.episodes["cave|humidity_high"]
+    # 40 min later the windows were opened and closed again: the suggestion starts over, the wait is over all the same.
+    damp.since -= timedelta(minutes=40)
+    m.engine.episodes.pop("cave|air_to_dry")
+    await _evaluate(hass, entry)
+    assert switch["turn_on"][0].data == {"entity_id": "switch.dry"}
+    # The sensors read once per evaluation: the room's comfort and score from the same reading.
+    assert m.readings["cave"].humidity == 80
+    assert hass.states.get("sensor.smart_comfort_cave_comfort").attributes["humidity"] == 80
+
+
+async def test_measurement_only_device_change_is_not_evaluated(hass: HomeAssistant, notify, fan_calls) -> None:
+    """A thermostat's current temperature (what it measures) changing alone evaluates nothing again."""
+    _states(hass)
+    entry = await _setup(hass)
+    await _evaluate(hass, entry)
+    m = entry.runtime_data
+    hass.states.async_set("fan.sejour", "off", {"percentage": 0, "current_temperature": 21})
+    await hass.async_block_till_done()
+    assert m._debounce is None
+    hass.states.async_set("fan.sejour", "off", {"percentage": 30, "current_temperature": 21})
+    await hass.async_block_till_done()
+    assert m._debounce is not None
+
+
+async def test_unchanged_status_not_sent_again(hass: HomeAssistant, hass_ws_client, notify, fan_calls) -> None:
+    _states(hass)
+    entry = await _setup(hass)
+    await _evaluate(hass, entry)
+    client = await hass_ws_client(hass)
+    await client.send_json({"id": 1, "type": "smart_comfort/subscribe"})
+    assert (await client.receive_json())["success"]
+    assert "status" in (await client.receive_json())["event"]
+    await _evaluate(hass, entry)  # Nothing changed: no new message.
+    _states(hass, sejour=27.5)
+    await _evaluate(hass, entry)
+    event = (await client.receive_json())["event"]
+    assert next(r for r in event["status"]["rooms"] if r["room_id"] == "sejour")["temperature"] == 27.5
+
+
+async def test_heating_setpoints_in_fahrenheit(hass: HomeAssistant, notify) -> None:
+    """A °F system: setpoints sent in °F, the device's read back in °C, not sent again once applied."""
+    from homeassistant.util.unit_system import US_CUSTOMARY_SYSTEM
+
+    hass.config.units = US_CUSTOMARY_SYSTEM
+    hass.states.async_set("sensor.t", "62.6", {"unit_of_measurement": "°F"})  # 17 °C
+    hass.states.async_set("climate.r", "heat", {"hvac_modes": ["off", "heat"], "temperature": 60})
+    calls = async_mock_service(hass, "climate", "set_temperature")
+    entry = await _setup(
+        hass,
+        {
+            "startup_grace": 0,
+            "rooms": [{"name": "Bureau", "temperature": "sensor.t", "heating": ["climate.r"]}],
+        },
+    )
+    await _evaluate(hass, entry)
+    assert calls[-1].data == {"entity_id": "climate.r", "temperature": 68}  # 20 °C
+    hass.states.async_set("climate.r", "heat", {"hvac_modes": ["off", "heat"], "temperature": 68})
+    await _evaluate(hass, entry)
+    await _evaluate(hass, entry)
+    assert len(calls) == 1
+
+
+async def test_tank_full_stop_is_not_a_manual_change(hass: HomeAssistant, notify, freezer) -> None:
+    """A dehumidifier stopping as its tank fills is not paused: it dries again once the tank is emptied."""
+    hass.states.async_set("sensor.t", "18")
+    hass.states.async_set("sensor.h", "80")
+    hass.states.async_set("binary_sensor.tank", "off")
+    hass.states.async_set("switch.dry", "off")
+    entry = await _setup(
+        hass,
+        {
+            "startup_grace": 0,
+            "rooms": [
+                {
+                    "name": "Cave",
+                    "temperature": "sensor.t",
+                    "humidity": "sensor.h",
+                    "dehumidifiers": [{"entity_id": "switch.dry", "tank": "binary_sensor.tank"}],
+                }
+            ],
+        },
+    )
+    switch = {s: async_mock_service(hass, "switch", s) for s in ("turn_on", "turn_off")}
+    m = entry.runtime_data
+    await _evaluate(hass, entry)
+    hass.states.async_set("switch.dry", "on")
+    freezer.tick(timedelta(minutes=5))
+    # The device stops (reported first), then its tank sensor turns on.
+    hass.states.async_set("switch.dry", "off")
+    await hass.async_block_till_done()
+    hass.states.async_set("binary_sensor.tank", "on")
+    await hass.async_block_till_done()
+    assert "switch.dry" not in m.controller.overrides
+    await _evaluate(hass, entry)
+    hass.states.async_set("binary_sensor.tank", "off")
+    await _evaluate(hass, entry)
+    assert switch["turn_on"][-1].data == {"entity_id": "switch.dry"}

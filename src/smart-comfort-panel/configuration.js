@@ -45,7 +45,7 @@ export function toYaml(value, indent = "") {
 export const isEmpty = (v) => v === undefined || v === null || v === "" || (Array.isArray(v) && v.length === 0);
 export const asList = (v) => (Array.isArray(v) ? v : v ? [v] : []);
 // Sensors of a room, in the order of its form.
-export const SENSOR_KEYS = ["temperature", "co2", "humidity", "noise", "pm25", "pm10", "air_quality"];
+export const SENSOR_KEYS = ["temperature", "co2", "humidity", "noise", "pm25", "pm10", "air_quality", "surface_temperature"];
 
 /** Drop empty values, recursively; empty objects go too. */
 export function prune(value) {
