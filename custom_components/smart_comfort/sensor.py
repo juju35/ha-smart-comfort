@@ -17,7 +17,7 @@ from .config import Room
 from .const import KINDS, SEVERITY_CRITICAL, SEVERITY_INFO, SEVERITY_WARNING
 from .engine import _severity_rank
 from .entity import SmartComfortEntity
-from .status import episode_info, room_info
+from .status import comfort_gap, episode_info, room_info
 
 STATE_OK = "ok"
 
@@ -129,8 +129,9 @@ SCORE_PENALTY: Final = {SEVERITY_INFO: 10, SEVERITY_WARNING: 25, SEVERITY_CRITIC
 
 
 def comfort_score(manager: Any, room: Room) -> int:
-    """100 when nothing is wrong in the room, less for each problem under way (by its severity), never below 0."""
-    penalty = 0
+    """100 when nothing is wrong in the room, less for each problem under way (by its severity) and for what is short
+    of an alert (comfort_gap), never below 0."""
+    penalty = comfort_gap(manager, room)
     for episode in manager.engine.active():
         if episode.room != room.id:
             continue

@@ -82,6 +82,8 @@ FAN = {
     vol.Optional(k.CONF_OFF_PRESET): OPT_STR,
     vol.Optional(k.CONF_NIGHT_PERCENTAGE): vol.Any(None, PERCENT),
     vol.Optional(k.CONF_NIGHT_PRESET): OPT_STR,
+    vol.Optional(k.CONF_SHOWER_PERCENTAGE): vol.Any(None, PERCENT),
+    vol.Optional(k.CONF_SHOWER_PRESET): OPT_STR,
     **EQUIPMENT,
 }
 PURIFIER = {
@@ -97,11 +99,57 @@ PURIFIER = {
     vol.Optional(k.CONF_NIGHT_MODE): OPT_STR,
     **EQUIPMENT,
 }
+DEHUMIDIFIER = {
+    vol.Optional(k.CONF_ON_ABOVE): vol.All(NUMBER, vol.Range(min=0, max=100)),
+    vol.Optional(k.CONF_OFF_BELOW): vol.All(NUMBER, vol.Range(min=0, max=100)),
+    vol.Optional(k.CONF_MODE): OPT_STR,
+    vol.Optional(k.CONF_TARGET_HUMIDITY): vol.Any(None, PERCENT),
+    vol.Optional(k.CONF_BOOST_MODE): OPT_STR,
+    vol.Optional(k.CONF_NIGHT_MODE): OPT_STR,
+    vol.Optional(k.CONF_NIGHT_OFF): cv.boolean,
+    vol.Optional(k.CONF_TANK): vol.Any(None, cv.entity_id),
+    vol.Optional(k.CONF_OFF_ON_OPEN): MINUTES,
+    vol.Optional(k.CONF_PREFER_AIRING): cv.boolean,
+    vol.Optional(k.CONF_AIRING_WAIT): MINUTES,
+    **EQUIPMENT,
+}
+SETPOINT = vol.All(NUMBER, vol.Range(min=0, max=35))
+HEATER = {
+    vol.Optional(k.CONF_COMFORT): SETPOINT,
+    vol.Optional(k.CONF_ECO): SETPOINT,
+    vol.Optional(k.CONF_FROST): SETPOINT,
+    vol.Optional(k.CONF_AWAY): SETPOINT,
+    vol.Optional(k.CONF_COMFORT_PRESET): OPT_STR,
+    vol.Optional(k.CONF_ECO_PRESET): OPT_STR,
+    vol.Optional(k.CONF_FROST_PRESET): OPT_STR,
+    vol.Optional(k.CONF_AWAY_PRESET): OPT_STR,
+    vol.Optional(k.CONF_SCHEDULE): vol.Any(None, cv.entity_id),
+    vol.Optional(k.CONF_OFF_ON_OPEN): MINUTES,
+    vol.Optional(k.CONF_MAX_OUTDOOR): vol.Any(None, NUMBER),
+    vol.Optional(k.CONF_PREHEAT): cv.boolean,
+    vol.Optional(k.CONF_PREHEAT_MAX): MINUTES,
+    vol.Optional(k.CONF_TEMPO): vol.Any(None, cv.entity_id),
+    vol.Optional(k.CONF_TEMPO_TOMORROW): vol.Any(None, cv.entity_id),
+    vol.Optional(k.CONF_TEMPO_RED): vol.All(NUMBER, vol.Range(min=0, max=10)),
+    vol.Optional(k.CONF_TEMPO_WHITE): vol.All(NUMBER, vol.Range(min=0, max=10)),
+    vol.Optional(k.CONF_TEMPO_PREHEAT): vol.All(NUMBER, vol.Range(min=0, max=5)),
+    vol.Optional(k.CONF_OFFPEAK): vol.Any(None, cv.entity_id),
+    vol.Optional(k.CONF_OFFPEAK_START): time_string,
+    vol.Optional(k.CONF_OFFPEAK_END): time_string,
+    vol.Optional(k.CONF_STOVE): cv.boolean,
+    vol.Optional(k.CONF_PELLETS): vol.Any(None, cv.entity_id),
+    vol.Optional(k.CONF_BACKUP): cv.boolean,
+    vol.Optional(k.CONF_BACKUP_MARGIN): vol.All(NUMBER, vol.Range(min=0, max=10)),
+    vol.Optional(k.CONF_FAULT_AFTER): vol.All(MINUTES, vol.Range(min=10)),
+    **EQUIPMENT,
+}
 DEVICE_SECTIONS = vol.Schema(
     {
         vol.Optional(k.CONF_CLIMATE): vol.Schema(CLIMATE),
         vol.Optional(k.CONF_FANS): vol.Schema(FAN),
         vol.Optional(k.CONF_PURIFIERS): vol.Schema(PURIFIER),
+        vol.Optional(k.CONF_DEHUMIDIFIERS): vol.Schema(DEHUMIDIFIER),
+        vol.Optional(k.CONF_HEATING): vol.Schema(HEATER),
     }
 )
 CONTROL = DEVICE_SECTIONS.extend(
@@ -115,11 +163,13 @@ CONTROL = DEVICE_SECTIONS.extend(
         vol.Optional(k.CONF_NIGHT_END): time_string,
         vol.Optional(k.CONF_DISPLAY_OFF): time_string,
         vol.Optional(k.CONF_DISPLAY_ON): time_string,
+        vol.Optional(k.CONF_SHOWER_RISE): vol.Any(None, vol.All(NUMBER, vol.Range(min=0, max=100))),
+        vol.Optional(k.CONF_SHOWER_BOOST): MINUTES,
     }
 )
 
 
-def _devices(domain: str, extra: dict) -> vol.All:
+def _devices(domain: str | list[str], extra: dict) -> vol.All:
     item = vol.Any(
         cv.entity_domain(domain),
         vol.Schema({vol.Required(k.CONF_ENTITY_ID): cv.entity_domain(domain), **extra}),
@@ -182,6 +232,10 @@ ROOM = vol.Schema(
         ),
         vol.Optional(k.CONF_FANS): _devices("fan", FAN),
         vol.Optional(k.CONF_PURIFIERS): _devices("fan", PURIFIER),
+        # Dehumidifiers: humidifier entities (dehumidifier class), or switches (a plug).
+        vol.Optional(k.CONF_DEHUMIDIFIERS): _devices(["humidifier", "switch"], DEHUMIDIFIER),
+        vol.Optional(k.CONF_HEATING): _devices("climate", HEATER),
+        vol.Optional(k.CONF_SURFACE_TEMPERATURE): vol.Any(None, cv.entity_id),
         vol.Optional(k.CONF_LIGHTS): _devices("light", LIGHT),
         vol.Optional(k.CONF_LIGHTING): vol.Schema(LIGHTING_LEVELS),
         vol.Optional(k.CONF_NAPS): vol.All(cv.ensure_list, [NAP]),
@@ -200,6 +254,7 @@ OUTDOOR = vol.Schema(
         vol.Optional(k.CONF_TEMPERATURE): cv.entity_ids,
         vol.Optional(k.CONF_AIR_QUALITY): cv.entity_ids,
         vol.Optional(k.CONF_NOISE): cv.entity_ids,
+        vol.Optional(k.CONF_HUMIDITY): cv.entity_ids,
     }
 )
 
@@ -210,6 +265,7 @@ OPTIONS = vol.Schema(
         vol.Optional(k.CONF_OUTDOOR_AGGREGATE): vol.In(k.AGGREGATES),
         vol.Optional(k.CONF_OUTDOOR_NOISE): cv.entity_ids,
         vol.Optional(k.CONF_OUTDOOR_AIR): cv.entity_ids,
+        vol.Optional(k.CONF_OUTDOOR_HUMIDITY): cv.entity_ids,
         vol.Optional(k.CONF_DIGEST_WINDOW): MINUTES,
         vol.Optional(k.CONF_STARTUP_GRACE): MINUTES,
         vol.Optional(k.CONF_REMINDER): MINUTES,

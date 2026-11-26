@@ -57,7 +57,8 @@
           "critical_volume": "Volume degli avvisi critici",
           "url": "Azione al tocco",
           "tag": "Tag della notifica",
-          "hide_header": "Nascondi la barra superiore"
+          "hide_header": "Nascondi la barra superiore",
+          "outdoor_humidity": "Umidità esterna"
         },
         "data_description": {
           "notify": "Dove vanno gli avvisi (notify.mobile_app_…, un gruppo di notifica…).",
@@ -75,7 +76,8 @@
           "critical_volume": "Volume del suono critico iOS, da 0 a 1.",
           "url": "Aperto quando si tocca la notifica, ad es. homeassistant://navigate/lovelace/comfort",
           "tag": "Ogni notifica sostituisce la precedente con questo tag invece di accumularsi.",
-          "hide_header": "La barra superiore delle dashboard (titolo, menu, pulsanti di modifica e ricerca); le schede delle viste restano. Anche la barra superiore di questo pannello; le sue schede restano. Aggiungi ?show_header all'indirizzo di una dashboard per vederla comunque."
+          "hide_header": "La barra superiore delle dashboard (titolo, menu, pulsanti di modifica e ricerca); le schede delle viste restano. Anche la barra superiore di questo pannello; le sue schede restano. Aggiungi ?show_header all'indirizzo di una dashboard per vederla comunque.",
+          "outdoor_humidity": "Sensori di umidità relativa all'esterno (%), aggiunti a quelli dei luoghi esterni: indicano se arieggiare asciugherebbe una stanza umida."
         }
       },
       "alerts": {
@@ -131,7 +133,9 @@
           "display": "Spia luminosa o display",
           "reset_at": "Ritorno alla normalità alle",
           "display_off": "Display spenti dalle",
-          "display_on": "Display accesi dalle"
+          "display_on": "Display accesi dalle",
+          "shower_rise": "Doccia: aumento di umidità",
+          "shower_boost": "Boost doccia (min)"
         },
         "data_description": {
           "start": "Ventilatori e purificatori vanno alla massima velocità quando si apre un'apertura solo tra questi orari. Entrambi vuoti: tutto il giorno.",
@@ -139,7 +143,8 @@
           "suppress_when_handled": "Nessun avviso “troppo caldo” per una stanza di cui Smart Comfort ha acceso il condizionatore o il ventilatore.",
           "night_start": "Tra questi orari i dispositivi usano le loro impostazioni notturne (velocità più silenziosa, preimpostazione o modalità ventola) e non c'è boost finestra per loro.",
           "display": "Spento nelle ore \"Display spenti\" della scheda Programma e durante i riposini della stanza, riacceso dopo.",
-          "reset_at": "A quest'ora il dispositivo torna al suo stato normale, anche dopo una modifica manuale (un purificatore di nuovo in automatico…)."
+          "reset_at": "A quest'ora il dispositivo torna al suo stato normale, anche dopo una modifica manuale (un purificatore di nuovo in automatico…).",
+          "shower_rise": "Punti di umidità guadagnati in 10 minuti che indicano una doccia: i deumidificatori della stanza (e i ventilatori con velocità doccia) vanno in boost. Vuoto: disattivato."
         },
         "sections": {
           "climate": {
@@ -169,7 +174,9 @@
               "open_preset": "Preimpostazione, finestra aperta",
               "off_preset": "Preimpostazione prima dello spegnimento",
               "night_percentage": "Velocità di notte",
-              "night_preset": "Preimpostazione di notte"
+              "night_preset": "Preimpostazione di notte",
+              "shower_percentage": "Velocità dopo una doccia",
+              "shower_preset": "Preset dopo una doccia"
             },
             "description": "Lascia vuoti “Acceso da” e “Spento sotto” per i ventilatori comandati solo dalle finestre."
           },
@@ -186,6 +193,66 @@
             },
             "data_description": {
               "keep_on": "Riaccendi un purificatore quando è spento da 10 s (interruzione di corrente, anomalia)."
+            }
+          },
+          "dehumidifiers": {
+            "name": "Deumidificatori",
+            "data": {
+              "on_above": "Acceso da",
+              "off_below": "Spento sotto",
+              "mode": "Modalità",
+              "target_humidity": "Umidità obiettivo",
+              "boost_mode": "Modalità boost",
+              "night_mode": "Modalità di notte",
+              "night_off": "Spento di notte",
+              "tank": "Sensore serbatoio pieno",
+              "off_on_open": "Spento se aperto da (min)",
+              "prefer_airing": "Preferire l'aerazione",
+              "airing_wait": "Attesa dell'aerazione (min)"
+            },
+            "data_description": {
+              "prefer_airing": "Quando l'aria esterna è più secca, suggerisce di aprire le finestre e attende questo tempo prima di deumidificare.",
+              "tank": "Sensore di serbatoio pieno: un avviso, e il deumidificatore lasciato stare finché non viene svuotato."
+            }
+          },
+          "heating": {
+            "name": "Riscaldamento",
+            "data": {
+              "comfort": "Comfort",
+              "eco": "Eco",
+              "frost": "Antigelo",
+              "away": "Assenza",
+              "comfort_preset": "Preset comfort",
+              "eco_preset": "Preset eco",
+              "frost_preset": "Preset antigelo",
+              "away_preset": "Preset assenza",
+              "schedule": "Programma",
+              "off_on_open": "Antigelo se aperto da (min)",
+              "max_outdoor": "Spento da (esterno)",
+              "preheat": "Anticipare",
+              "preheat_max": "Anticipare al massimo (min)",
+              "tempo": "Colore Tempo di oggi",
+              "tempo_tomorrow": "Colore Tempo di domani",
+              "tempo_red": "Riduzione nei giorni rossi",
+              "tempo_white": "Riduzione nei giorni bianchi",
+              "tempo_preheat": "Aumento prima di un giorno rosso",
+              "offpeak": "Fascia fuori picco",
+              "offpeak_start": "Fuori picco da",
+              "offpeak_end": "Fuori picco fino a",
+              "stove": "Stufa a pellet",
+              "pellets": "Livello pellet",
+              "backup": "Riscaldamento di appoggio",
+              "backup_margin": "Appoggio sotto il comfort di",
+              "fault_after": "Guasto dopo (min)"
+            },
+            "data_description": {
+              "schedule": "Aiutante programma o entità acceso/spento: acceso = comfort, spento = eco. Vuoto: comfort (antigelo in un locale accessorio).",
+              "comfort_preset": "Radiatori a filo pilota: viene impostato il preset di ogni modalità invece di una temperatura.",
+              "max_outdoor": "Riscaldamento spento finché fuori ci sono almeno questi gradi, riacceso 1 °C sotto. Vuoto: mai.",
+              "preheat": "Avvia il comfort in anticipo, in base al tempo di riscaldamento appreso della stanza.",
+              "tempo": "Sensore colore EDF Tempo: temperature abbassate nei giorni rossi (e bianchi), un po' alzate nella fascia fuori picco prima di un giorno rosso.",
+              "backup": "Tenuto in eco mentre una stufa a pellet riscalda e nei giorni rossi Tempo, salvo se la stanza scende sotto il comfort del margine.",
+              "fault_after": "Un riscaldamento che non scalda la stanza per questo tempo genera un avviso."
             }
           }
         }
@@ -205,6 +272,9 @@
           "climate": "Condizionatore",
           "fans": "Ventilatori",
           "purifiers": "Purificatori d'aria",
+          "surface_temperature": "Temperatura delle pareti",
+          "heating": "Riscaldamento",
+          "dehumidifiers": "Deumidificatori",
           "lights": "Luci",
           "type": "Tipo"
         },
@@ -232,7 +302,8 @@
           "pm25": "Sensori di particolato fine (µg/m³), anche quelli dei purificatori: un avviso di aria inquinata, e i purificatori potenziati finché l'aria non torna pulita.",
           "air_quality": "Sensori dell'indice di qualità dell'aria della stanza (HomeKit 1–5, europeo 1–6, AQI statunitense).",
           "lights": "Luci dimmerabili: la loro luminosità segue il momento della giornata mentre sono accese (illuminazione adattiva).",
-          "type": "Un ambiente abitato usa le soglie standard; un locale di servizio (cantina, garage, officina…) usa le proprie — solo gelo e muffa."
+          "type": "Un ambiente abitato usa le soglie standard; un locale di servizio (cantina, garage, officina…) usa le proprie — solo gelo e muffa.",
+          "surface_temperature": "Temperatura della parete o finestra più fredda (rischio di condensa). Vuoto: stimata dalle temperature interna ed esterna."
         }
       },
       "room": {
@@ -250,6 +321,9 @@
           "climate": "Condizionatore",
           "fans": "Ventilatori",
           "purifiers": "Purificatori d'aria",
+          "surface_temperature": "Temperatura delle pareti",
+          "heating": "Riscaldamento",
+          "dehumidifiers": "Deumidificatori",
           "lights": "Luci",
           "type": "Tipo"
         },
@@ -277,7 +351,8 @@
           "pm25": "Sensori di particolato fine (µg/m³), anche quelli dei purificatori: un avviso di aria inquinata, e i purificatori potenziati finché l'aria non torna pulita.",
           "air_quality": "Sensori dell'indice di qualità dell'aria della stanza (HomeKit 1–5, europeo 1–6, AQI statunitense).",
           "lights": "Luci dimmerabili: la loro luminosità segue il momento della giornata mentre sono accese (illuminazione adattiva).",
-          "type": "Un ambiente abitato usa le soglie standard; un locale di servizio (cantina, garage, officina…) usa le proprie — solo gelo e muffa."
+          "type": "Un ambiente abitato usa le soglie standard; un locale di servizio (cantina, garage, officina…) usa le proprie — solo gelo e muffa.",
+          "surface_temperature": "Temperatura della parete o finestra più fredda (rischio di condensa). Vuoto: stimata dalle temperature interna ed esterna."
         }
       },
       "outdoor": {
@@ -286,7 +361,8 @@
           "name": "Nome",
           "temperature": "Temperatura",
           "air_quality": "Qualità dell'aria",
-          "noise": "Rumore"
+          "noise": "Rumore",
+          "humidity": "Umidità"
         }
       },
       "edit_room": {
@@ -352,6 +428,11 @@
         "co2_high": "CO₂ elevata",
         "polluted_air": "Aria inquinata",
         "humidity_high": "Umidità elevata",
+        "condensation_risk": "Rischio di condensa",
+        "air_to_dry": "Aprire le finestre (più secco fuori)",
+        "tank_full": "Serbatoio del deumidificatore pieno",
+        "heating_fault": "Guasto del riscaldamento",
+        "pellets_low": "Pellet in esaurimento",
         "noise_high": "Stanza rumorosa",
         "noisy_outside": "Chiudi le finestre (rumore fuori)",
         "bad_air_outside": "Chiudi le finestre (aria scadente fuori)"
@@ -419,6 +500,11 @@
           "co2_high": "CO₂ elevata",
           "polluted_air": "Aria inquinata",
           "humidity_high": "Umidità elevata",
+          "condensation_risk": "Rischio di condensa",
+          "air_to_dry": "Aprire le finestre (più secco fuori)",
+          "tank_full": "Serbatoio del deumidificatore pieno",
+          "heating_fault": "Guasto del riscaldamento",
+          "pellets_low": "Pellet in esaurimento",
           "noise_high": "Stanza rumorosa",
           "noisy_outside": "Chiudi le finestre (rumore fuori)",
           "bad_air_outside": "Chiudi le finestre (aria scadente fuori)"
@@ -446,6 +532,12 @@
       },
       "control_purifiers": {
         "name": "Controllo dei purificatori"
+      },
+      "control_heating": {
+        "name": "Controllo del riscaldamento"
+      },
+      "control_dehumidifiers": {
+        "name": "Controllo dei deumidificatori"
       },
       "lighting": {
         "name": "Illuminazione adattiva"
@@ -539,6 +631,11 @@
     "line_polluted_air": "{pollutant} {value} µg/m³, sopra {threshold} µg/m³",
     "line_polluted_air_index": "qualità dell'aria {value}/6, sopra {threshold}/6",
     "line_humidity_high": "umidità {value} % — arieggia la stanza",
+    "line_condensation_risk": "rischio di condensa: pareti {value} °C sopra il punto di rugiada — arieggiare o deumidificare",
+    "line_air_to_dry": "{value} g/m³ più secco fuori — aprire le finestre per asciugare la stanza",
+    "line_tank_full": "serbatoio del deumidificatore pieno — svuotarlo",
+    "line_heating_fault": "riscaldamento acceso ma la stanza non si scalda ({value} °C, temperatura {threshold} °C)",
+    "line_pellets_low": "pellet al {value} %, sotto il {threshold} %",
     "line_noise_high": "rumore {value} dB, sopra {threshold} dB",
     "line_noisy_outside": "{value} dB fuori — chiudi {openings}",
     "line_bad_air_outside": "qualità dell'aria esterna {value}/6 — chiudi {openings}",

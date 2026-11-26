@@ -57,7 +57,8 @@
           "critical_volume": "Volumul alertelor critice",
           "url": "Acțiune la atingere",
           "tag": "Etichetă notificare",
-          "hide_header": "Ascunde bara de sus"
+          "hide_header": "Ascunde bara de sus",
+          "outdoor_humidity": "Umiditate exterioară"
         },
         "data_description": {
           "notify": "Unde ajung alertele (notify.mobile_app_…, un grup notify…).",
@@ -75,7 +76,8 @@
           "critical_volume": "Volumul sunetului critic iOS, de la 0 la 1.",
           "url": "Se deschide la atingerea notificării, de ex. homeassistant://navigate/lovelace/comfort",
           "tag": "Fiecare notificare o înlocuiește pe cea anterioară cu această etichetă, în loc să se adune.",
-          "hide_header": "Bara de sus a tablourilor de bord (titlu, meniu, butoanele de editare și căutare); filele vizualizărilor rămân. Și bara de sus a acestui panou; filele lui rămân. Adaugă ?show_header la adresa unui tablou de bord ca s-o vezi totuși."
+          "hide_header": "Bara de sus a tablourilor de bord (titlu, meniu, butoanele de editare și căutare); filele vizualizărilor rămân. Și bara de sus a acestui panou; filele lui rămân. Adaugă ?show_header la adresa unui tablou de bord ca s-o vezi totuși.",
+          "outdoor_humidity": "Senzori de umiditate relativă afară (%), adăugați celor ale locurilor exterioare: arată dacă aerisirea ar usca o cameră umedă."
         }
       },
       "alerts": {
@@ -131,7 +133,9 @@
           "display": "Indicator luminos sau afișaj",
           "reset_at": "Revenire la normal la",
           "display_off": "Afișaje stinse de la",
-          "display_on": "Afișaje aprinse de la"
+          "display_on": "Afișaje aprinse de la",
+          "shower_rise": "Duș: creșterea umidității",
+          "shower_boost": "Impuls după duș (min)"
         },
         "data_description": {
           "start": "Ventilatoarele și purificatoarele trec la viteză maximă când se deschide o fereastră sau o ușă doar între aceste ore. Ambele goale: toată ziua.",
@@ -139,7 +143,8 @@
           "suppress_when_handled": "Nicio alertă „prea cald” pentru o cameră în care Smart Comfort a pornit aerul condiționat sau ventilatorul.",
           "night_start": "Între aceste ore aparatele folosesc setările de noapte (viteză mai silențioasă, presetare sau mod ventilator) și nu au impuls la fereastră.",
           "display": "Stins în orele „Afișaje stinse” din fila Program și în timpul siestelor din cameră, reaprins după.",
-          "reset_at": "La această oră aparatul revine la starea normală, chiar și după o modificare manuală (un purificator înapoi pe auto…)."
+          "reset_at": "La această oră aparatul revine la starea normală, chiar și după o modificare manuală (un purificator înapoi pe auto…).",
+          "shower_rise": "Puncte de umiditate câștigate în 10 minute care indică un duș: dezumidificatoarele camerei (și ventilatoarele cu viteză de duș) trec pe impuls. Gol: oprit."
         },
         "sections": {
           "climate": {
@@ -169,7 +174,9 @@
               "open_preset": "Presetare, fereastră deschisă",
               "off_preset": "Presetare înainte de oprire",
               "night_percentage": "Viteză noaptea",
-              "night_preset": "Presetare noaptea"
+              "night_preset": "Presetare noaptea",
+              "shower_percentage": "Viteză după duș",
+              "shower_preset": "Presetare după duș"
             },
             "description": "Lăsați „Pornit de la” și „Oprit sub” goale pentru ventilatoarele controlate doar de ferestre."
           },
@@ -186,6 +193,66 @@
             },
             "data_description": {
               "keep_on": "Repornește un purificator când a fost oprit 10 s (pană de curent, defecțiune)."
+            }
+          },
+          "dehumidifiers": {
+            "name": "Dezumidificatoare",
+            "data": {
+              "on_above": "Pornit de la",
+              "off_below": "Oprit sub",
+              "mode": "Mod",
+              "target_humidity": "Umiditate țintă",
+              "boost_mode": "Mod turbo",
+              "night_mode": "Mod noaptea",
+              "night_off": "Oprit noaptea",
+              "tank": "Senzor rezervor plin",
+              "off_on_open": "Oprit dacă deschis de (min)",
+              "prefer_airing": "Preferă aerisirea",
+              "airing_wait": "Așteaptă aerisirea (min)"
+            },
+            "data_description": {
+              "prefer_airing": "Când aerul de afară este mai uscat, propune deschiderea ferestrelor și așteaptă atât înainte de dezumidificare.",
+              "tank": "Senzor de rezervor de apă plin: o alertă, iar dezumidificatorul lăsat în pace până este golit."
+            }
+          },
+          "heating": {
+            "name": "Încălzire",
+            "data": {
+              "comfort": "Confort",
+              "eco": "Eco",
+              "frost": "Antiîngheț",
+              "away": "Absență",
+              "comfort_preset": "Presetare confort",
+              "eco_preset": "Presetare eco",
+              "frost_preset": "Presetare antiîngheț",
+              "away_preset": "Presetare absență",
+              "schedule": "Program",
+              "off_on_open": "Antiîngheț dacă deschis de (min)",
+              "max_outdoor": "Oprit de la (afară)",
+              "preheat": "Anticipează",
+              "preheat_max": "Anticipează cel mult (min)",
+              "tempo": "Culoarea Tempo azi",
+              "tempo_tomorrow": "Culoarea Tempo mâine",
+              "tempo_red": "Scădere în zilele roșii",
+              "tempo_white": "Scădere în zilele albe",
+              "tempo_preheat": "Creștere înaintea unei zile roșii",
+              "offpeak": "Ore în afara vârfului",
+              "offpeak_start": "În afara vârfului de la",
+              "offpeak_end": "În afara vârfului până la",
+              "stove": "Sobă pe peleți",
+              "pellets": "Nivel peleți",
+              "backup": "Încălzire de rezervă",
+              "backup_margin": "Rezervă sub confort cu",
+              "fault_after": "Defect după (min)"
+            },
+            "data_description": {
+              "schedule": "Asistent de program sau entitate pornit/oprit: pornit = confort, oprit = eco. Gol: confort (antiîngheț într-o anexă).",
+              "comfort_preset": "Calorifere cu fir pilot: se setează presetarea fiecărui mod în loc de o temperatură.",
+              "max_outdoor": "Încălzire oprită cât timp afară sunt cel puțin atâtea grade, repornită cu 1 °C mai jos. Gol: niciodată.",
+              "preheat": "Pornește confortul mai devreme, după timpul de încălzire învățat al camerei.",
+              "tempo": "Senzor de culoare EDF Tempo: temperaturi scăzute în zilele roșii (și albe), puțin crescute în orele din afara vârfului dinaintea unei zile roșii.",
+              "backup": "Ținut pe eco cât timp o sobă pe peleți încălzește și în zilele roșii Tempo, dacă temperatura camerei nu scade sub confort cu marja.",
+              "fault_after": "O încălzire care nu încălzește camera atâta timp generează o alertă."
             }
           }
         }
@@ -205,6 +272,9 @@
           "climate": "Aer condiționat",
           "fans": "Ventilatoare",
           "purifiers": "Purificatoare de aer",
+          "surface_temperature": "Temperatura pereților",
+          "heating": "Încălzire",
+          "dehumidifiers": "Dezumidificatoare",
           "lights": "Lumini",
           "type": "Tip"
         },
@@ -232,7 +302,8 @@
           "pm25": "Senzori de particule fine (µg/m³), și cei ai purificatoarelor: o alertă de aer poluat, iar purificatoarele merg mai tare până când aerul redevine curat.",
           "air_quality": "Senzori ai indicelui de calitate a aerului din cameră (HomeKit 1–5, european 1–6, AQI american).",
           "lights": "Lumini reglabile: luminozitatea lor urmează momentul zilei cât timp sunt aprinse (iluminare adaptivă).",
-          "type": "O cameră de locuit folosește pragurile standard; o anexă (pivniță, garaj, atelier…) folosește pragurile proprii — doar îngheț și mucegai."
+          "type": "O cameră de locuit folosește pragurile standard; o anexă (pivniță, garaj, atelier…) folosește pragurile proprii — doar îngheț și mucegai.",
+          "surface_temperature": "Temperatura celui mai rece perete sau geam (risc de condens). Gol: estimată din temperaturile interioară și exterioară."
         }
       },
       "room": {
@@ -250,6 +321,9 @@
           "climate": "Aer condiționat",
           "fans": "Ventilatoare",
           "purifiers": "Purificatoare de aer",
+          "surface_temperature": "Temperatura pereților",
+          "heating": "Încălzire",
+          "dehumidifiers": "Dezumidificatoare",
           "lights": "Lumini",
           "type": "Tip"
         },
@@ -277,7 +351,8 @@
           "pm25": "Senzori de particule fine (µg/m³), și cei ai purificatoarelor: o alertă de aer poluat, iar purificatoarele merg mai tare până când aerul redevine curat.",
           "air_quality": "Senzori ai indicelui de calitate a aerului din cameră (HomeKit 1–5, european 1–6, AQI american).",
           "lights": "Lumini reglabile: luminozitatea lor urmează momentul zilei cât timp sunt aprinse (iluminare adaptivă).",
-          "type": "O cameră de locuit folosește pragurile standard; o anexă (pivniță, garaj, atelier…) folosește pragurile proprii — doar îngheț și mucegai."
+          "type": "O cameră de locuit folosește pragurile standard; o anexă (pivniță, garaj, atelier…) folosește pragurile proprii — doar îngheț și mucegai.",
+          "surface_temperature": "Temperatura celui mai rece perete sau geam (risc de condens). Gol: estimată din temperaturile interioară și exterioară."
         }
       },
       "outdoor": {
@@ -286,7 +361,8 @@
           "name": "Nume",
           "temperature": "Temperatură",
           "air_quality": "Calitatea aerului",
-          "noise": "Zgomot"
+          "noise": "Zgomot",
+          "humidity": "Umiditate"
         }
       },
       "edit_room": {
@@ -352,6 +428,11 @@
         "co2_high": "CO₂ ridicat",
         "polluted_air": "Aer poluat",
         "humidity_high": "Umiditate ridicată",
+        "condensation_risk": "Risc de condens",
+        "air_to_dry": "Deschide ferestrele (mai uscat afară)",
+        "tank_full": "Rezervorul dezumidificatorului plin",
+        "heating_fault": "Defect de încălzire",
+        "pellets_low": "Peleți puțini",
         "noise_high": "Cameră zgomotoasă",
         "noisy_outside": "Închideți ferestrele (zgomot afară)",
         "bad_air_outside": "Închideți ferestrele (aer poluat afară)"
@@ -419,6 +500,11 @@
           "co2_high": "CO₂ ridicat",
           "polluted_air": "Aer poluat",
           "humidity_high": "Umiditate ridicată",
+          "condensation_risk": "Risc de condens",
+          "air_to_dry": "Deschide ferestrele (mai uscat afară)",
+          "tank_full": "Rezervorul dezumidificatorului plin",
+          "heating_fault": "Defect de încălzire",
+          "pellets_low": "Peleți puțini",
           "noise_high": "Cameră zgomotoasă",
           "noisy_outside": "Închideți ferestrele (zgomot afară)",
           "bad_air_outside": "Închideți ferestrele (aer poluat afară)"
@@ -446,6 +532,12 @@
       },
       "control_purifiers": {
         "name": "Controlul purificatoarelor"
+      },
+      "control_heating": {
+        "name": "Controlul încălzirii"
+      },
+      "control_dehumidifiers": {
+        "name": "Controlul dezumidificatoarelor"
       },
       "lighting": {
         "name": "Iluminare adaptivă"
@@ -539,6 +631,11 @@
     "line_polluted_air": "{pollutant} {value} µg/m³, peste {threshold} µg/m³",
     "line_polluted_air_index": "calitatea aerului {value}/6, peste {threshold}/6",
     "line_humidity_high": "umiditate {value} % — aerisiți camera",
+    "line_condensation_risk": "risc de condens: pereți cu {value} °C peste punctul de rouă — aerisiți sau dezumidificați",
+    "line_air_to_dry": "afară cu {value} g/m³ mai uscat — deschideți ferestrele pentru a usca camera",
+    "line_tank_full": "rezervorul dezumidificatorului plin — goliți-l",
+    "line_heating_fault": "încălzire pornită, dar camera nu se încălzește ({value} °C, temperatură setată {threshold} °C)",
+    "line_pellets_low": "peleți {value} %, sub {threshold} %",
     "line_noise_high": "zgomot {value} dB, peste {threshold} dB",
     "line_noisy_outside": "{value} dB afară — închideți: {openings}",
     "line_bad_air_outside": "calitatea aerului afară {value}/6 — închideți: {openings}",

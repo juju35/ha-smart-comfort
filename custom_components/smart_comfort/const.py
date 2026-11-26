@@ -13,6 +13,8 @@ CONF_OUTDOOR: Final = "outdoor_temperature"
 CONF_OUTDOOR_AGGREGATE: Final = "outdoor_aggregate"
 CONF_OUTDOOR_NOISE: Final = "outdoor_noise"
 CONF_OUTDOOR_AIR: Final = "outdoor_air_quality"
+# Outdoor relative humidity (%): with the outdoor temperature, tells whether airing dries a room.
+CONF_OUTDOOR_HUMIDITY: Final = "outdoor_humidity"
 CONF_DIGEST_WINDOW: Final = "digest_window"
 CONF_STARTUP_GRACE: Final = "startup_grace"
 CONF_REMINDER: Final = "reminder"
@@ -51,8 +53,13 @@ CONF_OPENINGS: Final = "openings"
 CONF_CLIMATE: Final = "climate"
 CONF_FANS: Final = "fans"
 CONF_PURIFIERS: Final = "purifiers"
+CONF_DEHUMIDIFIERS: Final = "dehumidifiers"
+# Heaters: thermostats, pilot wire radiators, pellet stoves (climate entities).
+CONF_HEATING: Final = "heating"
+# Temperature of the coldest wall or window of a room (condensation risk); estimated from the outdoor one when unset.
+CONF_SURFACE_TEMPERATURE: Final = "surface_temperature"
 # Device families, each controlled or left alone with its own switch (under the device control one).
-FAMILIES: Final = ("climate", "fans", "purifiers")
+FAMILIES: Final = ("climate", "fans", "purifiers", "dehumidifiers", "heating")
 CONF_ENTITY_ID: Final = "entity_id"
 CONF_AIR_QUALITY: Final = "air_quality"
 # Indoor air of a room: fine particles (µg/m³), from an air purifier or a monitor.
@@ -138,6 +145,55 @@ CONF_DISPLAY_OFF: Final = "display_off"
 CONF_DISPLAY_ON: Final = "display_on"
 CONF_RESET_AT: Final = "reset_at"
 DISPLAY_DOMAINS: Final = ("light", "switch", "number", "select")
+# Dehumidifiers: on from on_above (%), off below off_below, their mode by day / at night / for a boost.
+CONF_MODE: Final = "mode"
+CONF_BOOST_MODE: Final = "boost_mode"
+CONF_NIGHT_OFF: Final = "night_off"
+CONF_TARGET_HUMIDITY: Final = "target_humidity"
+# Water tank full sensor (binary_sensor): an alert, the device left alone until emptied.
+CONF_TANK: Final = "tank"
+# Wait this long for the windows to be opened before drying, while airing would dry the room.
+CONF_PREFER_AIRING: Final = "prefer_airing"
+CONF_AIRING_WAIT: Final = "airing_wait"
+# Shower: humidity up by shower_rise points within SHOWER_WINDOW minutes boosts the dehumidifiers (and the fans that
+# have a shower speed or preset) for shower_boost minutes.
+CONF_SHOWER_RISE: Final = "shower_rise"
+CONF_SHOWER_BOOST: Final = "shower_boost"
+CONF_SHOWER_PERCENTAGE: Final = "shower_percentage"
+CONF_SHOWER_PRESET: Final = "shower_preset"
+# Heating: setpoints by mode, the preset that stands for each mode (pilot wire), the schedule (on: comfort, off: eco).
+CONF_COMFORT: Final = "comfort"
+CONF_ECO: Final = "eco"
+CONF_FROST: Final = "frost"
+CONF_AWAY: Final = "away"
+CONF_COMFORT_PRESET: Final = "comfort_preset"
+CONF_ECO_PRESET: Final = "eco_preset"
+CONF_FROST_PRESET: Final = "frost_preset"
+CONF_AWAY_PRESET: Final = "away_preset"
+CONF_SCHEDULE: Final = "schedule"
+# Start comfort early, from the room's learnt warm-up rate, at most preheat_max minutes before the schedule.
+CONF_PREHEAT: Final = "preheat"
+CONF_PREHEAT_MAX: Final = "preheat_max"
+# EDF Tempo: today's and tomorrow's colour sensors; setpoints lowered on red (and white) days, a little higher in the
+# off-peak hours before a red day.
+CONF_TEMPO: Final = "tempo"
+CONF_TEMPO_TOMORROW: Final = "tempo_tomorrow"
+CONF_TEMPO_RED: Final = "tempo_red"
+CONF_TEMPO_WHITE: Final = "tempo_white"
+CONF_TEMPO_PREHEAT: Final = "tempo_preheat"
+# Off-peak hours: an on/off entity, else from offpeak_start to offpeak_end.
+CONF_OFFPEAK: Final = "offpeak"
+CONF_OFFPEAK_START: Final = "offpeak_start"
+CONF_OFFPEAK_END: Final = "offpeak_end"
+# Pellet stove: the main heat source, its pellet level sensor (%).
+CONF_STOVE: Final = "stove"
+CONF_PELLETS: Final = "pellets"
+# A backup heater: kept at eco while a stove heats (and on red Tempo days), unless the room is backup_margin below
+# comfort.
+CONF_BACKUP: Final = "backup"
+CONF_BACKUP_MARGIN: Final = "backup_margin"
+# Heating that doesn't warm the room for fault_after minutes: a fault alert.
+CONF_FAULT_AFTER: Final = "fault_after"
 
 # Alert kinds, in display order.
 KIND_TOO_HOT: Final = "too_hot"
@@ -151,6 +207,11 @@ KIND_NOISE: Final = "noise_high"
 KIND_NOISY_OUTSIDE: Final = "noisy_outside"
 KIND_BAD_AIR_OUTSIDE: Final = "bad_air_outside"
 KIND_POLLUTED: Final = "polluted_air"
+KIND_CONDENSATION: Final = "condensation_risk"
+KIND_AIR_TO_DRY: Final = "air_to_dry"
+KIND_TANK_FULL: Final = "tank_full"
+KIND_HEATING_FAULT: Final = "heating_fault"
+KIND_PELLETS_LOW: Final = "pellets_low"
 KINDS: Final = (
     KIND_TOO_HOT,
     KIND_CLOSE_WINDOWS,
@@ -160,6 +221,11 @@ KINDS: Final = (
     KIND_CO2,
     KIND_POLLUTED,
     KIND_HUMIDITY,
+    KIND_CONDENSATION,
+    KIND_AIR_TO_DRY,
+    KIND_TANK_FULL,
+    KIND_HEATING_FAULT,
+    KIND_PELLETS_LOW,
     KIND_NOISE,
     KIND_NOISY_OUTSIDE,
     KIND_BAD_AIR_OUTSIDE,
@@ -271,6 +337,52 @@ DEFAULT_ALERTS: Final[dict[str, dict]] = {
         CONF_SEVERITY: SEVERITY_INFO,
         CONF_ESCALATION: 10.0,
     },
+    # Condensation (mould) risk: the coldest surface less than the threshold (°C) above the dew point of the room's air.
+    KIND_CONDENSATION: {
+        CONF_ENABLED: True,
+        CONF_THRESHOLD: 2.0,
+        CONF_HYSTERESIS: 0.5,
+        CONF_DELAY: 30,
+        CONF_SEVERITY: SEVERITY_INFO,
+        CONF_ESCALATION: 1.0,
+    },
+    # A damp room (high humidity or condensation risk) whose windows are closed while the outdoor air holds at least
+    # the threshold (g/m³) less water: open them rather than run a dehumidifier. Not when colder than min_outdoor
+    # outdoors, nor noisy or polluted outside.
+    KIND_AIR_TO_DRY: {
+        CONF_ENABLED: True,
+        CONF_THRESHOLD: 2.0,
+        CONF_MIN_OUTDOOR: 0.0,
+        CONF_MAX_NOISE: 65.0,
+        CONF_MAX_AIR: 3.0,
+        CONF_HYSTERESIS: 0.5,
+        CONF_DELAY: 0,
+        CONF_SEVERITY: SEVERITY_INFO,
+        CONF_ESCALATION: 0,
+    },
+    # A dehumidifier's water tank is full.
+    KIND_TANK_FULL: {
+        CONF_ENABLED: True,
+        CONF_DELAY: 0,
+        CONF_SEVERITY: SEVERITY_WARNING,
+        CONF_ESCALATION: 0,
+    },
+    # Heating on (by Smart Comfort) that doesn't warm the room (control heating.fault_after).
+    KIND_HEATING_FAULT: {
+        CONF_ENABLED: True,
+        CONF_DELAY: 0,
+        CONF_SEVERITY: SEVERITY_WARNING,
+        CONF_ESCALATION: 0,
+    },
+    # Pellet level of a stove below the threshold (%).
+    KIND_PELLETS_LOW: {
+        CONF_ENABLED: True,
+        CONF_THRESHOLD: 20.0,
+        CONF_HYSTERESIS: 5.0,
+        CONF_DELAY: 0,
+        CONF_SEVERITY: SEVERITY_WARNING,
+        CONF_ESCALATION: 10.0,
+    },
     # Room noise level above the threshold (sound pressure sensor, dB).
     KIND_NOISE: {
         CONF_ENABLED: True,
@@ -357,9 +469,14 @@ DEFAULT_CONTROL: Final[dict] = {
         CONF_OFF_PRESET: None,
         CONF_NIGHT_PERCENTAGE: None,
         CONF_NIGHT_PRESET: None,
+        CONF_SHOWER_PERCENTAGE: None,
+        CONF_SHOWER_PRESET: None,
         CONF_DISPLAY: None,
         CONF_RESET_AT: None,
     },
+    # Humidity rise of a shower (points within SHOWER_WINDOW minutes; None: no detection) and the boost it gets.
+    CONF_SHOWER_RISE: 10.0,
+    CONF_SHOWER_BOOST: 30,
     CONF_PURIFIERS: {
         CONF_OPEN_PERCENTAGE: 100,
         CONF_OPEN_PRESET: None,
@@ -371,6 +488,53 @@ DEFAULT_CONTROL: Final[dict] = {
         CONF_NIGHT_PERCENTAGE: None,
         CONF_NIGHT_PRESET: None,
         CONF_NIGHT_MODE: None,
+        CONF_DISPLAY: None,
+        CONF_RESET_AT: None,
+    },
+    CONF_DEHUMIDIFIERS: {
+        CONF_ON_ABOVE: 65.0,
+        CONF_OFF_BELOW: 55.0,
+        CONF_MODE: None,
+        CONF_TARGET_HUMIDITY: None,
+        CONF_BOOST_MODE: None,
+        CONF_NIGHT_MODE: None,
+        CONF_NIGHT_OFF: False,
+        CONF_TANK: None,
+        CONF_OFF_ON_OPEN: 5,
+        CONF_PREFER_AIRING: True,
+        CONF_AIRING_WAIT: 30,
+        CONF_DISPLAY: None,
+        CONF_RESET_AT: None,
+    },
+    CONF_HEATING: {
+        CONF_COMFORT: 20.0,
+        CONF_ECO: 17.0,
+        CONF_FROST: 7.0,
+        CONF_AWAY: 16.0,
+        CONF_COMFORT_PRESET: None,
+        CONF_ECO_PRESET: None,
+        CONF_FROST_PRESET: None,
+        CONF_AWAY_PRESET: None,
+        CONF_SCHEDULE: None,
+        # Frost protection when an opening stays open this long.
+        CONF_OFF_ON_OPEN: 5,
+        # Off while it is at least this warm outdoors (the heating season is over): None, never.
+        CONF_MAX_OUTDOOR: 16.0,
+        CONF_PREHEAT: True,
+        CONF_PREHEAT_MAX: 120,
+        CONF_TEMPO: None,
+        CONF_TEMPO_TOMORROW: None,
+        CONF_TEMPO_RED: 2.0,
+        CONF_TEMPO_WHITE: 0.0,
+        CONF_TEMPO_PREHEAT: 1.0,
+        CONF_OFFPEAK: None,
+        CONF_OFFPEAK_START: "22:00",
+        CONF_OFFPEAK_END: "06:00",
+        CONF_STOVE: False,
+        CONF_PELLETS: None,
+        CONF_BACKUP: False,
+        CONF_BACKUP_MARGIN: 1.0,
+        CONF_FAULT_AFTER: 90,
         CONF_DISPLAY: None,
         CONF_RESET_AT: None,
     },
@@ -411,6 +575,12 @@ DEBOUNCE: Final = 3
 NOTIFY_TIMEOUT: Final = 20
 SERVICE_TIMEOUT: Final = 15
 KEEP_ON_DELAY: Final = 10
+# Minutes over which a shower's humidity rise is measured.
+SHOWER_WINDOW: Final = 10
+# Warm-up rate (°C/h) of a room before one is learnt, and the bounds of a learnt one.
+HEAT_RATE_DEFAULT: Final = 1.0
+HEAT_RATE_MIN: Final = 0.2
+HEAT_RATE_MAX: Final = 6.0
 # Minutes after which an unavailable opening is left out of its room instead of blocking it.
 OPENING_UNAVAILABLE: Final = 10
 # Minutes before a failed device command is tried again, doubled at each new failure up to the maximum.

@@ -92,6 +92,10 @@ def _opt(key: str, value: Any) -> vol.Optional:
     )
 
 
+# Control settings the options flow doesn't show: left as they are when it saves.
+PANEL_ONLY = frozenset({k.CONF_DEHUMIDIFIERS, k.CONF_HEATING, k.CONF_SHOWER_RISE, k.CONF_SHOWER_BOOST})
+
+
 def _clean(data: dict[str, Any], defaults: dict[str, Any] | None = None) -> dict[str, Any]:
     """Drop empty values: missing means default.
 
@@ -515,9 +519,13 @@ class SmartComfortOptionsFlow(OptionsFlow):
 
     async def async_step_control(self, user_input: dict[str, Any] | None = None) -> ConfigFlowResult:
         if user_input is not None:
+            # Set in the panel or YAML only (dehumidifiers, heating, shower boost): kept as they are.
+            kept = {key: value for key, value in (self.options.get(k.CONF_CONTROL) or {}).items() if key in PANEL_ONLY}
             control = _clean(
-                {key: value for key, value in user_input.items() if not isinstance(value, dict)}, k.DEFAULT_CONTROL
+                {key: value for key, value in user_input.items() if not isinstance(value, dict)},
+                {key: value for key, value in k.DEFAULT_CONTROL.items() if key not in PANEL_ONLY},
             )
+            control.update(kept)
             for key in (k.CONF_ENABLED, k.CONF_SUPPRESS_HANDLED):
                 control[key] = user_input[key]
             for key in (k.CONF_CLIMATE, k.CONF_FANS, k.CONF_PURIFIERS):

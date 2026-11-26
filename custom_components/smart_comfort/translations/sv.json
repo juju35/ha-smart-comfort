@@ -57,7 +57,8 @@
           "critical_volume": "Volym för kritiska varningar",
           "url": "Tryckåtgärd",
           "tag": "Aviseringstagg",
-          "hide_header": "Dölj det övre fältet"
+          "hide_header": "Dölj det övre fältet",
+          "outdoor_humidity": "Luftfuktighet ute"
         },
         "data_description": {
           "notify": "Vart varningarna skickas (notify.mobile_app_…, en notify-grupp…).",
@@ -75,7 +76,8 @@
           "critical_volume": "Volym för kritiskt ljud på iOS, 0 till 1.",
           "url": "Öppnas när man trycker på aviseringen, t.ex. homeassistant://navigate/lovelace/comfort",
           "tag": "Varje avisering ersätter den föregående med denna tagg i stället för att samlas på hög.",
-          "hide_header": "Instrumentpanelernas övre fält (titel, meny, redigerings- och sökknappar); vyernas flikar finns kvar. Även den här panelens övre fält; dess flikar finns kvar. Lägg till ?show_header i en instrumentpanels adress för att ändå se det."
+          "hide_header": "Instrumentpanelernas övre fält (titel, meny, redigerings- och sökknappar); vyernas flikar finns kvar. Även den här panelens övre fält; dess flikar finns kvar. Lägg till ?show_header i en instrumentpanels adress för att ändå se det.",
+          "outdoor_humidity": "Sensorer för relativ luftfuktighet ute (%), utöver de för utomhusplatserna: visar om vädring skulle torka ett fuktigt rum."
         }
       },
       "alerts": {
@@ -131,7 +133,9 @@
           "display": "Indikatorlampa eller display",
           "reset_at": "Tillbaka till normalt kl.",
           "display_off": "Displayer av från",
-          "display_on": "Displayer på från"
+          "display_on": "Displayer på från",
+          "shower_rise": "Dusch: ökad fuktighet",
+          "shower_boost": "Boost efter dusch (min)"
         },
         "data_description": {
           "start": "Fläktar och luftrenare går på full hastighet när en öppning öppnas, bara mellan dessa tider. Båda tomma: hela dagen.",
@@ -139,7 +143,8 @@
           "suppress_when_handled": "Ingen ”för varmt”-varning för ett rum vars luftkonditionering eller fläkt Smart Comfort har slagit på.",
           "night_start": "Mellan dessa tider använder enheterna sina nattinställningar (tystare hastighet, förinställning eller fläktläge) och det blir ingen fönsterboost för dem.",
           "display": "Släcks under timmarna ”Displayer av” på fliken Schema och under rummets tupplurar, tänds igen efteråt.",
-          "reset_at": "Vid denna tid går enheten tillbaka till sitt normala läge, även efter en manuell ändring (en luftrenare tillbaka på auto…)."
+          "reset_at": "Vid denna tid går enheten tillbaka till sitt normala läge, även efter en manuell ändring (en luftrenare tillbaka på auto…).",
+          "shower_rise": "Fuktighetspunkter inom 10 minuter som tyder på en dusch: rummets avfuktare (och fläktar med duschhastighet) boostas. Tomt: av."
         },
         "sections": {
           "climate": {
@@ -169,7 +174,9 @@
               "open_preset": "Förinställning, fönster öppet",
               "off_preset": "Förinställning före avstängning",
               "night_percentage": "Hastighet på natten",
-              "night_preset": "Förinställning på natten"
+              "night_preset": "Förinställning på natten",
+              "shower_percentage": "Hastighet efter dusch",
+              "shower_preset": "Förinställning efter dusch"
             },
             "description": "Lämna ”På från” och ”Av under” tomma för fläktar som bara styrs av fönstren."
           },
@@ -186,6 +193,66 @@
             },
             "data_description": {
               "keep_on": "Slå på en luftrenare igen när den har varit avstängd i 10 s (strömavbrott, fel)."
+            }
+          },
+          "dehumidifiers": {
+            "name": "Avfuktare",
+            "data": {
+              "on_above": "På från",
+              "off_below": "Av under",
+              "mode": "Läge",
+              "target_humidity": "Målfuktighet",
+              "boost_mode": "Boostläge",
+              "night_mode": "Läge på natten",
+              "night_off": "Av på natten",
+              "tank": "Sensor för full tank",
+              "off_on_open": "Av när öppen i (min)",
+              "prefer_airing": "Föredra vädring",
+              "airing_wait": "Vänta på vädring (min)"
+            },
+            "data_description": {
+              "prefer_airing": "När uteluften är torrare föreslås att öppna fönstren, och det väntas så länge innan avfuktning.",
+              "tank": "Sensor för full vattentank: en varning, och avfuktaren lämnas ifred tills den tömts."
+            }
+          },
+          "heating": {
+            "name": "Uppvärmning",
+            "data": {
+              "comfort": "Komfort",
+              "eco": "Eko",
+              "frost": "Frostskydd",
+              "away": "Borta",
+              "comfort_preset": "Förinställning komfort",
+              "eco_preset": "Förinställning eko",
+              "frost_preset": "Förinställning frostskydd",
+              "away_preset": "Förinställning borta",
+              "schedule": "Schema",
+              "off_on_open": "Frostskydd när öppen i (min)",
+              "max_outdoor": "Av från (ute)",
+              "preheat": "Förvärm",
+              "preheat_max": "Förvärm högst (min)",
+              "tempo": "Tempo-färg i dag",
+              "tempo_tomorrow": "Tempo-färg i morgon",
+              "tempo_red": "Sänkning på röda dagar",
+              "tempo_white": "Sänkning på vita dagar",
+              "tempo_preheat": "Höjning före en röd dag",
+              "offpeak": "Lågpristimmar",
+              "offpeak_start": "Lågpris från",
+              "offpeak_end": "Lågpris till",
+              "stove": "Pelletskamin",
+              "pellets": "Pelletsnivå",
+              "backup": "Tillskottsvärme",
+              "backup_margin": "Tillskott under komfort med",
+              "fault_after": "Fel efter (min)"
+            },
+            "data_description": {
+              "schedule": "Schemahjälpare eller på/av-entitet: på = komfort, av = eko. Tomt: komfort (frostskydd i ett biutrymme).",
+              "comfort_preset": "Element med styrtråd: varje lägets förinställning sätts i stället för en temperatur.",
+              "max_outdoor": "Värmen av så länge det är minst så varmt ute, på igen 1 °C under. Tomt: aldrig.",
+              "preheat": "Startar komfort tidigare utifrån rummets inlärda uppvärmningstid.",
+              "tempo": "EDF Tempo-färgsensor: temperaturer sänkta på röda (och vita) dagar, något höjda under lågpristimmarna före en röd dag.",
+              "backup": "Hålls på eko medan en pelletskamin värmer och på röda Tempo-dagar, om inte rummet sjunker marginalen under komfort.",
+              "fault_after": "En uppvärmning som inte värmer rummet så länge ger en varning."
             }
           }
         }
@@ -205,6 +272,9 @@
           "climate": "Luftkonditionering",
           "fans": "Fläktar",
           "purifiers": "Luftrenare",
+          "surface_temperature": "Väggtemperatur",
+          "heating": "Uppvärmning",
+          "dehumidifiers": "Avfuktare",
           "lights": "Lampor",
           "type": "Typ"
         },
@@ -232,7 +302,8 @@
           "pm25": "Sensorer för fina partiklar (µg/m³), även luftrenarnas: en varning för förorenad luft, och luftrenarna går hårdare tills luften är ren igen.",
           "air_quality": "Rummets sensorer för luftkvalitetsindex (HomeKit 1–5, europeiskt 1–6, amerikanskt AQI).",
           "lights": "Dimbara lampor: deras ljusstyrka följer tiden på dygnet medan de är tända (adaptiv belysning).",
-          "type": "Ett vardagsrum använder standardtrösklarna; ett biutrymme (källare, garage, verkstad…) använder egna — bara frost och mögel."
+          "type": "Ett vardagsrum använder standardtrösklarna; ett biutrymme (källare, garage, verkstad…) använder egna — bara frost och mögel.",
+          "surface_temperature": "Temperatur på den kallaste väggen eller det kallaste fönstret (kondensrisk). Tomt: uppskattad från inne- och utetemperaturen."
         }
       },
       "room": {
@@ -250,6 +321,9 @@
           "climate": "Luftkonditionering",
           "fans": "Fläktar",
           "purifiers": "Luftrenare",
+          "surface_temperature": "Väggtemperatur",
+          "heating": "Uppvärmning",
+          "dehumidifiers": "Avfuktare",
           "lights": "Lampor",
           "type": "Typ"
         },
@@ -277,7 +351,8 @@
           "pm25": "Sensorer för fina partiklar (µg/m³), även luftrenarnas: en varning för förorenad luft, och luftrenarna går hårdare tills luften är ren igen.",
           "air_quality": "Rummets sensorer för luftkvalitetsindex (HomeKit 1–5, europeiskt 1–6, amerikanskt AQI).",
           "lights": "Dimbara lampor: deras ljusstyrka följer tiden på dygnet medan de är tända (adaptiv belysning).",
-          "type": "Ett vardagsrum använder standardtrösklarna; ett biutrymme (källare, garage, verkstad…) använder egna — bara frost och mögel."
+          "type": "Ett vardagsrum använder standardtrösklarna; ett biutrymme (källare, garage, verkstad…) använder egna — bara frost och mögel.",
+          "surface_temperature": "Temperatur på den kallaste väggen eller det kallaste fönstret (kondensrisk). Tomt: uppskattad från inne- och utetemperaturen."
         }
       },
       "outdoor": {
@@ -286,7 +361,8 @@
           "name": "Namn",
           "temperature": "Temperatur",
           "air_quality": "Luftkvalitet",
-          "noise": "Buller"
+          "noise": "Buller",
+          "humidity": "Luftfuktighet"
         }
       },
       "edit_room": {
@@ -352,6 +428,11 @@
         "co2_high": "Hög CO₂-halt",
         "polluted_air": "Förorenad luft",
         "humidity_high": "Hög luftfuktighet",
+        "condensation_risk": "Kondensrisk",
+        "air_to_dry": "Öppna fönstren (torrare ute)",
+        "tank_full": "Avfuktarens tank full",
+        "heating_fault": "Fel på uppvärmningen",
+        "pellets_low": "Lite pellets",
         "noise_high": "Bullrigt rum",
         "noisy_outside": "Stäng fönstren (buller ute)",
         "bad_air_outside": "Stäng fönstren (dålig luft ute)"
@@ -419,6 +500,11 @@
           "co2_high": "Hög CO₂-halt",
           "polluted_air": "Förorenad luft",
           "humidity_high": "Hög luftfuktighet",
+          "condensation_risk": "Kondensrisk",
+          "air_to_dry": "Öppna fönstren (torrare ute)",
+          "tank_full": "Avfuktarens tank full",
+          "heating_fault": "Fel på uppvärmningen",
+          "pellets_low": "Lite pellets",
           "noise_high": "Bullrigt rum",
           "noisy_outside": "Stäng fönstren (buller ute)",
           "bad_air_outside": "Stäng fönstren (dålig luft ute)"
@@ -446,6 +532,12 @@
       },
       "control_purifiers": {
         "name": "Styrning av luftrenare"
+      },
+      "control_heating": {
+        "name": "Styrning av uppvärmning"
+      },
+      "control_dehumidifiers": {
+        "name": "Styrning av avfuktare"
       },
       "lighting": {
         "name": "Adaptiv belysning"
@@ -539,6 +631,11 @@
     "line_polluted_air": "{pollutant} {value} µg/m³, över {threshold} µg/m³",
     "line_polluted_air_index": "luftkvalitet {value}/6, över {threshold}/6",
     "line_humidity_high": "luftfuktighet {value} % — vädra rummet",
+    "line_condensation_risk": "kondensrisk: väggar {value} °C över daggpunkten — vädra eller avfukta",
+    "line_air_to_dry": "{value} g/m³ torrare ute — öppna fönstren för att torka rummet",
+    "line_tank_full": "avfuktarens tank full — töm den",
+    "line_heating_fault": "värmen är på men rummet blir inte varmare ({value} °C, temperatur {threshold} °C)",
+    "line_pellets_low": "pellets {value} %, under {threshold} %",
     "line_noise_high": "buller {value} dB, över {threshold} dB",
     "line_noisy_outside": "{value} dB ute — stäng {openings}",
     "line_bad_air_outside": "luftkvalitet ute {value}/6 — stäng {openings}",

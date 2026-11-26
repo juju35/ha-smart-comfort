@@ -57,7 +57,8 @@
           "critical_volume": "Glasnost kritičnih opozoril",
           "url": "Dejanje ob dotiku",
           "tag": "Oznaka obvestila",
-          "hide_header": "Skrij zgornjo vrstico"
+          "hide_header": "Skrij zgornjo vrstico",
+          "outdoor_humidity": "Zunanja vlažnost"
         },
         "data_description": {
           "notify": "Kam gredo opozorila (notify.mobile_app_…, skupina notify…).",
@@ -75,7 +76,8 @@
           "critical_volume": "Glasnost kritičnega zvoka v iOS, od 0 do 1.",
           "url": "Odpre se ob dotiku obvestila, npr. homeassistant://navigate/lovelace/comfort",
           "tag": "Vsako obvestilo nadomesti prejšnje s to oznako, namesto da bi se kopičila.",
-          "hide_header": "Zgornja vrstica nadzornih plošč (naslov, meni, gumba za urejanje in iskanje); zavihki pogledov ostanejo. Tudi zgornja vrstica te plošče; njeni zavihki ostanejo. Dodajte ?show_header naslovu plošče, da jo vseeno vidite."
+          "hide_header": "Zgornja vrstica nadzornih plošč (naslov, meni, gumba za urejanje in iskanje); zavihki pogledov ostanejo. Tudi zgornja vrstica te plošče; njeni zavihki ostanejo. Dodajte ?show_header naslovu plošče, da jo vseeno vidite.",
+          "outdoor_humidity": "Senzorji relativne vlažnosti zunaj (%), dodani k senzorjem zunanjih mest: pokažejo, ali bi zračenje osušilo vlažen prostor."
         }
       },
       "alerts": {
@@ -131,7 +133,9 @@
           "display": "Indikatorska lučka ali zaslon",
           "reset_at": "Nazaj na običajno ob",
           "display_off": "Zasloni izklopljeni od",
-          "display_on": "Zasloni vklopljeni od"
+          "display_on": "Zasloni vklopljeni od",
+          "shower_rise": "Prha: porast vlažnosti",
+          "shower_boost": "Okrepitev po prhanju (min)"
         },
         "data_description": {
           "start": "Ventilatorji in čistilniki preklopijo na polno hitrost ob odprtju okna ali vrat le med temi urami. Obe prazni: ves dan.",
@@ -139,7 +143,8 @@
           "suppress_when_handled": "Brez opozorila »prevroče« za prostor, v katerem je Smart Comfort vklopil klimatsko napravo ali ventilator.",
           "night_start": "Med temi urami naprave uporabljajo nočne nastavitve (tišja hitrost, prednastavitev ali način ventilatorja) in zanje ni okenske okrepitve.",
           "display": "Izklopi se v urah »Zasloni izklopljeni« na zavihku Urnik in med dremeži v prostoru, nato se znova vklopi.",
-          "reset_at": "Ob tej uri se naprava vrne v običajno stanje, tudi po ročni spremembi (čistilnik nazaj na samodejno…)."
+          "reset_at": "Ob tej uri se naprava vrne v običajno stanje, tudi po ročni spremembi (čistilnik nazaj na samodejno…).",
+          "shower_rise": "Točke vlažnosti v 10 minutah, ki kažejo na prhanje: razvlaževalniki prostora (in ventilatorji s hitrostjo za prho) delujejo okrepljeno. Prazno: izklopljeno."
         },
         "sections": {
           "climate": {
@@ -169,7 +174,9 @@
               "open_preset": "Prednastavitev, okno odprto",
               "off_preset": "Prednastavitev pred izklopom",
               "night_percentage": "Hitrost ponoči",
-              "night_preset": "Prednastavitev ponoči"
+              "night_preset": "Prednastavitev ponoči",
+              "shower_percentage": "Hitrost po prhanju",
+              "shower_preset": "Prednastavitev po prhanju"
             },
             "description": "Pri ventilatorjih, ki jih upravljajo le okna, pustite »Vklop od« in »Izklop pod« prazni."
           },
@@ -186,6 +193,66 @@
             },
             "data_description": {
               "keep_on": "Znova vklopi čistilnik, ko je bil 10 s izklopljen (izpad elektrike, napaka)."
+            }
+          },
+          "dehumidifiers": {
+            "name": "Razvlaževalniki",
+            "data": {
+              "on_above": "Vklop od",
+              "off_below": "Izklop pod",
+              "mode": "Način",
+              "target_humidity": "Ciljna vlažnost",
+              "boost_mode": "Okrepljeni način",
+              "night_mode": "Način ponoči",
+              "night_off": "Ponoči izklopljen",
+              "tank": "Senzor polnega rezervoarja",
+              "off_on_open": "Izklop, ko odprto (min)",
+              "prefer_airing": "Daj prednost zračenju",
+              "airing_wait": "Čakaj na zračenje (min)"
+            },
+            "data_description": {
+              "prefer_airing": "Ko je zunanji zrak bolj suh, predlaga odpiranje oken in toliko počaka pred razvlaževanjem.",
+              "tank": "Senzor polnega rezervoarja za vodo: opozorilo, razvlaževalnik pa pri miru, dokler ni izpraznjen."
+            }
+          },
+          "heating": {
+            "name": "Ogrevanje",
+            "data": {
+              "comfort": "Udobje",
+              "eco": "Eko",
+              "frost": "Zaščita pred zmrzaljo",
+              "away": "Odsotnost",
+              "comfort_preset": "Prednastavitev udobje",
+              "eco_preset": "Prednastavitev eko",
+              "frost_preset": "Prednastavitev zaščite pred zmrzaljo",
+              "away_preset": "Prednastavitev odsotnosti",
+              "schedule": "Urnik",
+              "off_on_open": "Zaščita pred zmrzaljo, ko odprto (min)",
+              "max_outdoor": "Izklop od (zunaj)",
+              "preheat": "Predogrevanje",
+              "preheat_max": "Predogrevanje največ (min)",
+              "tempo": "Barva Tempo danes",
+              "tempo_tomorrow": "Barva Tempo jutri",
+              "tempo_red": "Znižanje v rdečih dneh",
+              "tempo_white": "Znižanje v belih dneh",
+              "tempo_preheat": "Zvišanje pred rdečim dnem",
+              "offpeak": "Nizka tarifa",
+              "offpeak_start": "Nizka tarifa od",
+              "offpeak_end": "Nizka tarifa do",
+              "stove": "Peč na pelete",
+              "pellets": "Raven pelet",
+              "backup": "Dodatno ogrevanje",
+              "backup_margin": "Dodatno pod udobjem za",
+              "fault_after": "Okvara po (min)"
+            },
+            "data_description": {
+              "schedule": "Pomočnik urnika ali entiteta vklop/izklop: vklop = udobje, izklop = eko. Prazno: udobje (zaščita pred zmrzaljo v pomožnem prostoru).",
+              "comfort_preset": "Radiatorji s pilotno žico: namesto temperature se nastavi prednastavitev vsakega načina.",
+              "max_outdoor": "Ogrevanje izklopljeno, dokler je zunaj vsaj tako toplo, ponovno vklopljeno 1 °C nižje. Prazno: nikoli.",
+              "preheat": "Začne udobje prej, glede na naučeni čas ogrevanja prostora.",
+              "tempo": "Senzor barve EDF Tempo: temperature znižane v rdečih (in belih) dneh, rahlo zvišane v nizki tarifi pred rdečim dnem.",
+              "backup": "Ostane na eko, dokler peč na pelete greje in v rdečih dneh Tempo, razen če prostor pade pod udobje za rezervo.",
+              "fault_after": "Ogrevanje, ki toliko časa ne ogreje prostora, sproži opozorilo."
             }
           }
         }
@@ -205,6 +272,9 @@
           "climate": "Klimatska naprava",
           "fans": "Ventilatorji",
           "purifiers": "Čistilniki zraka",
+          "surface_temperature": "Temperatura sten",
+          "heating": "Ogrevanje",
+          "dehumidifiers": "Razvlaževalniki",
           "lights": "Luči",
           "type": "Vrsta"
         },
@@ -232,7 +302,8 @@
           "pm25": "Senzorji drobnih delcev (µg/m³), tudi tisti na čistilnikih: opozorilo o onesnaženem zraku, čistilniki pa delajo močneje, dokler zrak spet ni čist.",
           "air_quality": "Senzorji indeksa kakovosti zraka v prostoru (HomeKit 1–5, evropski 1–6, ameriški AQI).",
           "lights": "Zatemnilne luči: njihova svetlost sledi času dneva, dokler so prižgane (prilagodljiva razsvetljava).",
-          "type": "Bivalni prostor uporablja standardne pragove; pomožni prostor (klet, garaža, delavnica…) uporablja svoje — samo zmrzal in plesen."
+          "type": "Bivalni prostor uporablja standardne pragove; pomožni prostor (klet, garaža, delavnica…) uporablja svoje — samo zmrzal in plesen.",
+          "surface_temperature": "Temperatura najhladnejše stene ali okna (nevarnost kondenzacije). Prazno: ocenjena iz notranje in zunanje temperature."
         }
       },
       "room": {
@@ -250,6 +321,9 @@
           "climate": "Klimatska naprava",
           "fans": "Ventilatorji",
           "purifiers": "Čistilniki zraka",
+          "surface_temperature": "Temperatura sten",
+          "heating": "Ogrevanje",
+          "dehumidifiers": "Razvlaževalniki",
           "lights": "Luči",
           "type": "Vrsta"
         },
@@ -277,7 +351,8 @@
           "pm25": "Senzorji drobnih delcev (µg/m³), tudi tisti na čistilnikih: opozorilo o onesnaženem zraku, čistilniki pa delajo močneje, dokler zrak spet ni čist.",
           "air_quality": "Senzorji indeksa kakovosti zraka v prostoru (HomeKit 1–5, evropski 1–6, ameriški AQI).",
           "lights": "Zatemnilne luči: njihova svetlost sledi času dneva, dokler so prižgane (prilagodljiva razsvetljava).",
-          "type": "Bivalni prostor uporablja standardne pragove; pomožni prostor (klet, garaža, delavnica…) uporablja svoje — samo zmrzal in plesen."
+          "type": "Bivalni prostor uporablja standardne pragove; pomožni prostor (klet, garaža, delavnica…) uporablja svoje — samo zmrzal in plesen.",
+          "surface_temperature": "Temperatura najhladnejše stene ali okna (nevarnost kondenzacije). Prazno: ocenjena iz notranje in zunanje temperature."
         }
       },
       "outdoor": {
@@ -286,7 +361,8 @@
           "name": "Ime",
           "temperature": "Temperatura",
           "air_quality": "Kakovost zraka",
-          "noise": "Hrup"
+          "noise": "Hrup",
+          "humidity": "Vlažnost"
         }
       },
       "edit_room": {
@@ -352,6 +428,11 @@
         "co2_high": "Visok CO₂",
         "polluted_air": "Onesnažen zrak",
         "humidity_high": "Visoka vlažnost",
+        "condensation_risk": "Nevarnost kondenzacije",
+        "air_to_dry": "Odprite okna (zunaj bolj suho)",
+        "tank_full": "Rezervoar razvlaževalnika poln",
+        "heating_fault": "Okvara ogrevanja",
+        "pellets_low": "Malo pelet",
         "noise_high": "Hrupen prostor",
         "noisy_outside": "Zaprite okna (zunaj je hrupno)",
         "bad_air_outside": "Zaprite okna (zunaj je slab zrak)"
@@ -419,6 +500,11 @@
           "co2_high": "Visok CO₂",
           "polluted_air": "Onesnažen zrak",
           "humidity_high": "Visoka vlažnost",
+          "condensation_risk": "Nevarnost kondenzacije",
+          "air_to_dry": "Odprite okna (zunaj bolj suho)",
+          "tank_full": "Rezervoar razvlaževalnika poln",
+          "heating_fault": "Okvara ogrevanja",
+          "pellets_low": "Malo pelet",
           "noise_high": "Hrupen prostor",
           "noisy_outside": "Zaprite okna (zunaj je hrupno)",
           "bad_air_outside": "Zaprite okna (zunaj je slab zrak)"
@@ -446,6 +532,12 @@
       },
       "control_purifiers": {
         "name": "Upravljanje čistilnikov"
+      },
+      "control_heating": {
+        "name": "Upravljanje ogrevanja"
+      },
+      "control_dehumidifiers": {
+        "name": "Upravljanje razvlaževalnikov"
       },
       "lighting": {
         "name": "Prilagodljiva razsvetljava"
@@ -539,6 +631,11 @@
     "line_polluted_air": "{pollutant} {value} µg/m³, nad {threshold} µg/m³",
     "line_polluted_air_index": "kakovost zraka {value}/6, nad {threshold}/6",
     "line_humidity_high": "vlažnost {value} % — prezračite prostor",
+    "line_condensation_risk": "nevarnost kondenzacije: stene {value} °C nad rosiščem — prezračite ali razvlažite",
+    "line_air_to_dry": "zunaj bolj suho za {value} g/m³ — odprite okna, da se prostor osuši",
+    "line_tank_full": "rezervoar razvlaževalnika poln — izpraznite ga",
+    "line_heating_fault": "ogrevanje vklopljeno, a se prostor ne ogreva ({value} °C, nastavljeno {threshold} °C)",
+    "line_pellets_low": "peleti {value} %, pod {threshold} %",
     "line_noise_high": "hrup {value} dB, nad {threshold} dB",
     "line_noisy_outside": "{value} dB zunaj — zaprite: {openings}",
     "line_bad_air_outside": "kakovost zraka zunaj {value}/6 — zaprite: {openings}",

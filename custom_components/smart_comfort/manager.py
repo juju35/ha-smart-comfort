@@ -33,6 +33,8 @@ from .const import (
     EVENT_NOTIFIED,
     FAILURE_PAUSE,
     FAMILIES,
+    KIND_AIR_TO_DRY,
+    KIND_CONDENSATION,
     KIND_POLLUTED,
     NOTIFY_TIMEOUT,
     OPENING_UNAVAILABLE,
@@ -50,6 +52,7 @@ from .displays import DisplayController, DisplayState
 from .engine import Clear, Digest, Engine, Gates, RoomReading
 from .lighting import LightController, LightState
 from .message import format_text, render
+from .moisture import absolute_humidity, dew_point, surface_temperature
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -262,7 +265,13 @@ class SmartComfort:
 
     def _track(self) -> None:
         s = self.settings
-        sensors = {e for r in s.rooms for e in r.sensors} | set(s.outdoor) | set(s.outdoor_noise) | set(s.outdoor_air)
+        sensors = (
+            {e for r in s.rooms for e in r.sensors}
+            | set(s.outdoor)
+            | set(s.outdoor_noise)
+            | set(s.outdoor_air)
+            | set(s.outdoor_humidity)
+        )
         if s.presence:
             sensors.add(s.presence)
         devices = {e for r in s.rooms for e in r.devices} | {light.entity_id for r in s.rooms for light in r.lights}
@@ -365,7 +374,7 @@ class SmartComfort:
             return
         if (sent := self._commanded.get(entity_id)) is not None and now - sent < COMMAND_GRACE:
             return
-        keys = ("preset_mode", "percentage", "hvac_mode", "temperature", "fan_mode")
+        keys = ("preset_mode", "percentage", "hvac_mode", "temperature", "fan_mode", "mode", "humidity")
         changed = old.state != new.state or any(old.attributes.get(k) != new.attributes.get(k) for k in keys)
         if changed and entity_id in self.controller.targets:
             _LOGGER.debug("Manual change of %s, control paused", entity_id)
@@ -446,6 +455,51 @@ class SmartComfort:
         values = [v for e in sensors if (v := air_level(self.hass.states.get(e))) is not None]
         return max(values) if values else None
 
+    def outdoor_humidity(self, entities: tuple[str, ...] | None = None) -> float | None:
+        """Mean of the outdoor relative humidity sensors (%), None without one available."""
+        sensors = self.settings.outdoor_humidity if entities is None else entities
+        values = [v for e in sensors if (v := _float(self.hass.states.get(e))) is not None]
+        return round(sum(values) / len(values), 1) if values else None
+
+    def _tank_full(self, room: Room) -> bool | None:
+        """A dehumidifier's tank is full (None when every tank sensor is unknown, False without one)."""
+        states = [self.hass.states.get(e) for e in room.tanks]
+        known = [st.state == "on" for st in states if st is not None and st.state in ("on", "off")]
+        if not room.tanks:
+            return False
+        return any(known) if known else None
+
+    def _full_tanks(self, room: Room) -> frozenset[str]:
+        return frozenset(e for e in room.tanks if (st := self.hass.states.get(e)) is not None and st.state == "on")
+
+    def stove_heating(self) -> bool:
+        """A pellet stove of the home is heating."""
+        for room in self.settings.rooms:
+            for heater in room.heating:
+                if not heater.stove:
+                    continue
+                state = self.hass.states.get(heater.entity_id)
+                if state is None or state.state in BAD_STATES or state.state == "off":
+                    continue
+                if state.attributes.get("hvac_action") in (None, "heating"):
+                    return True
+        return False
+
+    def heating_states(self, room: Room) -> tuple[dict[str, str | None], dict[str, datetime]]:
+        """States of the heaters' schedule, Tempo and off-peak entities; when each schedule turns on next."""
+        states: dict[str, str | None] = {}
+        next_on: dict[str, datetime] = {}
+        for heater in room.heating:
+            for entity_id in heater.entities:
+                state = self.hass.states.get(entity_id)
+                states[entity_id] = None if state is None or state.state in BAD_STATES else state.state
+            if heater.schedule and states.get(heater.schedule) == "off":
+                raw = self.hass.states.get(heater.schedule).attributes.get("next_event")  # type: ignore[union-attr]
+                when = raw if isinstance(raw, datetime) else dt_util.parse_datetime(str(raw)) if raw else None
+                if when is not None:
+                    next_on[heater.schedule] = dt_util.as_utc(when)
+        return states, next_on
+
     def _outdoor_gone(self, settled: bool) -> bool:
         """Every outdoor temperature entity no longer exists (not just unavailable)."""
         outdoor = self.settings.outdoor
@@ -516,18 +570,37 @@ class SmartComfort:
             aqi=_worst([indoor_air_level(self.hass.states.get(e), self._homekit(e)) for e in room.air_quality]),
             outdoor_noise=self.outdoor_noise(),
             outdoor_air=self.outdoor_air(),
+            tank_full=self._tank_full(room),
+            heating_fault=self.controller.faults.get(room.id),
+            pellets=min((v for e in room.pellets if (v := _float(self.hass.states.get(e))) is not None), default=None),
             open=opened,
             has_openings=bool(room.openings),
             missing=frozenset(missing),
         )
+        outdoor = self.outdoor()
+        surface_sensor = (
+            _temperature(self.hass.states.get(room.surface_temperature)) if room.surface_temperature else None
+        )
+        reading.surface = surface_temperature(temperature, outdoor, surface_sensor)
+        reading.dew_point = dew_point(temperature, reading.humidity)
+        if reading.surface is not None and reading.dew_point is not None:
+            reading.dew_margin = round(reading.surface - reading.dew_point, 1)
+        inside = absolute_humidity(temperature, reading.humidity)
+        outside = absolute_humidity(outdoor, self.outdoor_humidity())
+        if inside is not None and outside is not None:
+            reading.drier = round(inside - outside, 1)
         ctx = RoomContext(
             temperature=temperature,
             any_open=None if opened is None else bool(opened),
             closed_since=closed_since,
             open_since=open_since,
             has_openings=bool(room.openings),
-            outdoor=self.outdoor(),
+            outdoor=outdoor,
+            humidity=reading.humidity,
+            full_tanks=self._full_tanks(room),
         )
+        if room.heating:
+            ctx.states, ctx.next_on = self.heating_states(room)
         return reading, ctx
 
     def _homekit(self, entity_id: str) -> bool:
@@ -544,6 +617,7 @@ class SmartComfort:
                 out[entity_id] = DeviceState(available=False)
                 continue
             is_climate = state.domain == "climate"
+            is_humidifier = state.domain == "humidifier"
             on = state.state != "off" if is_climate else state.state == "on"
             option = None
             if (select := selects.get(entity_id)) and (sel := self.hass.states.get(select)) is not None:
@@ -556,6 +630,9 @@ class SmartComfort:
                 option=option,
                 fan_mode=state.attributes.get("fan_mode") if is_climate else None,
                 off_since=state.last_changed if not on else None,
+                mode=state.attributes.get("mode") if is_humidifier else None,
+                target_humidity=_number(state.attributes.get("humidity")) if is_humidifier else None,
+                setpoint=_number(state.attributes.get("temperature")) if is_climate else None,
             )
         return out
 
@@ -615,6 +692,10 @@ class SmartComfort:
             for room in self.settings.rooms:
                 readings[room.id], contexts[room.id] = self.reading(room, now)
             self.engine.evaluate(now, readings, self.outdoor())
+            away = self.settings.presence is not None and not present(self.hass.states.get(self.settings.presence))
+            stove = self.stove_heating()
+            if not (self.control_enabled and self.families.get("heating", True)):
+                self.controller.faults.clear()  # Its heaters left alone: no longer Smart Comfort's to judge.
             for room in self.settings.rooms:
                 if lighting and room.lights:
                     commands += self.lights.evaluate(
@@ -622,6 +703,10 @@ class SmartComfort:
                     )
                 ctx = contexts[room.id]
                 ctx.polluted = self.engine.alerting(room.id, KIND_POLLUTED)
+                ctx.damp = self.engine.alerting(room.id, KIND_CONDENSATION)
+                airing = self.engine.episodes.get(f"{room.id}|{KIND_AIR_TO_DRY}")
+                ctx.airing_since = airing.since if airing is not None else None
+                ctx.away, ctx.stove_heating, ctx.local = away, stove, dt_util.as_local(now)
                 states = self.device_states(room)
                 if self.control_enabled:
                     commands += self.controller.evaluate(now, local, room, ctx, states, self.families)
@@ -633,6 +718,7 @@ class SmartComfort:
                     handled.add(room.id)
                 if ctx.polluted and self.controller.purifying(room, states):
                     handled.add(f"{room.id}|{KIND_POLLUTED}")
+                handled |= self.controller.handled_keys(room, states)
                 readings[room.id].handled = room.id in handled
             self.handled = handled
             sent = await self._run(commands, now)

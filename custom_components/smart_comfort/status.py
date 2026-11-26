@@ -3,12 +3,13 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, Final
 
 from homeassistant.util import dt as dt_util
 
 from .config import Room
 from .const import SEVERITY_INFO
+from .control import heat_mode, heating
 from .engine import Episode, is_handled
 from .lighting import phase
 
@@ -36,6 +37,33 @@ def episode_info(manager: SmartComfort, ep: Episode, now: datetime) -> dict[str,
     }
 
 
+# Comfortable relative humidity of a living space (%): a point off per % outside it, at most HUMIDITY_PENALTY_MAX.
+HUMIDITY_RANGE: Final = (40.0, 60.0)
+HUMIDITY_PENALTY_MAX: Final = 10
+# Points off per °C a heated room is below its setpoint beyond SETPOINT_SLACK, at most SETPOINT_PENALTY_MAX.
+SETPOINT_SLACK: Final = 0.5
+SETPOINT_PENALTY: Final = 5
+SETPOINT_PENALTY_MAX: Final = 15
+
+
+def comfort_gap(manager: Any, room: Room) -> int:
+    """Points off a room's comfort score short of an alert: below its heating setpoint, humidity out of the range."""
+    reading, _ctx = manager.reading(room)
+    penalty = 0
+    setpoints = [
+        s for h in room.heating if heating(t := manager.controller.targets.get(h.entity_id)) and (s := heat_mode(t)[1])
+    ]
+    if setpoints and reading.temperature is not None:
+        gap = max(setpoints) - reading.temperature - SETPOINT_SLACK
+        if gap > 0:
+            penalty += min(SETPOINT_PENALTY_MAX, round(gap * SETPOINT_PENALTY))
+    if not room.is_annex and reading.humidity is not None:
+        low, high = HUMIDITY_RANGE
+        off = max(low - reading.humidity, reading.humidity - high, 0)
+        penalty += min(HUMIDITY_PENALTY_MAX, round(off))
+    return penalty
+
+
 def room_info(manager: SmartComfort, room: Room, now: datetime) -> dict[str, Any]:
     reading, _ctx = manager.reading(room, now)
     controller = manager.controller
@@ -52,6 +80,11 @@ def room_info(manager: SmartComfort, room: Room, now: datetime) -> dict[str, Any
         "open": reading.open,
         "ignored_openings": manager.ignored_openings(room, now),
         "alerts": [e.kind for e in manager.engine.active() if e.room == room.id],
+        # Points off its comfort score short of an alert (below the heating setpoint, humidity out of range).
+        "score_penalty": comfort_gap(manager, room),
+        "dew_point": reading.dew_point,
+        "heat_rate": controller.heat_rates.get(room.id),
+        "shower": room.id in controller.shower_until,
         "handled": room.id in manager.handled or any(k.startswith(f"{room.id}|") for k in manager.handled),
         "devices": {
             d: {
@@ -98,7 +131,8 @@ def status(manager: SmartComfort, now: datetime) -> dict[str, Any]:
         ],
         "notifications_enabled": manager.notifications_enabled,
         "control_enabled": manager.control_enabled,
-        # Each device family set up in a room (air conditioners, fans, purifiers): controlled or left alone.
+        # Each device family set up in a room (air conditioners, fans, purifiers, dehumidifiers, heating): controlled
+        # or left alone.
         "control_families": {
             family: on
             for family, on in manager.families.items()

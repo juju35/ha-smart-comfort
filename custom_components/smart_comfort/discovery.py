@@ -194,8 +194,15 @@ TRACKED = (
     k.CONF_CLIMATE,
     k.CONF_FANS,
     k.CONF_PURIFIERS,
+    k.CONF_DEHUMIDIFIERS,
+    k.CONF_HEATING,
     k.CONF_LIGHTS,
 )
+# A dehumidifier's water tank sensor, a stove and its pellet level (several languages, accents removed).
+TANK_WORDS = ("tank", "bucket", "reservoir", "_bac", "wassertank", "deposito", "serbatoio", "full", "plein", "voll")
+DEHUMIDIFIER_WORDS = ("dehumid", "deshumid", "entfeucht", "deumid", "ontvocht", "osusz", "odvlh", "avfukt", "affugt")
+STOVE_WORDS = ("stove", "poele", "pellet", "granul", "insert", "ofen", "estufa", "stufa", "kachel", "kamin", "piec")
+PELLET_WORDS = ("pellet", "granul", "fuel", "combustible", "brennstoff", "hopper", "tremie")
 # Indoor air sensors of a room by device class (every one found: the worst counts), a purifier's too.
 INDOOR_AIR = ((k.CONF_PM25, "pm25"), (k.CONF_PM10, "pm10"))
 # Indicator lights and displays of the devices (slug form).
@@ -826,6 +833,55 @@ def _climate(entity: _Entity) -> str | dict[str, Any]:
     return {k.CONF_ENTITY_ID: entity.entity_id, k.CONF_NIGHT_FAN_MODE: quiet} if quiet else entity.entity_id
 
 
+def _is_dehumidifier(entity: _Entity) -> bool:
+    """A humidifier entity that dries: its device class, else its name."""
+    if (entity.device_class or entity.attributes.get("device_class")) == "dehumidifier":
+        return True
+    return _has(entity.name, DEHUMIDIFIER_WORDS) or _has(entity.entity_id, DEHUMIDIFIER_WORDS)
+
+
+def _dehumidifier(entity: _Entity, by_device: dict[str, list[_Entity]]) -> str | dict[str, Any]:
+    """A dehumidifier, with its water tank sensor and its quietest mode for the night."""
+    item: dict[str, Any] = {k.CONF_ENTITY_ID: entity.entity_id}
+    for sibling in sorted(by_device.get(entity.device_id or "", []), key=lambda e: e.entity_id):
+        if sibling.domain == "binary_sensor" and (
+            _has(sibling.entity_id, TANK_WORDS) or _has(sibling.name, TANK_WORDS)
+        ):
+            item[k.CONF_TANK] = sibling.entity_id
+            break
+    modes = list(entity.attributes.get("available_modes") or [])
+    if quiet := _pick(modes, QUIET_WORDS):
+        item[k.CONF_NIGHT_MODE] = quiet
+    return _with_display(item if len(item) > 1 else entity.entity_id, entity, by_device)
+
+
+def _heater(entity: _Entity, by_device: dict[str, list[_Entity]]) -> str | dict[str, Any]:
+    """A heater: a pellet stove (with its pellet level), or a radiator with the presets of its modes."""
+    item: dict[str, Any] = {k.CONF_ENTITY_ID: entity.entity_id}
+    presets = list(entity.attributes.get("preset_modes") or [])
+    device_names = " ".join(e.name for e in by_device.get(entity.device_id or "", []))
+    if _has(entity.name, STOVE_WORDS) or _has(entity.entity_id, STOVE_WORDS) or _has(device_names, STOVE_WORDS):
+        item[k.CONF_STOVE] = True
+        for sibling in sorted(by_device.get(entity.device_id or "", []), key=lambda e: e.entity_id):
+            if (
+                sibling.domain == "sensor"
+                and sibling.attributes.get("unit_of_measurement") == "%"
+                and (_has(sibling.entity_id, PELLET_WORDS) or _has(sibling.name, PELLET_WORDS))
+            ):
+                item[k.CONF_PELLETS] = sibling.entity_id
+                break
+    elif "heat" not in (entity.attributes.get("hvac_modes") or []) or not entity.attributes.get("temperature"):
+        # No setpoint (pilot wire): its presets stand for the modes.
+        for key, words in (
+            (k.CONF_COMFORT_PRESET, ("comfort", "confort", "komfort")),
+            (k.CONF_ECO_PRESET, ("eco",)),
+            (k.CONF_FROST_PRESET, ("frost", "hors_gel", "antigel", "frostschutz")),
+        ):
+            if found := _pick(presets, words):
+                item[key] = found
+    return _with_display(item if len(item) > 1 else entity.entity_id, entity, by_device)
+
+
 def _is_purifier(entity: _Entity, by_device: dict[str, list[_Entity]]) -> bool:
     if _has(entity.name, PURIFIER_WORDS) or _has(entity.entity_id, PURIFIER_WORDS):
         return True
@@ -895,6 +951,7 @@ def discover_rooms(hass: HomeAssistant) -> Found:
                 (k.CONF_TEMPERATURE, temps),
                 (k.CONF_AIR_QUALITY, [e for e in sensors if _is_air(e)]),
                 (k.CONF_NOISE, [e for e in sensors if e.device_class == "sound_pressure"]),
+                (k.CONF_HUMIDITY, [e for e in sensors if e.device_class == "humidity"]),
             ):
                 if items:
                     place[key] = sorted(e.entity_id for e in items)
@@ -961,6 +1018,23 @@ def discover_rooms(hass: HomeAssistant) -> Found:
                 purifiers.append(_with_display(_purifier(e, by_device), e, by_device))
             else:
                 fans.append(_with_display(_fan(e), e, by_device))
+        dehumidifiers = [
+            _dehumidifier(e, by_device)
+            for e in sorted(area.entities, key=lambda e: e.entity_id)
+            if e.domain == "humidifier" and _is_dehumidifier(e)
+        ]
+        if dehumidifiers:
+            room[k.CONF_DEHUMIDIFIERS] = dehumidifiers
+        # Heaters: climate entities that heat but don't cool (thermostats, pilot wire radiators, stoves).
+        heaters = [
+            _heater(e, by_device)
+            for e in sorted(area.entities, key=lambda e: e.entity_id)
+            if e.domain == "climate"
+            and "cool" not in (modes := e.attributes.get("hvac_modes") or [])
+            and ("heat" in modes or e.attributes.get("preset_modes"))
+        ]
+        if heaters:
+            room[k.CONF_HEATING] = heaters
         if fans:
             room[k.CONF_FANS] = fans
         if purifiers:
@@ -1034,6 +1108,8 @@ def merge(options: dict[str, Any], found: Found) -> tuple[dict[str, Any], Report
             k.CONF_OPENINGS,
             k.CONF_FANS,
             k.CONF_PURIFIERS,
+            k.CONF_DEHUMIDIFIERS,
+            k.CONF_HEATING,
             k.CONF_LIGHTS,
         ):
             current = _list(match.get(key))
@@ -1063,6 +1139,7 @@ OUTDOOR_KEYS = (
     (k.CONF_TEMPERATURE, k.CONF_OUTDOOR),
     (k.CONF_AIR_QUALITY, k.CONF_OUTDOOR_AIR),
     (k.CONF_NOISE, k.CONF_OUTDOOR_NOISE),
+    (k.CONF_HUMIDITY, k.CONF_OUTDOOR_HUMIDITY),
 )
 
 

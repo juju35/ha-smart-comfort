@@ -57,7 +57,8 @@
           "critical_volume": "Lydstyrke for kritiske advarsler",
           "url": "Tryk-handling",
           "tag": "Notifikationsmærke",
-          "hide_header": "Skjul den øverste bjælke"
+          "hide_header": "Skjul den øverste bjælke",
+          "outdoor_humidity": "Udendørs luftfugtighed"
         },
         "data_description": {
           "notify": "Hvor advarslerne sendes hen (notify.mobile_app_…, en notify-gruppe…).",
@@ -75,7 +76,8 @@
           "critical_volume": "Lydstyrke for kritiske lyde på iOS, 0 til 1.",
           "url": "Åbnes, når der trykkes på notifikationen, f.eks. homeassistant://navigate/lovelace/comfort",
           "tag": "Hver notifikation erstatter den forrige med dette mærke i stedet for at hobe sig op.",
-          "hide_header": "Dashboardenes øverste bjælke (titel, menu, redigerings- og søgeknapper); visningernes faner bliver. Også dette panels øverste bjælke; dets faner bliver. Tilføj ?show_header til et dashboards adresse for at se den alligevel."
+          "hide_header": "Dashboardenes øverste bjælke (titel, menu, redigerings- og søgeknapper); visningernes faner bliver. Også dette panels øverste bjælke; dets faner bliver. Tilføj ?show_header til et dashboards adresse for at se den alligevel.",
+          "outdoor_humidity": "Sensorer for relativ luftfugtighed udenfor (%), lagt til dem fra udendørs steder: viser, om udluftning ville tørre et fugtigt rum."
         }
       },
       "alerts": {
@@ -131,7 +133,9 @@
           "display": "Indikatorlys eller display",
           "reset_at": "Tilbage til normal kl.",
           "display_off": "Displays slukket fra",
-          "display_on": "Displays tændt fra"
+          "display_on": "Displays tændt fra",
+          "shower_rise": "Brusebad: stigning i fugtighed",
+          "shower_boost": "Boost efter bad (min)"
         },
         "data_description": {
           "start": "Ventilatorer og luftrensere går på fuld hastighed, når en åbning åbnes, kun mellem disse tidspunkter. Begge tomme: hele dagen.",
@@ -139,7 +143,8 @@
           "suppress_when_handled": "Ingen „for varmt“-advarsel for et rum, hvis klimaanlæg eller ventilator Smart Comfort har tændt.",
           "night_start": "Mellem disse tidspunkter bruger enhederne deres natindstillinger (roligere hastighed, forudindstilling eller ventilatortilstand), og der er ingen vinduesboost for dem.",
           "display": "Slukkes i timerne „Displays slukket“ på fanen Tidsplan og under rummets lure, tændes igen bagefter.",
-          "reset_at": "På dette tidspunkt går enheden tilbage til sin normale tilstand, også efter en manuel ændring (en luftrenser tilbage på auto…)."
+          "reset_at": "På dette tidspunkt går enheden tilbage til sin normale tilstand, også efter en manuel ændring (en luftrenser tilbage på auto…).",
+          "shower_rise": "Fugtighedspoint inden for 10 minutter, der tyder på et brusebad: rummets affugtere (og ventilatorer med en badhastighed) boostes. Tom: fra."
         },
         "sections": {
           "climate": {
@@ -169,7 +174,9 @@
               "open_preset": "Forudindstilling, vindue åbent",
               "off_preset": "Forudindstilling før slukning",
               "night_percentage": "Hastighed om natten",
-              "night_preset": "Forudindstilling om natten"
+              "night_preset": "Forudindstilling om natten",
+              "shower_percentage": "Hastighed efter bad",
+              "shower_preset": "Forudindstilling efter bad"
             },
             "description": "Lad „Tænd fra“ og „Sluk under“ være tomme for ventilatorer, der kun styres af vinduerne."
           },
@@ -186,6 +193,66 @@
             },
             "data_description": {
               "keep_on": "Tænd en luftrenser igen, når den har været slukket i 10 s (strømsvigt, fejl)."
+            }
+          },
+          "dehumidifiers": {
+            "name": "Affugtere",
+            "data": {
+              "on_above": "Tænd fra",
+              "off_below": "Sluk under",
+              "mode": "Tilstand",
+              "target_humidity": "Målfugtighed",
+              "boost_mode": "Boosttilstand",
+              "night_mode": "Tilstand om natten",
+              "night_off": "Slukket om natten",
+              "tank": "Sensor for fuld tank",
+              "off_on_open": "Sluk når åben i (min)",
+              "prefer_airing": "Foretræk udluftning",
+              "airing_wait": "Vent på udluftning (min)"
+            },
+            "data_description": {
+              "prefer_airing": "Når udeluften er tørrere, foreslås det at åbne vinduerne, og der ventes så længe før affugtning.",
+              "tank": "Sensor for fuld vandtank: en advarsel, og affugteren lades i fred, indtil den er tømt."
+            }
+          },
+          "heating": {
+            "name": "Opvarmning",
+            "data": {
+              "comfort": "Komfort",
+              "eco": "Øko",
+              "frost": "Frostsikring",
+              "away": "Ude",
+              "comfort_preset": "Forudindstilling komfort",
+              "eco_preset": "Forudindstilling øko",
+              "frost_preset": "Forudindstilling frostsikring",
+              "away_preset": "Forudindstilling ude",
+              "schedule": "Tidsplan",
+              "off_on_open": "Frostsikring når åben i (min)",
+              "max_outdoor": "Slukket fra (udenfor)",
+              "preheat": "Forvarm",
+              "preheat_max": "Forvarm højst (min)",
+              "tempo": "Tempo-farve i dag",
+              "tempo_tomorrow": "Tempo-farve i morgen",
+              "tempo_red": "Sænkning på røde dage",
+              "tempo_white": "Sænkning på hvide dage",
+              "tempo_preheat": "Hævning før en rød dag",
+              "offpeak": "Lavlasttimer",
+              "offpeak_start": "Lavlast fra",
+              "offpeak_end": "Lavlast til",
+              "stove": "Pillebrændeovn",
+              "pellets": "Pilleniveau",
+              "backup": "Supplerende varme",
+              "backup_margin": "Supplement under komfort med",
+              "fault_after": "Fejl efter (min)"
+            },
+            "data_description": {
+              "schedule": "Tidsplanhjælper eller tænd/sluk-entitet: tændt = komfort, slukket = øko. Tom: komfort (frostsikring i et udhus).",
+              "comfort_preset": "Radiatorer med styretråd: hver tilstands forudindstilling sættes i stedet for en temperatur.",
+              "max_outdoor": "Varmen slukket, så længe det er mindst så varmt udenfor, tændt igen 1 °C under. Tom: aldrig.",
+              "preheat": "Starter komfort tidligere ud fra rummets indlærte opvarmningstid.",
+              "tempo": "EDF Tempo-farvesensor: temperaturer sænket på røde (og hvide) dage, hævet lidt i lavlasttimerne før en rød dag.",
+              "backup": "Holdes på øko, mens en pillebrændeovn varmer og på røde Tempo-dage, medmindre rummet falder margenen under komfort.",
+              "fault_after": "En opvarmning, der ikke varmer rummet op så længe, giver en advarsel."
             }
           }
         }
@@ -205,6 +272,9 @@
           "climate": "Klimaanlæg",
           "fans": "Ventilatorer",
           "purifiers": "Luftrensere",
+          "surface_temperature": "Vægtemperatur",
+          "heating": "Opvarmning",
+          "dehumidifiers": "Affugtere",
           "lights": "Lys",
           "type": "Type"
         },
@@ -232,7 +302,8 @@
           "pm25": "Sensorer for fine partikler (µg/m³), også luftrensernes: en advarsel om forurenet luft, og luftrenserne kører hårdere, indtil luften er ren igen.",
           "air_quality": "Rummets luftkvalitetsindekssensorer (HomeKit 1–5, europæisk 1–6, amerikansk AQI).",
           "lights": "Dæmpbare lys: deres lysstyrke følger tidspunktet på dagen, mens de er tændt (adaptiv belysning).",
-          "type": "Et opholdsrum bruger standardgrænserne; et birum (kælder, garage, værksted…) bruger sine egne — kun frost og skimmel."
+          "type": "Et opholdsrum bruger standardgrænserne; et birum (kælder, garage, værksted…) bruger sine egne — kun frost og skimmel.",
+          "surface_temperature": "Temperatur på den koldeste væg eller det koldeste vindue (risiko for kondens). Tom: anslået ud fra inde- og udetemperatur."
         }
       },
       "room": {
@@ -250,6 +321,9 @@
           "climate": "Klimaanlæg",
           "fans": "Ventilatorer",
           "purifiers": "Luftrensere",
+          "surface_temperature": "Vægtemperatur",
+          "heating": "Opvarmning",
+          "dehumidifiers": "Affugtere",
           "lights": "Lys",
           "type": "Type"
         },
@@ -277,7 +351,8 @@
           "pm25": "Sensorer for fine partikler (µg/m³), også luftrensernes: en advarsel om forurenet luft, og luftrenserne kører hårdere, indtil luften er ren igen.",
           "air_quality": "Rummets luftkvalitetsindekssensorer (HomeKit 1–5, europæisk 1–6, amerikansk AQI).",
           "lights": "Dæmpbare lys: deres lysstyrke følger tidspunktet på dagen, mens de er tændt (adaptiv belysning).",
-          "type": "Et opholdsrum bruger standardgrænserne; et birum (kælder, garage, værksted…) bruger sine egne — kun frost og skimmel."
+          "type": "Et opholdsrum bruger standardgrænserne; et birum (kælder, garage, værksted…) bruger sine egne — kun frost og skimmel.",
+          "surface_temperature": "Temperatur på den koldeste væg eller det koldeste vindue (risiko for kondens). Tom: anslået ud fra inde- og udetemperatur."
         }
       },
       "outdoor": {
@@ -286,7 +361,8 @@
           "name": "Navn",
           "temperature": "Temperatur",
           "air_quality": "Luftkvalitet",
-          "noise": "Støj"
+          "noise": "Støj",
+          "humidity": "Luftfugtighed"
         }
       },
       "edit_room": {
@@ -352,6 +428,11 @@
         "co2_high": "Højt CO₂",
         "polluted_air": "Forurenet luft",
         "humidity_high": "Høj luftfugtighed",
+        "condensation_risk": "Risiko for kondens",
+        "air_to_dry": "Åbn vinduerne (tørrere udenfor)",
+        "tank_full": "Affugterens tank er fuld",
+        "heating_fault": "Fejl i opvarmningen",
+        "pellets_low": "Få piller",
         "noise_high": "Støjende rum",
         "noisy_outside": "Luk vinduerne (støj udenfor)",
         "bad_air_outside": "Luk vinduerne (dårlig luft udenfor)"
@@ -419,6 +500,11 @@
           "co2_high": "Højt CO₂",
           "polluted_air": "Forurenet luft",
           "humidity_high": "Høj luftfugtighed",
+          "condensation_risk": "Risiko for kondens",
+          "air_to_dry": "Åbn vinduerne (tørrere udenfor)",
+          "tank_full": "Affugterens tank er fuld",
+          "heating_fault": "Fejl i opvarmningen",
+          "pellets_low": "Få piller",
           "noise_high": "Støjende rum",
           "noisy_outside": "Luk vinduerne (støj udenfor)",
           "bad_air_outside": "Luk vinduerne (dårlig luft udenfor)"
@@ -446,6 +532,12 @@
       },
       "control_purifiers": {
         "name": "Styring af luftrensere"
+      },
+      "control_heating": {
+        "name": "Styring af opvarmning"
+      },
+      "control_dehumidifiers": {
+        "name": "Styring af affugtere"
       },
       "lighting": {
         "name": "Adaptiv belysning"
@@ -539,6 +631,11 @@
     "line_polluted_air": "{pollutant} {value} µg/m³, over {threshold} µg/m³",
     "line_polluted_air_index": "luftkvalitet {value}/6, over {threshold}/6",
     "line_humidity_high": "luftfugtighed {value} % — luft ud",
+    "line_condensation_risk": "risiko for kondens: vægge {value} °C over dugpunktet — luft ud eller affugt",
+    "line_air_to_dry": "{value} g/m³ tørrere udenfor — åbn vinduerne for at tørre rummet",
+    "line_tank_full": "affugterens tank er fuld — tøm den",
+    "line_heating_fault": "varmen er tændt, men rummet bliver ikke varmere ({value} °C, temperatur {threshold} °C)",
+    "line_pellets_low": "piller {value} %, under {threshold} %",
     "line_noise_high": "støj {value} dB, over {threshold} dB",
     "line_noisy_outside": "{value} dB ude — luk {openings}",
     "line_bad_air_outside": "udendørs luftkvalitet {value}/6 — luk {openings}",
