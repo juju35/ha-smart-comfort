@@ -351,7 +351,7 @@ The first rows (`enabled`, `start` / `end`, `manual_override`, `suppress_when_ha
 | `dehumidifiers.off_on_open` | 5 min | Off when an opening stays open this long (airing dries the room) |
 | `dehumidifiers.prefer_airing` / `airing_wait` | `true` / 30 min | While `air_to_dry` suggests opening the windows, wait this long — from when the room became damp — before starting to dry |
 | `heating.comfort` / `eco` / `frost` / `away` | 20 / 17 / 7 / 16 °C | Setpoints of the modes |
-| `heating.comfort_preset` / `eco_preset` / `frost_preset` / `away_preset` | none | Pilot wire radiators: the preset of each mode, set instead of a setpoint (Discover picks them); away and frost protection without their own preset use the eco one. A preset can't be lowered by a few degrees: on red Tempo days a radiator with comfort and eco presets stays at eco |
+| `heating.comfort_preset` / `eco_preset` / `frost_preset` / `away_preset` | none | Pilot wire radiators: the preset of each mode, set instead of a setpoint (Discover picks them); away and frost protection without their own preset use the eco one, eco without its own the comfort one. Give a radiator driven by presets its comfort preset: without one it gets a setpoint, which it may not take. A preset can't be lowered by a few degrees: on red Tempo days a radiator with comfort and eco presets stays at eco |
 | `heating.schedule` | none | `schedule` helper (or any on/off entity): on = comfort, off = eco. Without one: comfort, frost protection in an annex. While nobody is home (the `presence` option), the away setpoint when it is lower — never warmer than eco, and frost protection stays |
 | `heating.preheat` / `preheat_max` | `true` / 120 min | Comfort starts early, from the room's learnt warm-up rate (°C/h, 1 until learnt), at most this long before the schedule turns on (its `next_event`) |
 | `heating.off_on_open` | 5 min | Frost protection when an opening stays open this long |
@@ -413,7 +413,7 @@ smart_comfort:
           backup: true                     # eco while the stove heats
 ```
 
-Thresholds and messages are in °C; sensors in °F or K are converted. An opening unavailable for 10 minutes (dead battery…) is left out of its room instead of blocking its alerts and devices (`ignored_openings` attribute of the room sensor). The problems of a sensor removed from a room end.
+Thresholds, setpoints and messages are in °C; sensors in °F or K are converted, and the setpoints sent to the devices are converted to Home Assistant's unit. An opening unavailable for 10 minutes (dead battery…) is left out of its room instead of blocking its alerts and devices (`ignored_openings` attribute of the room sensor). The problems of a sensor removed from a room end.
 
 ### Adaptive lighting
 
