@@ -72,8 +72,11 @@ MODE_FROST = "frost"
 MODE_FROST_OPEN = "frost_open"
 # How far below max_outdoor it must get outdoors for the heating to resume.
 SEASON_HYSTERESIS = 1.0
-# The room counts as warm this close to its setpoint (warm-up rate and fault tracking stop).
+# The room counts as warm this close to its setpoint (the warm-up rate is measured below it).
 WARM_MARGIN = 0.3
+# A fault is looked for only while the room is at least this far below its setpoint: a thermostat regulating around
+# it (half a degree under, for hours) is no fault.
+FAULT_GAP = 1.0
 # Minutes over which a warm-up rate is measured; weight of a new measure in the learnt rate.
 RATE_SPAN = 20
 RATE_WEIGHT = 0.3
@@ -353,8 +356,8 @@ class Controller:
             elif isinstance(dev, HeatingDevice):
                 # Back to comfort, its plain setpoint: never left at eco, frost or off by a family turned off.
                 mode, setpoint = heat_mode(driven)
-                if mode is None or (mode == MODE_COMFORT and setpoint == dev.comfort):
-                    continue
+                if mode in (None, "off") or (mode == MODE_COMFORT and setpoint == dev.comfort):
+                    continue  # Off (warm outdoors, the AC cooling) stays off: never turned on by a family turned off.
                 decision = self._heater_decision(dev, MODE_COMFORT, dev.comfort)
             elif isinstance(dev, ClimateDevice):
                 if driven not in COOLING:
@@ -429,6 +432,22 @@ class Controller:
                 keys.add(f"{room.id}|{KIND_TOO_COLD}")
         return keys
 
+    def heater_setpoints(self, room: Room, states: dict[str, DeviceState]) -> list[float]:
+        """Setpoints of the heaters of the room heating on Smart Comfort's command: the one each device reports
+        (a pilot wire preset aims at its own temperature), else the target's — none for a preset that reports none."""
+        out = []
+        for dev in room.heating:
+            target = self.targets.get(dev.entity_id)
+            state = states.get(dev.entity_id)
+            if not heating(target) or state is None or not state.available or state.hvac_mode in (None, "off"):
+                continue
+            mode, setpoint = heat_mode(target)
+            if state.setpoint is not None:
+                out.append(state.setpoint)
+            elif setpoint is not None and not dev.preset(MODE_FROST if mode == MODE_FROST_OPEN else str(mode)):
+                out.append(setpoint)
+        return out
+
     def heats(self, room: Room) -> bool:
         """A heater of the room has a heating target of Smart Comfort's."""
         return any(heating(self.targets.get(h.entity_id)) for h in room.heating)
@@ -463,15 +482,7 @@ class Controller:
         WARM_MARGIN below the setpoint. No rise of WARM_MARGIN within fault_after minutes: a fault (`faults`).
         """
         temp = ctx.temperature
-        setpoints = [
-            setpoint
-            for h in room.heating
-            if heating(target := self.targets.get(h.entity_id))
-            and (state := states.get(h.entity_id)) is not None
-            and state.available
-            and state.hvac_mode not in (None, "off")
-            and (setpoint := heat_mode(target)[1]) is not None
-        ]
+        setpoints = self.heater_setpoints(room, states)
         aired = ctx.has_openings and ctx.any_open is not False
         if not setpoints or temp is None or aired or temp >= max(setpoints) - WARM_MARGIN:
             self.rate_mark.pop(room.id, None)
@@ -488,6 +499,10 @@ class Controller:
                 rate = measured if learnt is None else learnt + RATE_WEIGHT * (measured - learnt)
                 self.heat_rates[room.id] = round(min(HEAT_RATE_MAX, max(HEAT_RATE_MIN, rate)), 2)
             self.rate_mark[room.id] = (now, temp)
+        if temp >= max(setpoints) - FAULT_GAP:
+            self.heat_start.pop(room.id, None)  # Close to its setpoint: regulating, not failing.
+            self.faults.pop(room.id, None)
+            return
         start = self.heat_start.setdefault(room.id, (now, temp))
         if temp >= start[1] + WARM_MARGIN:
             self.heat_start[room.id] = start = (now, temp)  # Warming: the wait starts again.
@@ -917,31 +932,34 @@ class Controller:
             return self._heater_decision(dev, MODE_FROST_OPEN, dev.frost)
         if self._warm_outdoors(dev, ctx, current) or ctx.cooling:
             return self._heater_decision(dev, "off", None)
-        if ctx.away:
-            mode = MODE_AWAY
+        schedule = ctx.states.get(dev.schedule) if dev.schedule else None
+        if dev.schedule is None:
+            mode = MODE_FROST if room.is_annex else MODE_COMFORT
         else:
-            schedule = ctx.states.get(dev.schedule) if dev.schedule else None
-            if dev.schedule is None:
-                mode = MODE_FROST if room.is_annex else MODE_COMFORT
-            else:
-                mode = MODE_ECO if schedule == "off" else MODE_COMFORT
-            if (
-                mode == MODE_ECO
-                and dev.preheat
-                and temp is not None
-                and (next_on := ctx.next_on.get(dev.schedule or "")) is not None
-                and next_on - now <= self.lead(room, dev.comfort - temp, dev.preheat_max)
-            ):
-                mode = MODE_COMFORT  # Warming up for the next comfort slot.
-            colour = tempo_colour(ctx.states.get(dev.tempo)) if dev.tempo else None
-            if (
-                mode == MODE_COMFORT
-                and dev.backup
-                and (ctx.stove_heating or colour == "red")
-                and (temp is None or temp >= dev.comfort - dev.backup_margin)
-            ):
-                mode = MODE_ECO  # A backup heater: the stove heats.
-        return self._heater_decision(dev, mode, self._setpoint(dev, mode, ctx))
+            mode = MODE_ECO if schedule == "off" else MODE_COMFORT
+        if (
+            mode == MODE_ECO
+            and dev.preheat
+            and temp is not None
+            and (next_on := ctx.next_on.get(dev.schedule or "")) is not None
+            and next_on - now <= self.lead(room, dev.comfort - temp, dev.preheat_max)
+        ):
+            mode = MODE_COMFORT  # Warming up for the next comfort slot.
+        colour = tempo_colour(ctx.states.get(dev.tempo)) if dev.tempo else None
+        if (
+            mode == MODE_COMFORT
+            and dev.backup
+            and (ctx.stove_heating or colour == "red")
+            and (temp is None or temp >= dev.comfort - dev.backup_margin)
+        ):
+            mode = MODE_ECO  # A backup heater: the stove heats.
+        if mode == MODE_COMFORT and colour == "red" and dev.tempo_red > 0 and dev.comfort_preset and dev.eco_preset:
+            mode = MODE_ECO  # Presets can't be lowered by a few degrees: a red day is spent at eco.
+        setpoint = self._setpoint(dev, mode, ctx)
+        if ctx.away and mode != MODE_FROST and dev.away < setpoint:
+            # Nobody home: the away setpoint, only when it is lower (never warmer than eco, nor than frost protection).
+            mode, setpoint = MODE_AWAY, dev.away
+        return self._heater_decision(dev, mode, setpoint)
 
     @staticmethod
     def _warm_outdoors(dev: HeatingDevice, ctx: RoomContext, current: str | None) -> bool:

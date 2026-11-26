@@ -8,9 +8,8 @@ from typing import TYPE_CHECKING, Any, Final
 from homeassistant.util import dt as dt_util
 
 from .config import Room
-from .const import SEVERITY_INFO
-from .control import heat_mode, heating
-from .engine import Episode, is_handled
+from .const import KIND_HUMIDITY, KIND_TOO_COLD, SEVERITY_INFO
+from .engine import Episode, RoomReading, is_handled
 from .lighting import phase
 
 if TYPE_CHECKING:
@@ -46,18 +45,22 @@ SETPOINT_PENALTY: Final = 5
 SETPOINT_PENALTY_MAX: Final = 15
 
 
-def comfort_gap(manager: Any, room: Room) -> int:
-    """Points off a room's comfort score short of an alert: below its heating setpoint, humidity out of the range."""
-    reading, _ctx = manager.reading(room)
+def comfort_gap(manager: Any, room: Room, reading: RoomReading | None = None) -> int:
+    """Points off a room's comfort score short of an alert: below its heating setpoint, humidity out of the range.
+
+    Not counted twice: no setpoint gap while the room has a too cold alert, no humidity one while it has a high
+    humidity alert (those take their own points off). `reading`: the room's, when already read.
+    """
+    if reading is None:
+        reading, _ctx = manager.reading(room)
+    alerting = {e.kind for e in manager.engine.active() if e.room == room.id}
     penalty = 0
-    setpoints = [
-        s for h in room.heating if heating(t := manager.controller.targets.get(h.entity_id)) and (s := heat_mode(t)[1])
-    ]
-    if setpoints and reading.temperature is not None:
+    setpoints = manager.controller.heater_setpoints(room, manager.device_states(room)) if room.heating else []
+    if setpoints and reading.temperature is not None and KIND_TOO_COLD not in alerting:
         gap = max(setpoints) - reading.temperature - SETPOINT_SLACK
         if gap > 0:
             penalty += min(SETPOINT_PENALTY_MAX, round(gap * SETPOINT_PENALTY))
-    if not room.is_annex and reading.humidity is not None:
+    if not room.is_annex and reading.humidity is not None and KIND_HUMIDITY not in alerting:
         low, high = HUMIDITY_RANGE
         off = max(low - reading.humidity, reading.humidity - high, 0)
         penalty += min(HUMIDITY_PENALTY_MAX, round(off))
@@ -81,7 +84,7 @@ def room_info(manager: SmartComfort, room: Room, now: datetime) -> dict[str, Any
         "ignored_openings": manager.ignored_openings(room, now),
         "alerts": [e.kind for e in manager.engine.active() if e.room == room.id],
         # Points off its comfort score short of an alert (below the heating setpoint, humidity out of range).
-        "score_penalty": comfort_gap(manager, room),
+        "score_penalty": comfort_gap(manager, room, reading),
         "dew_point": reading.dew_point,
         "heat_rate": controller.heat_rates.get(room.id),
         "shower": room.id in controller.shower_until,

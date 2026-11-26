@@ -297,3 +297,59 @@ def test_air_to_dry_needs_a_damp_room():
     damp = RoomReading(temperature=18, humidity=75, dew_margin=4.0, drier=3.0)
     e.evaluate(T0, {"cave": damp}, 5.0)
     assert "cave|humidity_high" in e.episodes and "cave|air_to_dry" in e.episodes
+
+
+# Review fixes.
+
+
+def test_family_off_leaves_heaters_off_for_the_season_off():
+    s = settings(heating=["climate.r"])
+    c, room = Controller(s), s.rooms[0]
+    c.targets["climate.r"] = "heat:off"
+    assert c.rest(T0, room, "heating", {"climate.r": DeviceState(on=False, hvac_mode="off")}) == []
+
+
+def test_away_only_lowers_the_setpoint():
+    annex = settings(type="annex", heating=["climate.r"])
+    c, room = Controller(annex), annex.rooms[0]
+    frost = {"climate.r": DeviceState(on=True, hvac_mode="heat", setpoint=7.0)}
+    assert c.evaluate(T0, NOON, room, ctx(away=True), frost) == []  # Frost protection stays.
+    s = settings(heating=[{"entity_id": "climate.r", "schedule": "schedule.h", "away": 18}])
+    c, room = Controller(s), s.rooms[0]
+    eco = {"climate.r": DeviceState(on=True, hvac_mode="heat", setpoint=17.0)}
+    assert c.evaluate(T0, NOON, room, ctx(away=True, states={"schedule.h": "off"}), eco) == []  # Eco is lower.
+    comfort = {"climate.r": DeviceState(on=True, hvac_mode="heat", setpoint=20.0)}
+    assert calls(c.evaluate(T0, NOON, room, ctx(away=True, states={"schedule.h": "on"}), comfort)) == [
+        ("climate.r", "climate.set_temperature", {"temperature": 18.0})
+    ]
+
+
+def test_red_tempo_day_with_presets_is_spent_at_eco():
+    s = settings(
+        heating=[{"entity_id": "climate.fp", "comfort_preset": "comfort", "eco_preset": "eco", "tempo": "sensor.t"}]
+    )
+    c, room = Controller(s), s.rooms[0]
+    on = {"climate.fp": DeviceState(on=True, hvac_mode="heat", preset="comfort")}
+    assert calls(c.evaluate(T0, NOON, room, ctx(states={"sensor.t": "Rouge"}), on)) == [
+        ("climate.fp", "climate.set_preset_mode", {"preset_mode": "eco"})
+    ]
+
+
+def test_no_fault_for_a_preset_or_a_regulating_thermostat():
+    s = settings(heating=[{"entity_id": "climate.fp", "comfort_preset": "comfort", "fault_after": 60}])
+    c, room = Controller(s), s.rooms[0]
+    # The preset aims at 19 °C (reported), the room holds 19: no fault, though comfort is set at 20.
+    state = {"climate.fp": DeviceState(on=True, hvac_mode="heat", preset="comfort", setpoint=19.0)}
+    for minutes in range(0, 120, 10):
+        c.evaluate(T0 + timedelta(minutes=minutes), NOON, room, ctx(temp=19.0), state)
+    assert c.faults == {}
+    # A preset that reports no setpoint: nothing to judge.
+    state = {"climate.fp": DeviceState(on=True, hvac_mode="heat", preset="comfort")}
+    assert c.heater_setpoints(room, state) == []
+    # A thermostat half a degree under its setpoint for hours: regulating, no fault.
+    s = settings(heating=[{"entity_id": "climate.r", "fault_after": 60}])
+    c, room = Controller(s), s.rooms[0]
+    state = {"climate.r": DeviceState(on=True, hvac_mode="heat", setpoint=20.0)}
+    for minutes in range(0, 120, 10):
+        c.evaluate(T0 + timedelta(minutes=minutes), NOON, room, ctx(temp=19.5), state)
+    assert c.faults == {}
