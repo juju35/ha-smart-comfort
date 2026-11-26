@@ -412,3 +412,14 @@ def test_condensation_line_at_the_dew_point():
     assert problem_text({}, "condensation_risk", -0.4, {}) == (
         "condensation: walls at the dew point — air or dry the room"
     )
+
+
+def test_heater_turned_on_in_a_mode_it_offers():
+    s = settings(heating=["climate.valve"])
+    c, room = Controller(s), s.rooms[0]
+    off = {"climate.valve": DeviceState(on=False, hvac_mode="off", hvac_modes=("off", "auto"))}
+    assert calls(c.evaluate(T0, NOON, room, ctx(), off))[0] == (
+        "climate.valve",
+        "climate.set_hvac_mode",
+        {"hvac_mode": "auto"},
+    )

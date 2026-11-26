@@ -1391,9 +1391,9 @@ async def test_dehumidifier_and_heating_in_home_assistant(hass: HomeAssistant, n
     await _evaluate(hass, entry)
     kinds = {e.kind for e in entry.runtime_data.engine.active()}
     assert {"humidity_high", "tank_full", "pellets_low"} <= kinds
-    # Drying: high humidity handled (not notified); the full tank and the pellets are.
+    # Its tank full, the dehumidifier no longer dries: the high humidity is notified too, with the tank and pellets.
     message = notify[-1].data["message"]
-    assert "tank" in message and "pellets" in message and "humidity" not in message
+    assert "tank" in message and "pellets" in message and "humidity" in message
     status = hass.states.get("switch.smart_comfort_dehumidifier_control")
     assert status is not None and status.state == "on"
     assert hass.states.get("switch.smart_comfort_heating_control").state == "on"
@@ -1490,3 +1490,40 @@ async def test_heating_setpoints_in_fahrenheit(hass: HomeAssistant, notify) -> N
     await _evaluate(hass, entry)
     await _evaluate(hass, entry)
     assert len(calls) == 1
+
+
+async def test_tank_full_stop_is_not_a_manual_change(hass: HomeAssistant, notify, freezer) -> None:
+    """A dehumidifier stopping as its tank fills is not paused: it dries again once the tank is emptied."""
+    hass.states.async_set("sensor.t", "18")
+    hass.states.async_set("sensor.h", "80")
+    hass.states.async_set("binary_sensor.tank", "off")
+    hass.states.async_set("switch.dry", "off")
+    entry = await _setup(
+        hass,
+        {
+            "startup_grace": 0,
+            "rooms": [
+                {
+                    "name": "Cave",
+                    "temperature": "sensor.t",
+                    "humidity": "sensor.h",
+                    "dehumidifiers": [{"entity_id": "switch.dry", "tank": "binary_sensor.tank"}],
+                }
+            ],
+        },
+    )
+    switch = {s: async_mock_service(hass, "switch", s) for s in ("turn_on", "turn_off")}
+    m = entry.runtime_data
+    await _evaluate(hass, entry)
+    hass.states.async_set("switch.dry", "on")
+    freezer.tick(timedelta(minutes=5))
+    # The device stops (reported first), then its tank sensor turns on.
+    hass.states.async_set("switch.dry", "off")
+    await hass.async_block_till_done()
+    hass.states.async_set("binary_sensor.tank", "on")
+    await hass.async_block_till_done()
+    assert "switch.dry" not in m.controller.overrides
+    await _evaluate(hass, entry)
+    hass.states.async_set("binary_sensor.tank", "off")
+    await _evaluate(hass, entry)
+    assert switch["turn_on"][-1].data == {"entity_id": "switch.dry"}

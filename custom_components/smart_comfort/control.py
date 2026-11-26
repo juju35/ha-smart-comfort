@@ -107,6 +107,15 @@ def heating(target: str | None) -> bool:
     return mode is not None and mode not in ("off", MODE_FROST_OPEN)
 
 
+def heat_mode_of(state: DeviceState) -> str:
+    """The hvac mode that turns a heater on: heat, else auto (valves, thermostats on their own schedule), else the
+    first one that isn't off; heat when the device doesn't tell."""
+    modes = [m for m in state.hvac_modes if m != "off"]
+    if not modes or "heat" in modes:
+        return "heat"
+    return "auto" if "auto" in modes else modes[0]
+
+
 def tempo_colour(state: str | None) -> str | None:
     """EDF Tempo colour of a sensor's state: blue, white or red (several spellings, 1-3), None when unknown."""
     if not state:
@@ -140,6 +149,7 @@ class DeviceState:
     mode: str | None = None  # Dehumidifier mode.
     target_humidity: float | None = None  # Dehumidifier target.
     setpoint: float | None = None  # Heater setpoint (temperature attribute).
+    hvac_modes: tuple[str, ...] = ()  # Modes a climate entity offers.
 
 
 # How far below min_outdoor it must get outdoors for Smart Comfort's cooling to stop.
@@ -854,7 +864,10 @@ class Controller:
             return None
         open_for = now - ctx.open_since if ctx.open_since else None
         if dev.tank and dev.tank in ctx.full_tanks:
-            return None  # Its tank full: it can't run, the alert says so.
+            # Its tank full: it can't run (it stopped by itself), the alert says so. Its target is forgotten, so that
+            # it is turned on again once the tank is emptied.
+            self.targets.pop(dev.entity_id, None)
+            return None
         if ctx.any_open:
             if open_for is None or open_for < timedelta(minutes=dev.off_on_open):
                 return None  # Opening just opened: wait for off_on_open.
@@ -1006,7 +1019,7 @@ class Controller:
                 return [Command(dev.entity_id, "climate", "turn_off")]
             cmds = []
             if state.hvac_mode in (None, "off"):
-                cmds.append(Command(dev.entity_id, "climate", "set_hvac_mode", {"hvac_mode": "heat"}))
+                cmds.append(Command(dev.entity_id, "climate", "set_hvac_mode", {"hvac_mode": heat_mode_of(state)}))
             if preset:
                 cmds.append(Command(dev.entity_id, "climate", "set_preset_mode", {"preset_mode": preset}))
             else:

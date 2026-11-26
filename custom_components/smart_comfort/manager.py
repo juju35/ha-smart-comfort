@@ -353,6 +353,12 @@ class SmartComfort:
     @callback
     def _state_changed(self, event: Event) -> None:
         entity_id: str = event.data["entity_id"]
+        for room in self.settings.rooms:
+            for dev in room.dehumidifiers:
+                if dev.tank == entity_id and dev.entity_id in self.controller.overrides:
+                    # Its tank filled (the device stopped, maybe reported just before) or was emptied: no manual
+                    # pause holds it back, it dries again as soon as it can.
+                    del self.controller.overrides[dev.entity_id]
         if any(entity_id in r.devices for r in self.settings.rooms):
             old, new = event.data.get("old_state"), event.data.get("new_state")
             self._device_changed(entity_id, old, new)
@@ -394,6 +400,8 @@ class SmartComfort:
             return
         if (sent := self._commanded.get(entity_id)) is not None and now - sent < COMMAND_GRACE:
             return
+        if self._tank_full_now(entity_id):
+            return  # A dehumidifier stopping as its tank fills: not a change by hand (it resumes once emptied).
         changed = old.state != new.state or any(old.attributes.get(k) != new.attributes.get(k) for k in MANUAL_KEYS)
         if changed and entity_id in self.controller.targets:
             _LOGGER.debug("Manual change of %s, control paused", entity_id)
@@ -487,6 +495,15 @@ class SmartComfort:
         if not room.tanks:
             return False
         return any(known) if known else None
+
+    def _tank_full_now(self, entity_id: str) -> bool:
+        """The device is a dehumidifier whose water tank sensor is on."""
+        for room in self.settings.rooms:
+            for dev in room.dehumidifiers:
+                if dev.entity_id == entity_id and dev.tank:
+                    state = self.hass.states.get(dev.tank)
+                    return state is not None and state.state == "on"
+        return False
 
     def _full_tanks(self, room: Room) -> frozenset[str]:
         return frozenset(e for e in room.tanks if (st := self.hass.states.get(e)) is not None and st.state == "on")
@@ -668,6 +685,7 @@ class SmartComfort:
                 mode=state.attributes.get("mode") if is_humidifier else None,
                 target_humidity=_number(state.attributes.get("humidity")) if is_humidifier else None,
                 setpoint=self._to_celsius(_number(state.attributes.get("temperature"))) if is_climate else None,
+                hvac_modes=tuple(state.attributes.get("hvac_modes") or ()) if is_climate else (),
             )
         return out
 
