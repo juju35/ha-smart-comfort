@@ -619,3 +619,7 @@ ACTIVITY_SIZE: Final = 300
 # Finished episodes kept for the calendar: at most this many, none older than HISTORY_DAYS.
 HISTORY_SIZE: Final = 1000
 HISTORY_DAYS: Final = 90
+
+# Air quality services: their sensors are outdoor air quality indexes (some, like Atmo France's, without a device
+# class). Listed in the panel's pickers too (src/smart-comfort-panel/form.js).
+AIR_PLATFORMS = ("atmofrance", "waqi", "airvisual", "airly", "airnow", "google_air_quality")

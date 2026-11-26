@@ -1,8 +1,12 @@
 """The entity pickers of the options flow list only the entities that fit."""
 
+import re
+from pathlib import Path
+
 from homeassistant.helpers.selector import EntitySelector, EntitySelectorConfig
 
 from custom_components.smart_comfort import config_flow
+from custom_components.smart_comfort import const as k
 
 
 def _filters(filters):
@@ -31,3 +35,14 @@ def test_presence_picker_keeps_only_occupancy_binary_sensors():
     filters = _filters(config_flow.PRESENCE)
     assert {"domain": ["binary_sensor"], "device_class": ["occupancy", "presence"]} in filters
     assert {"domain": ["person"]} in filters
+
+
+def test_panel_pickers_match_the_options_flow():
+    """The panel's pickers (form.js) offer the same kinds as the options flow's."""
+    form = (Path(__file__).parent.parent / "src" / "smart-comfort-panel" / "form.js").read_text(encoding="utf-8")
+    platforms = re.search(r"\.\.\.\[([^\]]+)\]\.map\(\(integration\)", form).group(1)
+    assert tuple(re.findall(r'"([a-z_]+)"', platforms)) == k.AIR_PLATFORMS
+    openings = re.search(r"openings: \[\{ domain: \"binary_sensor\", device_class: \[([^\]]+)\]", form).group(1)
+    assert re.findall(r'"([a-z_]+)"', openings) == config_flow.OPENINGS[0]["device_class"]
+    presence = re.search(r"presence: \[(.*?)\n  \],", form, re.DOTALL).group(1)
+    assert re.findall(r'domain: "([a-z_]+)"', presence) == [f["domain"] for f in config_flow.PRESENCE]

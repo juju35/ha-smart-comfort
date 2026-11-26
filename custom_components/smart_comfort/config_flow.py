@@ -27,7 +27,6 @@ from homeassistant.helpers.selector import (
 
 from . import const as k
 from .config import build_settings, slugify
-from .discovery import AIR_PLATFORMS
 from .schema import OPTIONS
 
 _LOGGER = logging.getLogger(__name__)
@@ -83,7 +82,7 @@ def _pick(filters: list[dict[str, Any]], multiple: bool = False) -> EntitySelect
 OUTDOOR_TEMPERATURE = [{"domain": "sensor", "device_class": "temperature"}, {"domain": "weather"}]
 AIR_INDEX = [
     {"domain": "sensor", "device_class": ["aqi", "enum"]},
-    *({"integration": platform, "domain": "sensor"} for platform in AIR_PLATFORMS),
+    *({"integration": platform, "domain": "sensor"} for platform in k.AIR_PLATFORMS),
 ]
 OPENINGS = [{"domain": "binary_sensor", "device_class": ["window", "door", "opening", "garage_door"]}]
 PRESENCE = [

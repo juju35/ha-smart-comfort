@@ -28,6 +28,7 @@ export const PICK = {
   air_quality: [
     sensor("aqi"),
     sensor("enum"),
+    // AIR_PLATFORMS of const.py (a test keeps them the same).
     ...["atmofrance", "waqi", "airvisual", "airly", "airnow", "google_air_quality"].map((integration) => ({ integration, domain: "sensor" })),
   ],
   openings: [{ domain: "binary_sensor", device_class: ["window", "door", "opening", "garage_door"] }],
