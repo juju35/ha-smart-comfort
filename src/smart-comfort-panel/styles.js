@@ -225,7 +225,7 @@ export const STYLE = `
     color: inherit;
     background: var(--ha-card-background, var(--card-background-color, #fff));
     border: 1px solid var(--divider-color);
-    border-radius: 12px;
+    border-radius: 10px;
     padding: 14px;
     display: grid;
     grid-template-columns: auto 1fr;
@@ -424,7 +424,7 @@ export const STYLE = `
     .shbody { display:flex; flex-direction:column; gap:12px; padding:12px 16px 16px; }
     .shbody > .card { border:0; padding:0; background:none; box-shadow:none; }
     .summary { gap:10px; grid-template-columns:repeat(auto-fill, minmax(160px, 1fr)); }
-    .tile { background:color-mix(in srgb, var(--primary-text-color) 5%, transparent); border:0; border-radius:14px; padding:10px 12px; min-height:56px; box-sizing:border-box; }
+    .tile { background:color-mix(in srgb, var(--primary-text-color) 5%, transparent); border:0; border-radius: 10px; padding:10px 12px; min-height:56px; box-sizing:border-box; }
     button.tile:hover { background:color-mix(in srgb, var(--primary-color) 10%, transparent); }
     .tile > ha-icon { width:36px; height:36px; border-radius:50%; --mdc-icon-size:20px;
                       background:color-mix(in srgb, var(--primary-color) 14%, transparent); }
