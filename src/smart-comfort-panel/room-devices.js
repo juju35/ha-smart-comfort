@@ -111,17 +111,17 @@ export class SmartComfortPanelRoomDevices {
   }
 
   /**
-   * One device's form. Its empty fields show their defaults (greyed); an unset switch shows its default state, and
+   * One device's form. Its empty fields show their defaults (greyed); an unset switch or choice shows its default, and
    * is stored only once changed from it, so that the device keeps following the defaults it doesn't override.
    */
   _deviceForm(key, item, defaults, store, schemaFor) {
     const own = { ...item };
+    // A switch, or a choice between a few buttons: shown at its default while unset (they have no placeholder).
+    const shownAtDefault = (f) => (f.selector?.boolean || f.selector?.select?.mode === "list") && defaults[f.name] !== undefined && defaults[f.name] !== null;
     const shown = (value) => {
       const data = { ...value };
       for (const f of this._flatFields(schemaFor(value))) {
-        if (f.selector?.boolean && data[f.name] === undefined && typeof defaults[f.name] === "boolean") {
-          data[f.name] = defaults[f.name];
-        }
+        if (shownAtDefault(f) && data[f.name] === undefined) data[f.name] = defaults[f.name];
       }
       if (key === "dehumidifiers") data[NIGHT] = this._nightOf(value, defaults);
       return data;
@@ -129,8 +129,8 @@ export class SmartComfortPanelRoomDevices {
     const kept = (value) => {
       const out = { ...value };
       for (const f of this._flatFields(schemaFor(out))) {
-        // A switch left at its default state is not stored (it was only shown so).
-        if (f.selector?.boolean && own[f.name] === undefined && out[f.name] === defaults[f.name]) delete out[f.name];
+        // A switch or choice left at its default is not stored (it was only shown so).
+        if (shownAtDefault(f) && own[f.name] === undefined && out[f.name] === defaults[f.name]) delete out[f.name];
       }
       if (key === "dehumidifiers") this._setNight(out, out[NIGHT], defaults, this._attr(out.entity_id, "available_modes"));
       delete out[NIGHT];
@@ -188,6 +188,11 @@ export class SmartComfortPanelRoomDevices {
     else if (choice === "quiet" && !item.night_mode && !defaults.night_mode) {
       item.night_mode = modes.find((m) => /sleep|silent|quiet|night|nuit|nacht|calme/i.test(m)) || modes[0];
     }
+  }
+
+  /** Eco or frost protection outside the schedule's slots, as two buttons. */
+  _scheduleOff() {
+    return { select: { mode: "list", options: ["eco", "frost"].map((value) => ({ value, label: this._label("control", value, "heating") })) } };
   }
 
   _effectiveControl(room, section) {
@@ -327,6 +332,7 @@ export class SmartComfortPanelRoomDevices {
       [
         { type: "grid", name: "", column_min_width: "90px", schema: modes.map((m) => ({ name: m, selector: setpoint })) },
         { name: "schedule", selector: pick("schedule") },
+        { name: "schedule_off", selector: this._scheduleOff() },
         { name: "stove", selector: bool },
         ...(item.stove ? [{ name: "pellets", selector: entity("sensor") }] : []),
       ],

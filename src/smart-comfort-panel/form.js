@@ -39,6 +39,8 @@ export const PICK = {
     { domain: "device_tracker" },
     { domain: "input_boolean" },
     { domain: "binary_sensor", device_class: ["occupancy", "presence"] },
+    // A calendar of absences: away while one of its events is on.
+    { domain: "calendar" },
   ],
   schedule: ON_OFF,
   tempo: [sensor("enum")],

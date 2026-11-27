@@ -282,8 +282,7 @@ class SmartComfort:
             | set(s.outdoor_air)
             | set(s.outdoor_humidity)
         )
-        if s.presence:
-            sensors.add(s.presence)
+        sensors.update(s.presence)
         devices = {e for r in s.rooms for e in r.devices} | {light.entity_id for r in s.rooms for light in r.lights}
         selects = {p.mode_select for r in s.rooms for p in r.purifiers if p.mode_select}
         naps = {e for r in s.rooms for e in r.nap_entities}
@@ -714,12 +713,22 @@ class SmartComfort:
                 e for e in room.nap_entities if (s := self.hass.states.get(e)) is not None and s.state == "on"
             )
 
+    def nobody_home(self) -> bool:
+        """Away: a calendar of the presence option has an event on (holidays, a trip), or its other entities all say
+        that nobody is home."""
+        calendars, others = [], []
+        for entity_id in self.settings.presence:
+            (calendars if entity_id.startswith("calendar.") else others).append(self.hass.states.get(entity_id))
+        if any(state is not None and state.state == "on" for state in calendars):
+            return True
+        return bool(others) and not any(present(state) for state in others)
+
     def gates(self, now: datetime) -> Gates:
         s = self.settings
         starting = self.started_at is not None and now - self.started_at < timedelta(minutes=s.startup_grace)
         local = dt_util.as_local(now).time()
         quiet = s.quiet_start is not None and s.quiet_end is not None and in_window(local, s.quiet_start, s.quiet_end)
-        away = s.presence is not None and not present(self.hass.states.get(s.presence))
+        away = self.nobody_home()
         return Gates(enabled=self.notifications_enabled, starting=starting, hold=quiet or away)
 
     async def async_evaluate(self) -> None:
@@ -750,7 +759,7 @@ class SmartComfort:
                     setpoints = self.controller.heater_setpoints(room, states_by_room[room.id])
                     readings[room.id].heat_setpoint = max(setpoints, default=None)
             self.engine.evaluate(now, readings, self.outdoor())
-            away = self.settings.presence is not None and not present(self.hass.states.get(self.settings.presence))
+            away = self.nobody_home()
             stove = self.stove_heating()
             if not (self.control_enabled and self.families.get("heating", True)):
                 self.controller.faults.clear()  # Its heaters left alone: no longer Smart Comfort's to judge.

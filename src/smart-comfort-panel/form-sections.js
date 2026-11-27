@@ -16,9 +16,14 @@ export class SmartComfortPanelSections {
     const defaults = this._config.defaults.general;
     const keys = schemaKeys(schema);
     const own = Object.fromEntries(keys.filter((k) => k in this._draft).map((k) => [k, this._draft[k]]));
+    const data = merged(defaults, own);
+    // A field that takes several entities may hold a single one (an older option): shown as a list.
+    for (const f of this._flatFields(schema)) {
+      if (f.selector?.entity?.multiple && typeof data[f.name] === "string") data[f.name] = [data[f.name]];
+    }
     return this._form(
       schema,
-      merged(defaults, own),
+      data,
       (value) => {
         const changed = diff(Object.fromEntries(keys.map((k) => [k, value[k]])), defaults);
         for (const key of keys) delete this._draft[key];

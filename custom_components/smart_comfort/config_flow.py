@@ -73,6 +73,13 @@ def _entity(domain: str | list[str], multiple: bool = False, device_class: str |
     return EntitySelector(EntitySelectorConfig(**config))
 
 
+def _as_list(value: Any) -> list[str] | None:
+    """An option of one entity or several, as a list (None when unset)."""
+    if not value:
+        return None
+    return [value] if isinstance(value, str) else list(value)
+
+
 def _pick(filters: list[dict[str, Any]], multiple: bool = False) -> EntitySelector:
     """A picker listing only the entities of these kinds (domain and device class)."""
     return EntitySelector(EntitySelectorConfig(filter=filters, multiple=multiple))
@@ -92,6 +99,7 @@ PRESENCE = [
     {"domain": "device_tracker"},
     {"domain": "input_boolean"},
     {"domain": "binary_sensor", "device_class": ["occupancy", "presence"]},
+    {"domain": "calendar"},  # A calendar of absences: away while one of its events is on.
 ]
 
 
@@ -175,7 +183,7 @@ def _general_schema(hass: HomeAssistant, o: dict[str, Any], first: bool = False)
             ): _minutes(),
             _opt(k.CONF_QUIET_START, o.get(k.CONF_QUIET_START)): TimeSelector(),
             _opt(k.CONF_QUIET_END, o.get(k.CONF_QUIET_END)): TimeSelector(),
-            _opt(k.CONF_PRESENCE, o.get(k.CONF_PRESENCE)): _pick(PRESENCE),
+            _opt(k.CONF_PRESENCE, _as_list(o.get(k.CONF_PRESENCE))): _pick(PRESENCE, multiple=True),
             vol.Required(
                 k.CONF_CLEAR_WHEN_RESOLVED, default=o.get(k.CONF_CLEAR_WHEN_RESOLVED, True)
             ): BooleanSelector(),
