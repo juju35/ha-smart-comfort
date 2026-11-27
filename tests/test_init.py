@@ -1527,3 +1527,22 @@ async def test_tank_full_stop_is_not_a_manual_change(hass: HomeAssistant, notify
     hass.states.async_set("binary_sensor.tank", "off")
     await _evaluate(hass, entry)
     assert switch["turn_on"][-1].data == {"entity_id": "switch.dry"}
+
+
+async def test_presence_from_a_calendar_and_several_entities(hass: HomeAssistant) -> None:
+    """Away while a calendar of absences has an event on, or when none of the other entities sees anyone home."""
+    entry = await _setup(hass, {**OPTIONS, "presence": ["person.a", "person.b", "calendar.absences"]})
+    manager = entry.runtime_data
+    assert manager.settings.presence == ("person.a", "person.b", "calendar.absences")
+    hass.states.async_set("calendar.absences", "off")
+    hass.states.async_set("person.a", "not_home")
+    hass.states.async_set("person.b", "home")
+    assert manager.nobody_home() is False
+    hass.states.async_set("person.b", "not_home")
+    assert manager.nobody_home() is True
+    hass.states.async_set("person.b", "home")
+    hass.states.async_set("calendar.absences", "on")
+    assert manager.nobody_home() is True
+    # A single entity (the option before 2.4) still works.
+    entry2 = await _setup(hass, {**OPTIONS, "presence": "calendar.absences"})
+    assert entry2.runtime_data.settings.presence == ("calendar.absences",)

@@ -947,13 +947,15 @@ class Controller:
             return self._heater_decision(dev, MODE_FROST_OPEN, dev.frost)
         if self._warm_outdoors(dev, ctx, current) or ctx.cooling:
             return self._heater_decision(dev, "off", None)
-        schedule = ctx.states.get(dev.schedule) if dev.schedule else None
+        between = dev.schedule is not None and ctx.states.get(dev.schedule) == "off"
         if dev.schedule is None:
             mode = MODE_FROST if room.is_annex else MODE_COMFORT
+        elif between:
+            mode = MODE_FROST if dev.schedule_off == MODE_FROST else MODE_ECO  # Outside its slots: eco, or frost.
         else:
-            mode = MODE_ECO if schedule == "off" else MODE_COMFORT
+            mode = MODE_COMFORT
         if (
-            mode == MODE_ECO
+            between
             and dev.preheat
             and temp is not None
             and (next_on := ctx.next_on.get(dev.schedule or "")) is not None

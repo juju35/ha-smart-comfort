@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.4.0 - 2026-11-27
+
+### Features
+- Heating: `schedule_off` (`eco` or `frost`), the mode outside the schedule's slots — a room unused then at frost protection, or a guest room heated only while its `input_boolean` is on. Anticipation starts comfort early from frost protection too.
+- Presence: several entities (nobody home when none of them says so), and calendars — a Google calendar of absences or holidays means away while one of its events is on (only critical alerts, the heaters at their away setpoint).
+
 ## 2.3.1 - 2026-11-27
 
 ### Fixes

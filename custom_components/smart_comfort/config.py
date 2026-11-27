@@ -129,6 +129,7 @@ from .const import (
     CONF_RESET_AT,
     CONF_ROOMS,
     CONF_SCHEDULE,
+    CONF_SCHEDULE_OFF,
     CONF_SETPOINT,
     CONF_SEVERITY,
     CONF_SHOWER_BOOST,
@@ -366,6 +367,7 @@ class HeatingDevice:
     frost_preset: str | None = None
     away_preset: str | None = None
     schedule: str | None = None
+    schedule_off: str = "eco"
     off_on_open: int = 5
     max_outdoor: float | None = 16.0
     preheat: bool = True
@@ -598,7 +600,8 @@ class Settings:
     snooze: int = DEFAULT_SNOOZE
     quiet_start: time | None = None
     quiet_end: time | None = None
-    presence: str | None = None
+    # Who is home: zones, persons, trackers, groups, booleans; a calendar with an event on means away.
+    presence: tuple[str, ...] = ()
     clear_when_resolved: bool = True
     critical_volume: float = DEFAULT_CRITICAL_VOLUME
     url: str | None = None
@@ -788,6 +791,7 @@ def _room(
                 frost_preset=h[CONF_FROST_PRESET] or None,
                 away_preset=h[CONF_AWAY_PRESET] or None,
                 schedule=h[CONF_SCHEDULE] or None,
+                schedule_off=h[CONF_SCHEDULE_OFF] or "eco",
                 off_on_open=int(h[CONF_OFF_ON_OPEN]),
                 max_outdoor=_float(h[CONF_MAX_OUTDOOR]),
                 preheat=bool(h[CONF_PREHEAT]),
@@ -897,7 +901,7 @@ def build_settings(options: dict[str, Any]) -> Settings:
         snooze=int(options.get(CONF_SNOOZE_DURATION, DEFAULT_SNOOZE)),
         quiet_start=parse_time(options.get(CONF_QUIET_START)),
         quiet_end=parse_time(options.get(CONF_QUIET_END)),
-        presence=options.get(CONF_PRESENCE) or None,
+        presence=_ids(options.get(CONF_PRESENCE)),
         clear_when_resolved=bool(options.get(CONF_CLEAR_WHEN_RESOLVED, True)),
         critical_volume=float(options.get(CONF_CRITICAL_VOLUME, DEFAULT_CRITICAL_VOLUME)),
         url=options.get(CONF_URL) or None,

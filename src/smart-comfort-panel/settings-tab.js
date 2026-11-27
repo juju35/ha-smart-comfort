@@ -25,7 +25,7 @@ export class SmartComfortPanelSettings {
             select: { multiple: true, custom_value: true, mode: "dropdown", options: [...new Set([...notify, ...current])].sort() },
           },
         },
-        { name: "presence", selector: pick("presence") },
+        { name: "presence", selector: pick("presence", { multiple: true }) },
         { name: "digest_window", selector: minutes() },
         { name: "reminder", selector: minutes() },
         this._advanced([
@@ -144,6 +144,7 @@ export class SmartComfortPanelSettings {
         ]),
         group("heat_schedule", "mdi:calendar-clock", [
           { name: "schedule", selector: pick("schedule") },
+          { name: "schedule_off", selector: this._scheduleOff() },
           { name: "preheat", selector: bool },
           { name: "preheat_max", selector: minutes() },
         ]),

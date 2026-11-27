@@ -171,6 +171,10 @@ CONF_ECO_PRESET: Final = "eco_preset"
 CONF_FROST_PRESET: Final = "frost_preset"
 CONF_AWAY_PRESET: Final = "away_preset"
 CONF_SCHEDULE: Final = "schedule"
+# The mode outside the schedule's slots: eco, or frost protection (a room unused then, a guest room heated only
+# while its boolean is on).
+CONF_SCHEDULE_OFF: Final = "schedule_off"
+SCHEDULE_OFF_MODES: Final = ("eco", "frost")
 # Start comfort early, from the room's learnt warm-up rate, at most preheat_max minutes before the schedule.
 CONF_PREHEAT: Final = "preheat"
 CONF_PREHEAT_MAX: Final = "preheat_max"
@@ -517,6 +521,7 @@ DEFAULT_CONTROL: Final[dict] = {
         CONF_FROST_PRESET: None,
         CONF_AWAY_PRESET: None,
         CONF_SCHEDULE: None,
+        CONF_SCHEDULE_OFF: "eco",
         # Frost protection when an opening stays open this long.
         CONF_OFF_ON_OPEN: 5,
         # Off while it is at least this warm outdoors (the heating season is over): None, never.

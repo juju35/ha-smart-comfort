@@ -423,3 +423,33 @@ def test_heater_turned_on_in_a_mode_it_offers():
         "climate.set_hvac_mode",
         {"hvac_mode": "auto"},
     )
+
+
+def test_heater_frost_protection_outside_the_schedule():
+    """A guest room: comfort while its boolean is on, frost protection otherwise (warmed up ahead of its next slot)."""
+    s = settings(
+        type="living_space",
+        heating=[{"entity_id": "climate.r", "schedule": "input_boolean.guests", "schedule_off": "frost"}],
+    )
+    c, room = Controller(s), s.rooms[0]
+    assert room.heating[0].schedule_off == "frost"
+    heat = {"climate.r": DeviceState(on=True, hvac_mode="heat", setpoint=20.0)}
+    assert calls(c.evaluate(T0, NOON, room, ctx(states={"input_boolean.guests": "off"}), heat)) == [
+        ("climate.r", "climate.set_temperature", {"temperature": 7.0})
+    ]
+    frost = {"climate.r": DeviceState(on=True, hvac_mode="heat", setpoint=7.0)}
+    assert calls(c.evaluate(T0, NOON, room, ctx(states={"input_boolean.guests": "on"}), frost)) == [
+        ("climate.r", "climate.set_temperature", {"temperature": 20.0})
+    ]
+    # Anticipation works from frost protection too.
+    c = Controller(s)
+    c.heat_rates["cave"] = 2.0
+    soon = {"input_boolean.guests": T0 + timedelta(minutes=80)}
+    assert calls(
+        c.evaluate(T0, NOON, room, ctx(temp=17.0, states={"input_boolean.guests": "off"}, next_on=soon), frost)
+    ) == [("climate.r", "climate.set_temperature", {"temperature": 20.0})]
+    # Eco by default.
+    assert (
+        settings(heating=[{"entity_id": "climate.r", "schedule": "schedule.h"}]).rooms[0].heating[0].schedule_off
+        == "eco"
+    )
